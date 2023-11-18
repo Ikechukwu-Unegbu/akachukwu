@@ -1,0 +1,22 @@
+.auth_class{
+    display: flex;
+    flex: row;
+    gap:2rem;
+}
+
+
+.left_auth, .right_auth{
+    width: 50%;
+}
+
+.form_auth{
+    width: 80%;
+    margin-top:3rem;
+}
+
+.auth_header{
+    margin-bottom: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

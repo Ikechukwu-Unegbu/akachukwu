@@ -1,17 +1,37 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+@extends('layouts.new-guest')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+@section('head')
+<link rel="stylesheet" href="{{asset('css.dashboard_index.css')}}"/>
+
+@endsection
+
+@section('body')
+<div class="dasboard_body">
+    <div class="sidebar_body">
+        @include('components.dasboard_sidebar')
+    </div>
+    <div class="dashboard_section">
+
+        <!-- card indicators -->
+        <div class="d-flex box_container">
+            <div class="box ">
+                <div>
+                    <div>Total Wallet</div>
+                    <div>
+                        <div>
+                            0.00
+                        </div>
+                        <button>
+                            <i class="fa-solid fa-eye-slash"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
+            <div class="box "></div>
+            <div class="box "></div>
         </div>
+        <!-- end of card indicators -->    
     </div>
-</x-app-layout>
+
+</div>
+@endsection 

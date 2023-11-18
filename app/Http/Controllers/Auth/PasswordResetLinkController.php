@@ -17,6 +17,10 @@ class PasswordResetLinkController extends Controller
     {
         return view('auth.forgot-password');
     }
+    public function new_create(): View
+    {
+        return view('auth.new-forgot-password');
+    }
 
     /**
      * Handle an incoming password reset link request.

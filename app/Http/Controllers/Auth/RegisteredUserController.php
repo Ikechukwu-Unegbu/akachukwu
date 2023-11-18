@@ -23,6 +23,11 @@ class RegisteredUserController extends Controller
         return view('auth.register');
     }
 
+    public function new_create()
+    {
+        return view('auth.new-register');
+    }
+
     /**
      * Handle an incoming registration request.
      *

@@ -1,0 +1,18 @@
+.dashboard_body{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.sidebar_body{
+    width: 30%;
+}
+
+.dashboard_section{
+    width: 70%;
+}
+
+
+.box_container{
+    
+}
