@@ -2,10 +2,13 @@
     display: flex;
     flex-direction: row;
     gap: 2rem;
+    margin-top: 3rem;
+   
 }
 
 .sidebar_body{
     width: 30%;
+   
 }
 
 .dashboard_section{
@@ -14,5 +17,36 @@
 
 
 .box_container{
-    
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+}
+
+.box{
+    height: 28vh;
+    width: 33.333%;
+}
+.box-img-container{
+    width: 100%;
+
+}
+.box-img{
+    height: 3rem;
+    width: 3rem;
+    float: right;
+}
+.wallet, .ref{
+    padding: 1rem;
+    border-radius: 10px;
+}
+
+.wallet-eye{
+    display: flex;
+    gap: 1rem;
+}
+
+
+.ref{
+    display: flex;
+    flex-direction: column;
 }
