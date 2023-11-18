@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\V1\Utilities\AirtimeController;
+use App\Http\Controllers\V1\Utilities\DataController;
+use App\Http\Controllers\V1\Utilities\ElectricityController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,9 +17,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('pages.home.home');
-});
+Route::get('/', function () {return view('pages.home.home');});
+
+Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
+Route::get('/data', [DataController::class, 'index'])->name('data.index');
+Route::get('/electricity', [ElectricityController::class, 'index'])->name('electricity.index');
+    
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

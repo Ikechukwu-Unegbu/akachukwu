@@ -2,18 +2,26 @@
     <div class="sidebar-list">
         <div class="sidebar-item">
             <a class="sidebar_link fs-2" href="">
-                <span>
+                <span class="link_key">
                     <i class="fa-solid fa-gauge"></i>
                 </span>
-                <span>Dashboard</span>
+                <span class="link_val">Dashboard</span>
             </a>
         </div>
           <div class="sidebar-item">
             <a class="sidebar_link fs-2" href="{{route('airtime.index')}}">
-                <span>
-                    <i class="fa-solid fa-gauge"></i>
+                <span class="link_key">
+                    <i class="fa-solid fa-mobile-retro"></i>
                 </span>
-                <span>Airtime</span>
+                <span class="link_val">Buy Airtime</span>
+            </a>
+        </div>
+        <div class="sidebar-item">
+            <a class="sidebar_link fs-2" href="{{route('data.index')}}">
+                <span class="link_key">
+                    <i class="fa-solid fa-wifi"></i>
+                </span>
+                <span class="link_val">Buy Data</span>
             </a>
         </div>
     </div>

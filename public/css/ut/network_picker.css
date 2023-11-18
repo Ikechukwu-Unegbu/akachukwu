@@ -1,0 +1,54 @@
+/* network picker */
+.network_container{
+    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: row;
+    gap: 1.3rem;
+    margin-top: 2rem;
+}
+.networks{
+    box-shadow: 0 0 8px gray;
+    padding: 0.2rem;
+    border-radius: 30px;
+    width: 25%;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.network_img{
+    border-radius: 100% !important;
+    width: 3rem;
+    height: 3rem;
+    
+}
+
+
+@media (max-width:900px){
+    .network_container{
+        margin-bottom: 2rem;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.3rem;
+        margin-top: 2rem;
+        
+    }
+    .networks{
+        box-shadow: 0 0 8px gray;
+        padding: 0.2rem;
+        border-radius: 30px;
+        width: 100%;
+    
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    
+    .network_img{
+        border-radius: 100% !important;
+        width: 3rem;
+        height: 3rem;
+    }
+    
+}

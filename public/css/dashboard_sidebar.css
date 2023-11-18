@@ -20,8 +20,17 @@
     padding-left: 1rem;
     list-style: none;
     color:rgb(17, 17, 17);
+
     
     
+}
+
+.sidebar_link{
+    display: flex;
+    gap: 1.3rem;
+}
+.link_key{
+    width:5%;
 }
 
 .sidebar-item:hover{
