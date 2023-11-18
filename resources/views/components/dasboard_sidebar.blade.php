@@ -24,5 +24,13 @@
                 <span class="link_val">Buy Data</span>
             </a>
         </div>
+             <div class="sidebar-item">
+            <a class="sidebar_link fs-2" href="{{route('electricity.index')}}">
+                <span class="link_key">
+                   <i class="fa-solid fa-lightbulb"></i>
+                </span>
+                <span class="link_val">Electricity</span>
+            </a>
+        </div>
     </div>
 </div>

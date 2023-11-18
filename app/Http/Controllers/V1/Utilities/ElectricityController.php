@@ -9,7 +9,7 @@ class ElectricityController extends Controller
 {
     public function index()
     {
-        return view('pages.utilities.data.index');
+        return view('pages.utilities.electricity.index');
     }
     
 }
