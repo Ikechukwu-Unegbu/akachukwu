@@ -3,16 +3,19 @@
     flex-direction: row;
     gap: 2rem;
     margin-top: 3rem;
-   
+
+    /* align-items: center;   */
 }
 
 .sidebar_body{
     width: 30%;
+    
    
 }
 
 .dashboard_section{
     width: 70%;
+    
 }
 
 

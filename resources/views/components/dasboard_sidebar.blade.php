@@ -32,5 +32,13 @@
                 <span class="link_val">Electricity</span>
             </a>
         </div>
+        <div class="sidebar-item">
+            <a class="sidebar_link fs-2" href="{{route('cable.index')}}">
+                <span class="link_key">
+                   <i class="fa-solid fa-tv"></i>
+                </span>
+                <span class="link_val">Cable TV</span>
+            </a>
+        </div>
     </div>
 </div>
