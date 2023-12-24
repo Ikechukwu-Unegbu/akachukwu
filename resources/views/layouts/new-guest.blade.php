@@ -44,7 +44,6 @@
       <nav class="navbar navbar-expand-lg navbar-light sticky-top" data-navbar-on-scroll="data-navbar-on-scroll">
         <div class="container"><a class="navbar-brand" href="index.html"><img src="{{asset('pub-pages/assets/img/logo.svg')}}" height="31" alt="logo" /></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"> </span></button>
-            @guest
               <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-auto">
                   <li class="nav-item"><a class="nav-link" aria-current="page" href="#feature">Product</a></li>
@@ -54,9 +53,7 @@
                 </ul>
                 <div class="d-flex ms-lg-4"><a class="btn btn-secondary-outline" href="#!">Sign In</a><a class="btn btn-warning ms-3" href="#!">Sign Up</a></div>
               </div>
-            @endguest
-
-        </div>
+         </div>
       </nav>
     
         @yield('body')
@@ -74,19 +71,21 @@
         </div>
       </div>
     </div>
-
+    
 
     <!-- ===============================================-->
     <!--    JavaScripts-->
     <!-- ===============================================-->
-    <script src="vendors/@popperjs/popper.min.js"></script>
-    <script src="{{asset('pub-pages\vendors\bootstrap\bootstrap.min.js')}}"></script>
-    <script src="vendors/is/is.min.js"></script>
+    <script src="{{asset('pub-pages/vendors/@popperjs/popper.min.js')}}"></script>
+    <script src="{{asset('pub-pages/vendors/bootstrap/bootstrap.min.js')}}"></script>
+    <script src="{{asset('pub-pages/vendors/is/is.min.js')}}"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-    <script src="vendors/fontawesome/all.min.js"></script>
+    <script src="{{asset('pub-pages/vendors/fontawesome/all.min.js')}}"></script>
     <script src="assets/js/theme.js"></script>
 
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Volkhov:wght@700&amp;display=swap" rel="stylesheet">
+    <script src="{{ asset('pub-pages/vendors/jquery/jquery.min.js') }}" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @stack('scripts')
   </body>
 
 </html>
