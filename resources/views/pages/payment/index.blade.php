@@ -27,14 +27,18 @@
                             <label for="amount">Enter Amount</label>
                         </div>
                     </div>
-                    <div class="airtime-group">
+                    <div class="">
                         <div class="mb-3">
                             <input type="radio" class="" name="payment" id="paystack" @checked(true)>
-                            <label for="paystack">Paystack</label>
+                            <label for="paystack">
+                                <img src="{{ asset('images/paystack.png') }}" width="100" alt="">
+                            </label>
                         </div>
                         <div class="mb-3">
                             <input type="radio" class="" name="payment" id="flutterwave">
-                            <label for="flutterwave">Flutterwave</label>
+                            <label for="flutterwave">
+                                <img src="{{ asset('images/flutterwave.png') }}" width="120" alt="">
+                            </label>
                         </div>
                     </div>
                     <button type="submit" class="btn bg-basic text-light">
