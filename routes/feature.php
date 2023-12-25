@@ -3,4 +3,7 @@
 use App\Http\Controllers\V1\PaymentController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('fund-wallet', [PaymentController::class, 'index'])->name('payment.index');
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('fund-wallet', [PaymentController::class, 'index'])->name('payment.index');
+    Route::post('fund-wallet/process', [PaymentController::class, 'process'])->name('payment.process');
+});

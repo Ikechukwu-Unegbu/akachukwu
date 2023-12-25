@@ -13,7 +13,7 @@ interface Payment
      *
      * @throws \App\Exceptions\PaymentInitialisationError
      */
-    public function createPaymentIntent($amount, $email, $redirectURL, array $meta = []): Collection;
+    public function createPaymentIntent($amount, $redirectURL, $user, array $meta = []): Collection;
 
     public function isGatewayAvailable(): bool;
 

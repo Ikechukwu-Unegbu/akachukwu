@@ -5,6 +5,7 @@ namespace App\Services\Payment;
 use App\Exceptions\PaymentInitialisationError;
 use App\Interfaces\Payment\Payment;
 use App\Models\Payment\Flutterwave;
+use App\Models\PaymentGateway;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
@@ -18,23 +19,25 @@ class FlutterwaveService implements Payment
         return true;
     }
 
-    public function createPaymentIntent($amount, $email, $redirectURL, array $meta = null): Collection
+    public function createPaymentIntent($amount, $redirectURL, $user, array $meta = null) : Collection
     {
         $transaction = Flutterwave::create([
-            'reference_id' => $this->generateUniqueId(),
-            'amount' => $amount,
-            'currency' => config('app.currency'),
-            'redirect_url' => $redirectURL,
-            'meta' => $meta,
+            'user_id'       =>  $user->id,
+            'reference_id'  => $this->generateUniqueId(),
+            'amount'        => $amount,
+            'currency'      => config('app.currency', 'NGN'),
+            'redirect_url'  => $redirectURL,
+            'meta'          => json_encode($meta)
         ]);
 
         try {
+
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
-                'Authorization' => config('services.flutterwave.secret-key'),
+                'Authorization' => config('services.flutterwave.secret-key', $this->secret_key()),
             ])->post('https://api.flutterwave.com/v3/payments', [
                 'tx_ref' => $transaction->reference_id,
-                'amount' => $transaction->amount->getAmount(),
+                'amount' => $transaction->amount,
                 'currency' => $transaction->currency,
                 'redirect_url' => $transaction->redirect_url,
                 'meta' => $meta,
@@ -42,9 +45,11 @@ class FlutterwaveService implements Payment
                     'title' => config('app.name'),
                 ],
                 'customer' => [
-                    'email' => $email,
-                ],
+                    'name' => $user->name,
+                    'email' => $user->email,
+                ]
             ]);
+
             if (! $response->ok()) {
                 throw new Exception('Invalid Response From Payment Gateway');
             }
@@ -56,11 +61,19 @@ class FlutterwaveService implements Payment
                 'message' => $response->message,
                 'status' => $response->status,
             ]);
+            
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             // throw new PaymentInitialisationError('Could not initialize fluttterwave payment ');
         }
     }
+
+    private function secret_key()
+    {
+        return PaymentGateway::whereName('Flutterwave')->first()?->key ?? NULL;
+    }
+
+
 
     public function refundPayment($transactionId): bool
     {
@@ -94,7 +107,7 @@ class FlutterwaveService implements Payment
             return false;
         }
 
-        if (! $this->verifyTransaction($request->transaction_id, $request->amount, $request->currency)) {
+        if (! $this->verifyTransaction($request->transaction_id)) {
             return false;
         }
 
@@ -104,18 +117,19 @@ class FlutterwaveService implements Payment
             return false;
         }
 
-        if ($transaction->status != 'processed') {
-            $transaction->setStatus('processed');
+        if ($transaction->status != true) {
+            $transaction->setStatus(true);
+            $transaction->setTransactionId($request->transaction_id);
         }
 
         return true;
     }
 
-    private function verifyTransaction($transactionId, $amount, $currency): bool
+    private function verifyTransaction($transactionId): bool
     {
         $response = Http::withHeaders([
             'Accept' => 'application/json',
-            'Authorization' => config('services.flutterwave.secret-key'),
+            'Authorization' => config('services.flutterwave.secret-key', $this->secret_key()),
         ])->get("https://api.flutterwave.com/v3/transactions/$transactionId/verify");
         $response = $response->object();
 
@@ -128,7 +142,6 @@ class FlutterwaveService implements Payment
 
     public function generateUniqueId(): string
     {
-        return Str::random(10).microtime().Str::random(4);
-
+        return Str::random(10).Str::replace(' ', '', microtime()).Str::random(4);
     }
 }

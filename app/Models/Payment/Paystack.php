@@ -7,5 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Paystack extends Model
 {
-    use HasFactory;
+    protected $table = 'paystack_transactions';
+    protected $guarded = [];
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+        $this->save();
+    }
 }
