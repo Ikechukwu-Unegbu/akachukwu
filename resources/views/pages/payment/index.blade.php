@@ -83,10 +83,10 @@
                 $("#amount_err").text('');
 
                 var form = document.getElementById('processPayment');
-                form.action = "{{ route('payment.process') }}"; // Set your PHP file here
-                form.method = 'POST'; // Set your desired HTTP method here
+                form.action = "{{ route('payment.process') }}";
+                form.method = 'POST';
                 form.submit();
-
+                form_action(false);
                 function form_action(action) {
                     // $("#processPayment input").prop("disabled", action);
                     action ? $('.submit').addClass('disabled-cursor') : $('.submit').removeClass('disabled-cursor');

@@ -31,7 +31,7 @@
                     <div class="fs-3 fw-semibold">Total Wallet</div>
                     <div class="wallet-eye">
                         <div class="fs-3">
-                            0.00
+                            {{ number_format(auth()->user()->account_balance, 2) }}
                         </div>
                         <button class="eye-btn bg-basic">
                             <i class="fa-solid fa-eye-slash"></i>

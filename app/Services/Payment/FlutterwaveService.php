@@ -19,7 +19,7 @@ class FlutterwaveService implements Payment
         return true;
     }
 
-    public function createPaymentIntent($amount, $redirectURL, $user, array $meta = null) : Collection
+    public function createPaymentIntent($amount, $redirectURL, $user, array $meta = null)
     {
         $transaction = Flutterwave::create([
             'user_id'       =>  $user->id,
@@ -134,6 +134,7 @@ class FlutterwaveService implements Payment
         $response = $response->object();
 
         if ($response->status == 'success' || $response->data->status == 'successful') {
+            auth()->user()->setAccountBalance($response->data->amount);
             return true;
         }
 

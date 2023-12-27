@@ -3,6 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use Database\Seeders\Data\DataNetworkSeeder;
+use Database\Seeders\Data\DataPlanSeeder;
+use Database\Seeders\Data\DataTypeSeeder;
+use Database\Seeders\Data\DataVendorSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -20,7 +25,11 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            PaymentGatewaySeeder::class
+            PaymentGatewaySeeder::class,
+            DataVendorSeeder::class,
+            DataNetworkSeeder::class,
+            DataTypeSeeder::class,
+            DataPlanSeeder::class
         ]);
     }
 }

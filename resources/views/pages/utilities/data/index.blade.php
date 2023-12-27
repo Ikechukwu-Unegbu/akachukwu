@@ -23,30 +23,10 @@
                 <h3 class="text-warning">Airtime VTU Top up</h3>
                 <h4>Select Network</h6>
             </div>
-            <form class="utility-form">
+            <div class="utility-form">
                 @include('pages.utilities.components._network_selections')
-                <div class="airtime-group">
-                    <div class="form-floating mb-3">
-                        <input type="number" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Amount</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Phone Number</label>
-                    </div>
-                </div>
-                 <div class="airtime-group">
-                    <div class="form-floating mb-3">
-                        <input type="number" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Amount</label>
-                    </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Phone Number</label>
-                    </div>
-                </div>
-                <button class="btn bg-basic text-light">Continue</button>
-            </form>
+            </div>
+            @livewire('pages.utility.data.create')
         </div>
         <!-- end of card indicators -->    
     </div>

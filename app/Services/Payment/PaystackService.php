@@ -19,7 +19,7 @@ class PaystackService implements Payment
         return true;
     }
 
-    public function createPaymentIntent($amount, $redirectURL, $user, array $meta = []): Collection
+    public function createPaymentIntent($amount, $redirectURL, $user, array $meta = [])
     {
 
         $transaction = PaymentPaystack::create([
@@ -90,10 +90,11 @@ class PaystackService implements Payment
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . config('services.flutterwave.secret-key', $this->secret_key()),
         ])->get("https://api.paystack.co/transaction/verify/$transactionId");
+        
         $response = $response->object();
-
-
+        
         if ($response->status || $response->data->status == 'success') {
+            auth()->user()->setAccountBalance($response->data->amount/100);
             return true;
         }
 
