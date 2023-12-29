@@ -94,6 +94,9 @@ class Create extends Component
                 return redirect()->route('dashboard');
             }
         }
+
+        session()->flash('error', 'An error occurred during the Data request. Please try again later');
+        return redirect()->to(url()->previous());
     }
 
     public function render()
