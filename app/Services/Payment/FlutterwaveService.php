@@ -119,6 +119,7 @@ class FlutterwaveService implements Payment
 
         if ($transaction->status != true) {
             $transaction->setStatus(true);
+            auth()->user()->setAccountBalance($transaction->amount);
             $transaction->setTransactionId($request->transaction_id);
         }
 
@@ -131,10 +132,12 @@ class FlutterwaveService implements Payment
             'Accept' => 'application/json',
             'Authorization' => config('services.flutterwave.secret-key', $this->secret_key()),
         ])->get("https://api.flutterwave.com/v3/transactions/$transactionId/verify");
+
         $response = $response->object();
 
-        if ($response->status == 'success' || $response->data->status == 'successful') {
-            auth()->user()->setAccountBalance($response->data->amount);
+        if (! isset($response->status) || ! isset($response->data->status)) return false;
+
+        if ($response->status == 'success' || $response->data->status == 'successful') {            
             return true;
         }
 

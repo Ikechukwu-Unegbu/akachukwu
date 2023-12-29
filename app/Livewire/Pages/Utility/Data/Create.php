@@ -73,20 +73,27 @@ class Create extends Component
             return redirect()->to(url()->previous());
         }
 
-        $currentBalance = $user->account_balance;
-        $newBalance = $currentBalance - $plan->amount;
+        if (isset($ClientResponse->response->Status)) {
+            if ($ClientResponse->response->Status == 'successful') {
+                $currentBalance = $user->account_balance;
+                $newBalance = $currentBalance - $plan->amount;
 
-        $user->update(['account_balance' => $newBalance]);
+                $user->update(['account_balance' => $newBalance]);
 
-        DataTransaction::find($ClientResponse->transaction->id)->update([
-            'balance_after'     =>    $newBalance,
-            'status'            =>    true
-        ]);
+                DataTransaction::find($ClientResponse->transaction->id)->update([
+                    'balance_after'     =>    $newBalance,
+                    'status'            =>    true,
+                    'plan_network'      =>    $ClientResponse->response->plan_network,
+                    'plan_name'         =>    $ClientResponse->response->plan_name,
+                    'plan_amount'       =>    $ClientResponse->response->plan_amount,
+                    'api_data_id'       =>    $ClientResponse->response->ident,
+                    'api_response'      =>    $ClientResponse->response->api_response,
+                ]);
 
-        
-
-        session()->flash('success', "Data Purchase Successfully. You purchased {$network->name} {$plan->size} {$plan->amount} for {$this->phone_number}");
-        return redirect()->route('dashboard');
+                session()->flash('success', "Data Purchased Successfully. You purchased {$network->name} {$plan->size} {$plan->amount} for {$this->phone_number}");
+                return redirect()->route('dashboard');
+            }
+        }
     }
 
     public function render()

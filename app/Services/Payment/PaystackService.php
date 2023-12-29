@@ -78,6 +78,7 @@ class PaystackService implements Payment
         }
 
         if ($transaction->status != true) {
+            auth()->user()->setAccountBalance($transaction->amount);
             $transaction->setStatus(true);
         }
 
@@ -92,9 +93,10 @@ class PaystackService implements Payment
         ])->get("https://api.paystack.co/transaction/verify/$transactionId");
         
         $response = $response->object();
+
+        if (! isset($response->status) || ! isset($response->data->status)) return false;
         
         if ($response->status || $response->data->status == 'success') {
-            auth()->user()->setAccountBalance($response->data->amount/100);
             return true;
         }
 

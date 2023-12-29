@@ -37,7 +37,7 @@ class DataService
         try {
 
             $response = Http::withHeaders([
-                'Authorization' => "Token {$vendor->token}",
+                'Authorization' => "Token " . $vendor->token,
                 'Content-Type' => 'application/json',
             ])->post("{$vendor->api}/data/", [
                 'network' => $network->network_id,
@@ -56,7 +56,6 @@ class DataService
             ]);
             
         } catch (\Throwable $th) {
-            
             Log::error($th->getMessage());
             return json_encode([
                 'error' => 'Error.',

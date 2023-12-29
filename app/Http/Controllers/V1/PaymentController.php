@@ -59,7 +59,7 @@ class PaymentController extends Controller
        ]);
 
        if ($request->gateway !== 'paystack' && $request->gateway !== 'flutterwave') {
-            session()->flash('error', 'Unable to process to payment. Please try again.');
+            session()->flash('error', 'Unable to process your payment. Please try again.');
             return redirect()->route('payment.index');
        }
 
@@ -87,10 +87,10 @@ class PaymentController extends Controller
             if ($response->status) {
                 return redirect()->to($response->paymentLink);
             }
-            session()->flash('error', 'Unable to process to payment. Please try again.');
+            session()->flash('error', 'Unable to process your payment. Please try again.');
             return redirect()->route('payment.index');
         }
-        session()->flash('error', 'Unable to process to payment. Please try again.');
+        session()->flash('error', 'Unable to process your payment. Please try again.');
         return redirect()->route('payment.index');
     }
 
@@ -110,10 +110,10 @@ class PaymentController extends Controller
             if ($response->status == 'success') {
                 return redirect()->to($response->paymentLink);
             }
-            session()->flash('error', 'Unable to process to payment. Please try again.');
+            session()->flash('error', 'Unable to process your payment. Please try again.');
             return redirect()->route('payment.index');
         }
-        session()->flash('error', 'Unable to process to payment. Please try again.');
+        session()->flash('error', 'Unable to process your payment. Please try again.');
         return redirect()->route('payment.index');
     }
 
