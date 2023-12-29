@@ -121,9 +121,11 @@ class FlutterwaveService implements Payment
             $transaction->setStatus(true);
             auth()->user()->setAccountBalance($transaction->amount);
             $transaction->setTransactionId($request->transaction_id);
+            return true;
         }
 
-        return true;
+        return false;
+
     }
 
     private function verifyTransaction($transactionId): bool

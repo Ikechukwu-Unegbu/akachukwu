@@ -80,9 +80,11 @@ class PaystackService implements Payment
         if ($transaction->status != true) {
             auth()->user()->setAccountBalance($transaction->amount);
             $transaction->setStatus(true);
+            return true;
         }
 
-        return true;
+        return false;
+
     }
 
     private function verifyTransaction($transactionId): bool
