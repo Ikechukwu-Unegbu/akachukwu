@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->decimal('account_balance', 8, 2)->after('password');
-            $table->decimal('wallet_balance', 8, 2)->after('account_balance');
-            $table->decimal('bonus_balance', 8, 2)->after('wallet_balance');
+            $table->decimal('wallet_balance', 8, 2)->after('account_balance')->default(0.0);
+            $table->decimal('bonus_balance', 8, 2)->after('wallet_balance')->default(0.0);
         });
     }
 
