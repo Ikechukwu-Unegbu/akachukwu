@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('data_transactions', function (Blueprint $table) {
             $table->string('api_data_id')->nullable()->after('plan_amount');
-            $table->text('api_response')->nullable()->after('api_response');
+            $table->text('api_response')->nullable()->after('api_data_id');
         });
     }
 
