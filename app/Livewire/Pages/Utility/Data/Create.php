@@ -24,12 +24,12 @@ class Create extends Component
     public function mount()
     {
         $this->vendor = DataVendor::whereStatus(true)->first();
-        $this->network = DataNetwork::whereVendorId($this->vendor->id)->whereStatus(true)->first()?->network_id;
+        $this->network = DataNetwork::whereVendorId($this->vendor?->id)->whereStatus(true)->first()?->network_id;
     }
 
     public function updatedPlan()
     {
-        $this->amount = DataPlan::whereVendorId($this->vendor->id)->whereNetworkId($this->network)->whereDataId($this->plan)->first()?->amount;
+        $this->amount = DataPlan::whereVendorId($this->vendor?->id)->whereNetworkId($this->network)->whereDataId($this->plan)->first()?->amount;
         $this->amount = number_format($this->amount, 1);
     }
 
@@ -69,6 +69,7 @@ class Create extends Component
         }
 
         if (isset($ClientResponse->response->error)) {
+            // Insufficient API Wallet Balance Error
             session()->flash('error', 'An error occurred during the Data request. Please try again later');
             return redirect()->to(url()->previous());
         }
