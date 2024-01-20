@@ -16,7 +16,7 @@ return new class extends Migration
             $table->bigInteger('user_id');
             $table->bigInteger('vendor_id');
             $table->integer('network_id');
-            $table->decimal('amount', 8, 2);
+            $table->decimal('amount', 20, 2);
             $table->string('mobile_number');
             $table->string('balance_before')->nullable();
             $table->string('balance_after')->nullable();

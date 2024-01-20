@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('meter_number');
             $table->integer('meter_type_id');
             $table->string('meter_type_name');
-            $table->decimal('amount', 8, 2);
+            $table->decimal('amount', 20, 2);
             $table->string('customer_mobile_number')->nullable();
             $table->string('customer_name')->nullable();
             $table->string('customer_address')->nullable();

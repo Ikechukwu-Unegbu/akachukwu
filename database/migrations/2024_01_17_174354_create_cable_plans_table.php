@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('cable_name');
             $table->integer('cable_plan_id');
             $table->string('package');
-            $table->decimal('amount', 8, 2);
+            $table->decimal('amount', 20, 2);
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('network_id');
             $table->integer('type_id');
             $table->integer('data_id');
-            $table->decimal('amount', 8, 2);
+            $table->decimal('amount', 20, 2);
             $table->string('size');
             $table->string('validity');
             $table->tinyInteger('status')->default(1);

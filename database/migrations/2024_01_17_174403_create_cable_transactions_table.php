@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('cable_plan_id');
             $table->string('smart_card_number');
             $table->string('customer_name');
-            $table->decimal('amount', 8, 2);
+            $table->decimal('amount', 20, 2);
             $table->string('balance_before')->nullable();
             $table->string('balance_after')->nullable();
             $table->string('api_data_id')->nullable();

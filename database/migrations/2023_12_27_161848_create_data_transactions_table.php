@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('network_id');
             $table->integer('type_id');
             $table->integer('data_id');
-            $table->decimal('amount', 8, 2);
+            $table->decimal('amount', 20, 2);
             $table->string('size');
             $table->string('validity');
             $table->string('mobile_number');
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('balance_after')->nullable();
             $table->string('plan_network');
             $table->string('plan_name');
-            $table->decimal('plan_amount', 8, 2);
+            $table->decimal('plan_amount', 20, 2);
             $table->tinyInteger('status')->default(0);
             $table->timestamps();
         });
