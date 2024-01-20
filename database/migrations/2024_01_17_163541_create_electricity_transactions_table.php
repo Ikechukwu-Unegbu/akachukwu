@@ -21,7 +21,9 @@ return new class extends Migration
             $table->integer('meter_type_id');
             $table->string('meter_type_name');
             $table->decimal('amount', 8, 2);
-            $table->string('customer_mobile_number');
+            $table->string('customer_mobile_number')->nullable();
+            $table->string('customer_name')->nullable();
+            $table->string('customer_address')->nullable();
             $table->string('balance_before')->nullable();
             $table->string('balance_after')->nullable();
             $table->string('api_data_id')->nullable();

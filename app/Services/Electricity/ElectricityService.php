@@ -2,10 +2,11 @@
 
 namespace App\Services\Electricity;
 
-use App\Models\Data\DataTransaction;
-use App\Models\Utility\ElectricityTransaction;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
+use App\Models\Data\DataTransaction;
 use Illuminate\Support\Facades\Http;
+use App\Models\Utility\ElectricityTransaction;
 
 class ElectricityService 
 {
@@ -13,12 +14,12 @@ class ElectricityService
     public function __construct(
         private object $vendor, 
         private object $electricity,
-        private int $meterNumber,
+        private $meterNumber,
         private int $meterType,
         private object $user
     ) {}
 
-    public function BillPayment($amount, $customerMobile)
+    public function BillPayment($amount, $customerMobile, $customerName, $customerAddress)
     {
         if (! $this->verifyAccountBalance($this->user, $amount)) {
             return json_encode([
@@ -27,12 +28,12 @@ class ElectricityService
             ]);
         }
 
-        if (! $this->validateMeterNumber($this->meterNumber,$this->electricity->disco_name, $this->meterType)) {
-            return json_encode([
-                'error' => 'Oops!',
-                'message' => "The Meter Number provided is Invalid ({$this->meterNumber}).",
-            ]);
-        }
+        // if (! $this->validateMeterNumber($this->meterNumber,$this->electricity->disco_name, $this->meterType)) {
+        //     return json_encode([
+        //         'error' => 'Oops!',
+        //         'message' => "The Meter Number provided is Invalid ({$this->meterNumber}).",
+        //     ]);
+        // }
 
         $transaction = ElectricityTransaction::create([
             'user_id'                   =>  $this->user->id,
@@ -44,6 +45,8 @@ class ElectricityService
             'meter_type_name'           =>  $this->meterType == 1 ? 'Prepaid' : 'Postpaid',
             'amount'                    =>  $amount,
             'customer_mobile_number'    =>  $customerMobile,
+            'customer_name'             =>  $customerName,
+            'customer_address'          =>  $customerAddress,
             'balance_before'            =>  $this->user->account_balance
         ]);
 
@@ -52,10 +55,13 @@ class ElectricityService
                 'Authorization' => "Token " . $this->vendor->token,
                 'Content-Type' => 'application/json',
             ])->post("{$this->vendor->api}/billpayment/", [
-                'disco_name'   => $transaction->disco_id,
-                'meter_number' => $transaction->meter_number,
-                'amount'       => $amount,
-                'MeterType'    => $transaction->meter_type_name
+                'disco_name'        => $transaction->disco_id,
+                'meter_number'      => $transaction->meter_number,
+                'amount'            => $amount,
+                'MeterType'         => $transaction->meter_type_name,
+                'Customer_Phone'    => $transaction->customer_mobile_number,
+                'customer_name'     => $transaction->customer_name,
+                'customer_address'  => $transaction->customer_address
             ]);
     
             return json_encode([
@@ -82,18 +88,18 @@ class ElectricityService
     }
     
 
-    protected function validateMeterNumber($meter, $discoId, $meterType) : bool
+    protected function validateMeterNumber($meter, $discoId, $meterType) 
     {
 
-        $meterType =  $meterType == 1 ? 'PREPAID' : 'POSTPAID';
-
+        $meterType =  $meterType == 1 ? 'Prepaid' : 'Postpaid';
+        
         $response = Http::withHeaders([
             'Authorization' => "Token " . $this->vendor->token,
             'Content-Type' => 'application/json',
         ])->get("{$this->vendor->api}/validatemeter?meternumber={$meter}&disconame={$discoId}&mtype={$meterType}");
         
         $response = $response->object();
-                
+
         if (!$response->invalid) return true;
 
         return false;
