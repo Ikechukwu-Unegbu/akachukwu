@@ -31,7 +31,7 @@
         </div>
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
-                <input type="text" wire:model="phone_number" class="form-control @error('phone_number') is-invalid @enderror" id="mobile" placeholder="">
+                <input type="number" wire:model="phone_number" class="form-control @error('phone_number') is-invalid @enderror" id="mobile" placeholder="">
                 <label for="mobile">Phone Number</label>
                 @error('phone_number')<span style="font-size: 15px" class="text-danger">  {{ $message }} </span>@enderror
             </div>

@@ -91,12 +91,12 @@ class Create extends Component
                     'api_response'      =>    $ClientResponse->response->api_response,
                 ]);
 
-                session()->flash('success', "Data Purchased Successfully. You purchased {$network->name} {$plan->size} {$plan->amount} for {$this->phone_number}");
+                session()->flash('success', "Data Purchased Successfully. You purchased {$network->name} {$plan->size} ₦{$plan->amount} for {$this->phone_number}");
                 return redirect()->route('dashboard');
             }
         }
 
-        session()->flash('error', 'An error occurred during the Data request. Please try again later');
+        session()->flash('error', 'An error occurred during the Data Payment request. Please try again later');
         return redirect()->to(url()->previous());
     }
 

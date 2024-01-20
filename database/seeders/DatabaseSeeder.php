@@ -8,6 +8,9 @@ use Database\Seeders\Data\DataNetworkSeeder;
 use Database\Seeders\Data\DataPlanSeeder;
 use Database\Seeders\Data\DataTypeSeeder;
 use Database\Seeders\Data\DataVendorSeeder;
+use Database\Seeders\Utility\CablePlanSeeder;
+use Database\Seeders\Utility\CableSeeder;
+use Database\Seeders\Utility\ElectricitySeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,7 +32,10 @@ class DatabaseSeeder extends Seeder
             DataVendorSeeder::class,
             DataNetworkSeeder::class,
             DataTypeSeeder::class,
-            DataPlanSeeder::class
+            DataPlanSeeder::class,
+            ElectricitySeeder::class,
+            CableSeeder::class,
+            CablePlanSeeder::class
         ]);
     }
 }

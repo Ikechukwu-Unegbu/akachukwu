@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('data_plans', function (Blueprint $table) {
+        Schema::create('cable_plans', function (Blueprint $table) {
             $table->id();
             $table->bigInteger('vendor_id');
-            $table->integer('network_id');
-            $table->integer('type_id');
-            $table->integer('data_id');
+            $table->integer('cable_id');
+            $table->string('cable_name');
+            $table->integer('cable_plan_id');
+            $table->string('package');
             $table->decimal('amount', 8, 2);
-            $table->string('size');
-            $table->string('validity');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
         });
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('data_plans');
+        Schema::dropIfExists('cable_plans');
     }
 };

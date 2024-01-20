@@ -19,6 +19,15 @@
         "showMethod": "fadeIn",
         "hideMethod": "fadeOut"
     }
+
+    window.addEventListener('success-toastr',function(e){
+        toastr.success(e.detail[0].message, 'Success')
+    });
+
+    window.addEventListener('error-toastr',function(e){
+        toastr.error(e.detail[0].message, 'Error!')
+    });
+
     @if(session('success'))
         toastr.success('{{ session('success') }}', 'Success')
     @endif

@@ -5,7 +5,7 @@ namespace App\Livewire\Pages\Utility\Airtime;
 use Livewire\Component;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
-use App\Models\AirtimeTransaction;
+use App\Models\Utility\AirtimeTransaction;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Airtime\AirtimeService;
@@ -77,7 +77,7 @@ class Create extends Component
 
             }
 
-            session()->flash('error', 'An error occurred during the Airtime request. Please try again later');
+            session()->flash('error', 'An error occurred during the Airtime Payment request. Please try again later');
             return redirect()->to(url()->previous());
 
         } catch (\Exception $e) {

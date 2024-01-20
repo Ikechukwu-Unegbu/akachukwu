@@ -1,0 +1,54 @@
+{
+    "electricity" : [
+        {
+            "disco_id": 1,
+            "disco_name": "Ikeja Electric",
+            "status": true
+        },
+        {
+            "disco_id": 2,
+            "disco_name": "Eko Electric",
+            "status": true
+        },
+        {
+            "disco_id": 3,
+            "disco_name": "Abuja Electric",
+            "status": true
+        },
+        {
+            "disco_id": 4,
+            "disco_name": "Kano Electric",
+            "status": true
+        },
+        {
+            "disco_id": 6,
+            "disco_name": "Port Harcourt Electric",
+            "status": true
+        },
+        {
+            "disco_id": 7,
+            "disco_name": "Ibadan Electric",
+            "status": true
+        },
+        {
+            "disco_id": 8,
+            "disco_name": "Kaduna Electric",
+            "status": true
+        },
+        {
+            "disco_id": 9,
+            "disco_name": "Jos Electric",
+            "status": true
+        },
+        {
+            "disco_id": 13,
+            "disco_name": "Enugu Electric",
+            "status": true
+        },
+        {
+            "disco_id": 14,
+            "disco_name": "Benin Electric",
+            "status": true
+        }
+    ]
+}

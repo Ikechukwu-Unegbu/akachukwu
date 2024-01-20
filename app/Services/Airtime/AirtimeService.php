@@ -2,7 +2,7 @@
 
 namespace App\Services\Airtime;
 
-use App\Models\AirtimeTransaction;
+use App\Models\Utility\AirtimeTransaction;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
@@ -22,7 +22,7 @@ class AirtimeService
         if (! $this->verifyAccountBalance($this->user, $amount)) {
             return json_encode([
                 'error' => 'Insufficient Account Balance.',
-                'message' => "You need at least {$amount} to subscribe to this plan. Please fund your account to continue.",
+                'message' => "You need at least ₦{$amount} to subscribe to this plan. Please fund your account to continue.",
             ]);
         }
 

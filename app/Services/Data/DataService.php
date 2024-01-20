@@ -14,7 +14,7 @@ class DataService
         if (! $this->verifyAccountBalance($user, $plan)) {
             return json_encode([
                 'error' => 'Insufficient Account Balance.',
-                'message' => "You need at least {$plan->amount} to subscribe to this plan. Please fund your account to continue.",
+                'message' => "You need at least ₦{$plan->amount} to subscribe to this plan. Please fund your account to continue.",
             ]);
         }
 

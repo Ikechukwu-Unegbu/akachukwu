@@ -20,33 +20,34 @@
         <!-- card indicators -->
         <div class="">
             <div>
-                <h3 class="text-warning">Airtime VTU Top up</h3>
-                <h4>Select Network</h6>
+                <h3 class="text-warning">Cable Payment</h3>
             </div>
-            <form class="utility-form">
+
+            @livewire('pages.utility.cable.create')
+            {{-- <form class="utility-form">
                 @include('pages.utilities.components._network_selections')
                 <div class="airtime-group">
-                    <div class="form-floating mb-3">
+                    <div class="mb-3 form-floating">
                         <input type="number" name="phone" class="form-control" id="floatingInput" placeholder="">
                         <label for="floatingInput">Amount</label>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div class="mb-3 form-floating">
                         <input type="text" name="phone" class="form-control" id="floatingInput" placeholder="">
                         <label for="floatingInput">Phone Number</label>
                     </div>
                 </div>
                  <div class="airtime-group">
-                    <div class="form-floating mb-3">
+                    <div class="mb-3 form-floating">
                         <input type="number" name="phone" class="form-control" id="floatingInput" placeholder="">
                         <label for="floatingInput">Amount</label>
                     </div>
-                    <div class="form-floating mb-3">
+                    <div class="mb-3 form-floating">
                         <input type="text" name="phone" class="form-control" id="floatingInput" placeholder="">
                         <label for="floatingInput">Phone Number</label>
                     </div>
                 </div>
                 <button class="btn bg-basic text-light">Continue</button>
-            </form>
+            </form> --}}
         </div>
         <!-- end of card indicators -->    
     </div>

@@ -1,0 +1,204 @@
+{
+    "GOTVPLAN": [
+        {
+            "id": 34,
+            "cableplan_id": "34",
+            "cable": "GOTV",
+            "package": "GOtv LITE (Smallie) - Monthly",
+            "plan_amount": "1300"
+        },
+        {
+            "id": 16,
+            "cableplan_id": "16",
+            "cable": "GOTV",
+            "package": "GOtv Jinja",
+            "plan_amount": "2700"
+        },
+        {
+            "id": 35,
+            "cableplan_id": "35",
+            "cable": "GOTV",
+            "package": "GOtv LITE (Smallie) - Quarterly",
+            "plan_amount": "3450"
+        },
+        {
+            "id": 17,
+            "cableplan_id": "17",
+            "cable": "GOTV",
+            "package": "GOtv Jolli",
+            "plan_amount": "3950"
+        },
+        {
+            "id": 2,
+            "cableplan_id": "2",
+            "cable": "GOTV",
+            "package": "GOtv Max",
+            "plan_amount": "5700"
+        },
+        {
+            "id": 50,
+            "cableplan_id": "50",
+            "cable": "GOTV",
+            "package": "GOtv Supa (Monthly)",
+            "plan_amount": "7600"
+        },
+        {
+            "id": 36,
+            "cableplan_id": "36",
+            "cable": "GOTV",
+            "package": "GOtv LITE (Smallie) - Yearly",
+            "plan_amount": "10200"
+        }
+    ],
+    "DSTVPLAN": [
+        {
+            "id": 20,
+            "cableplan_id": "20",
+            "cable": "DSTV",
+            "package": "DStv PADI",
+            "plan_amount": "2950"
+        },
+        {
+            "id": 6,
+            "cableplan_id": "6",
+            "cable": "DSTV",
+            "package": "DStv Yanga",
+            "plan_amount": "4200"
+        },
+        {
+            "id": 19,
+            "cableplan_id": "19",
+            "cable": "DSTV",
+            "package": "DStv Confam",
+            "plan_amount": "7400"
+        },
+        {
+            "id": 7,
+            "cableplan_id": "7",
+            "cable": "DSTV",
+            "package": "DStv Compact",
+            "plan_amount": "12500"
+        },
+        {
+            "id": 8,
+            "cableplan_id": "8",
+            "cable": "DSTV",
+            "package": "DStv Compact Plus",
+            "plan_amount": "19800"
+        },
+        {
+            "id": 9,
+            "cableplan_id": "9",
+            "cable": "DSTV",
+            "package": "DStv Premium",
+            "plan_amount": "29500"
+        }
+    ],
+    "STARTIMEPLAN": [
+        {
+            "id": 42,
+            "cableplan_id": "42",
+            "cable": "STARTIME",
+            "package": "Nova - 150 Naira - 1 Day",
+            "plan_amount": "150"
+        },
+        {
+            "id": 43,
+            "cableplan_id": "43",
+            "cable": "STARTIME",
+            "package": "Basic - 300 Naira - 1 Day",
+            "plan_amount": "300"
+        },
+        {
+            "id": 44,
+            "cableplan_id": "44",
+            "cable": "STARTIME",
+            "package": "Smart - 350 Naira - 1 Day",
+            "plan_amount": "350"
+        },
+        {
+            "id": 45,
+            "cableplan_id": "45",
+            "cable": "STARTIME",
+            "package": "Classic - 400 Naira - 1 Day",
+            "plan_amount": "400"
+        },
+        {
+            "id": 37,
+            "cableplan_id": "37",
+            "cable": "STARTIME",
+            "package": "Nova - 500 Naira - 1 Week",
+            "plan_amount": "500"
+        },
+        {
+            "id": 46,
+            "cableplan_id": "46",
+            "cable": "STARTIME",
+            "package": "Super - 600 Naira - 1 Day",
+            "plan_amount": "600"
+        },
+        {
+            "id": 38,
+            "cableplan_id": "38",
+            "cable": "STARTIME",
+            "package": "Basic - 900 Naira - 1 Week",
+            "plan_amount": "900"
+        },
+        {
+            "id": 39,
+            "cableplan_id": "39",
+            "cable": "STARTIME",
+            "package": "Smart - 1100 Naira - 1 Week",
+            "plan_amount": "1100"
+        },
+        {
+            "id": 40,
+            "cableplan_id": "40",
+            "cable": "STARTIME",
+            "package": "Classic - 1500 Naira - 1 Week",
+            "plan_amount": "1500"
+        },
+        {
+            "id": 10,
+            "cableplan_id": "10",
+            "cable": "STARTIME",
+            "package": "NOVA (1 Month)",
+            "plan_amount": "1700"
+        },
+        {
+            "id": 41,
+            "cableplan_id": "41",
+            "cable": "STARTIME",
+            "package": "Super - 2200 Naira - 1 Week",
+            "plan_amount": "2200"
+        },
+        {
+            "id": 12,
+            "cableplan_id": "12",
+            "cable": "STARTIME",
+            "package": "BASIC (1 Month)",
+            "plan_amount": "3000"
+        },
+        {
+            "id": 13,
+            "cableplan_id": "13",
+            "cable": "STARTIME",
+            "package": "SMART (1 Month)",
+            "plan_amount": "3800"
+        },
+        {
+            "id": 11,
+            "cableplan_id": "11",
+            "cable": "STARTIME",
+            "package": "CLASSIC (1 Month)",
+            "plan_amount": "4500"
+        },
+        {
+            "id": 15,
+            "cableplan_id": "15",
+            "cable": "STARTIME",
+            "package": "SUPER (1 Month)",
+            "plan_amount": "7500"
+        }
+    ]
+}
