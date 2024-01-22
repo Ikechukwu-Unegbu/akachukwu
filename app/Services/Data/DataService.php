@@ -2,16 +2,18 @@
 
 namespace App\Services\Data;
 
-use App\Models\Data\DataTransaction;
 use Illuminate\Support\Facades\Log;
+use App\Models\Data\DataTransaction;
 use Illuminate\Support\Facades\Http;
+use App\Services\Account\AccountBalanceService;
 
 class DataService 
 {
     public function data(object $vendor, object $network, object $type, object $plan, $mobile_number, object $user)
     {
-        
-        if (! $this->verifyAccountBalance($user, $plan)) {
+        $accountBalance = new AccountBalanceService($user);
+
+        if (! $accountBalance->verifyAccountBalance($plan->amount)) {
             return json_encode([
                 'error' => 'Insufficient Account Balance.',
                 'message' => "You need at least ₦{$plan->amount} to subscribe to this plan. Please fund your account to continue.",
@@ -45,10 +47,6 @@ class DataService
                 'plan' => $plan->data_id,
                 'Ported_number' =>  true
             ]);
-
-            // if (! $response->ok()) {
-            //     throw new \Exception('Invalid Response From Payment Gateway');
-            // }
 
             return json_encode([
                 'transaction'   => $transaction,

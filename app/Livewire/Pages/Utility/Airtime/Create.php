@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use App\Models\Utility\AirtimeTransaction;
+use App\Services\Account\AccountBalanceService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Airtime\AirtimeService;
@@ -24,7 +25,7 @@ class Create extends Component
     }
 
     public function submit()
-    {
+    {        
         $this->validate([
             'network'       =>  'required|integer',
             'amount'        =>  'required|numeric',
@@ -45,26 +46,24 @@ class Create extends Component
 
             if (isset($response->error)) {
                 // Insufficient User Balance Error
-                session()->flash('error', "{$response->error} {$response->message}");
-                return redirect()->to(url()->previous());
+                return $this->dispatch('error-toastr', ['message' => "{$response->error} {$response->message}"]);
             }
     
             if (isset($response->response->error)) {
                 // Insufficient API Wallet Balance Error
-                session()->flash('error', 'An error occurred during the Airtime request. Please try again later');
-                return redirect()->to(url()->previous());
+                return $this->dispatch('error-toastr', ['message' => 'An error occurred during the Airtime request. Please try again later']);
             }
 
             if (isset($response->response->Status)) {
 
                 if ($response->response->Status == 'successful') {
-                    $currentBalance = Auth::user()->account_balance;
-                    $newBalance = $currentBalance - $this->amount;
-    
-                    Auth::user()->update(['account_balance' => $newBalance]);
+                    
+                    $accountBalance = new AccountBalanceService(Auth::user());
+                    $accountBalance->transaction($this->amount);
+
     
                     AirtimeTransaction::find($response->transaction->id)->update([
-                        'balance_after'     =>    $newBalance,
+                        'balance_after'     =>    $accountBalance->getAccountBalance(),
                         'status'            =>    true,
                         'api_data_id'       =>    $response->response->ident,
 

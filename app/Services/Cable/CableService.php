@@ -2,15 +2,17 @@
 
 namespace App\Services\Cable;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\Data\DataTransaction;
+use Illuminate\Support\Facades\Http;
 use App\Models\Utility\CableTransaction;
 use App\Models\Utility\ElectricityTransaction;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Http;
+use App\Services\Account\AccountBalanceService;
 
 class CableService 
 {
-
+    private $accountBalance;
+    
     public function __construct(
         private object $vendor, 
         private object $cable,
@@ -18,11 +20,13 @@ class CableService
         private $iucNumber,
         private $customer,
         private object $user
-    ) {}
+    ) {
+        $this->accountBalance = new AccountBalanceService($user);
+    }
 
     public function CableSub()
     {
-        if (! $this->verifyAccountBalance($this->user, $this->cablePlan->amount)) {
+        if (! $this->accountBalance->verifyAccountBalance($this->cablePlan->amount)) {
             return json_encode([
                 'error' => 'Insufficient Account Balance.',
                 'message' => "You need at least ₦{$this->cablePlan->amount} to subscribe to this plan. Please fund your account to continue.",

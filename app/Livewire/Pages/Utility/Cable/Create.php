@@ -6,10 +6,11 @@ use Livewire\Component;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\CablePlan;
-use App\Models\Utility\CableTransaction;
 use App\Services\Cable\CableService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Models\Utility\CableTransaction;
+use App\Services\Account\AccountBalanceService;
 
 class Create extends Component
 {
@@ -46,6 +47,7 @@ class Create extends Component
         ]);
 
         $cable = Cable::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->first();
+        
         $cable_plan = CablePlan::whereVendorId($this->vendor?->id)->whereCablePlanId($this->cable_plan)->first();
         
         $cableService = new CableService($this->vendor, $cable, $cable_plan, $this->iuc_number, $this->customer, Auth::user());
@@ -68,13 +70,11 @@ class Create extends Component
 
             if ($response->response->Status == 'successful') {
 
-                $currentBalance = Auth::user()->account_balance;
-                $newBalance = $currentBalance - $response->transaction->amount;
-
-                Auth::user()->update(['account_balance' => $newBalance]);
+                $accountBalance = new AccountBalanceService(Auth::user());
+                $accountBalance->transaction($response->transaction->amount);
 
                 CableTransaction::find($response->transaction->id)->update([
-                    'balance_after'     =>    $newBalance,
+                    'balance_after'     =>    $accountBalance->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->response->ident ?? NULL,
 

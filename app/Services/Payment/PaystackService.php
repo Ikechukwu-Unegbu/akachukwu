@@ -8,8 +8,10 @@ use App\Models\PaymentGateway;
 use Illuminate\Support\Collection;
 use App\Interfaces\Payment\Payment;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Exceptions\PaymentInitialisationError;
+use App\Services\Account\AccountBalanceService;
 use App\Models\Payment\Paystack as PaymentPaystack;
 
 class PaystackService implements Payment
@@ -78,7 +80,11 @@ class PaystackService implements Payment
         }
 
         if ($transaction->status != true) {
-            auth()->user()->setAccountBalance($transaction->amount);
+            // auth()->user()->setAccountBalance($transaction->amount);
+            
+            $updateAccountBalance = new AccountBalanceService(Auth::user());
+            $updateAccountBalance->updateAccountBalance($transaction->amount);
+
             $transaction->setStatus(true);
             return true;
         }

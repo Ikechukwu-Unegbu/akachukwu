@@ -2,14 +2,16 @@
 
 namespace App\Livewire\Pages\Utility\Data;
 
-use App\Models\Data\DataNetwork;
-use App\Models\Data\DataPlan;
-use App\Models\Data\DataTransaction;
-use App\Models\Data\DataType;
-use App\Models\Data\DataVendor;
-use App\Rules\PhoneNumberRule;
-use App\Services\Data\DataService;
 use Livewire\Component;
+use App\Models\Data\DataPlan;
+use App\Models\Data\DataType;
+use App\Rules\PhoneNumberRule;
+use App\Models\Data\DataVendor;
+use App\Models\Data\DataNetwork;
+use App\Services\Data\DataService;
+use App\Models\Data\DataTransaction;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Account\AccountBalanceService;
 
 class Create extends Component
 {
@@ -64,25 +66,21 @@ class Create extends Component
         $ClientResponse = json_decode($ClientResponse);
 
         if (isset($ClientResponse->error)) {
-            session()->flash('error', "{$ClientResponse->error} {$ClientResponse->message}");
-            return redirect()->to(url()->previous());
+            return $this->dispatch('error-toastr', ['message' => "{$ClientResponse->error} {$ClientResponse->message}"]);
         }
 
         if (isset($ClientResponse->response->error)) {
             // Insufficient API Wallet Balance Error
-            session()->flash('error', 'An error occurred during the Data request. Please try again later');
-            return redirect()->to(url()->previous());
+            return $this->dispatch('error-toastr', ['message' => "An error occurred during the Data request. Please try again later"]);
         }
 
         if (isset($ClientResponse->response->Status)) {
             if ($ClientResponse->response->Status == 'successful') {
-                $currentBalance = $user->account_balance;
-                $newBalance = $currentBalance - $plan->amount;
-
-                $user->update(['account_balance' => $newBalance]);
+                $accountBalance = new AccountBalanceService(Auth::user());
+                $accountBalance->transaction($plan->amount);
 
                 DataTransaction::find($ClientResponse->transaction->id)->update([
-                    'balance_after'     =>    $newBalance,
+                    'balance_after'     =>    $accountBalance->getAccountBalance(),
                     'status'            =>    true,
                     'plan_network'      =>    $ClientResponse->response->plan_network,
                     'plan_name'         =>    $ClientResponse->response->plan_name,

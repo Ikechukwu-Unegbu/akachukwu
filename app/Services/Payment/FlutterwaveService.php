@@ -2,15 +2,17 @@
 
 namespace App\Services\Payment;
 
-use App\Exceptions\PaymentInitialisationError;
+use Exception;
+use Illuminate\Support\Str;
+use App\Models\PaymentGateway;
+use Illuminate\Support\Collection;
 use App\Interfaces\Payment\Payment;
 use App\Models\Payment\Flutterwave;
-use App\Models\PaymentGateway;
-use Exception;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use App\Exceptions\PaymentInitialisationError;
+use App\Services\Account\AccountBalanceService;
 
 class FlutterwaveService implements Payment
 {
@@ -119,7 +121,9 @@ class FlutterwaveService implements Payment
 
         if ($transaction->status != true) {
             $transaction->setStatus(true);
-            auth()->user()->setAccountBalance($transaction->amount);
+            // auth()->user()->setAccountBalance($transaction->amount);
+            $updateAccountBalance = new AccountBalanceService(Auth::user());
+            $updateAccountBalance->updateAccountBalance($transaction->amount);
             $transaction->setTransactionId($request->transaction_id);
             return true;
         }

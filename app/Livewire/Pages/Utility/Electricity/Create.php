@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Utility\ElectricityTransaction;
+use App\Services\Account\AccountBalanceService;
 use App\Services\Electricity\ElectricityService;
 
 class Create extends Component
@@ -89,14 +90,12 @@ class Create extends Component
             if (isset($response->response->Status)) {
     
                 if ($response->response->Status == 'successful') {
-    
-                    $currentBalance = Auth::user()->account_balance;
-                    $newBalance = $currentBalance - $response->transaction->amount;
-    
-                    Auth::user()->update(['account_balance' => $newBalance]);
+                    
+                    $accountBalance = new AccountBalanceService(Auth::user());
+                    $accountBalance->transaction($response->transaction->amount);
     
                     ElectricityTransaction::find($response->transaction->id)->update([
-                        'balance_after'     =>    $newBalance,
+                        'balance_after'     =>    $accountBalance->getAccountBalance(),
                         'status'            =>    true,
                         'api_data_id'       =>    $response->response->ident ?? NULL,
     

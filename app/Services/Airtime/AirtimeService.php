@@ -3,26 +3,29 @@
 namespace App\Services\Airtime;
 
 use App\Models\Utility\AirtimeTransaction;
+use App\Services\Account\AccountBalanceService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
 class AirtimeService 
 {
+    private $accountBalance;
+
     public function __construct(
         private object $vendor, 
         private object $network, 
         private object $user
     ) {
-
+        $this->accountBalance = new AccountBalanceService($user);
     }
 
     public function airtime($amount, $mobile_number)
     {
         
-        if (! $this->verifyAccountBalance($this->user, $amount)) {
+        if (! $this->accountBalance->verifyAccountBalance($amount)) {
             return json_encode([
                 'error' => 'Insufficient Account Balance.',
-                'message' => "You need at least ₦{$amount} to subscribe to this plan. Please fund your account to continue.",
+                'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your account to continue.",
             ]);
         }
 
@@ -47,11 +50,7 @@ class AirtimeService
                 'airtime_type'  => "VTU",
                 'Ported_number' =>  true
             ]);
-
-            // if (! $response->ok()) {
-            //     throw new \Exception('Invalid Response From Payment Gateway');
-            // }
-
+           
             return json_encode([
                 'transaction'   =>  $transaction,
                 'response'      =>  $response->object()

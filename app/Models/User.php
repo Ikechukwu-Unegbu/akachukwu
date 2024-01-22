@@ -41,8 +41,13 @@ class User extends Authenticatable
 
     public function setAccountBalance($amount)
     {
-        $newBalance = $this->account_balance + $amount;
-        $this->account_balance = $newBalance;
+        $this->account_balance = $this->account_balance + $amount;
+        $this->save();
+    }
+
+    public function setTransaction($amount)
+    {
+        $this->account_balance = $this->account_balance - $amount;
         $this->save();
     }
 }
