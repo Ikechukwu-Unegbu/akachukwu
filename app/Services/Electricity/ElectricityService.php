@@ -7,9 +7,11 @@ use Illuminate\Support\Facades\Log;
 use App\Models\Data\DataTransaction;
 use Illuminate\Support\Facades\Http;
 use App\Models\Utility\ElectricityTransaction;
+use App\Services\Account\AccountBalanceService;
 
 class ElectricityService 
 {
+    private $accountBalance;
 
     public function __construct(
         private object $vendor, 
@@ -17,14 +19,16 @@ class ElectricityService
         private $meterNumber,
         private int $meterType,
         private object $user
-    ) {}
+    ) {
+        $this->accountBalance = new AccountBalanceService($user);
+    }
 
     public function BillPayment($amount, $customerMobile, $customerName, $customerAddress)
     {
-        if (! $this->verifyAccountBalance($this->user, $amount)) {
+        if (! $this->accountBalance->verifyAccountBalance($amount)) {
             return json_encode([
                 'error' => 'Insufficient Account Balance.',
-                'message' => "You need at least ₦{$amount} to subscribe to this plan. Please fund your account to continue.",
+                'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your account to continue.",
             ]);
         }
 
