@@ -29,6 +29,13 @@ class Create extends Component
         $this->network = DataNetwork::whereVendorId($this->vendor?->id)->whereStatus(true)->first()?->network_id;
     }
 
+    public function updatedNetwork()
+    {
+        $this->plan = null;
+        $this->amount = null;
+        $this->dataType = null;
+    }
+
     public function updatedPlan()
     {
         $this->amount = DataPlan::whereVendorId($this->vendor?->id)->whereNetworkId($this->network)->whereDataId($this->plan)->first()?->amount;
