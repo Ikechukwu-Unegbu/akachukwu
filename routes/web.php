@@ -20,17 +20,17 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {return view('pages.home.home');});
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified', 'user'])->group(function () {
     Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
     Route::get('/data', [DataController::class, 'index'])->name('data.index');
     Route::get('/electricity', [ElectricityController::class, 'index'])->name('electricity.index');
     Route::get('/cable-tv', [TVController::class, 'index'])->name('cable.index');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 });
 
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 
 Route::middleware('auth')->group(function () {
