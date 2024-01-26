@@ -1,3 +1,4 @@
+@push('title') Dashboard @endpush
 <div>
     <div class="pagetitle">
         <h1>Dashboard</h1>
