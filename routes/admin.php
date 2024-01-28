@@ -26,6 +26,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['auth', 'admin']], function() {
         Route::get('dashboard', App\Livewire\Admin\Dashboard::class)->name('admin.dashboard');
         Route::get('utility/data', App\Livewire\Admin\Utility\Data\Index::class)->name('admin.utility.data');
+        Route::get('utility/data/network/{network:id}/vendor/{vendor:id}/type/manage', App\Livewire\Admin\Utility\Data\Type\Index::class)->name('admin.utility.data.type');
+        Route::get('utility/data/network/{network:id}/vendor/{vendor:id}/type/{type:id}/plan/manage', App\Livewire\Admin\Utility\Data\Plan\Index::class)->name('admin.utility.data.plan');
+        Route::get('utility/data/network/{network:id}/vendor/{vendor:id}/edit', App\Livewire\Admin\Utility\Data\Edit::class)->name('admin.utility.data.network.edit');
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');

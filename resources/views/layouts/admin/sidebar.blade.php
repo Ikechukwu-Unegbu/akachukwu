@@ -6,7 +6,7 @@
     <x-admin.menu title="Dashboard" icon="bi-grid" link="{{ route('admin.dashboard') }}" />
 
     <li class="nav-heading">Manage Utilities</li>
-    <x-admin.dropdown title="Utilities" icon="bi-menu-button-wide">
+    <x-admin.dropdown title="Utilities" icon="bxs-data">
       <x-admin.dropdown-item title="Data" link="{{ route('admin.utility.data') }}" />
       <x-admin.dropdown-item title="Cable TV" link="" />
       <x-admin.dropdown-item title="Electricity" link="" />
