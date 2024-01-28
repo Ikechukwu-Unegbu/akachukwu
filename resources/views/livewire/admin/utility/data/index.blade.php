@@ -1,5 +1,5 @@
 @push('title')
-    Utilities / Data
+    Utilities / Data / Network
 @endpush
 
 <div>
@@ -12,7 +12,7 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5 class="">Manage Data</h5>
+                <h5 class="">Manage Data Network</h5>
             </div>
             <div class="card-body">
                 <div class="row mt-3">
@@ -48,9 +48,15 @@
                                     <td>{{ $__network->data_plans_count }}</td>
                                     <td><span class="badge bg-{{ $__network->status ? 'success' : 'danger' }}">{{ $__network->status ? 'Active' : 'Not-Active' }}</span></td>
                                     <td>
-                                        <a href="{{ route('admin.utility.data.type', [$__network->id, $vendor]) }}" class="btn btn-sm btn-primary"><i class="bx bx-list-ul"></i> Manage</a>
-                                        <a href="{{ route('admin.utility.data.network.edit', [$__network->id, $vendor]) }}" class="btn btn-sm btn-secondary"><i class="bx bx-edit"></i> Edit</a>
-                                        <button class="btn btn-sm btn-danger"><i class="bx bx-trash"></i> DEL</button>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <li><a href="{{ route('admin.utility.data.type', [$vendor, $__network->id]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> Manage</a></li>
+                                                <li><a href="{{ route('admin.utility.data.network.edit', [$vendor, $__network->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                                {{-- <li><a href="" class="dropdown-item text-danger"><i class="bx bx-trash"></i> DEL</a></li> --}}
+                                            </ul>
+                                        </div>
+
                                     </td>
 
                                 </tr>

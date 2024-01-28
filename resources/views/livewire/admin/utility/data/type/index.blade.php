@@ -32,9 +32,9 @@
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                            <li><a href="{{ route('admin.utility.data.plan', [$network->id, $vendor->id, $__dataType->id]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> Manage</a></li>
-                                            <li><a href="" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
-                                            <li><a href="" class="dropdown-item text-danger"><i class="bx bx-trash"></i> DEL</a></li>
+                                            <li><a href="{{ route('admin.utility.data.plan', [$vendor->id, $network->id, $__dataType->id]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> Manage</a></li>
+                                            <li><a href="{{ route('admin.utility.data.type.edit', [$vendor->id, $network->id, $__dataType->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                            {{-- <li><a href="" class="dropdown-item text-danger"><i class="bx bx-trash"></i> DEL</a></li> --}}
                                         </ul>
                                     </div>
                                 </td>

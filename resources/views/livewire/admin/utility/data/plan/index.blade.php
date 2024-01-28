@@ -15,7 +15,10 @@
             <div class="card-header">
                 <div class="d-flex justify-content-between">
                     <h5 class="card-title p-0 m-0" style="">{{ $vendor->name }} ({{ $network->name }} - {{ $type->name }}) - Data {{ Str::plural('Plan', count($dataPlans)) }}</h5>
-                    <a href="{{ route('admin.utility.data.type', [$network->id, $vendor->id]) }}" class="btn btn-sm btn-primary"><i class="bx bx-arrow-back"></i> Back</a>
+                    <div class="d-flex">
+                        <a href="{{ route('admin.utility.data.plan.create', [$vendor->id, $network->id, $type->id]) }}" class="btn btn-sm btn-primary"><i class="bx bx-plus-circle"></i> Add Plan</a>
+                        <a href="{{ route('admin.utility.data.type', [$vendor->id, $network->id]) }}" class="btn btn-sm btn-warning"><i class="bx bx-arrow-back"></i> Back</a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -34,8 +37,8 @@
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                            <li><a href="" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
-                                            <li><a href="" class="dropdown-item text-danger"><i class="bx bx-trash"></i> DEL</a></li>
+                                            <li><a href="{{ route('admin.utility.data.plan.edit', [$vendor->id, $network->id, $type->id, $__dataPlan->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                            <li><a href="{{ route('admin.utility.data.plan.destroy', [$vendor->id, $network->id, $type->id, $__dataPlan->id]) }}" class="dropdown-item text-danger"><i class="bx bx-trash"></i> DEL</a></li>
                                         </ul>
                                     </div>
                                 </td>
