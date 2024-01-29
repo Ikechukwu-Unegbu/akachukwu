@@ -10,8 +10,6 @@ class Index extends Component
 {
 
     public $vendor;
-    public $network;
-
     protected $queryString = ['vendor'];
  
     public function render()

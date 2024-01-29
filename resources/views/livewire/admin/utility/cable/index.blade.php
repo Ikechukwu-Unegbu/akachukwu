@@ -1,18 +1,14 @@
-@push('title')
-    Utilities / Data / Network
-@endpush
-
 <div>
     <x-admin.page-title title="Utilities">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
         <x-admin.page-title-item subtitle="Utility" />
-        <x-admin.page-title-item subtitle="Data" status="true" />
+        <x-admin.page-title-item subtitle="Cables" status="true" />
     </x-admin.page-title>
 
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5 class="">Manage Data Network</h5>
+                <h5 class="">Manage Cable TV</h5>
             </div>
             <div class="card-body">
                 <div class="row mt-3">
@@ -32,28 +28,26 @@
             </div>
         </div>
 
-        @if (count($networks) > 0)
+        @if (count($cables) > 0)
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{ $vendors->find($vendor)->name ?? '' }} - Data {{ Str::plural('Network', $networks->count()) }}</h5>
+                    <h5 class="card-title">{{ $vendors->find($vendor)->name ?? '' }} - Cable TV</h5>
                     <x-admin.table>
-                        <x-admin.table-header :headers="['#', 'Network(s)', 'API ID', 'Data Type(s)', 'Data Plan(s)', 'Status', 'Action']" />
+                        <x-admin.table-header :headers="['#', 'Cable', 'API ID', 'Cable Plan(s)', 'Status', 'Action']" />
                         <x-admin.table-body>
-                            @forelse ($networks as $__network)
+                            @forelse ($cables as $__cable)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $__network->name }}</td>
-                                    <td>{{ $__network->network_id }}</td>
-                                    <td>{{ $__network->data_types_count }}</td>
-                                    <td>{{ $__network->data_plans_count }}</td>
-                                    <td><span class="badge bg-{{ $__network->status ? 'success' : 'danger' }}">{{ $__network->status ? 'Active' : 'Not-Active' }}</span></td>
+                                    <td>{{ $__cable->cable_name }}</td>
+                                    <td>{{ $__cable->cable_id }}</td>
+                                    <td>{{ $__cable->plans_count }}</td>
+                                    <td><span class="badge bg-{{ $__cable->status ? 'success' : 'danger' }}">{{ $__cable->status ? 'Active' : 'Not-Active' }}</span></td>
                                     <td>
                                         <div class="filter">
                                             <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                                <li><a href="{{ route('admin.utility.data.type', [$vendor, $__network->id]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> Manage</a></li>
-                                                <li><a href="{{ route('admin.utility.data.network.edit', [$vendor, $__network->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
-                                                {{-- <li><a href="" class="dropdown-item text-danger"><i class="bx bx-trash"></i> DEL</a></li> --}}
+                                                <li><a href="{{ route('admin.utility.cable.plan', [$vendor, $__cable->id]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> Manage</a></li>
+                                                <li><a href="{{ route('admin.utility.cable.edit', [$vendor, $__cable->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
                                             </ul>
                                         </div>
 
@@ -62,7 +56,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7">No records available</td>
+                                    <td colspan="6">No records available</td>
                                 </tr>
                             @endforelse
                         </x-admin.table-body>
@@ -72,3 +66,6 @@
         @endif
     </section>
 </div>
+@push('title')
+    Utilities / Cable TV
+@endpush

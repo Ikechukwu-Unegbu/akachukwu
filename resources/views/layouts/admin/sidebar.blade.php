@@ -8,7 +8,7 @@
     <li class="nav-heading">Manage Utilities</li>
     <x-admin.dropdown title="Utilities" icon="bxs-data">
       <x-admin.dropdown-item title="Data" link="{{ route('admin.utility.data') }}" />
-      <x-admin.dropdown-item title="Cable TV" link="" />
+      <x-admin.dropdown-item title="Cable TV" link="{{ route('admin.utility.cable') }}" />
       <x-admin.dropdown-item title="Electricity" link="" />
     </x-admin.dropdown>
 
