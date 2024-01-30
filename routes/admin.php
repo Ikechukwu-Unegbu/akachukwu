@@ -44,6 +44,11 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('utility/cable/vendor/{vendor:id}/cable/{cable:id}/plan/create', App\Livewire\Admin\Utility\Cable\Plan\Create::class)->name('admin.utility.cable.plan.create');
         Route::get('utility/cable/vendor/{vendor:id}/cable/{cable:id}/plan/{plan:id}/edit', App\Livewire\Admin\Utility\Cable\Plan\Edit::class)->name('admin.utility.cable.plan.edit');
         Route::get('utility/cable/vendor/{vendor:id}/cable/{cable:id}/plan/{plan:id}/destroy', App\Livewire\Admin\Utility\Cable\Plan\Delete::class)->name('admin.utility.cable.plan.destroy');
+    
+        ## Electricity
+        Route::get('utility/electricity', App\Livewire\Admin\Utility\Electricity\Index::class)->name('admin.utility.electricity');
+        Route::get('utility/electricity/vendor/{vendor:id}/electricity/{electricity:id}/edit', App\Livewire\Admin\Utility\Electricity\Edit::class)->name('admin.utility.electricity.edit');
+
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');

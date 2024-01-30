@@ -49,9 +49,7 @@ class Edit extends Component
 
         $this->dispatch('success-toastr', ['message' => 'Cable TV Updated Successfully']);
         session()->flash('success', 'Cable TV Updated Successfully');
-        return redirect()->to(route('admin.utility.cable') . "?vendor={$this->vendor->id}");
-
-        
+        return redirect()->to(route('admin.utility.cable') . "?vendor={$this->vendor->id}");        
     }
 
     public function render()
