@@ -40,7 +40,7 @@ class Edit extends Component
     {
         $this->validate();
 
-        if ($this->api_id !== $this->cable->cable_plan_id) {
+        if ($this->api_id !== $this->plan->cable_plan_id) {
             $checkIfApiIdExists = CablePlan::whereVendorId($this->vendor->id)->whereCableId($this->cable->cable_id)->whereCablePlanId($this->api_id)->where('id', '!=', $this->plan->id)->count();
             if ($checkIfApiIdExists > 0) return $this->dispatch('error-toastr', ['message' => "API ID already exists on vendor({$this->vendor->name}). Please verify the API ID"]);
         }

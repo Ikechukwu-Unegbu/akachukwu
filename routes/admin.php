@@ -47,6 +47,7 @@ Route::group(['prefix' => 'admin'], function () {
     
         ## Electricity
         Route::get('utility/electricity', App\Livewire\Admin\Utility\Electricity\Index::class)->name('admin.utility.electricity');
+        Route::get('utility/electricity/vendor/{vendor:id}/create', App\Livewire\Admin\Utility\Electricity\Create::class)->name('admin.utility.electricity.create');
         Route::get('utility/electricity/vendor/{vendor:id}/electricity/{electricity:id}/edit', App\Livewire\Admin\Utility\Electricity\Edit::class)->name('admin.utility.electricity.edit');
 
     });

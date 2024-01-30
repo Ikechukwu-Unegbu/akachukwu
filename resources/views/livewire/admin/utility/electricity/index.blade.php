@@ -30,8 +30,16 @@
 
         @if (count($electricity) > 0)
             <div class="card">
+                <div class="card-header">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title">{{ $vendors->find($vendor)->name ?? '' }} - Electricity</h5>
+                        <div>
+                            <a href="{{ route('admin.utility.electricity.create', $vendor) }}" class="btn btn-sm btn-primary"><i class="bx bx-plus-circle"></i> Add Electricity</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{ $vendors->find($vendor)->name ?? '' }} - Electricity</h5>
+                    
                     <x-admin.table>
                         <x-admin.table-header :headers="['#', 'Disco Name', 'API ID', 'Status', 'Action']" />
                         <x-admin.table-body>

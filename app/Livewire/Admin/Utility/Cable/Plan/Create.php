@@ -32,10 +32,9 @@ class Create extends Component
     {
         $this->validate();
 
-        if ($this->api_id !== $this->cable->cable_plan_id) {
-            $checkIfApiIdExists = CablePlan::whereVendorId($this->vendor->id)->whereCableId($this->cable->cable_id)->whereCablePlanId($this->api_id)->count();
-            if ($checkIfApiIdExists > 0) return $this->dispatch('error-toastr', ['message' => "API ID already exists on vendor({$this->vendor->name}). Please verify the API ID"]);
-        }
+        $checkIfApiIdExists = CablePlan::whereVendorId($this->vendor->id)->whereCableId($this->cable->cable_id)->whereCablePlanId($this->api_id)->count();
+        if ($checkIfApiIdExists > 0) return $this->dispatch('error-toastr', ['message' => "API ID already exists on vendor({$this->vendor->name}). Please verify the API ID"]);
+        
 
         CablePlan::create([
             'vendor_id'     =>  $this->vendor->id,
