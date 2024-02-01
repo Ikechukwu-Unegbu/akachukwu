@@ -21,4 +21,9 @@ class DataTransaction extends Model
         return $this->belongsTo(DataVendor::class);
     }
 
+    public function data_plan() : BelongsTo
+    {
+        return $this->belongsTo(DataPlan::class, 'data_id', 'data_id');
+    }
+
 }

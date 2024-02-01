@@ -1,3 +1,50 @@
 <div>
-    {{-- The best athlete wants his opponent at his best. --}}
+    <x-admin.page-title title="Transactions">
+        <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
+        <x-admin.page-title-item subtitle="Transaction" />
+        <x-admin.page-title-item subtitle="Cable TV" status="true" />
+    </x-admin.page-title>
+
+    <section class="section">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">Cable TV {{ Str::plural('Transation', count($cable_transactions)) }}</h5>
+            </div>
+            <div class="card-body">                
+                <x-admin.table>
+                    <x-admin.table-header :headers="['#', 'User', 'Card No.', 'Cable Plan', 'Amount', 'Date', 'Status', 'Action']" />
+                    <x-admin.table-body>
+                        @forelse ($cable_transactions as $cable_transaction)
+                            <tr>
+                                <th scope="row">{{ $loop->index+1 }}</th>
+                                <td>{{ $cable_transaction->user->name }}</td>
+                                <td>{{ $cable_transaction->smart_card_number }}</td>
+                                <td>
+                                    {{ $cable_transaction->cable_name  }} - <small style="font-size: 13px">({{ $cable_transaction->cable_plan_name }})</small>
+                                </td>
+                                <td>₦{{ $cable_transaction->amount }}</td>
+                                <td>{{ $cable_transaction->created_at->format('M d, Y. h:ia') }}</td>
+                                <td><span class="badge bg-{{ $cable_transaction->status ? 'success' : 'danger' }}">{{ $cable_transaction->status ? 'Successful' : 'Failed' }}</span></td>
+                                <td>
+                                    <div class="filter">
+                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            <li><a href="" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5">No records available</td>
+                            </tr>
+                        @endforelse
+                    </x-admin.table-body>
+                </x-admin.table>
+            </div>
+        </div>
+    </section>
 </div>
+@push('title')
+    Transactions / Cable TV
+@endpush

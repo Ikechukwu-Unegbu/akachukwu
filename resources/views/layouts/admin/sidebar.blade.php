@@ -14,10 +14,10 @@
 
     <li class="nav-heading">Manage Transactions</li>
     <x-admin.dropdown title="Transactions" icon="bx-money">
-      <x-admin.dropdown-item title="Airtime" link="" />
-      <x-admin.dropdown-item title="Data" link="" />
-      <x-admin.dropdown-item title="Cable TV" link="" />
-      <x-admin.dropdown-item title="Electricity" link="" />
+      <x-admin.dropdown-item title="Airtime" link="{{ route('admin.transaction.airtime') }}" />
+      <x-admin.dropdown-item title="Data" link="{{ route('admin.transaction.data') }}" />
+      <x-admin.dropdown-item title="Cable TV" link="{{ route('admin.transaction.cable') }}" />
+      <x-admin.dropdown-item title="Electricity" link="{{ route('admin.transaction.electricity') }}" />
     </x-admin.dropdown>
 
     <li class="nav-heading">Human Resource Mgt.</li>
