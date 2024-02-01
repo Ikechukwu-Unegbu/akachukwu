@@ -9,8 +9,8 @@ use Illuminate\Validation\ValidationException;
 
 class Login extends Component
 {
-    #[Rule('required|email')]
-    public $email;
+    #[Rule('required|string')]
+    public $username;
     #[Rule('required|string')]
     public $password;
     #[Rule('nullable|bool')]
@@ -19,17 +19,24 @@ class Login extends Component
     public function authenticate()
     {
 
-        $validated = $this->validate();
+        $this->validate();
 
-        if (Auth::attempt([
-            'email' => $this->email, 
-            'password' => $this->password
-            ], $this->remember_me))
-            
-            return redirect()->intended(Auth::user()->dashboard());
+        if (
+            Auth::attempt([
+                'username' => $this->username,
+                'password' => $this->password
+            ], $this->remember_me)
+
+            ||
+
+            Auth::attempt([
+                'email' => $this->username,
+                'password' => $this->password
+            ], $this->remember_me)
+        ) return redirect()->intended(Auth::user()->dashboard());
 
         throw ValidationException::withMessages([
-            'email'   =>  __('auth.failed')
+            'username'   =>  __('auth.failed')
         ]);
     }
 

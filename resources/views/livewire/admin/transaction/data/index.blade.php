@@ -28,7 +28,7 @@
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                            <li><a href="" class="dropdown-item text-primary"><i class="bx bx-list"></i> View</a></li>
+                                            <li><a href="{{ route('admin.transaction.data.show', $data_transaction->id) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
                                         </ul>
                                     </div>
                                 </td>

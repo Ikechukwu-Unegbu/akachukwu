@@ -19,7 +19,7 @@
                                 <th scope="row">{{ $loop->index+1 }}</th>
                                 <td>{{ $airtime_transaction->user->name }}</td>
                                 <td>{{ $airtime_transaction->mobile_number }}</td>
-                                <td>{{ $airtime_transaction->network->name ?? '' }}</td>
+                                <td>{{ $airtime_transaction->network_name ?? '' }}</td>
                                 <td>₦{{ $airtime_transaction->amount }}</td>
                                 <td>{{ $airtime_transaction->created_at->format('M d, Y. h:ia') }}</td>
 
@@ -28,7 +28,7 @@
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                            {{-- <li><a href="{{ route('admin.utility.electricity.edit', [$vendor, $__electricity->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li> --}}
+                                            <li><a href="{{ route('admin.transaction.airtime.show', $airtime_transaction->id) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
                                         </ul>
                                     </div>
                                 </td>

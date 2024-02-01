@@ -52,15 +52,19 @@ Route::group(['prefix' => 'admin'], function () {
 
         ## Transaction - Airtime
         Route::get('transaction/airtime', App\Livewire\Admin\Transaction\Airtime\Index::class)->name('admin.transaction.airtime');
+        Route::get('transaction/airtime/{airtime:id}/show', App\Livewire\Admin\Transaction\Airtime\Show::class)->name('admin.transaction.airtime.show');
 
         ## Transaction - Data
         Route::get('transaction/data', App\Livewire\Admin\Transaction\Data\Index::class)->name('admin.transaction.data');
+        Route::get('transaction/data/{data:id}/show', App\Livewire\Admin\Transaction\Data\Show::class)->name('admin.transaction.data.show');
 
         ## Transaction - Cable
         Route::get('transaction/cable', App\Livewire\Admin\Transaction\Cable\Index::class)->name('admin.transaction.cable');
+        Route::get('transaction/cable/{cable:id}/show', App\Livewire\Admin\Transaction\Cable\Show::class)->name('admin.transaction.cable.show');
 
         ## Transaction - Electricity
         Route::get('transaction/electricity', App\Livewire\Admin\Transaction\Electricity\Index::class)->name('admin.transaction.electricity');
+        Route::get('transaction/electricity/{electricity:id}/show', App\Livewire\Admin\Transaction\Electricity\Show::class)->name('admin.transaction.electricity.show');
     
         
     

@@ -33,6 +33,14 @@
                                 </div>
 
                                 <div class="col-12">
+                                    <label for="username" class="form-label">Your Username</label>
+                                    <input type="username" name="username" class="form-control @error('username') is-invalid @enderror" id="username" wire:model="username">
+                                    @error('username')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="col-12">
                                     <label for="email" class="form-label">Your Email</label>
                                     <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" id="email" wire:model="email">
                                     @error('email')

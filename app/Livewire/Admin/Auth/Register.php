@@ -12,6 +12,8 @@ class Register extends Component
     public $name;
     #[Rule('required|email|unique:users,email')]
     public $email;
+    #[Rule('required|string|unique:users,username')]
+    public $username;
     #[Rule('required|min:6|max:15')]
     public $password;
     #[Rule('required|same:password')]
@@ -23,6 +25,7 @@ class Register extends Component
 
         User::create([
             'name'      => trim($this->name),
+            'username'  => trim($this->username),
             'email'     => trim($this->email),
             'password'  => bcrypt($this->password),
             'role'      => 'admin'

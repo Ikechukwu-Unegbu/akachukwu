@@ -2,6 +2,7 @@
 
 namespace App\Models\Data;
 
+use Illuminate\Support\Str;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,6 +11,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class DataTransaction extends Model
 {
     protected $guarded = [];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::creating(function ($model) {
+            $model->transaction_id = static::generateUniqueId();
+        });
+    }
 
     public function user() : BelongsTo
     {
@@ -24,6 +33,16 @@ class DataTransaction extends Model
     public function data_plan() : BelongsTo
     {
         return $this->belongsTo(DataPlan::class, 'data_id', 'data_id');
+    }
+
+    public function data_type() : BelongsTo
+    {
+        return $this->belongsTo(DataType::class, 'type_id');
+    }
+
+    public static function generateUniqueId(): string
+    {
+        return Str::slug(date('Ymd').microtime().'-data-'.Str::random(10).Str::random(4));
     }
 
 }

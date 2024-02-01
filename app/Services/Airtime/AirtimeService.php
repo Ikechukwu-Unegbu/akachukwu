@@ -33,6 +33,7 @@ class AirtimeService
             'user_id'           =>  $this->user->id,
             'vendor_id'         =>  $this->vendor->id,
             'network_id'        =>  $this->network->network_id,
+            'network_name'      =>  $this->network->name,
             'amount'            =>  $amount,
             'mobile_number'     =>  $mobile_number,
             'balance_before'    =>  $this->user->account_balance,

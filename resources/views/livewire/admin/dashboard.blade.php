@@ -17,8 +17,6 @@
             <!-- Left side columns -->
             <div class="col-lg-8">
                 <div class="row">
-
-                    <!-- Sales Card -->
                     <div class="col-xxl-4 col-md-6">
                         <div class="card info-card sales-card">
 
@@ -54,8 +52,32 @@
                             </div>
 
                         </div>
-                    </div><!-- End Sales Card -->
+                    </div>
+                    <div class="col-xxl-4 col-xl-12">
 
+                        <div class="card info-card customers-card">
+          
+                          <div class="filter">
+                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                          </div>
+          
+                          <div class="card-body">
+                            <h5 class="card-title">Customers </h5>
+          
+                            <div class="d-flex align-items-center">
+                              <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                <i class="bi bi-people"></i>
+                              </div>
+                              <div class="ps-3">
+                                <h6>{{ $customers_count }}</h6>
+                               
+                              </div>
+                            </div>
+          
+                          </div>
+                        </div>
+          
+                      </div>
 
                 </div>
             </div>

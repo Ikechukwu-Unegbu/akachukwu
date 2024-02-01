@@ -25,11 +25,11 @@
 
                                 <form class="row g-3" wire:submit.prevent="authenticate">
                                     <div class="col-12">
-                                        <label for="email" class="form-label">Email</label>
+                                        <label for="username" class="form-label">Email or Username</label>
                                         <div class="input-group">
                                             <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                            <input type="text" name="email" class="form-control @error('email') is-invalid @enderror" id="email" wire:model="email">
-                                            @error('email')
+                                            <input type="text" name="username" class="form-control @error('username') is-invalid @enderror" id="username" wire:model="username">
+                                            @error('username')
                                                 <div class="invalid-feedback">{{ $message }}</div>
                                             @enderror
                                         </div>

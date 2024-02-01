@@ -3,11 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -69,5 +70,15 @@ class User extends Authenticatable
     public function isUser()
     {
         return auth()->user()->role == 'user';
+    }
+
+    public function getProfilePictureAttribute()
+    {
+        if ($this->image && Storage::disk('profile')->exists($this->image)) {
+            return Storage::disk('profile')->url($this->image);
+        }
+
+        $firstLetter = strtoupper(substr($this->username, 0, 1));
+        return "https://via.placeholder.com/50/3498db/FFFFFF/?text={$firstLetter}";
     }
 }

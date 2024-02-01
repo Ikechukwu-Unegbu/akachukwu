@@ -28,7 +28,7 @@
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
                       <li class="dropdown-header">
                           You have 4 new notifications
-                          <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                          <a href="#"><span class="p-2 badge rounded-pill bg-primary ms-2">View all</span></a>
                       </li>
                       <li>
                           <hr class="dropdown-divider">
@@ -103,7 +103,7 @@
                   <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow messages">
                       <li class="dropdown-header">
                           You have 3 new messages
-                          <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                          <a href="#"><span class="p-2 badge rounded-pill bg-primary ms-2">View all</span></a>
                       </li>
                       <li>
                           <hr class="dropdown-divider">
@@ -163,7 +163,7 @@
 
                   <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"
                       data-bs-toggle="dropdown">
-                      <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                      <img src="{{ auth()->user()->profilePicture }}" alt="Profile" class="rounded-circle">
                       <span class="d-none d-md-block dropdown-toggle ps-2">{{ Str::title(auth()->user()->name) }}</span>
                   </a><!-- End Profile Iamge Icon -->
 
