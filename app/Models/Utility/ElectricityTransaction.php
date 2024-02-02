@@ -35,5 +35,22 @@ class ElectricityTransaction extends Model
     {
         return Str::slug(date('Ymd').microtime().'-electricity-'.Str::random(10).microtime().Str::random(4));
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query, $search) {
+            $query->where('transaction_id', 'LIKE', "%{$search}%")
+                ->orWhere('disco_name', 'LIKE', "%{$search}%")
+                ->orWhere('meter_number', 'LIKE', "%{$search}%")
+                ->orWhere('meter_type_name', 'LIKE', "%{$search}%")
+                ->orWhere('customer_name', 'LIKE', "%{$search}%")
+                ->orWhere('customer_mobile_number', 'LIKE', "%{$search}%")
+                ->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('username', 'LIKE', "%{$search}%")
+                            ->orWhere('email', 'LIKE', "%{$search}%");
+                });
+        });
+    }
     
 }

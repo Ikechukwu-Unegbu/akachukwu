@@ -41,4 +41,18 @@ class AirtimeTransaction extends Model
     {
         return Str::slug(date('Ymd').microtime().'-airtime-'.Str::random(10).microtime().Str::random(4));
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query, $search) {
+            $query->where('transaction_id', 'LIKE', "%{$search}%")
+                ->orWhere('mobile_number', 'LIKE', "%{$search}%")
+                ->orWhere('network_name', 'LIKE', "%{$search}%")
+                ->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('username', 'LIKE', "%{$search}%")
+                            ->orWhere('email', 'LIKE', "%{$search}%");
+                });
+        });
+    }
 }

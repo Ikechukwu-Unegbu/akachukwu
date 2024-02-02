@@ -8,11 +8,16 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Airtime {{ Str::plural('Transation', count($airtime_transactions)) }}</h5>
+                <h5 class="p-1 m-1 card-title">Airtime {{ Str::plural('Transation', count($airtime_transactions)) }}</h5>
             </div>
-            <div class="card-body">                
+        </div>
+        <div class="card">            
+            <div class="card-header">
+                <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage" wireSearchAction="wire:model.live=search"  />
+            </div>
+            <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'User', 'Phone No.', 'Network', 'Amount', 'Date', 'Status', 'Action']" />
+                    <x-admin.table-header :headers="['#', 'id', 'Phone No.', 'Network', 'Amount', 'Date', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($airtime_transactions as $airtime_transaction)
                             <tr>
@@ -40,6 +45,7 @@
                         @endforelse
                     </x-admin.table-body>
                 </x-admin.table>
+                <x-admin.paginate :paginate=$airtime_transactions /> 
             </div>
         </div>
     </section>

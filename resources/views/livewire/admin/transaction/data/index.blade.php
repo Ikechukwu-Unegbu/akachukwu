@@ -10,6 +10,11 @@
             <div class="card-header">
                 <h5 class="card-title">Data {{ Str::plural('Transation', count($data_transactions)) }}</h5>
             </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage" wireSearchAction="wire:model.live=search"  />
+            </div>
             <div class="card-body">                
                 <x-admin.table>
                     <x-admin.table-header :headers="['#', 'User', 'Phone No.', 'Network', 'Data Plan', 'Amount', 'Date', 'Status', 'Action']" />
@@ -40,6 +45,8 @@
                         @endforelse
                     </x-admin.table-body>
                 </x-admin.table>
+
+                <x-admin.paginate :paginate=$data_transactions /> 
             </div>
         </div>
     </section>

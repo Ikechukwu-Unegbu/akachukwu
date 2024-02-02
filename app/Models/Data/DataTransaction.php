@@ -45,4 +45,19 @@ class DataTransaction extends Model
         return Str::slug(date('Ymd').microtime().'-data-'.Str::random(10).Str::random(4));
     }
 
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query, $search) {
+            $query->where('transaction_id', 'LIKE', "%{$search}%")
+                ->orWhere('plan_network', 'LIKE', "%{$search}%")
+                ->orWhere('mobile_number', 'LIKE', "%{$search}%")
+                ->orWhere('plan_name', 'LIKE', "%{$search}%")
+                ->orWhereHas('user', function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('username', 'LIKE', "%{$search}%")
+                            ->orWhere('email', 'LIKE', "%{$search}%");
+                });
+        });
+    }
+
 }

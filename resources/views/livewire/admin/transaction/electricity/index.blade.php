@@ -10,6 +10,11 @@
             <div class="card-header">
                 <h5 class="card-title">Electricity {{ Str::plural('Transation', count($electricity_transactions)) }}</h5>
             </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
+                <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage" wireSearchAction="wire:model.live=search"  />
+            </div>
             <div class="card-body">                
                 <x-admin.table>
                     <x-admin.table-header :headers="['#', 'User', 'Meter No.', 'Disco Name', 'Amount', 'Date', 'Status', 'Action']" />
@@ -30,19 +35,16 @@
                                             <li><a href="{{ route('admin.transaction.electricity.show', $electricity_transaction->id) }}" class="dropdown-item text-primary"><i class="bx bx-list"></i> View</a></li>
                                         </ul>
                                     </div>
-                                </td> 
-                                {{-- 
-                                
-                                <td>{{ $electricity_transaction->size }}</td>
-                                <td>₦{{ $electricity_transaction->amount }}</td>--}}
+                                </td>
                             </tr>
                         @empty
                             <tr>
                                 <td colspan="8">No records available</td>
                             </tr>
                         @endforelse
-                    </x-admin.table-body>
+                    </x-admin.table-body> 
                 </x-admin.table>
+                <x-admin.paginate :paginate=$electricity_transactions /> 
             </div>
         </div>
     </section>
