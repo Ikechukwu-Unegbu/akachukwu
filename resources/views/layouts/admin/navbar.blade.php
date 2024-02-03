@@ -18,7 +18,7 @@
                   </a>
               </li><!-- End Search Icon-->
 
-              <li class="nav-item dropdown">
+              {{-- <li class="nav-item dropdown">
 
                   <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                       <i class="bi bi-bell"></i>
@@ -47,41 +47,6 @@
                           <hr class="dropdown-divider">
                       </li>
 
-                      <li class="notification-item">
-                          <i class="bi bi-x-circle text-danger"></i>
-                          <div>
-                              <h4>Atque rerum nesciunt</h4>
-                              <p>Quae dolorem earum veritatis oditseno</p>
-                              <p>1 hr. ago</p>
-                          </div>
-                      </li>
-
-                      <li>
-                          <hr class="dropdown-divider">
-                      </li>
-
-                      <li class="notification-item">
-                          <i class="bi bi-check-circle text-success"></i>
-                          <div>
-                              <h4>Sit rerum fuga</h4>
-                              <p>Quae dolorem earum veritatis oditseno</p>
-                              <p>2 hrs. ago</p>
-                          </div>
-                      </li>
-
-                      <li>
-                          <hr class="dropdown-divider">
-                      </li>
-
-                      <li class="notification-item">
-                          <i class="bi bi-info-circle text-primary"></i>
-                          <div>
-                              <h4>Dicta reprehenderit</h4>
-                              <p>Quae dolorem earum veritatis oditseno</p>
-                              <p>4 hrs. ago</p>
-                          </div>
-                      </li>
-
                       <li>
                           <hr class="dropdown-divider">
                       </li>
@@ -89,10 +54,12 @@
                           <a href="#">Show all notifications</a>
                       </li>
 
-                  </ul><!-- End Notification Dropdown Items -->
+                  </ul>
 
-              </li><!-- End Notification Nav -->
+              </li> --}}
+              <!-- End Notification Dropdown Items -->
 
+              {{-- <!-- End Notification Nav -->
               <li class="nav-item dropdown">
 
                   <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
@@ -123,42 +90,14 @@
                           <hr class="dropdown-divider">
                       </li>
 
-                      <li class="message-item">
-                          <a href="#">
-                              <img src="assets/img/messages-2.jpg" alt="" class="rounded-circle">
-                              <div>
-                                  <h4>Anna Nelson</h4>
-                                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                  <p>6 hrs. ago</p>
-                              </div>
-                          </a>
-                      </li>
-                      <li>
-                          <hr class="dropdown-divider">
-                      </li>
-
-                      <li class="message-item">
-                          <a href="#">
-                              <img src="assets/img/messages-3.jpg" alt="" class="rounded-circle">
-                              <div>
-                                  <h4>David Muldon</h4>
-                                  <p>Velit asperiores et ducimus soluta repudiandae labore officia est ut...</p>
-                                  <p>8 hrs. ago</p>
-                              </div>
-                          </a>
-                      </li>
-                      <li>
-                          <hr class="dropdown-divider">
-                      </li>
-
                       <li class="dropdown-footer">
                           <a href="#">Show all messages</a>
                       </li>
 
                   </ul><!-- End Messages Dropdown Items -->
 
-              </li><!-- End Messages Nav -->
-
+              </li>
+                <!-- End Messages Nav --> --}}
               <li class="nav-item dropdown pe-3">
 
                   <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#"

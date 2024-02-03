@@ -14,4 +14,12 @@ class DataVendor extends Model
     {
         return $this->hasMany(DataNetwork::class, 'vendor_id');
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query, $search) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('api', 'LIKE', "%{$search}%");
+        });
+    }
 }

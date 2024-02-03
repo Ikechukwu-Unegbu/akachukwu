@@ -83,7 +83,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <x-toastr />
-
+    @stack('scripts')
 </body>
 
 </html>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
 use App\Models\Payment\Flutterwave;
+use App\Models\PaymentGateway;
 use App\Services\Payment\FlutterwaveService;
 use App\Services\Payment\PaystackService;
 use Illuminate\Http\Request;
@@ -48,7 +49,9 @@ class PaymentController extends Controller
            }
         }
 
-        return view('pages.payment.index');
+        return view('pages.payment.index', [
+            'payments'  =>  PaymentGateway::whereStatus(true)->get()
+        ]);
     }
 
     public function process(Request $request)

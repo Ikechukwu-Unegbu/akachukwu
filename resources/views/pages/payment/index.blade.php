@@ -23,7 +23,7 @@
                 <form id="processPayment" class="utility-form">
                     @csrf
                     <div class="airtime-group">
-                        <div class="form-floating mb-3">
+                        <div class="mb-3 form-floating">
                             <input type="number" name="amount" class="form-control @error('amount') is-invalid @enderror" id="amount" placeholder="">
                             <label for="amount">Enter Amount</label>
                             <span style="font-size: 15px" class="text-danger" id="amount_err"></span>
@@ -32,7 +32,15 @@
                     </div>
                     <div class="mt-3">
                         <h6 class="mb-3">Choose Payment Gateway</h6>
+                        @foreach ($payments as $payment)
                         <div class="mb-3">
+                            <input type="radio" class="" name="gateway" id="{{ Str::lower($payment->name) }}" value="{{ Str::lower($payment->name) }}" {{ $loop->first ? 'checked' : '' }}>
+                            <label for="{{ Str::lower($payment->name) }}">
+                                <img src="{{ asset('images/' . Str::lower($payment->name) . '.png') }}" width="100" alt="">
+                            </label>
+                        </div>
+                        @endforeach
+                        {{-- <div class="mb-3">
                             <input type="radio" class="" name="gateway" id="paystack" value="paystack" @checked(true)>
                             <label for="paystack">
                                 <img src="{{ asset('images/paystack.png') }}" width="100" alt="">
@@ -43,7 +51,7 @@
                             <label for="flutterwave">
                                 <img src="{{ asset('images/flutterwave.png') }}" width="120" alt="">
                             </label>
-                        </div>
+                        </div> --}}
 
                         @error('gateway')<span style="font-size: 15px" class="text-danger">  {{ $message }} </span>@enderror
                     </div>
