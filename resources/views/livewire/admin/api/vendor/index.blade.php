@@ -51,11 +51,3 @@
 @push('title')
     API / Vendor
 @endpush
-
-@push('scripts')
-    <script>
-        Livewire.emit('customEvent', 'Hello from Blade!');
-        // document.addEventListener('livewire:initialized', () => {
-        // });
-    </script>
-@endpush

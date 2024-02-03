@@ -75,7 +75,14 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('api/payments', App\Livewire\Admin\Api\Payment\Index::class)->name('admin.api.payment');
         Route::get('api/payment/{payment:id}/show', App\Livewire\Admin\Api\Payment\Show::class)->name('admin.api.payment.show');
         Route::get('api/payment/{payment:id}/edit', App\Livewire\Admin\Api\Payment\Edit::class)->name('admin.api.payment.edit');
-    
+
+        ## HR - User
+        Route::get('hr/users', App\Livewire\Admin\Hr\User\Index::class)->name('admin.hr.user');
+        Route::get('hr/user/{user:username}/show', App\Livewire\Admin\Hr\User\Show::class)->name('admin.hr.user.show');
+
+        ## HR - Administrators
+        Route::get('hr/administrators', App\Livewire\Admin\Hr\Administrator\Index::class)->name('admin.hr.administrator');
+        Route::get('hr/administrator/{user:username}/show', App\Livewire\Admin\Hr\Administrator\Show::class)->name('admin.hr.administrator.show');
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');

@@ -12,7 +12,7 @@ class Register extends Component
     public $name;
     #[Rule('required|email|unique:users,email')]
     public $email;
-    #[Rule('required|string|unique:users,username')]
+    #[Rule('required|string|min:3|alpha_dash|unique:users,username')]
     public $username;
     #[Rule('required|min:6|max:15')]
     public $password;
@@ -24,9 +24,9 @@ class Register extends Component
         $this->validate();
 
         User::create([
-            'name'      => trim($this->name),
-            'username'  => trim($this->username),
-            'email'     => trim($this->email),
+            'name'      => $this->name,
+            'username'  => $this->username,
+            'email'     => $this->email,
             'password'  => bcrypt($this->password),
             'role'      => 'admin'
         ]);

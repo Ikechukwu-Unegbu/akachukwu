@@ -22,8 +22,8 @@
 
     <li class="nav-heading">Human Resource Mgt.</li>
     <x-admin.dropdown title="HR. Mgt." icon="bx-user-plus">
-      <x-admin.dropdown-item title="Users" />
-      <x-admin.dropdown-item title="Administrators" />
+      <x-admin.dropdown-item title="Users" link="{{ route('admin.hr.user') }}" />
+      <x-admin.dropdown-item title="Administrators" link="{{ route('admin.hr.administrator') }}" />
     </x-admin.dropdown>
 
     <li class="nav-heading">Manage APIs</li>

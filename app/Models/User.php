@@ -81,4 +81,14 @@ class User extends Authenticatable
         $firstLetter = strtoupper(substr($this->username, 0, 1));
         return "https://via.placeholder.com/50/3498db/FFFFFF/?text={$firstLetter}";
     }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query, $search) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+                ->orWhere('username', 'LIKE', "%{$search}%")
+                ->orWhere('mobile', 'LIKE', "%{$search}%");
+        });
+    }
 }
