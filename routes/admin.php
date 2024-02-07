@@ -83,6 +83,9 @@ Route::group(['prefix' => 'admin'], function () {
         ## HR - Administrators
         Route::get('hr/administrators', App\Livewire\Admin\Hr\Administrator\Index::class)->name('admin.hr.administrator');
         Route::get('hr/administrator/{user:username}/show', App\Livewire\Admin\Hr\Administrator\Show::class)->name('admin.hr.administrator.show');
+
+        ## Profile
+        Route::get('profile', App\Livewire\Admin\Profile\Index::class)->name('admin.profile');
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');

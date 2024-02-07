@@ -74,8 +74,8 @@ class User extends Authenticatable
 
     public function getProfilePictureAttribute()
     {
-        if ($this->image && Storage::disk('profile')->exists($this->image)) {
-            return Storage::disk('profile')->url($this->image);
+        if ($this->image && Storage::disk('avatars')->exists($this->image)) {
+            return Storage::disk('avatars')->url($this->image);
         }
 
         $firstLetter = strtoupper(substr($this->username, 0, 1));
