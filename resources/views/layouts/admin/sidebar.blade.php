@@ -34,9 +34,9 @@
 
     <li class="nav-heading">Settings</li>
     <x-admin.dropdown title="App Settings" icon="bxs-cog">
-      <x-admin.dropdown-item title="Roles" />
+      <x-admin.dropdown-item title="Roles" link="{{ route('admin.settings.role') }}" />
       <x-admin.dropdown-item title="Permissons" />
-      <x-admin.dropdown-item title="Pofile" link="{{ route('admin.profile') }}" />
+      <x-admin.dropdown-item title="Pofile" link="{{ route('admin.settings.profile') }}" />
     </x-admin.dropdown>
   </ul>
 </aside>

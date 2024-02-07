@@ -21,7 +21,7 @@ class RoleSeeder extends Seeder
             'Electricity',
             'Cable',
             'Wallet',
-            'User'
+            'Human Resource Mgt'
         ];
 
         $permissions = [

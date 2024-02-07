@@ -84,8 +84,13 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('hr/administrators', App\Livewire\Admin\Hr\Administrator\Index::class)->name('admin.hr.administrator');
         Route::get('hr/administrator/{user:username}/show', App\Livewire\Admin\Hr\Administrator\Show::class)->name('admin.hr.administrator.show');
 
-        ## Profile
-        Route::get('profile', App\Livewire\Admin\Profile\Index::class)->name('admin.profile');
+        ## Settings - Profile
+        Route::get('settings/profile', App\Livewire\Admin\Profile\Index::class)->name('admin.settings.profile');
+        ## Settings - Role
+        Route::get('settings/roles', App\Livewire\Admin\Role\Index::class)->name('admin.settings.role');
+        Route::get('settings/role/create', App\Livewire\Admin\Role\Create::class)->name('admin.settings.role.create');
+        Route::get('settings/role/{role:id}/edit', App\Livewire\Admin\Role\Edit::class)->name('admin.settings.role.edit');
+
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');

@@ -29,13 +29,6 @@
 
   <!-- Template Main CSS File -->
   <link href="{{ asset('admin-pages/css/style.css') }}" rel="stylesheet">
-
-  <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
 </head>
 
 <body>
@@ -47,7 +40,7 @@
         <h1>404</h1>
         <h2>The page you are looking for doesn't exist.</h2>
         <a class="btn" 
-            href=""
+            href="javascript:void(0)"
             onclick="window.history.back();"
             >
             Back to home

@@ -226,12 +226,3 @@
 @push('title')
 Settings / Profile
 @endpush
-
-@push('scripts')
-<script>
-    var loadImg = function(event) {
-        var image = document.getElementById('output');
-        image.src = URL.createObjectURL(event.target.files[0]);
-    };
-</script>
-@endpush
