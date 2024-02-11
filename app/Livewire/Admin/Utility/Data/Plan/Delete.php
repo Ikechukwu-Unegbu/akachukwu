@@ -21,6 +21,7 @@ class Delete extends Component
         $this->network = $network;
         $this->type = $type;
         $this->plan = $plan;
+        $this->authorize('delete data utility');
     }
 
     public function destroy()

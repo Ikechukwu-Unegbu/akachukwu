@@ -13,6 +13,11 @@ class Index extends Component
     public $perPage = 50;
     public $perPages = [50, 100, 200];
     public $search;
+
+    public function mount()
+    {
+        $this->authorize('view administrators');
+    }
     
     public function render()
     {

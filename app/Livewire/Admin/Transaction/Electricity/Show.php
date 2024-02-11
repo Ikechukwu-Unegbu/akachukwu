@@ -12,6 +12,7 @@ class Show extends Component
     public function mount(ElectricityTransaction $electricity)
     {
         $this->electricity = $electricity;
+        $this->authorize('view electricity transaction');
     }
 
     public function render()

@@ -11,7 +11,7 @@
                 <h5 class="">Manage Electricity</h5>
             </div>
             <div class="card-body">
-                <div class="row mt-3">
+                <div class="mt-3 row">
                     <div class="col-12 col-md-4 col-lg-4 col-xl-4">
                         <div class="form-group">
                             <label class="form-label">Vendor</label>
@@ -33,9 +33,11 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">{{ $vendors->find($vendor)->name ?? '' }} - Electricity</h5>
+                        @if(auth()->user()->can('create electricity utility'))
                         <div>
                             <a href="{{ route('admin.utility.electricity.create', $vendor) }}" class="btn btn-sm btn-primary"><i class="bx bx-plus-circle"></i> Add Electricity</a>
                         </div>
+                        @endif
                     </div>
                 </div>
                 <div class="card-body">
@@ -54,7 +56,10 @@
                                             <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                 {{-- <li><a href="{{ route('admin.utility.cable.plan', [$vendor, $__cable->id]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> Manage</a></li> --}}
-                                                <li><a href="{{ route('admin.utility.electricity.edit', [$vendor, $__electricity->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                                @can('edit electricity utility')
+                                                    <li><a href="{{ route('admin.utility.electricity.edit', [$vendor, $__electricity->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                                @endcan
+                                            
                                             </ul>
                                         </div>
                                     </td>

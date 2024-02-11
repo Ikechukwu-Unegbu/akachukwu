@@ -15,7 +15,10 @@ class Edit extends Component
     public function mount()
     {
         $this->name = $this->role->name;
+
         $this->assign = $this->role->permissions->pluck('id', 'id')->toArray();
+
+        $this->authorize('edit role');
     }
 
     public function update()

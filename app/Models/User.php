@@ -4,9 +4,11 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -91,4 +93,20 @@ class User extends Authenticatable
                 ->orWhere('mobile', 'LIKE', "%{$search}%");
         });
     }
+
+    public function profileRoute()
+    {
+        return route('admin.hr.user.show', $this->username);
+    }
+
+    protected function hasPermission($permission)
+    {
+        return (bool) $this->permissions->where('name', $permission)->count();
+    }
+
+    public function hasPermissionTo($permission)
+    {
+        return $this->hasPermission($permission);
+    }
+
 }

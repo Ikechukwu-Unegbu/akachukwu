@@ -43,9 +43,9 @@
             href="javascript:void(0)"
             onclick="window.history.back();"
             >
-            Back to home
+            Go Back
         </a>       
-        <img src="{{ asset('admin-pages/img/not-found.svg') }}" class="img-fluid py-5" alt="Page Not Found">
+        <img src="{{ asset('admin-pages/img/not-found.svg') }}" class="py-5 img-fluid" alt="Page Not Found">
       </section>
 
     </div>

@@ -12,6 +12,7 @@ class Show extends Component
     public function mount(PaymentGateway $payment)
     {
         $this->payment = $payment;
+        $this->authorize('view payment api');  
     }
 
     public function render()

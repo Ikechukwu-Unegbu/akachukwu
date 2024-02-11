@@ -18,6 +18,7 @@ class Delete extends Component
         $this->vendor = $vendor;
         $this->cable = $cable;
         $this->plan = $plan;
+        $this->authorize('delete cable utility');
     }
 
 

@@ -16,6 +16,7 @@ class Index extends Component
 
     public function mount(DataType $type, DataVendor $vendor, DataNetwork $network)
     {
+        $this->authorize('view data utility');
         $this->vendor = $vendor;
         $this->network = $network;
         $this->type = $type;

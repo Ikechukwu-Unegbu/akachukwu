@@ -11,6 +11,11 @@ class Index extends Component
 
     public $vendor;
     protected $queryString = ['vendor'];
+
+    public function mount()
+    {
+        $this->authorize('view data utility');
+    }
  
     public function render()
     {

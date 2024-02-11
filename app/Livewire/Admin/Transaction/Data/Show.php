@@ -13,6 +13,7 @@ class Show extends Component
     public function mount(DataTransaction $data)
     {
         $this->data = $data;
+        $this->authorize('view data transaction');
     }
 
     public function render()

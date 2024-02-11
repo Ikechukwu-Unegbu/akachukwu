@@ -28,8 +28,12 @@
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            @can('view payment api')
                                             <li><a href="{{ route('admin.api.payment.show', $payment->id) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
+                                            @endcan
+                                            @can('edit payment api')
                                             <li><a href="{{ route('admin.api.payment.edit', $payment->id) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                            @endcan
                                         </ul>
                                     </div>
                                 </td>

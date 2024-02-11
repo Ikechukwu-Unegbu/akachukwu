@@ -14,6 +14,11 @@ class Create extends Component
     #[Rule('required|array')]
     public $assign = [];
 
+    public function mount()
+    {
+        $this->authorize('edit role');
+    }
+
     public function store()
     {
         $validated = $this->validate();

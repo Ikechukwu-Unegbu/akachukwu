@@ -1,7 +1,7 @@
 <div>
     <x-admin.page-title title="Settings">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
-        <x-admin.page-title-item subtitle="Roles" link="{{ route('admin.settings.role') }}" />
+        <x-admin.page-title-item subtitle="Roles & Permissions" link="{{ route('admin.settings.role') }}" />
         <x-admin.page-title-item subtitle="Edit" status="true" />
     </x-admin.page-title>
 
@@ -32,11 +32,11 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row pt-4">
                         @foreach ($permissions as $permission)
                             <div class="col-md-3 col-lg-3 col-sm-3 col-6">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" wire:model="assign.{{ $permission->id }}" value="{{ $permission->id }}" id="permission-{{ Str::slug($permission->name) }}-{{ $permission->id }}" @if (in_array($permission->id, $assign)) checked @endif>
+                                    <input class="form-check-input" type="checkbox" wire:model="assign.{{ $permission->id }}" value="{{ $permission->id }}" id="permission-{{ Str::slug($permission->name) }}-{{ $permission->id }}" @checked (in_array($permission->id, $assign))>
                                     <label class="form-check-label" for="permission-{{ Str::slug($permission->name) }}-{{ $permission->id }}">
                                         {{ Str::title($permission->name) }}
                                     </label>
@@ -73,5 +73,5 @@
 </div>
 
 @push('title')
-Settings / Role / Edit - {{ $role->name }}
+Settings / Roles & Permissions / Edit - {{ $role->name }}
 @endpush

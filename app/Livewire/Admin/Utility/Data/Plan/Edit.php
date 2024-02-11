@@ -37,6 +37,7 @@ class Edit extends Component
         $this->amount = $this->plan->amount;
         $this->validity = $this->plan->validity;
         $this->status = $this->plan->status ? true : false;
+        $this->authorize('edit data utility');
     }
 
     public function update()

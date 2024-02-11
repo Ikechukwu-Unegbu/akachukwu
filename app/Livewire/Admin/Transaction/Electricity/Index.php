@@ -14,6 +14,11 @@ class Index extends Component
     public $perPages = [50, 100, 200];
     public $search;
 
+    public function mount()
+    {
+        $this->authorize('view electricity transaction');
+    }
+    
     public function render()
     {
         return view('livewire.admin.transaction.electricity.index', [

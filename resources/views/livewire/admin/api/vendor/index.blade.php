@@ -29,8 +29,12 @@
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                            <li><a href="{{ route('admin.api.vendor.show', $vendor->id) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
-                                            <li><a href="{{ route('admin.api.vendor.edit', $vendor->id) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                            @can('view vendor api')
+                                                <li><a href="{{ route('admin.api.vendor.show', $vendor->id) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
+                                            @endcan
+                                            @can('edit vendor api')
+                                                <li><a href="{{ route('admin.api.vendor.edit', $vendor->id) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                            @endcan
                                         </ul>
                                     </div>
                                 </td>

@@ -25,6 +25,7 @@ class Edit extends Component
         $this->api_id = $cable->cable_id;
         $this->cable_name = $this->cable->cable_name;
         $this->status = $this->cable->status ? true : false;
+        $this->authorize('edit cable utility');
     }
 
     public function update()

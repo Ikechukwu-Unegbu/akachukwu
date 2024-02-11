@@ -16,6 +16,7 @@ class Index extends Component
     {
         $this->vendor = $vendor;
         $this->cable = $cable;
+        $this->authorize('view cable utility');
     }
 
     public function render()

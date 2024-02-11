@@ -32,6 +32,7 @@ class Create extends Component
         $this->vendor = $vendor;
         $this->network = $network;
         $this->type = $type;
+        $this->authorize('create data utility');
     }
 
     public function store()

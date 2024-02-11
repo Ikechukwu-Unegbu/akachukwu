@@ -14,9 +14,11 @@
         <div class="card">
             <div class="card-header">
                 <div class="d-flex justify-content-between">
-                    <h5 class="card-title p-0 m-0" style="">{{ $vendor->name }} ({{ $network->name }} - {{ $type->name }}) - Data {{ Str::plural('Plan', count($dataPlans)) }}</h5>
+                    <h5 class="p-0 m-0 card-title" style="">{{ $vendor->name }} ({{ $network->name }} - {{ $type->name }}) - Data {{ Str::plural('Plan', count($dataPlans)) }}</h5>
                     <div class="d-flex">
+                        @can ('create data utility')
                         <a href="{{ route('admin.utility.data.plan.create', [$vendor->id, $network->id, $type->id]) }}" class="btn btn-sm btn-primary"><i class="bx bx-plus-circle"></i> Add Plan</a>
+                        @endcan
                         <a href="{{ route('admin.utility.data.type', [$vendor->id, $network->id]) }}" class="btn btn-sm btn-warning"><i class="bx bx-arrow-back"></i> Back</a>
                     </div>
                 </div>
@@ -37,8 +39,12 @@
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            @can ('edit data utility')
                                             <li><a href="{{ route('admin.utility.data.plan.edit', [$vendor->id, $network->id, $type->id, $__dataPlan->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                            @endcan
+                                            @can ('delete data utility')
                                             <li><a href="{{ route('admin.utility.data.plan.destroy', [$vendor->id, $network->id, $type->id, $__dataPlan->id]) }}" class="dropdown-item text-danger"><i class="bx bx-trash"></i> DEL</a></li>
+                                            @endcan
                                         </ul>
                                     </div>
                                 </td>

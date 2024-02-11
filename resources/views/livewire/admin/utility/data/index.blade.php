@@ -15,7 +15,7 @@
                 <h5 class="">Manage Data Network</h5>
             </div>
             <div class="card-body">
-                <div class="row mt-3">
+                <div class="mt-3 row">
                     <div class="col-12 col-md-4 col-lg-4 col-xl-4">
                         <div class="form-group">
                             <label class="form-label">Vendor</label>
@@ -51,8 +51,12 @@
                                         <div class="filter">
                                             <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                             <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                @can ('view data utility')
                                                 <li><a href="{{ route('admin.utility.data.type', [$vendor, $__network->id]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> Manage</a></li>
+                                                @endcan
+                                                @can ('edit data utility')
                                                 <li><a href="{{ route('admin.utility.data.network.edit', [$vendor, $__network->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
+                                                @endcan
                                                 {{-- <li><a href="" class="dropdown-item text-danger"><i class="bx bx-trash"></i> DEL</a></li> --}}
                                             </ul>
                                         </div>

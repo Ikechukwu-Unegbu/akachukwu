@@ -12,6 +12,7 @@ class Show extends Component
     public function mount(CableTransaction $cable)
     {
         $this->cable = $cable;
+        $this->authorize('view cable transaction');
     }
 
     public function render()

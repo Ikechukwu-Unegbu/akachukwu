@@ -26,6 +26,7 @@ class Create extends Component
     {
         $this->vendor = $vendor;
         $this->cable = $cable;
+        $this->authorize('create cable utility');
     }
 
     public function store()

@@ -20,6 +20,7 @@ class Create extends Component
     public function mount(DataVendor $vendor) 
     {
         $this->vendor = $vendor;
+        $this->authorize('create electricity utility');
     }
 
     public function store()

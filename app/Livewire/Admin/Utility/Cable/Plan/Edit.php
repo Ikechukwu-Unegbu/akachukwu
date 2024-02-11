@@ -34,6 +34,7 @@ class Edit extends Component
         $this->package = $this->plan->package;
         $this->amount = $this->plan->amount;
         $this->status = $this->plan->status ? true : false;
+        $this->authorize('edit cable utility');
     }
 
     public function update()

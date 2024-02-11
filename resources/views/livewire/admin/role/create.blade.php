@@ -1,7 +1,7 @@
 <div>
     <x-admin.page-title title="Settings">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
-        <x-admin.page-title-item subtitle="Roles" link="{{ route('admin.settings.role') }}" />
+        <x-admin.page-title-item subtitle="Roles & Permissions" link="{{ route('admin.settings.role') }}" />
         <x-admin.page-title-item subtitle="Create" status="true" />
     </x-admin.page-title>
 
@@ -32,7 +32,7 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row pt-4">
                         @foreach ($permissions as $permission)
                             <div class="col-md-3 col-lg-3 col-sm-3 col-6">
                                 <div class="form-check">
@@ -73,5 +73,5 @@
 </div>
 
 @push('title')
-Settings / Role / Create
+Settings / Roles & Permissions / Create
 @endpush

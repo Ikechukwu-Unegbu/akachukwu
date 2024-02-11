@@ -23,6 +23,7 @@ class Edit extends Component
         $this->name = $this->payment->name;
         $this->key = $this->payment->key;
         $this->status = $this->payment->status ? true : false;
+        $this->authorize('edit payment api');  
     }
 
     public function update()

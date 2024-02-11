@@ -11,6 +11,11 @@ class Index extends Component
     public $vendor;
     protected $queryString = ['vendor'];
 
+    public function mount()
+    {
+        $this->authorize('view cable utility');
+    }
+
     public function render()
     {
         return view('livewire.admin.utility.cable.index', [

@@ -26,6 +26,7 @@ class Edit extends Component
         $this->api = $this->vendor->api;
         $this->token = $this->vendor->token;
         $this->status = $this->vendor->status ? true : false;
+        $this->authorize('edit vendor api');
     }
 
     public function update()

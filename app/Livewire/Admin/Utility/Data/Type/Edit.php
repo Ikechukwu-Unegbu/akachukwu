@@ -22,6 +22,7 @@ class Edit extends Component
         $this->type = $type;
         $this->data_type_title = $this->type->name;
         $this->status = $this->type->status ? true : false;
+        $this->authorize('edit data utility');
     }
 
     public function update()

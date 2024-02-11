@@ -12,6 +12,7 @@ class Show extends Component
     public function mount(AirtimeTransaction $airtime)
     {
         $this->airtime = $airtime;
+        $this->authorize('view airtime transaction');
     }
 
     public function render()

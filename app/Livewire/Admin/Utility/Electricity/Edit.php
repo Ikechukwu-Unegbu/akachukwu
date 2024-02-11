@@ -26,6 +26,7 @@ class Edit extends Component
         $this->disco_id = $this->electricity->disco_id;
         $this->disco_name = $this->electricity->disco_name;
         $this->status = $this->electricity->status ? true : false;
+        $this->authorize('edit electricity utility');
     }
 
     public function update()

@@ -21,6 +21,7 @@ class Edit extends Component
         $this->api_id = $this->network->network_id;
         $this->network_title = $this->network->name;
         $this->status = $this->network->status ? true : false;
+        $this->authorize('edit data utility');
     }
 
     public function update()

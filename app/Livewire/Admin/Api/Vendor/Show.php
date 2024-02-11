@@ -15,6 +15,7 @@ class Show extends Component
     {
         $this->vendor = $vendor;
         $this->balance = $this->getVendorAccountBalance();
+        $this->authorize('view vendor api');
     }
 
     public function getVendorAccountBalance()
