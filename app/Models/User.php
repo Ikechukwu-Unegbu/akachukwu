@@ -64,6 +64,11 @@ class User extends Authenticatable
         }        
     }
 
+    public function isSuperAdmin()
+    {
+        return auth()->user()->role == 'superadmin';
+    }
+
     public function isAdmin()
     {
         return auth()->user()->role == 'admin';
@@ -107,6 +112,13 @@ class User extends Authenticatable
     public function hasPermissionTo($permission)
     {
         return $this->hasPermission($permission);
+    }
+
+    public function assignSuperAdminRole() : bool
+    {
+        $this->role = 'superadmin';
+        $this->save();
+        return true;
     }
 
 }

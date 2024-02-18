@@ -23,7 +23,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::before(function ($user, $ability) {
-            return $user->id == 1 ? true : null;
+            return $user->role == 'superadmin' ? true : null;
         });
 
         foreach ($this->getPermissions() as $permission) {

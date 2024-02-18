@@ -33,7 +33,10 @@ class Login extends Component
                 'email' => $this->username,
                 'password' => $this->password
             ], $this->remember_me)
-        ) return redirect()->intended(Auth::user()->dashboard());
+        ) {
+            $this->dispatch('success-toastr', ['message' => 'Login Successfully. Redirecting...']);
+            return redirect()->intended(Auth::user()->dashboard());
+        }
 
         throw ValidationException::withMessages([
             'username'   =>  __('auth.failed')
