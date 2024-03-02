@@ -1,5 +1,11 @@
-<div>
+<div class="airtime_form">
     <form wire:submit.prevent="submit" class="utility-form">
+     <div class="row">
+            <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
+               <h3 class="text-warning">Airtime VTU Top up</h3>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>
+        </div>       
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
                 <select name="network" id="network" class="form-select @error('network') is-invalid @enderror" wire:model.live="network">

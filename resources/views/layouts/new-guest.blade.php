@@ -44,7 +44,7 @@
     <!-- ===============================================-->
     <main class="main" id="top">
         <nav class="navbar navbar-expand-lg navbar-light" 
-        {{-- data-navbar-on-scroll="data-navbar-on-scroll" --}}
+        {{-- data-navbar-on-scroll="data-navbar-on-scroll" sticky-top --}}
         >
             <div class="container"><a class="navbar-brand" href="index.html"><img
                         src="{{ asset('pub-pages/assets/img/logo.svg') }}" height="31" alt="logo" /></a>
