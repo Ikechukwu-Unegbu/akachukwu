@@ -53,11 +53,11 @@
                 @guest
                     <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto">
-                            <li class="nav-item"><a class="nav-link" aria-current="page" href="#feature">Product</a></li>
-                            <li class="nav-item"><a class="nav-link" aria-current="page" href="#validation">Customers</a>
+                            <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('airtime.index')}}">Airtime</a></li>
+                            <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('data.index')}}">Internet Data</a>
                             </li>
-                            <li class="nav-item"><a class="nav-link" aria-current="page" href="#superhero">Pricing</a></li>
-                            <li class="nav-item"><a class="nav-link" aria-current="page" href="#marketing">Resources</a>
+                            <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('cable.index')}}">Cable</a></li>
+                            <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('electricity.index')}}">Electricity</a>
                             </li>
                         </ul>
                         <div class="d-flex ms-lg-4">
@@ -68,7 +68,17 @@
                 @endguest
                 @auth
                     <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto"></ul>
+                          <ul class="navbar-nav ms-auto">
+                            <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('airtime.index')}}">Airtime</a></li>
+                            <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('data.index')}}">Internet Data</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('cable.index')}}">Cable</a></li>
+                            <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('electricity.index')}}">Electricity</a>
+                            </li>
+                              <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('payment.index')}}">Fund Account</a>
+                            </li>
+
+                        </ul>
                         <div class="d-flex ms-lg-4">
                             <a class="btn btn-warning ms-3" onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">

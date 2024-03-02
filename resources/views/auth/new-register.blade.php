@@ -44,7 +44,7 @@
             </div>
             <div class="form-floating mb-3">
                 <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <input type="checkbox" name="terms_and_conditions" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label text-xs" for="exampleCheck1">I agree to <a class="text-danger" href="/terms"> terms and conditions</a></label>
                 </div>
             </div>
