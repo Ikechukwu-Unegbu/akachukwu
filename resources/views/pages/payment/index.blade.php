@@ -11,12 +11,7 @@
     width:100%;
 
 }
-.dashboard_section_inner{
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-}
+
 </style>
 @endsection
 

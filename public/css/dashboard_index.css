@@ -7,6 +7,13 @@
     /* align-items: center;   */
 }
 
+.dashboard_section_inner{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
 .sidebar_body{
     width: 30%;
     

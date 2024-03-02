@@ -18,7 +18,7 @@
     <div class="dashboard_section">
 
         <!-- card indicators -->
-        <div class="">
+        <div class="dashboard_section_inner">
             <div>
                 <h3 class="text-warning">Airtime VTU Top up</h3>
                 <h4>Select Network</h6>

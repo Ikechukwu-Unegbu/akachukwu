@@ -43,7 +43,9 @@
     <!--    Main Content-->
     <!-- ===============================================-->
     <main class="main" id="top">
-        <nav class="navbar navbar-expand-lg navbar-light sticky-top" data-navbar-on-scroll="data-navbar-on-scroll">
+        <nav class="navbar navbar-expand-lg navbar-light" 
+        {{-- data-navbar-on-scroll="data-navbar-on-scroll" --}}
+        >
             <div class="container"><a class="navbar-brand" href="index.html"><img
                         src="{{ asset('pub-pages/assets/img/logo.svg') }}" height="31" alt="logo" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
