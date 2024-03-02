@@ -10,7 +10,8 @@
     
     </div>
     <div class="right_auth">
-        <form class="form_auth">
+        <form class="form_auth" action="{{route('login')}}" method="POST" >
+            @csrf
             <div class="mb-3 fs-3 fw-semibold ">
                 <div class="auth_header">
                     Login and Flex
@@ -18,16 +19,33 @@
             <div>
             @include("components.error_message")
             <div class="form-floating mb-3">
-                <input type="text" name="email" class="form-control" id="floatingInput" placeholder="">
-                <label for="floatingInput">Email</label>
+                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="">
+                <label for="floatingInput">Username</label>
             </div>
              <div class="form-floating mb-3">
                 <input type="text" name="password" class="form-control" id="floatingInput" placeholder="">
                 <label for="floatingInput">Password</label>
             </div>
+            <div class=""></div>
+            <div class="form-floating mb-3 row">
+                <small>Forgot your password? <a href="{{route('password.request')}}">Click here</a></small>
+            </div>
+             <div class="form-floating mb-3" style="display:flex; flex-direction:row; align-items:center; jusify-content:center; gap:1rem;">
+                {{-- <div class=""> --}}
+                    {{-- <input type="checkbox" class="form-check-input" style="" name='remember' id="exampleCheck1"> --}}
+                    <small class=" text-xs" style="font-size: 15px;" for="exampleCheck1">Dont have account? <a class="text-danger" href="{{route('register')}}"> Sign up here</a></small>
+                {{-- </div> --}}
+            </div>
           
             <div>
-                <button type="button" class="btn btn-warning">Create Account</button>
+                <button type="submit" class="btn btn-warning">Create Account</button>
+            </div>
+            <br/>
+             <div class="form-floating mb-3" style="display:flex; flex-direction:row; align-items:center; jusify-content:center; gap:1rem;">
+                {{-- <div class=""> --}}
+                    <input type="checkbox" class="form-check-input" style="" name='remember' id="exampleCheck1">
+                    <small class=" text-xs" style="font-size: 15px;" for="exampleCheck1">I agree to <a class="text-danger" href="/terms"> terms and conditions</a></small>
+                {{-- </div> --}}
             </div>
         </form>
     
