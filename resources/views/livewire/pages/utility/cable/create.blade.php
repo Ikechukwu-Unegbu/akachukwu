@@ -1,5 +1,11 @@
-<div>
+<div class="airtime_form">
     <form wire:submit.prevent="submit" class="utility-form">
+         <div class="row">
+            <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
+               <h3 class="text-warning">Cable Payment</h3>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>
+        </div>   
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
                 <select name="cable_name" id="cable_name" class="form-select @error('cable_name') is-invalid @enderror" wire:model.live="cable_name">
