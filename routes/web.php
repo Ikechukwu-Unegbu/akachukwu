@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProfileSettingsController;;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\DataController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;
@@ -34,7 +35,7 @@ Route::middleware(['auth', 'verified', 'user'])->group(function () {
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileSettingsController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

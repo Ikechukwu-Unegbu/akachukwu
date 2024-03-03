@@ -14,12 +14,13 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(): View
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
+        return view('pages.profile.new_edit', [
+            'user' => Auth::user(),
         ]);
     }
+
 
     /**
      * Update the user's profile information.
