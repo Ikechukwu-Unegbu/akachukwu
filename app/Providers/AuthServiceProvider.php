@@ -22,14 +22,18 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Gate::before(function ($user, $ability) {
-            return $user->role == 'superadmin' ? true : null;
-        });
-
-        foreach ($this->getPermissions() as $permission) {
-            Gate::define($permission->name, function ($user) use ($permission) {
-                return $user->hasPermissionTo($permission);
+        try {
+            Gate::before(function ($user, $ability) {
+                return $user->role == 'superadmin' ? true : null;
             });
+    
+            foreach ($this->getPermissions() as $permission) {
+                Gate::define($permission->name, function ($user) use ($permission) {
+                    return $user->hasPermissionTo($permission);
+                });
+            }
+        } catch (\Exception $e) {
+
         }
     }
 
