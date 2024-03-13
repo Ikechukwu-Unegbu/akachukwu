@@ -9,10 +9,14 @@ use App\Models\PaymentGateway;
 class Edit extends Component
 {
     public $payment;
-    #[Rule('required|string')]
-    public $name;
+    // #[Rule('required|string')]
+    // public $name;
     #[Rule('required|string')]
     public $key;
+    #[Rule('required|string')]
+    public $public_key;
+    #[Rule('required|string')]
+    public $contract_code;
     #[Rule('required|boolean')]
     public $status;
 
@@ -20,15 +24,22 @@ class Edit extends Component
     public function mount(PaymentGateway $payment)
     {
         $this->payment = $payment;
-        $this->name = $this->payment->name;
+        // $this->name = $this->payment->name;
         $this->key = $this->payment->key;
+        $this->public_key = $this->payment->public_key;
+        $this->contract_code = $this->payment->contract_code;
         $this->status = $this->payment->status ? true : false;
-        $this->authorize('edit payment api');  
+        $this->authorize('edit payment api');
     }
 
     public function update()
     {
-        $validated = $this->validate();
+        $validated = $this->validate([
+            'key'             =>   'required|string',
+            'public_key'      =>   'required|string',
+            'contract_code'   =>   ($this->payment->name == 'Monnify')  ? 'required|numeric' : 'nullable',
+            'status'          =>   'required|boolean',
+        ]);
         
         $this->payment->update($validated);
 

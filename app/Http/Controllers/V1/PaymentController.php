@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Payment\Flutterwave;
 use App\Models\PaymentGateway;
 use App\Services\Payment\FlutterwaveService;
+use App\Services\Payment\MonnifyService;
 use App\Services\Payment\PaystackService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -49,6 +50,17 @@ class PaymentController extends Controller
            }
         }
 
+        if (request()->query('paymentReference')) {
+            $monnify = new MonnifyService;
+            $response = json_encode(request()->all());
+            $response = $monnify->processPayment(json_decode($response));
+            
+            if ($response) {
+                session()->flash('success', 'Payment Successful & Wallet Funded');
+                return redirect()->route('dashboard');
+           }
+        }
+
         return view('pages.payment.index', [
             'payments'  =>  PaymentGateway::whereStatus(true)->get()
         ]);
@@ -61,14 +73,16 @@ class PaymentController extends Controller
             'gateway'   =>  'required',
        ]);
 
-       if ($request->gateway !== 'paystack' && $request->gateway !== 'flutterwave') {
+       if ($request->gateway !== 'paystack' && $request->gateway !== 'flutterwave' && $request->gateway !== 'monnify') {
             session()->flash('error', 'Unable to process your payment. Please try again.');
             return redirect()->route('payment.index');
        }
 
-       if ($request->gateway == 'paystack') return $this->payWithPaystack($request);
+       if ($request->gateway === 'paystack') return $this->payWithPaystack($request);
 
-       if ($request->gateway == 'flutterwave') return $this->payWithFlutterwave($request);
+       if ($request->gateway === 'flutterwave') return $this->payWithFlutterwave($request);
+
+       if ($request->gateway === 'monnify') return $this->payWithMonnify($request);
     }
 
 
@@ -116,6 +130,32 @@ class PaymentController extends Controller
             session()->flash('error', 'Unable to process your payment. Please try again.');
             return redirect()->route('payment.index');
         }
+        session()->flash('error', 'Unable to process your payment. Please try again.');
+        return redirect()->route('payment.index');
+    }
+
+    private function payWithMonnify(Request $request)
+    {
+        $monnify = new MonnifyService();
+        $response = $monnify->createPaymentIntent(
+            $request->amount,
+            route('payment.index'),
+            auth()->user(),
+            [
+                'token'   =>  $request->_token,
+            ] 
+        );
+
+        $response = json_decode($response);
+
+        if (isset($response->status)) {
+            if ($response->message == 'success') {
+                return redirect()->to($response->paymentLink);
+            }
+            session()->flash('error', 'Unable to process your payment. Please try again.');
+            return redirect()->route('payment.index');
+        }
+
         session()->flash('error', 'Unable to process your payment. Please try again.');
         return redirect()->route('payment.index');
     }

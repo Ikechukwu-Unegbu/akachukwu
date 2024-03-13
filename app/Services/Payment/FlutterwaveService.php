@@ -152,6 +152,6 @@ class FlutterwaveService implements Payment
 
     public function generateUniqueId(): string
     {
-        return Str::random(10).Str::replace(' ', '', microtime()).Str::random(4);
+        return 'flutter_' . Str::random(10).Str::replace(' ', '', microtime()).Str::random(4);
     }
 }

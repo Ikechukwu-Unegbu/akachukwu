@@ -118,7 +118,7 @@ class PaystackService implements Payment
    
     public function generateUniqueId(): string
     {
-        return rand(1000, 99999999).str_replace(' ', '', microtime()).rand(1000, 99999999);
+        return 'paystack_' . rand(1000, 99999999).str_replace(' ', '', microtime()).rand(1000, 99999999);
 
     }
 }

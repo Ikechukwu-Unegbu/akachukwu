@@ -19,6 +19,14 @@
                     <div class="col-lg-3 col-md-4 label">Secret Key</div>
                     <div class="col-lg-9 col-md-8">{{ $payment->key }}</div>
                 </div>
+                 <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Public Key</div>
+                    <div class="col-lg-9 col-md-8">{{ $payment->public_key }}</div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Contract Code</div>
+                    <div class="col-lg-9 col-md-8">{{ $payment->contract_code ?? 'N/A' }}</div>
+                </div>
                 <div class="row">
                     <div class="col-lg-3 col-md-4 label">Status</div>
                     <div class="col-lg-9 col-md-8"><span class="badge bg-{{ $payment->status ? 'success' : 'danger' }}">{{ $payment->status ? 'Active' : 'Not-Active' }}</span></div>
