@@ -20,7 +20,6 @@
         <!-- card indicators -->
         <div class="">
             <div>
-                <h3 class="text-warning">Cable Payment</h3>
             </div>
 
             @livewire('pages.utility.cable.create')

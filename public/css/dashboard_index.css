@@ -7,6 +7,14 @@
     /* align-items: center;   */
 }
 
+.dashboard_section_inner{
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    width:100%;
+}
+
 .sidebar_body{
     width: 30%;
     
@@ -52,4 +60,40 @@
 .ref{
     display: flex;
     flex-direction: column;
+}
+
+@media screen and (max-width: 750px){
+    .dashboard_body{
+        display: flex;
+        flex-direction: row;
+        gap: 2rem;
+        margin-top: 3rem;
+        /* align-items: center;   */
+        justify-content: center;
+        /* align-items:center; */
+        width: 100%;
+        
+    }
+    
+    .sidebar_body{
+        width: 0%;
+        display: none;
+       
+    }
+    
+    .dashboard_section{
+        width: 100%;
+        /* display: flex;
+        flex-direction: column;
+        align-items: center;
+        width:100vw !important; */
+        
+    } 
+    .dashboard_section_inner{
+        display:flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        width:100% !important;
+    }  
 }

@@ -6,6 +6,13 @@
 <link rel="stylesheet" href="{{asset('css/dashboard_sidebar.css')}}"/>
 <link rel="stylesheet" href="{{asset('css/ut/airtime.css')}}"/>
 <link rel="stylesheet" href="{{asset('css/ut/network_picker.css')}}"/>
+<style>
+.utility-form{
+    width:100%;
+
+}
+
+</style>
 @endsection
 
 @section('body')
@@ -16,7 +23,7 @@
         <div class="dashboard_section">
 
             <!-- card indicators -->
-            <div class="">
+            <div class="dashboard_section_inner">
                 <div>
                     <h3 class="text-warning">Fund Your Wallet</h3>
                 </div>

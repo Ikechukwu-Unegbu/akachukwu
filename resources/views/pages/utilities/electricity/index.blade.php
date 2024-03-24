@@ -20,7 +20,7 @@
         <!-- card indicators -->
         <div class="">
             <div>
-                <h3 class="text-warning">Pay Electricity Bills</h3>
+                
             </div>
             @livewire('pages.utility.electricity.create')
             

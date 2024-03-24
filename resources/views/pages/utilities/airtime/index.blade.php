@@ -19,10 +19,7 @@
 
         <!-- card indicators -->
         <div class="">
-            <div>
-                <h3 class="text-warning">Airtime VTU Top up</h3>
-                <h4>Select Network</h6>
-            </div>
+          
             @livewire('pages.utility.airtime.create')
             {{-- <form class="utility-form">
                 @include('pages.utilities.components._network_selections')

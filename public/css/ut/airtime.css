@@ -13,6 +13,13 @@
     width: 90% !important;
 }
 
+.airtime_form{
+    display:flex;
+    width:100% !important;
+    justify-content: center;
+    align-items: center;
+    flex-direction:column;
+}
 
 @media(max-width:900px){
     .airtime-group{

@@ -18,13 +18,17 @@
     <div class="dashboard_section">
 
         <!-- card indicators -->
-        <div class="">
+         <div>
+                
+                {{-- <h4>Select Network</h6> --}}
+        </div>
+        <div class="dashboard_section_inner">
             <div>
-                <h3 class="text-warning">Airtime VTU Top up</h3>
-                <h4>Select Network</h6>
+                {{-- <h3 style="float:left;" class="text-warning text-left container">Airtime VTU Top up</h3> --}}
+                {{-- <h4>Select Network</h6> --}}
             </div>
             <div class="utility-form">
-                @include('pages.utilities.components._network_selections')
+                {{-- @include('pages.utilities.components._network_selections') --}}
             </div>
             @livewire('pages.utility.data.create')
         </div>
