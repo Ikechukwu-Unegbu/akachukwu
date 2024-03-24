@@ -6,9 +6,11 @@
         <div class="container">
           <div class="row align-items-center">
             <div class="col-md-6 text-md-start text-center py-6">
-              <h1 class="mb-4 fs-9 fw-bold">The Design Thinking Superpowers</h1>
-              <p class="mb-6 lead text-secondary">Tools tutorials, design and innovation experts, all<br class="d-none d-xl-block" />in one place! The most intuitive way to imagine<br class="d-none d-xl-block" />your next user experience.</p>
-              <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="#!" role="button">Get started</a><a class="btn btn-link text-warning fw-medium" href="#!" role="button" data-bs-toggle="modal" data-bs-target="#popupVideo"><span class="fas fa-play me-2"></span>Watch the video </a></div>
+              <h1 class="mb-4 fs-9 fw-bold">Unlock Convenience with Every Click</h1>
+              <p class="mb-6 lead text-secondary">
+                Welcome to [Platform Name], your one-stop destination for seamless access to airtime, internet data, online result checking, cable TV subscriptions, and more. Experience the ease of managing your essential services with just a few taps. Join us and simplify your digital lifestyle today
+              </p>
+              <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="{{route('login')}}" role="button">Get started</a><a class="btn btn-link text-warning fw-medium" href="#!" role="button" data-bs-toggle="modal" data-bs-target="#popupVideo"><span class="fas fa-play me-2"></span>Watch the video </a></div>
             </div>
             <div class="col-md-6 text-end"><img class="pt-7 pt-md-0 img-fluid" src="{{asset('pub-pages\assets\img\hero\hero-img.png')}}" alt="" /></div>
           </div>
@@ -25,26 +27,26 @@
         <!--/.bg-holder-->
 
         <div class="container">
-          <h1 class="fs-9 fw-bold mb-4 text-center"> We design tools to unveil <br class="d-none d-xl-block" />your superpowers</h1>
+          <h1 class="fs-9 fw-bold mb-4 text-center"> Elevate Your Digital Experience with  <br class="d-none d-xl-block" />[Platform Name]</h1>
           <div class="row">
             <div class="col-lg-3 col-sm-6 mb-2"> <img class="mb-3 ms-n3" src="{{asset('pub-pages\assets\img\category\icon1.png')}}" width="75" alt="Feature" />
-              <h4 class="mb-3">First click tests</h4>
-              <p class="mb-0 fw-medium text-secondary">While most people enjoy casino gambling,</p>
+              <h4 class="mb-3">24/7 Availability</h4>
+              <p class="mb-0 fw-medium text-secondary">Access services anytime, anywhere, 24/7.</p>
             </div>
             <div class="col-lg-3 col-sm-6 mb-2"> <img class="mb-3 ms-n3" src="{{asset('pub-pages\assets\img\category\icon2.png')}}" width="75" alt="Feature" />
-              <h4 class="mb-3">Design surveys</h4>
-              <p class="mb-0 fw-medium text-secondary">Sports betting,lottery and bingo playing for the fun</p>
+              <h4 class="mb-3">Secure Transactions</h4>
+              <p class="mb-0 fw-medium text-secondary">Trust in secure transactions for peace of mind.</p>
             </div>
             <div class="col-lg-3 col-sm-6 mb-2"> <img class="mb-3 ms-n3" src="{{asset('pub-pages\assets\img\category\icon3.png')}}" width="75" alt="Feature" />
-              <h4 class="mb-3">Preference tests</h4>
-              <p class="mb-0 fw-medium text-secondary">The Myspace page defines the individual.</p>
+              <h4 class="mb-3">Customer Support</h4>
+              <p class="mb-0 fw-medium text-secondary">Prompt assistance whenever you need it.</p>
             </div>
             <div class="col-lg-3 col-sm-6 mb-2"> <img class="mb-3 ms-n3" src="{{asset('pub-pages\assets\img\category\icon4.png')}}" width="75" alt="Feature" />
-              <h4 class="mb-3">Five second tests</h4>
-              <p class="mb-0 fw-medium text-secondary">Personal choices and the overall personality of the person.</p>
+              <h4 class="mb-3">User-Friendly Interface</h4>
+              <p class="mb-0 fw-medium text-secondary">Navigate easily for a seamless experience.</p>
             </div>
           </div>
-          <div class="text-center"><a class="btn btn-warning" href="#!" role="button">SIGN UP NOW</a></div>
+          <div class="text-center"><a class="btn btn-warning" href="/login" role="button">SIGN UP NOW</a></div>
         </div><!-- end of .container-->
 
       </section>
