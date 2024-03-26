@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileSettingsController;;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\DataController;
@@ -20,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {return view('pages.home.home');});
+Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
+Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
 
 Route::middleware(['auth', 'verified', 'user'])->group(function () {
     Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
