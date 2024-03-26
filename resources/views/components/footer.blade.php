@@ -11,15 +11,15 @@
                 <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">About us</a></li>
                 <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Blog</a></li>
                 <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Contact</a></li>
-                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">FAQ</a></li>
+                {{-- <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">FAQ</a></li> --}}
               </ul>
             </div>
             <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 order-4 order-md-4 order-lg-3">
               <p class="fs-2 mb-lg-4">Legal stuff</p>
               <ul class="list-unstyled mb-0">
-                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Disclaimer</a></li>
-                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Financing</a></li>
-                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Privacy Policy</a></li>
+                {{-- <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Disclaimer</a></li> --}}
+                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="{{route('refund')}}">Refund Policy</a></li>
+                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="{{route('privacy')}}">Privacy Policy</a></li>
                 <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Terms of Service</a></li>
               </ul>
             </div>
