@@ -63,18 +63,16 @@
         <div class="container">
           <div class="row">
             <div class="col-lg-6">
-              <h5 class="text-secondary">Effortless Validation for</h5>
-              <h2 class="mb-2 fs-7 fw-bold">Design Professionals</h2>
+              <h5 class="text-secondary">Airtime and Data</h5>
+              <h2 class="mb-2 fs-7 fw-bold">Internet</h2>
               <p class="mb-4 fw-medium text-secondary">
-                The Myspace page defines the individual,his or her
-                characteristics, traits, personal choices and the overall<br />personality of the person.
+                In addition to providing reliable internet services, we also offer airtime top-up for major networks in Nigeria, ensuring you stay connected whenever and wherever you are
               </p>
-              <h4 class="fs-1 fw-bold">Accessory makers</h4>
-              <p class="mb-4 fw-medium text-secondary">While most people enjoy casino gambling, sports betting,<br />lottery and bingo playing for the fun</p>
-              <h4 class="fs-1 fw-bold">Alterationists</h4>
-              <p class="mb-4 fw-medium text-secondary">If you are looking for a new way to promote your business<br />that won't cost you money,</p>
-              <h4 class="fs-1 fw-bold">Custom Design designers</h4>
-              <p class="mb-4 fw-medium text-secondary">If you are looking for a new way to promote your business<br />that won't cost you more money,</p>
+              <h4 class="fs-1 fw-bold">Cheapest Data Plans</h4>
+              <p class="mb-4 fw-medium text-secondary">Explore our budget-friendly data plans! Enjoy unbeatable rates on top networks in Nigeria. Stay connected affordably with our selection. Browse, stream, and connect without compromise!</p>
+              <h4 class="fs-1 fw-bold">Instant Top-up</h4>
+              <p class="mb-4 fw-medium text-secondary">Experience lightning-fast airtime top-up! With our seamless service, recharge your phone instantly and stay connected without delay. Say goodbye to waiting and hello to instant connectivity. Top-up hassle-free, anytime, anywhere.</p>
+              
             </div>
             <div class="col-lg-6"><img class="img-fluid" src="{{asset('pub-pages\assets\img\validation\validation.png')}}" alt="" /></div>
           </div>
@@ -95,20 +93,19 @@
           <div class="row">
             <div class="col-lg-6"><img class="img-fluid" src="{{asset('pub-pages\assets\img\manager\manager.png')}}" alt="" /></div>
             <div class="col-lg-6">
-              <h5 class="text-secondary">Easier decision making for</h5>
-              <p class="fs-7 fw-bold mb-2">Product Managers</p>
+              <h5 class="text-secondary">Education Services</h5>
+              <p class="fs-7 fw-bold mb-2">Result Checking</p>
               <p class="mb-4 fw-medium text-secondary">
-                The Myspace page defines the individual,his or her
-                characteristics, traits, personal choices and the overall<br />personality of the person.
+               
               </p>
               <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="{{asset('pub-pages\assets\img\manager\tick.png')}}" width="35" alt="tick" />
-                <p class="fw-medium mb-0 text-secondary">Never worry about overpaying for your<br />energy again.</p>
+                <p class="fw-medium mb-0 text-secondary">Gain immediate access to your exam results for WAEC, JAMB, and NECO exams without delay.</p>
               </div>
               <div class="d-flex align-items-center mb-3"> <img class="me-sm-4 me-2" src="{{asset('pub-pages\assets\img\manager\tick.png')}}" width="35" alt="tick" />
-                <p class="fw-medium mb-0 text-secondary">We will only switch you to energy companies<br />that we trust and will treat you right</p>
+                <p class="fw-medium mb-0 text-secondary">Simply enter your details and get your results quickly, saving time and hassle.</p>
               </div>
               <div class="d-flex align-items-center mb-3"><img class="me-sm-4 me-2" src="{{asset('pub-pages\assets\img\manager\tick.png')}}" width="35" alt="tick" />
-                <p class="fw-medium mb-0 text-secondary"> We track the markets daily and know where the<br />savings are.</p>
+                <p class="fw-medium mb-0 text-secondary">Trust our platform for accurate and secure result checking, ensuring your privacy and peace of mind.</p>
               </div>
             </div>
           </div>
@@ -128,17 +125,19 @@
         <div class="container">
           <div class="row">
             <div class="col-lg-6">
-              <h5 class="text-secondary">Optimisation for</h5>
-              <p class="mb-2 fs-8 fw-bold">Marketers</p>
-              <p class="mb-4 fw-medium text-secondary">Few would argue that, despite the advancements of<br />feminism over the past three decades, women still face a<br />double standard when it comes to their behavior.</p>
-              <h4 class="fw-bold fs-1">Accessory makers</h4>
-              <p class="mb-4 fw-medium text-secondary">While most people enjoy casino gambling, sports betting,<br />lottery and bingo playing for the fun</p>
-              <h4 class="fw-bold fs-1">Alterationists</h4>
-              <p class="mb-4 fw-medium text-secondary">If you are looking for a new way to promote your business<br />that won't cost you money,</p>
-              <h4 class="fw-bold fs-1">Custom Design designers</h4>
-              <p class="mb-4 fw-medium text-secondary">If you are looking for a new way to promote your business<br />that won't cost you more money,</p>
+              <h5 class="text-secondary">Electricity and Cable TV</h5>
+              <p class="mb-2 fs-8 fw-bold">Utilities</p>
+              <p class="mb-4 fw-medium text-secondary">
+                From electricity to cable TV subscriptions, our platform simplifies bill payments. Say goodbye to long queues and late fees. Enjoy seamless transactions and stay connected hassle-free!
+              </p>
+              <h4 class="fw-bold fs-1">Convenience Redefined</h4>
+              <p class="mb-4 fw-medium text-secondary">Skip the queues and pay utility bills from anywhere. Enjoy hassle-free transactions, saving time and effort.</p>
+              <h4 class="fw-bold fs-1">One-Stop Solution</h4>
+              <p class="mb-4 fw-medium text-secondary"> Manage all utility payments in one place. Simplify your finances with our user-friendly platform</p>
+              {{-- <h4 class="fw-bold fs-1">Custom Design designers</h4>
+              <p class="mb-4 fw-medium text-secondary">If you are looking for a new way to promote your business<br />that won't cost you more money,</p> --}}
             </div>
-            <div class="col-lg-6"><img class="img-fluid" src="assets/img/marketer/marketer.png" alt="" /></div>
+            <div class="col-lg-6"><img class="img-fluid" src="{{asset('pub-pages\assets\img\marketer\marketer.png')}}" alt="" /></div>
           </div>
         </div><!-- end of .container-->
 
@@ -153,15 +152,15 @@
       <!-- <section> begin ============================-->
       <section class="py-md-11 py-8" id="superhero">
 
-        <div class="bg-holder z-index--1 bottom-0 d-none d-lg-block background-position-top" style="background-image:url(assets/img/superhero/oval.png);opacity:.5; background-position: top !important ;">
+        <div class="bg-holder z-index--1 bottom-0 d-none d-lg-block background-position-top" style="background-image:url(pub-pages/assets/img/superhero/oval.png);opacity:.5; background-position: top !important ;">
         </div>
         <!--/.bg-holder-->
 
         <div class="container">
           <div class="row justify-content-center">
             <div class="col-lg-6 text-center">
-              <h1 class="fw-bold mb-4 fs-7">Need a super hero?</h1>
-              <p class="mb-5 text-info fw-medium">Do you require some help for your project: Conception workshop,<br />prototyping, marketing strategy, landing page, Ux/UI?</p>
+              <h1 class="fw-bold mb-4 fs-7">Do you need support? We are here to help</h1>
+              <p class="mb-5 text-info fw-medium">If you have any questions, concerns, or need support, don't hesitate to reach out to us. Click the 'Contact Us' button below, and our friendly customer support team will be happy to assist you. Your satisfaction is our priority</p>
               <button class="btn btn-warning btn-md">Contact our expert</button>
             </div>
           </div>
