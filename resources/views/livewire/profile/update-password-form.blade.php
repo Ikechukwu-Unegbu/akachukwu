@@ -2,7 +2,7 @@
         <div>
             <h3>Change Password</h3>
         </div>
-        <form>
+        <form >
             <div class="mb-3">
                 <label for="current_password" class="form-label">Current Password</label>
                 <input type="text" class="form-control" name="current_password" id="current_password" aria-describedby="emailHelp">
