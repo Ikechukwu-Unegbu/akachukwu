@@ -3,9 +3,9 @@
             <h3>Change Password</h3>
         </div>
         <form wire:submit.prevent="submit">
-             @if(session()->has('profile_upated'))
+             @if(session()->has('password_updated'))
             <div class="alert alert-success mb-3">
-                {{ session('profile_upated') }}
+                {{ session('password_updated') }}
             </div>
             @endif
             <div class="mb-3">
