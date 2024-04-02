@@ -48,6 +48,15 @@
                 <span class="link_val">Fund Wallet</span>
             </a>
         </div>
+         <div class="sidebar-item {{ Route::currentRouteName() == 'profile.edit' ? 'active' : '' }}">
+            <a class="sidebar_link fs-2" href="{{route('profile.edit')}}">
+                <span class="link_key">
+                   {{-- <i class="fa-solid fa-credit-card"></i> --}}
+                   <i class="fa-solid fa-user"></i>
+                </span>
+                <span class="link_val">Profile</span>
+            </a>
+        </div>
     </div>
 </div>
 
