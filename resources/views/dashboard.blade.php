@@ -14,136 +14,6 @@
 
         /* align-items: center; */
     }
-
-    .dashboard-container {
-        max-width: 800px;
-        margin: 20px auto;
-        padding: 20px;
-        background-color: #f4f4f4;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-        text-align: center;
-        margin-bottom: 30px;
-    }
-
-    .data {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-    }
-
-    .data-item {
-        flex-basis: 30%;
-        text-align: center;
-        padding: 10px;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .data-item h2 {
-        margin-top: 0;
-        font-size: 24px;
-    }
-
-    .data-item p {
-        margin: 5px 0;
-        font-size: 16px;
-    }
-
-    .balance {
-        text-align: center;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        position: relative;
-    }
-
-    .balance h2 {
-        margin-top: 0;
-        font-size: 24px;
-    }
-
-    .balance p {
-        margin: 5px 0;
-        font-size: 16px;
-    }
-
-    .overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .overlay p {
-        color: #fff;
-        font-size: 20px;
-    }
-
-    .transactions {
-        margin-top: 30px;
-    }
-
-    .transaction-card {
-        background-color: #fff;
-        padding: 15px;
-        margin-bottom: 10px;
-        border-radius: 5px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .transaction-card h3 {
-        margin-top: 0;
-        font-size: 18px;
-    }
-
-    .transaction-card p {
-        margin: 5px 0;
-        font-size: 14px;
-    }
-
-    .transaction-card .amount {
-        color: green;
-    }
-
-    .transaction-card.expense .amount {
-        color: red;
-    }
-
-    .card {
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        padding: 20px;
-        height: 100%;
-    }
-
-    .card-body {
-        padding: 0;
-    }
-
-    /* Example styles for card title and content */
-    .card-title {
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-
-    .card-content {
-        font-size: 16px;
-        text-align: center;
-    }
 </style>
 @endsection
 
@@ -190,19 +60,13 @@
                     </div>
                 </div>
             </div>
-            {{-- <div class="balance">
-                <h2>Total Balance</h2>
-                <p>$70</p>
-            </div> --}}
-
-
         </div>
 
         <div class="dashboard-container">
             <h1>Transaction History</h1>
             <div class="row">
                 <div class="mb-3 col-6 col-md-4">
-                    <a href="">
+                    <a href="{{ route('user.transaction.airtime') }}">
                         <div class="card">
                             <div class="card-body">
                                 <h6>Airtime Transactions</h6>
@@ -211,7 +75,7 @@
                     </a>
                 </div>
                 <div class="mb-3 col-6 col-md-4">
-                    <a href="">
+                    <a href="{{ route('user.transaction.data') }}">
                         <div class="card">
                             <div class="card-body">
                                 <h6>Data Transactions</h6>
@@ -220,7 +84,7 @@
                     </a>
                 </div>
                 <div class="mb-3 col-6 col-md-4">
-                    <a href="">
+                    <a href="{{ route('user.transaction.electricity') }}">
                         <div class="card">
                             <div class="card-body">
                                 <h6>Electricity Transactions</h6>
@@ -229,7 +93,7 @@
                     </a>
                 </div>
                 <div class="mb-3 col-6 col-md-4">
-                    <a href="">
+                    <a href="{{ route('user.transaction.cable') }}">
                         <div class="card">
                             <div class="card-body">
                                 <h6>Cable Transactions</h6>

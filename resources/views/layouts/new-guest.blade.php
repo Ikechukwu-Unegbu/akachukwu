@@ -29,11 +29,11 @@
     <!--    Stylesheets-->
     <!-- ===============================================-->
     <link href="{{ asset('pub-pages\assets\css\theme.css') }}" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
-        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="{{ asset('pub-pages/assets/css/font-awesome.css') }}" rel="stylesheet" />
     @yield('head')
     @stack('styles')
+    <livewire:scripts />
+    <livewire:styles />
 </head>
 
 
@@ -53,7 +53,7 @@
                     aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon">
                     </span></button>
                 @guest
-                    <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
+                    <div class="mt-4 collapse navbar-collapse border-top border-lg-0 mt-lg-0" id="navbarSupportedContent">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('airtime.index')}}">Airtime</a></li>
                             <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('data.index')}}">Internet Data</a>
@@ -69,7 +69,7 @@
                     </div>
                 @endguest
                 @auth
-                    <div class="collapse navbar-collapse border-top border-lg-0 mt-4 mt-lg-0" id="navbarSupportedContent">
+                    <div class="mt-4 collapse navbar-collapse border-top border-lg-0 mt-lg-0" id="navbarSupportedContent">
                           <ul class="navbar-nav ms-auto">
                             <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('airtime.index')}}">Airtime</a></li>
                             <li class="nav-item"><a class="nav-link" aria-current="page" href="{{route('data.index')}}">Internet Data</a>
@@ -95,6 +95,8 @@
         </nav>
 
         @yield('body')
+
+        {{ $slot ?? '' }}
 
     </main>
     <!-- ===============================================-->
@@ -122,7 +124,7 @@
     <script src="{{ asset('pub-pages/vendors/is/is.min.js') }}"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
     <script src="{{ asset('pub-pages/vendors/fontawesome/all.min.js') }}"></script>
-    <script src="assets/js/theme.js"></script>
+    <script src="{{ asset('pub-pages/assets/js/theme.js') }}"></script>
 
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Volkhov:wght@700&amp;display=swap"
