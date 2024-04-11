@@ -19,28 +19,28 @@
             <div>
             @include("components.error_message")
             <div class="form-floating mb-3">
-                <input type="text" name="name" class="form-control" id="floatingInput" placeholder="">
-                <label for="floatingInput">Full Name</label>
+                <input type="text" name="name" class="form-control" id="name" value="{{ old('name') }}" placeholder="">
+                <label for="name">Full Name</label>
             </div>
              <div class="form-floating mb-3">
-                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="">
-                <label for="floatingInput">Username</label>
+                <input type="text" name="username" class="form-control" id="username" value="{{ old('username') }}" placeholder="">
+                <label for="username">Username</label>
             </div>
              <div class="form-floating mb-3">
-                <input type="text" name="phone" class="form-control" id="floatingInput" placeholder="">
-                <label for="floatingInput">Phone</label>
+                <input type="text" name="phone" class="form-control" id="phone" value="{{ old('phone') }}" placeholder="">
+                <label for="phone">Phone</label>
             </div>
              <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="email" id="floatingInput" placeholder="">
-                <label for="floatingInput">Email</label>
+                <input type="text" class="form-control" name="email" id="email" value="{{ old('email') }}" placeholder="">
+                <label for="email">Email</label>
             </div>
              <div class="form-floating mb-3">
-                <input type="password" class="form-control" name="password" id="floatingInput" placeholder="">
-                <label for="floatingInput">Password</label>
+                <input type="password" class="form-control" name="password" id="password" placeholder="">
+                <label for="password">Password</label>
             </div>
              <div class="form-floating mb-3">
-                <input type="text" class="form-control" name="password_confirmation" id="floatingInput" placeholder="">
-                <label for="floatingInput">Confirm Password</label>
+                <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="">
+                <label for="password_confirmation">Confirm Password</label>
             </div>
             <div class="form-floating mb-3">
                 <div class="form-check">
