@@ -40,13 +40,13 @@
             <div>
                 <button type="submit" class="btn btn-warning">Login</button>
             </div>
-            <br/>
+            {{-- <br/>
              <div class="mb-3 form-floating" style="display:flex; flex-direction:row; align-items:center; jusify-content:center; gap:1rem;">
-                {{-- <div class=""> --}}
+                <div class="">
                     <input type="checkbox" class="form-check-input" style="" name='remember' id="exampleCheck1">
                     <small class="text-xs " style="font-size: 15px;" for="exampleCheck1">I agree to <a class="text-danger" href="/terms"> terms and conditions</a></small>
-                {{-- </div> --}}
-            </div>
+                </div>
+            </div> --}}
         </form>
     
     </div>
