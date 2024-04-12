@@ -40,12 +40,20 @@
             <div>
                 <button type="submit" class="btn btn-warning">Login</button>
             </div>
+<<<<<<< HEAD
             {{-- <br/>
              <div class="mb-3 form-floating" style="display:flex; flex-direction:row; align-items:center; jusify-content:center; gap:1rem;">
                 <div class="">
                     <input type="checkbox" class="form-check-input" style="" name='remember' id="exampleCheck1">
                     <small class="text-xs " style="font-size: 15px;" for="exampleCheck1">I agree to <a class="text-danger" href="/terms"> terms and conditions</a></small>
                 </div>
+=======
+            <br/>
+             {{-- <div class="mb-3 form-floating" style="display:flex; flex-direction:row; align-items:center; jusify-content:center; gap:1rem;">
+               
+                    <input type="checkbox" class="form-check-input" style="" name='remember' id="exampleCheck1">
+                    <small class="text-xs " style="font-size: 15px;" for="exampleCheck1">I agree to <a class="text-danger" href="/terms"> terms and conditions</a></small>
+>>>>>>> 592e7669e64ea5192d3cea55b3ce78012e9ed9f2
             </div> --}}
         </form>
     
