@@ -44,6 +44,8 @@ Route::middleware(['auth', 'verified', 'user'])->group(function () {
 
     Route::get('transactions/cable', \App\Livewire\User\Transaction\Cable\Index::class)->name('user.transaction.cable');
     Route::get('transactions/cable/{cable:transaction_id}', \App\Livewire\User\Transaction\Cable\Receipt::class)->name('user.transaction.cable.receipt');
+
+    Route::get('transactions/wallet', \App\Livewire\User\Transaction\Wallet\Index::class)->name('user.transaction.wallet');
 });
 
 

@@ -102,7 +102,7 @@
                     </a>
                 </div>
                 <div class="mb-3 col-6 col-md-4">
-                    <a href="">
+                    <a href="{{ route('user.transaction.wallet') }}">
                         <div class="card">
                             <div class="card-body">
                                 <h6>Wallet Summary</h6>

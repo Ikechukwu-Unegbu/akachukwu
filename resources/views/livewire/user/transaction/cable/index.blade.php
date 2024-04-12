@@ -25,7 +25,7 @@
                         
                             <x-table>
                                 <x-table-header
-                                    :headers="['#', 'Card', 'Plan', 'Amount', 'Date', 'Status', 'Action']" />
+                                    :headers="['#', 'Card/IUC', 'Plan', 'Amount', 'Date', 'Status', 'Action']" />
                                 <x-table-body>
                                     @forelse ($cable_transactions as $cable_transaction)
                                     <tr>
