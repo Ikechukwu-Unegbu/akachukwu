@@ -3,7 +3,7 @@
 @section('body')
 
     <section class="pt-5 container" id="marketing">
-        <h1 class="container text-center">Welcome to VasPay Refund Policy Page</h1>
+        <h1 class="container text-center">Welcome to VasTel Refund Policy Page</h1>
         <div class="accordion accordion-flush" id="accordionFlushExample">
             <div class="accordion-item">
                 <h2 class="accordion-header">
@@ -13,9 +13,9 @@
                 </h2>
                 <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
                 <div class="accordion-body">
-                        Thank you for shopping at Vaspay.
+                        Thank you for shopping at VasTel.
 
-This is the Return and Refund <a href="{{route('privacy')}}">Policy of Vaspay.</a>
+This is the Return and Refund <a href="{{route('privacy')}}">Policy of VasTel.</a>
                 </div>
                 </div>
             </div>
@@ -45,7 +45,7 @@ We recommend contacting us for assistance if you experience any issues receiving
 
 By phone number - 08039451810
 
-By email -info@vaspay.ng
+By email -info@vastel.io
                 </div>
                 </div>
             </div>
