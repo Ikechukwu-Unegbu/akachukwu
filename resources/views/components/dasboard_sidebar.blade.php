@@ -48,8 +48,8 @@
                 <span class="link_val">Fund Wallet</span>
             </a>
         </div>
-        <div class="sidebar-item {{ Route::currentRouteName() == 'payment.index' ? 'active' : '' }}">
-            <a class="sidebar_link fs-2" href="">
+        <div class="sidebar-item {{ Route::currentRouteName() == 'user.money-transfer' ? 'active' : '' }}">
+            <a class="sidebar_link fs-2" href="{{ route('user.money-transfer') }}">
                 <span class="link_key">
                    <i class="fa-solid fa-money-bill"></i>
                 </span>
