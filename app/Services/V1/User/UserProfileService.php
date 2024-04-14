@@ -16,5 +16,8 @@ class UserProfileService{
         return User::where('username', $username)->first();
     }
 
-    // public function 
+    public function  updateUser(array $validated, $username)
+    {
+        
+    }
 }
