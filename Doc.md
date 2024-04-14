@@ -90,6 +90,32 @@
 
 ## Forgot Password
 
+## Change Password
+    Method: Post
+    Endpoint: domain.com/api/change-password/{username}
+    Body: 
+    {
+        "current_password":"password", 
+        "new_password":"updated_password", 
+        "confirm_password":"updated_password3"
+    }
+
+#### Failure Response 
+    {
+        "message": "The confirm password field must match new password.",
+        "errors": {
+            "confirm_password": [
+                "The confirm password field must match new password."
+            ]
+        }
+    }
+
+#### Success Response
+    {
+        "message": "Password updated successfully",
+        "status": "success"
+    }
+    
 ## View Profile Settings 
 
 
