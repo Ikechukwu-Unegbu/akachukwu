@@ -53,32 +53,32 @@
     }
 
 #### Success Response
-   Response:  
+    Response:  
         {
             "\r\n                token": "1|qlNlkUGLaUcKGARvrNcOJb8HNcKvInY6ynNQbsIJb634a4f6",
             "status": "success",
-                    "user": {
-                        "id": 5,
-                        "name": "Ikechukwu Vin API",
-                        "username": "Ikeapi2",
-                        "email": "apiike2@gmail.com",
-                        "role": "user",
-                        "email_verified_at": null,
-                        "image": null,
-                        "address": null,
-                        "mobile": null,
-                        "referer_username": null,
-                        "gender": null,
-                        "account_balance": "0.00",
-                        "wallet_balance": "0.00",
-                        "bonus_balance": "0.00",
-                        "created_at": "2024-04-13T18:48:54.000000Z",
-                        "updated_at": "2024-04-13T18:48:54.000000Z",
-                        "phone": null
-                    }
+            "user": {
+                "id": 5,
+                "name": "Ikechukwu Vin API",
+                "username": "Ikeapi2",
+                "email": "apiike2@gmail.com",
+                "role": "user",
+                "email_verified_at": null,
+                "image": null,
+                "address": null,
+                "mobile": null,
+                "referer_username": null,
+                "gender": null,
+                "account_balance": "0.00",
+                "wallet_balance": "0.00",
+                "bonus_balance": "0.00",
+                "created_at": "2024-04-13T18:48:54.000000Z",
+                "updated_at": "2024-04-13T18:48:54.000000Z",
+                "phone": null
+            }
         }
 
-    #### Failure Response 
+#### Failure Response 
         Response: {
             "message": "The password field is required.",
             "errors": {
