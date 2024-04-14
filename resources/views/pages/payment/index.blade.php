@@ -27,7 +27,7 @@
                 <div>
                     <h3 class="text-warning">Fund Your Wallet</h3>
                 </div>
-                <form id="processPayment" class="utility-form">
+                <form action="{{ route('payment.process') }}" method="POST" class="utility-form">
                     @csrf
                     <div class="airtime-group">
                         <div class="mb-3 form-floating">
