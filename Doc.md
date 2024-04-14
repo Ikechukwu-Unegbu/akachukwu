@@ -89,6 +89,29 @@
     }
 
 ## Forgot Password
+    This endpoint is email sending and takes time - so implement loading spinner. 
+    
+    Method: POST
+    Endpoint: domain.com/api/forgot-password
+    Body:
+    {
+        "email":"iunegbu94@yahoo.com"
+    }
+
+#### Success Response
+    {
+        "status":"success"
+        "message": "We have emailed your password reset link."
+    }
+#### Failure Response 
+    {
+        "status":"failed", 
+        "error": {
+            "email": [
+                "The email field must be a valid email address."
+            ]
+        }
+    }
 
 ## Change Password
     Method: Post
@@ -115,7 +138,7 @@
         "message": "Password updated successfully",
         "status": "success"
     }
-    
+
 ## View Profile Settings 
 
 

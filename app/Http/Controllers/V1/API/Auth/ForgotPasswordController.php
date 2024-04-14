@@ -24,9 +24,15 @@ class ForgotPasswordController extends Controller
         );
 
         return $status === Password::RESET_LINK_SENT
-                    ? response()->json(['message' => __($status)], 200)
-                    : response()->json(['error' => __($status)], 500);
+                    ? response()->json([
+                        'message' => __($status),
+                        'status'=>'success'
+                    ], 200)
+                    : response()->json([
+                        'error' => __($status),
+                        'status'=>'failed'
+                    ], 500);
     }
 
-    
+
 }
