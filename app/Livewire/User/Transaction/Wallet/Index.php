@@ -20,15 +20,18 @@ class Index extends Component
 
         $transactions = DB::table('flutterwave_transactions')
             ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'flutter' as gateway_type"))
-            ->where('user_id', $userId);
+            ->where('user_id', $userId)
+            ->latest();
 
         $transactions->union(DB::table('paystack_transactions')
             ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'paystack' as gateway_type"))
-            ->where('user_id', $userId));
+            ->where('user_id', $userId))
+            ->latest();
 
         $transactions->union(DB::table('monnify_transactions')
             ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'monnify' as gateway_type"))
-            ->where('user_id', $userId));
+            ->where('user_id', $userId))
+            ->latest();
 
             // dd($transactions->get());
         
