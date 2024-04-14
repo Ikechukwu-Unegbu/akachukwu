@@ -1,33 +1,33 @@
 # VasTel API Documentation for Mobile APP
 
 ### Account Creation API 
- Method: POST
- Endpoint: domain/api/register
- Body:
-    {
-        "name":"Ikechukwu Vin API",
-        "username":"Ikeapi2",
-        "phone":"08064133376",
-        "email":"apiike2@gmail.com", 
-        "password":"password", 
-        "password_confirmation":"password"
-    }`
+    Method: POST
+    Endpoint: domain/api/register
+    Body:
+        {
+            "name":"Ikechukwu Vin API",
+            "username":"Ikeapi2",
+            "phone":"08064133376",
+            "email":"apiike2@gmail.com", 
+            "password":"password", 
+            "password_confirmation":"password"
+        }
 
 #### Success Response 
- Response: 
-    {
-        "message": "Account Created.",
-        "status": "success",
-        "user": {
-            "name": "Ikechukwu Vin API",
-            "username": "Ikeapi2",
-            "email": "apiike2@gmail.com",
-            "role": "user",
-            "updated_at": "2024-04-13T18:48:54.000000Z",
-            "created_at": "2024-04-13T18:48:54.000000Z",
-            "id": 5
+    Response:  
+        {
+            "message": "Account Created.",
+            "status": "success",
+            "user": {
+                "name": "Ikechukwu Vin API",
+                "username": "Ikeapi2",
+                "email": "apiike2@gmail.com",
+                "role": "user",
+                "updated_at": "2024-04-13T18:48:54.000000Z",
+                "created_at": "2024-04-13T18:48:54.000000Z",
+                "id": 5
+            }
         }
-    }
 
 #### Failure Response
     {
