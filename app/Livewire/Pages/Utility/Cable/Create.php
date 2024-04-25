@@ -101,19 +101,22 @@ class Create extends Component
         ]);
 
         try {
+
+
+
             $cable = Cable::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->first();
-        
+
             $response = Http::withHeaders([
                 'Authorization' => "Token " . $this->vendor->token,
                 'Content-Type' => 'application/json',
-            ])->get("{$this->vendor->api}/validateiuc?smart_card_number={$this->iuc_number}&cablename={$cable->cable_name}");
+            ])->get(str_replace("/api", "", $this->vendor->api). "/ajax/validate_iuc/?smart_card_number={$this->iuc_number}&cablename={$cable->cable_name}");
     
             $response = $response->object();
             
             if (!$response->invalid) {
                 $this->customer = $response->name;
                 $this->validate_action = true;
-
+                $this->dispatch('success-toastr', ['message' => "IUC validated. Click Continue to proceed payment."]);;
                 return true;
             }
 

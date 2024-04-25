@@ -19,12 +19,12 @@
             <div>
             @include("components.error_message")
             <div class="mb-3 form-floating">
-                <input type="text" name="username" class="form-control" id="floatingInput" placeholder="">
-                <label for="floatingInput">Username</label>
+                <input type="text" name="username" class="form-control" id="username" value="{{ old('username') }}" placeholder="">
+                <label for="username">Username</label>
             </div>
              <div class="mb-3 form-floating">
-                <input type="text" name="password" class="form-control" id="floatingInput" placeholder="">
-                <label for="floatingInput">Password</label>
+                <input type="password" name="password" class="form-control" id="password" placeholder="">
+                <label for="password">Password</label>
             </div>
             <div class=""></div>
             <div class="mb-3 form-floating row">
@@ -40,12 +40,6 @@
             <div>
                 <button type="submit" class="btn btn-warning">Login</button>
             </div>
-            <br/>
-             {{-- <div class="mb-3 form-floating" style="display:flex; flex-direction:row; align-items:center; jusify-content:center; gap:1rem;">
-               
-                    <input type="checkbox" class="form-check-input" style="" name='remember' id="exampleCheck1">
-                    <small class="text-xs " style="font-size: 15px;" for="exampleCheck1">I agree to <a class="text-danger" href="/terms"> terms and conditions</a></small>
-            </div> --}}
         </form>
     
     </div>

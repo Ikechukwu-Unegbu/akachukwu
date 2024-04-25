@@ -8,7 +8,7 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5 class="p-1 m-1 card-title">Airtime {{ Str::plural('Transation', count($airtime_transactions)) }}</h5>
+                <h5 class="p-1 m-1 card-title">Airtime {{ Str::plural('Transaction', count($airtime_transactions)) }}</h5>
             </div>
         </div>
         <div class="card">            
@@ -17,7 +17,7 @@
             </div>
             <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'id', 'Phone No.', 'Network', 'Amount', 'Date', 'Status', 'Action']" />
+                    <x-admin.table-header :headers="['#', 'Customer', 'Phone No.', 'Network', 'Amount', 'Date', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($airtime_transactions as $airtime_transaction)
                             <tr>

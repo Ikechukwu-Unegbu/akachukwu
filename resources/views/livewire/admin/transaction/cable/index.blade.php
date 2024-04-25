@@ -8,7 +8,7 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Cable TV {{ Str::plural('Transation', count($cable_transactions)) }}</h5>
+                <h5 class="card-title">Cable TV {{ Str::plural('Transaction', count($cable_transactions)) }}</h5>
             </div>
         </div>
         <div class="card">

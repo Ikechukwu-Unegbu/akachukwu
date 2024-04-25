@@ -62,6 +62,48 @@
     flex-direction: column;
 }
 
+
+.dashboard-container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    height: 100%;
+}
+
+.card-body {
+    padding: 0;
+}
+
+.card-header {
+    background-color: #fff !important;
+}
+
+/* Example styles for card title and content */
+.card-title {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.card-content {
+    font-size: 16px;
+    text-align: center;
+}
+
 @media screen and (max-width: 750px){
     .dashboard_body{
         display: flex;
