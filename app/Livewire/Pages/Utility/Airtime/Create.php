@@ -34,47 +34,60 @@ class Create extends Component
 
         try {
 
-            $network = DataNetwork::whereVendorId($this->vendor->id)->whereNetworkId($this->network)->first();
-            $airtimeServices = new AirtimeService($this->vendor, $network, Auth::user());
-
-            $response = $airtimeServices->airtime(
+            $airtimeTrasaction = AirtimeService::create(
+                $this->vendor->id,
+                $this->network,
                 $this->amount,
-                $this->phone_number
+                $this->phone_number,
             );
 
-            $response = json_decode($response);
+            dd($airtimeTrasaction);
 
-            if (isset($response->error)) {
-                // Insufficient User Balance Error
-                return $this->dispatch('error-toastr', ['message' => "{$response->error} {$response->message}"]);
-            }
+            // $network = DataNetwork::whereVendorId($this->vendor->id)->whereNetworkId($this->network)->first();
+
+            
+            // $airtimeServices = new AirtimeService($this->vendor, $network, Auth::user());
+
+            // $response = $airtimeServices->airtime(
+            //     $this->amount,
+            //     $this->phone_number
+            // );
+
+            // $response = json_decode($response);
+
+            // if (isset($response->error)) {
+            //     // Insufficient User Balance Error
+            //     return $this->dispatch('error-toastr', ['message' => "{$response->error} {$response->message}"]);
+            // }
     
-            if (isset($response->response->error)) {
-                // Insufficient API Wallet Balance Error
-                return $this->dispatch('error-toastr', ['message' => 'An error occurred during the Airtime request. Please try again later']);
-            }
+            // if (isset($response->response->error)) {
+            //     // Insufficient API Wallet Balance Error
+            //     return $this->dispatch('error-toastr', ['message' => 'An error occurred during the Airtime request. Please try again later']);
+            // }
 
-            if (isset($response->response->Status)) {
+            // if (isset($response->response->Status)) {
 
-                if ($response->response->Status == 'successful') {
+            //     if ($response->response->Status == 'successful') {
                     
-                    $accountBalance = new AccountBalanceService(Auth::user());
-                    $accountBalance->transaction($this->amount);
+            //         $accountBalance = new AccountBalanceService(Auth::user());
+            //         $accountBalance->transaction($this->amount);
 
     
-                    AirtimeTransaction::find($response->transaction->id)->update([
-                        'balance_after'     =>    $accountBalance->getAccountBalance(),
-                        'status'            =>    true,
-                        'api_data_id'       =>    $response->response->ident,
+            //         AirtimeTransaction::find($response->transaction->id)->update([
+            //             'balance_after'     =>    $accountBalance->getAccountBalance(),
+            //             'status'            =>    true,
+            //             'api_data_id'       =>    $response->response->ident,
 
-                        // 'api_response'      =>    $response->response->api_response,
-                    ]);
+            //             // 'api_response'      =>    $response->response->api_response,
+            //         ]);
     
-                    session()->flash('success', "Airtime Purchased Successfully. You purchased {$network->name} ₦{$this->amount} for {$this->phone_number}");
-                    return redirect()->route('dashboard');
-                }
+            //         session()->flash('success', "Airtime Purchased Successfully. You purchased {$network->name} ₦{$this->amount} for {$this->phone_number}");
+            //         return redirect()->route('dashboard');
+            //     }
 
-            }
+            // }
+
+            return redirect()->route('dashboard');
 
             session()->flash('error', 'An error occurred during the Airtime Payment request. Please try again later');
             return redirect()->to(url()->previous());
