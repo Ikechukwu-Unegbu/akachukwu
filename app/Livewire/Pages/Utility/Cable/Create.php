@@ -46,49 +46,84 @@ class Create extends Component
             'cable_plan'    =>  'required|integer'
         ]);
 
-        $cable = Cable::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->first();
-        
-        $cable_plan = CablePlan::whereVendorId($this->vendor?->id)->whereCablePlanId($this->cable_plan)->first();
-        
-        $cableService = new CableService($this->vendor, $cable, $cable_plan, $this->iuc_number, $this->customer, Auth::user());
+        if (!$this->validate_action) {
+            $cableValidate = CableService::validateIUCNumber($this->vendor->id, $this->iuc_number, $this->cable_name); 
 
-        $response = $cableService->CableSub();
-
-        $response = json_decode($response);
-
-        if (isset($response->error)) {
-            // Insufficient User Balance Error
-            return $this->dispatch('error-toastr', ['message' => "{$response->error} {$response->message}"]);
-        }
-
-        if (isset($response->response->error)) {
-            // Insufficient API Wallet Balance Error
-            return $this->dispatch('error-toastr', ['message' => "Unable to Perform Cable transaction. Please try again later."]);
-        }
-
-        if (isset($response->response->Status)) {
-
-            if ($response->response->Status == 'successful') {
-
-                $accountBalance = new AccountBalanceService(Auth::user());
-                $accountBalance->transaction($response->transaction->amount);
-
-                CableTransaction::find($response->transaction->id)->update([
-                    'balance_after'     =>    $accountBalance->getAccountBalance(),
-                    'status'            =>    true,
-                    'api_data_id'       =>    $response->response->ident ?? NULL,
-
-                    // 'api_response'      =>    $response->response->api_response,
-                ]);
-
-                session()->flash('success', "Cable Purchased Successfully. You purchased {$response->transaction->cable_plan_name} ₦{$response->transaction->amount} for {$response->transaction->customer_name} ({$response->transaction->smart_card_number})");
-                return redirect()->route('dashboard');
+            if (!$cableValidate->status) {
+                return $this->dispatch('error-toastr', ['message' => $cableValidate->message]);
+            }
+    
+            if ($cableValidate->status) {
+                $this->customer = $cableValidate->data->name;
+                $this->validate_action = true;
+                return $this->dispatch('success-toastr', ['message' => $cableValidate->message]);
             }
 
         }
 
-        session()->flash('error', 'An error occurred during the Cable Payment request. Please try again later');
-        return redirect()->to(url()->previous());
+        if ($this->validate_action) {
+            $cableTransaction = CableService::create($this->vendor->id, $this->cable_name, $this->cable_plan, $this->iuc_number, $this->customer);
+
+            if (!$cableTransaction->status) {
+                return $this->dispatch('error-toastr', ['message' => $cableTransaction->message]);
+            }
+    
+            if ($cableTransaction->status) {
+                $this->dispatch('success-toastr', ['message' => $cableTransaction->message]);
+                session()->flash('success',  $cableTransaction->message);
+                return redirect()->route('dashboard');
+            }
+        }
+
+
+
+        /*
+
+            $cable = Cable::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->first();
+            
+            $cable_plan = CablePlan::whereVendorId($this->vendor?->id)->whereCablePlanId($this->cable_plan)->first();
+            
+            $cableService = new CableService($this->vendor, $cable, $cable_plan, $this->iuc_number, $this->customer, Auth::user());
+
+            $response = $cableService->CableSub();
+
+            $response = json_decode($response);
+
+            if (isset($response->error)) {
+                // Insufficient User Balance Error
+                return $this->dispatch('error-toastr', ['message' => "{$response->error} {$response->message}"]);
+            }
+
+            if (isset($response->response->error)) {
+                // Insufficient API Wallet Balance Error
+                return $this->dispatch('error-toastr', ['message' => "Unable to Perform Cable transaction. Please try again later."]);
+            }
+
+            if (isset($response->response->Status)) {
+
+                if ($response->response->Status == 'successful') {
+
+                    $accountBalance = new AccountBalanceService(Auth::user());
+                    $accountBalance->transaction($response->transaction->amount);
+
+                    CableTransaction::find($response->transaction->id)->update([
+                        'balance_after'     =>    $accountBalance->getAccountBalance(),
+                        'status'            =>    true,
+                        'api_data_id'       =>    $response->response->ident ?? NULL,
+
+                        // 'api_response'      =>    $response->response->api_response,
+                    ]);
+
+                    session()->flash('success', "Cable Purchased Successfully. You purchased {$response->transaction->cable_plan_name} ₦{$response->transaction->amount} for {$response->transaction->customer_name} ({$response->transaction->smart_card_number})");
+                    return redirect()->route('dashboard');
+                }
+
+            }
+
+            session()->flash('error', 'An error occurred during the Cable Payment request. Please try again later');
+            return redirect()->to(url()->previous());
+
+        */
 
     }
 
@@ -100,9 +135,9 @@ class Create extends Component
             'cable_plan'    =>  'required|integer'
         ]);
 
+
+        /*
         try {
-
-
 
             $cable = Cable::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->first();
 
@@ -127,6 +162,7 @@ class Create extends Component
             return $this->dispatch('error-toastr', ['message' => 'Unable to Perform Cable transaction. Please check your network connection.']);
 
         }
+        */
     }
 
     public function render()
