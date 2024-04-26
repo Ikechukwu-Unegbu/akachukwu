@@ -18,17 +18,26 @@ class AirtimeService
     {
         try {
 
+            if ($amount < 50) {
+                return response()->json([
+                    'status'  => false,
+                    'error' => 'Insufficient Account Balance.',
+                    'message' => "The minimum airtime topup is ₦50"
+                ], 401)->getData();
+            }
+
+            self::$accountBalance = new AccountBalanceService(Auth::user());
+
+            if (! self::$accountBalance->verifyAccountBalance($amount)) {
+                return response()->json([
+                    'status'  => false,
+                    'error' => 'Insufficient Account Balance.',
+                    'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your wallet to continue."
+                ], 401)->getData();
+            }
+
             $vendor = DataVendor::find($vendorId);
             $network = DataNetwork::whereVendorId($vendorId)->whereNetworkId($networkId)->first();
-
-            static::$accountBalance = new AccountBalanceService(Auth::user());
-
-            if (! static::$accountBalance->verifyAccountBalance($amount)) {
-                return json_encode([
-                    'error' => 'Insufficient Account Balance.',
-                    'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your account to continue.",
-                ]);
-            }
 
             // Initiate Airtime Transaction
             $transaction = AirtimeTransaction::create([
@@ -40,7 +49,6 @@ class AirtimeService
                 'mobile_number'     =>  $mobile_number,
                 'balance_before'    =>  Auth::user()->account_balance,
             ]);
-
             
             $response = Http::withHeaders([
                 'Authorization' => "Token " . $vendor->token,
@@ -53,78 +61,48 @@ class AirtimeService
                 'Ported_number' =>  true
             ]);
 
-            if (!$response->ok()) {
-                return json_encode([
-                    'status'  => false,
-                    'error'   => 'API response error!',
-                    'message' => "An error occurred during the Airtime request. Please try again later",
-                ]);
-            }
-
             $response = $response->object();
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
-                return json_encode([
+                return response()->json([
                     'status'  => false,
                     'error'   => 'Insufficient Balance From API.',
-                    'message' => "An error occurred during the Airtime request. Please try again later",
-                ]);
+                    'message' => "An error occurred during the Airtime request. Please try again later."
+                ], 401)->getData();
             }
 
             if (isset($response->Status) && $response->Status == 'successful') {
 
-                static::$accountBalance->transaction($amount);
+                self::$accountBalance->transaction($amount);
 
                 $transaction->update([
-                    'balance_after'     =>    static::$accountBalance->getAccountBalance(),
+                    'balance_after'     =>    self::$accountBalance->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident
-                    // 'api_response'      =>    $response->response->api_response,
                 ]);
 
-                return json_encode([
-                    'status'  => true,
-                    'error'   => NULL,
-                    'message' => "Airtime Purchased Successfully. You purchased {$network->name} ₦{$amount} for {$mobile_number}",
-                ]);
+                return response()->json([
+                    'status'  =>    true,
+                    'error'   =>    NULL,
+                    'message' =>    "Airtime purchased successfully. You have successfully purchased ₦{$amount} {$network->name} airtime for the phone number {$mobile_number}."
+                ], 200)->getData();
             }
 
-            return json_encode([
+            return response()->json([
                 'status'    => false,
                 'error'     => 'Server Error',
-                'message'   => "Opps! Unable to Perform transaction. Please try again later.",
-            ]);
+                'message'   => "Opps! Unable to Perform transaction. Please try again later."
+            ], 401)->getData();
             
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            return json_encode([
-                'status'    => true,
+            return response()->json([
+                'status'    => false,
                 'error'     => $th->getMessage(),
-                'message'   => "Opps! Unable to Perform transaction. Please try again later.",
-            ]);
+                'message'   => "Opps! Unable to perform airtime payment. Please check your network connection."
+            ], 401)->getData();
         }
 
     }
-
-    public function validateUserData($data)
-    {
-        $rules = [
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            // Add more validation rules as needed
-        ];
-
-        // return Validator::make($data, $rules)->validate();
-    }
-
-    // private function verifyAccountBalance($user, $amount) : bool
-    // {
-    //     $account_balance = $user->account_balance;
-
-    //     if ($account_balance >= $amount) return true;
-
-    //     return false;
-    // }
-
 }

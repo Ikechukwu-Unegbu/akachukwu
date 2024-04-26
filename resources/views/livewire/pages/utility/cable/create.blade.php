@@ -1,11 +1,11 @@
 <div class="airtime_form">
     <form wire:submit.prevent="submit" class="utility-form">
-         <div class="row">
+        <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
-               <h3 class="text-warning">Cable Payment</h3>
+                <h3 class="text-warning">Cable Subscription</h3>
             </div>
             <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>
-        </div>   
+        </div>
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
                 <select name="cable_name" id="cable_name" class="form-select @error('cable_name') is-invalid @enderror" wire:model.live="cable_name">
@@ -43,14 +43,14 @@
                 </div>
             </div>
         </div>
-        @if (!$validate_action)
+        {{-- @if (!$validate_action)
             <button type="button" class="btn bg-basic text-light" wire:loading.attr="disabled" wire:click.prevent="validateIUCNumber">
                 <span wire:loading.remove wire:target='validateIUCNumber'> Validate IUC</span>
                 <span wire:loading wire:target="validateIUCNumber">
                     <i class="fa fa-spinner fa-spin"></i> Validating...
                 </span>
             </button>
-        @endif
+        @endif --}}
 
         @if ($validate_action)
         <div class="row">
@@ -60,13 +60,13 @@
                 @error('customer')<span style="font-size: 15px" class="text-danger">  {{ $message }} </span>@enderror
             </div>
         </div>
-        
+        @endif
         <button type="submit" class="btn bg-basic text-light" wire:loading.attr="disabled">
-            <span wire:loading.remove wire:target='submit'> Continue</span>
+            <span wire:loading.remove wire:target='submit'> {{ $validate_action ? 'Continue' : 'Validate IUC' }}</span>
             <span wire:loading wire:target="submit">
-                <i class="fa fa-spinner fa-spin"></i> Please wait...
+                <i class="fa fa-spinner fa-spin"></i> {{ $validate_action ? 'Please wait...' : 'Validating...' }}
             </span>
         </button>
-        @endif
+        
     </form>
 </div>

@@ -64,55 +64,34 @@ class Create extends Component
     {
         $this->validate();
 
-        try {
-
-            $electricity = Electricity::whereVendorId($this->vendor->id)->whereDiscoId($this->disco_name)->first();
-
-            $electricityService = new ElectricityService($this->vendor, $electricity, $this->meter_number, $this->meter_type, Auth::user());
-
-            $response = $electricityService->BillPayment($this->amount, $this->customer_phone_number, $this->customer_name, $this->customer_address);
-
-            $response = json_decode($response);
-
-
-            if (isset($response->error)) {
-                // Insufficient User Balance Error
-                return $this->dispatch('error-toastr', ['message' => "{$response->error} {$response->message}"]);
+        if (!$this->validate_action) {
+            $electricityValidate = ElectricityService::validateMeterNumber($this->vendor->id, $this->meter_number, $this->disco_name, $this->meter_type); 
+    
+            if (!$electricityValidate->status) {
+                return $this->dispatch('error-toastr', ['message' => $electricityValidate->message]);
             }
-
-              
-            if (isset($response->response->error)) {
-                // Insufficient API Wallet Balance Error
-                return $this->dispatch('error-toastr', ['message' => "Unable to Perform Electricity transaction. Please try again later."]);
+    
+            if ($electricityValidate->status) {
+                $this->customer_name = $electricityValidate->data->name;
+                $this->customer_address = $electricityValidate->data->address;
+                $this->validate_action = true;
+                return $this->dispatch('success-toastr', ['message' => $electricityValidate->message]);
             }
+        }
 
-               
-            if (isset($response->response->Status)) {
-    
-                if ($response->response->Status == 'successful') {
-                    
-                    $accountBalance = new AccountBalanceService(Auth::user());
-                    $accountBalance->transaction($response->transaction->amount);
-    
-                    ElectricityTransaction::find($response->transaction->id)->update([
-                        'balance_after'     =>    $accountBalance->getAccountBalance(),
-                        'status'            =>    true,
-                        'api_data_id'       =>    $response->response->ident ?? NULL,
-    
-                        // 'api_response'      =>    $response->response->api_response,
-                    ]);
-    
-                    session()->flash('success', "Bill Payment was Successful. You purchased ₦{$response->transaction->amount} for {$response->transaction->meter_type_name} to ({$response->transaction->meter_number})");
-                    return redirect()->route('dashboard');
-                }    
+        if ($this->validate_action) {
+            $electricityTransaction = ElectricityService::create($this->vendor->id, $this->disco_name, $this->meter_number, $this->meter_type, $this->amount, $this->customer_name, $this->customer_phone_number, $this->customer_address); 
+            
+            if (!$electricityTransaction->status) {
+                return $this->dispatch('error-toastr', ['message' => $electricityTransaction->message]);
             }
-
-            session()->flash('error', 'An error occurred during the Bill Payment request. Please try again later');
-            return redirect()->to(url()->previous());
-        } catch (\Exception $e) {
-            Log::error($e->getMessage());
-            session()->flash('error', 'An error occurred during the Bill Payment request. Please try again later');
-            return redirect()->to(url()->previous());
+    
+            if ($electricityTransaction->status) {
+                $this->dispatch('success-toastr', ['message' => $electricityTransaction->message]);
+                session()->flash('success',  $electricityTransaction->message);
+                return redirect()->route('dashboard');
+            }
+        
         }
     }
 
