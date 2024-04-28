@@ -2,6 +2,9 @@
         <div>
             <h3>Profile Information</h3>
         </div>
+        <div class="mb-5">
+            <a href="/dashboard"><i class="fa-solid fa-arrow-left-long"></i></a>
+        </div>
         <form wire:submit.prevent="save">
             @if(session()->has('profile_upated'))
             <div class="alert alert-success mb-3">
