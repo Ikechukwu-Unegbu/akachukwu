@@ -78,9 +78,10 @@ class CableService
                 ]);
 
                 return response()->json([
-                    'status'  =>    true,
-                    'error'   =>    NULL,
-                    'message' =>    "Cable Purchased Successfully. You purchased {$transaction->cable_plan_name} ₦{$transaction->amount} for {$transaction->customer_name} ({$transaction->smart_card_number})."
+                    'status'    =>    true,
+                    'error'     =>    NULL,
+                    'message'   =>    "Cable subscription successful: {$transaction->cable_plan_name} for ₦{$transaction->amount} on {$transaction->customer_name} ({$transaction->smart_card_number}).",
+                    'response'  =>    $transaction
                 ], 200)->getData();
             }
 
@@ -99,57 +100,6 @@ class CableService
             ], 401)->getData();
         }
     }
-
-    /*
-    public function CableSub()
-    {
-        if (! $this->accountBalance->verifyAccountBalance($this->cablePlan->amount)) {
-            return json_encode([
-                'error' => 'Insufficient Account Balance.',
-                'message' => "You need at least ₦{$this->cablePlan->amount} to subscribe to this plan. Please fund your wallet to continue.",
-            ]);
-        }
-        
-        $transaction = CableTransaction::create([
-            'user_id'             =>  $this->user->id,
-            'vendor_id'           =>  $this->vendor->id,
-            'cable_name'          =>  $this->cable->cable_name,
-            'cable_id'            =>  $this->cable->cable_id,
-            'cable_plan_name'     =>  $this->cablePlan->package,
-            'cable_plan_id'       =>  $this->cablePlan->cable_plan_id,
-            'smart_card_number'   =>  $this->iucNumber,
-            'customer_name'       =>  $this->customer,
-            'amount'              =>  $this->cablePlan->amount,
-            'balance_before'      =>  $this->user->account_balance,
-        ]);
-
-        try {
-
-            $response = Http::withHeaders([
-                'Authorization' => "Token " . $this->vendor->token,
-                'Content-Type' => 'application/json',
-            ])->post("{$this->vendor->api}/cablesub/", [
-                'cablename'         =>  $this->cable->cable_id,
-                'cableplan'         =>  $this->cablePlan->cable_plan_id,
-                'smart_card_number' =>  $this->iucNumber
-            ]);
-
-            return json_encode([
-                'transaction'   => $transaction,
-                'response'      =>  $response->object()
-            ]);
-            
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return json_encode([
-                'error' => 'Error.',
-                'message' => "Unable to Perform Cable transaction. Please try again later.",
-            ]);
-        }
-
-    }
-    */
-
 
     public static function validateIUCNumber($vendorId, $iucNumber, $cableName)
     {

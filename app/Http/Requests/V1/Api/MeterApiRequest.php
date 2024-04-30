@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\V1\Api;
+namespace App\Http\Requests\V1\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AirtimeApiRequest extends FormRequest
+class MeterApiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,9 @@ class AirtimeApiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'network_id'    =>  'required|integer',
-            'amount'        =>  'required|numeric',
-            'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
+            'meter_number'  =>  'required|numeric',
+            'disco_id'      =>  'required|integer',
+            'meter_type'    =>  'required|integer'
         ];
     }
 }

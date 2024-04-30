@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\V1\Api;
+namespace App\Http\Requests\V1\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AirtimeApiRequest extends FormRequest
+class IUCApiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,9 +22,8 @@ class AirtimeApiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'network_id'    =>  'required|integer',
-            'amount'        =>  'required|numeric',
-            'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
+            'iuc_number'    =>  'required|numeric',
+            'cable_id'      =>  'required|integer'
         ];
     }
 }

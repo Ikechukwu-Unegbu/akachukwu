@@ -88,9 +88,10 @@ class DataService
                 ]);
 
                 return response()->json([
-                    'status'  =>    true,
-                    'error'   =>    NULL,
-                    'message' =>    "Data Purchased Successfully. You purchased {$network->name} {$plan->size} ₦{$plan->amount} for {$mobile_number}."
+                    'status'   =>    true,
+                    'error'    =>    NULL,
+                    'message'  =>    "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobile_number}.",
+                    'response' =>    $transaction
                 ], 200)->getData();
             }
              

@@ -89,9 +89,10 @@ class ElectricityService
                 ]);
 
                 return response()->json([
-                    'status'  =>    true,
-                    'error'   =>    NULL,
-                    'message' =>    "Bill Payment was Successful. You purchased ₦{$transaction->amount} for {$transaction->meter_type_name} to ({$transaction->meter_number})."
+                    'status'    =>    true,
+                    'error'     =>    NULL,
+                    'message'   =>    "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).",
+                    'response'  =>  $transaction
                 ], 200)->getData();
             }
 

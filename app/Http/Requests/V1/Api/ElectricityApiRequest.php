@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\V1\Api;
+namespace App\Http\Requests\V1\API;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DataApiRequest extends FormRequest
+class ElectricityApiRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,13 @@ class DataApiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'network_id'        =>  'required|integer',
-            'data_type_id'      =>  'required|integer',
-            'plan_id'           =>  'required|integer',
+            'amount'            =>  'required|numeric',
+            'meter_number'      =>  'required|numeric',
+            'disco_id'          =>  'required|integer',
+            'meter_type'        =>  'required|integer',
+            'owner_name'        =>  'required|string',
             'phone_number'      =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
+            'owner_address'     =>  'required|string',
         ];
     }
 }

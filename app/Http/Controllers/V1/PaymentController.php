@@ -58,7 +58,7 @@ class PaymentController extends Controller
             if ($response) {
                 session()->flash('success', 'Payment Successful & Wallet Funded');
                 return redirect()->route('dashboard');
-           }
+            }
         }
 
         return view('pages.payment.index', [

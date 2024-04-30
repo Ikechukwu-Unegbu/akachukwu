@@ -42,7 +42,7 @@ class Create extends Component
     {
         $this->validate([
             'cable_name'    =>  'required|integer',
-            'iuc_number'    =>  'required',
+            'iuc_number'    =>  'required|numeric',
             'cable_plan'    =>  'required|integer'
         ]);
 
@@ -74,57 +74,6 @@ class Create extends Component
                 return redirect()->route('dashboard');
             }
         }
-
-
-
-        /*
-
-            $cable = Cable::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->first();
-            
-            $cable_plan = CablePlan::whereVendorId($this->vendor?->id)->whereCablePlanId($this->cable_plan)->first();
-            
-            $cableService = new CableService($this->vendor, $cable, $cable_plan, $this->iuc_number, $this->customer, Auth::user());
-
-            $response = $cableService->CableSub();
-
-            $response = json_decode($response);
-
-            if (isset($response->error)) {
-                // Insufficient User Balance Error
-                return $this->dispatch('error-toastr', ['message' => "{$response->error} {$response->message}"]);
-            }
-
-            if (isset($response->response->error)) {
-                // Insufficient API Wallet Balance Error
-                return $this->dispatch('error-toastr', ['message' => "Unable to Perform Cable transaction. Please try again later."]);
-            }
-
-            if (isset($response->response->Status)) {
-
-                if ($response->response->Status == 'successful') {
-
-                    $accountBalance = new AccountBalanceService(Auth::user());
-                    $accountBalance->transaction($response->transaction->amount);
-
-                    CableTransaction::find($response->transaction->id)->update([
-                        'balance_after'     =>    $accountBalance->getAccountBalance(),
-                        'status'            =>    true,
-                        'api_data_id'       =>    $response->response->ident ?? NULL,
-
-                        // 'api_response'      =>    $response->response->api_response,
-                    ]);
-
-                    session()->flash('success', "Cable Purchased Successfully. You purchased {$response->transaction->cable_plan_name} ₦{$response->transaction->amount} for {$response->transaction->customer_name} ({$response->transaction->smart_card_number})");
-                    return redirect()->route('dashboard');
-                }
-
-            }
-
-            session()->flash('error', 'An error occurred during the Cable Payment request. Please try again later');
-            return redirect()->to(url()->previous());
-
-        */
-
     }
 
     public function validateIUCNumber()

@@ -19,8 +19,8 @@ class AuthenticateUserController extends Controller
             $user = Auth::user();
             $token = $request->user()->createToken('token-name')->plainTextToken;
 
-            return response()->json(['
-                token' => $token, 
+            return response()->json([
+                'token' => $token, 
                 'status'=>'success', 
                 'user'=>$user
             ], 200);

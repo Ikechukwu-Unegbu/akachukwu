@@ -83,16 +83,17 @@ class AirtimeService
                 ]);
 
                 return response()->json([
-                    'status'  =>    true,
-                    'error'   =>    NULL,
-                    'message' =>    "Airtime purchased successfully. You have successfully purchased ₦{$amount} {$network->name} airtime for the phone number {$mobile_number}."
+                    'status'   =>    true,
+                    'error'    =>    NULL,
+                    'message'  =>    "Airtime purchase successful: ₦{$amount} {$network->name} airtime added to {$mobile_number}.",
+                    'response' =>    $transaction
                 ], 200)->getData();
             }
 
             return response()->json([
                 'status'    => false,
                 'error'     => 'Server Error',
-                'message'   => "Opps! Unable to Perform transaction. Please try again later."
+                'message'   => "Opps! Unable to Perform transaction. Please try again later.",
             ], 401)->getData();
             
         } catch (\Throwable $th) {

@@ -95,7 +95,7 @@ class MonnifyService implements Payment
     public static function moneyTransfer($amount, $bankCode, $bankName, $recipientAccount, $narration = null)
     {
         try {
-            self::$accountBalance = new AccountBalanceService(Auth::user());
+            static::$accountBalance = new AccountBalanceService(Auth::user());
 
             // if (!self::$accountBalance->verifyAccountBalance($amount)) {
             //     return json_encode([
@@ -152,8 +152,8 @@ class MonnifyService implements Payment
 
         if (!$transaction->status) {
             $transaction->setStatus(true);
-            $updateAccountBalance = new AccountBalanceService(Auth::user());
-            $updateAccountBalance->updateAccountBalance($transaction->amount);
+            $accountBalance = new AccountBalanceService(Auth::user());
+            $accountBalance->updateAccountBalance($transaction->amount);
             return true;
         }
 
