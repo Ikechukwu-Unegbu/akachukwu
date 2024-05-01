@@ -2,12 +2,13 @@
 
 namespace App\Services\Account;
 
-use Illuminate\Foundation\Auth\User;
+use App\Models\User;
 
+// use Illuminate\Foundation\Auth\User;
 class AccountBalanceService 
 {
 
-    private $user;
+    protected $user;
 
     public function __construct(User $user)
     {

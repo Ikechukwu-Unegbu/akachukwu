@@ -1,12 +1,17 @@
 <?php
 
-use App\Http\Controllers\V1\API\Auth\RegisterUserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\V1\API\Auth\AuthenticateUserController;
+use App\Http\Controllers\V1\API\AirtimeApiController;
+use App\Http\Controllers\V1\API\NewtworkApiController;
+use App\Http\Controllers\V1\API\UserProfileController;
+use App\Http\Controllers\V1\API\Auth\RegisterUserController;
 use App\Http\Controllers\V1\API\Auth\ChangePasswordController;
 use App\Http\Controllers\V1\API\Auth\ForgotPasswordController;
-use App\Http\Controllers\V1\API\UserProfileController;
+use App\Http\Controllers\V1\API\Auth\AuthenticateUserController;
+use App\Http\Controllers\V1\API\CableApiController;
+use App\Http\Controllers\V1\API\DataApiController;
+use App\Http\Controllers\V1\API\ElectricityApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +38,22 @@ Route::get('/ping', function(){
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::group([
+    'middleware' => ['auth:sanctum'],
+], function() {
+    Route::post('airtime/create', [AirtimeApiController::class, 'store']);
+    Route::post('data/create', [DataApiController::class, 'store']);
+    Route::post('cable/validate', [CableApiController::class, 'validateIUC']);
+    Route::post('cable/create', [CableApiController::class, 'store']);
+
+    Route::post('electricity/validate', [ElectricityApiController::class, 'validateMeterNo']);
+    Route::post('electricity/create', [ElectricityApiController::class, 'store']);
+});
+
+Route::post('networks', [NewtworkApiController::class, 'index']);
+Route::post('datatypes', [DataApiController::class, 'index']);
+Route::post('dataplans', [DataApiController::class, 'plan']);
+Route::post('cables', [CableApiController::class, 'index']);
+Route::post('cableplans', [CableApiController::class, 'plan']);
+Route::post('electricity/discos', [ElectricityApiController::class, 'index']);

@@ -47,7 +47,7 @@ Route::middleware(['auth', 'verified', 'user'])->group(function () {
 
     Route::get('transactions/wallet', \App\Livewire\User\Transaction\Wallet\Index::class)->name('user.transaction.wallet');
 
-    Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
+    // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
 });
 
 

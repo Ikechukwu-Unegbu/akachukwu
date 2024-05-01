@@ -1,9 +1,8 @@
 <div class="airtime_form">
-    <form wire:submit.prevent="submit" class="utility-form">
-        
+    <form wire:submit.prevent="submit" class="utility-form">        
          <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
-               <h3 class="text-warning">Pay Electricity Bills</h3>
+               <h3 class="text-warning">Electricity Bill Payment</h3>
             </div>
         <div>
         <div class="row">
@@ -55,14 +54,14 @@
         </div>      
         
         
-        @if (!$validate_action)
+        {{-- @if (!$validate_action)
             <button type="button" class="btn bg-basic text-light" wire:loading.attr="disabled" wire:click.prevent="validateMeterNumber">
                 <span wire:loading.remove wire:target='validateMeterNumber'> Validate Meter Number</span>
                 <span wire:loading wire:target="validateMeterNumber">
                     <i class="fa fa-spinner fa-spin"></i> Validating...
                 </span>
             </button>
-        @endif
+        @endif --}}
 
         @if ($validate_action)
         <div class="row">
@@ -80,13 +79,14 @@
                 @error('customer_address')<span style="font-size: 15px" class="text-danger">  {{ $message }} </span>@enderror
             </div>
         </div>
+        @endif
         
         <button type="submit" class="btn bg-basic text-light" wire:loading.attr="disabled">
-            <span wire:loading.remove wire:target='submit'> Continue</span>
+            <span wire:loading.remove wire:target='submit'> {{ $validate_action ? 'Continue' : 'Validate Meter Number' }} </span>
             <span wire:loading wire:target="submit">
-                <i class="fa fa-spinner fa-spin"></i> Please wait...
+                <i class="fa fa-spinner fa-spin"></i> {{ $validate_action ? 'Please wait...' : 'Validating...' }}
             </span>
         </button>
-        @endif
+        
     </form>
 </div>

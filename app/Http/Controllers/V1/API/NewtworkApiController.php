@@ -11,11 +11,20 @@ class NewtworkApiController extends Controller
 {
     public function index()
     {
-        $vendor = DataVendor::whereStatus(true)->first();
-        $network = DataNetwork::whereVendorId($vendor?->id)->whereStatus(true)->get();
-        return response()->json([
-            'status'=>'success', 
-            'network'=>$network
-        ]);
+        try {
+            $vendor = DataVendor::whereStatus(true)->first();
+            $network = DataNetwork::whereVendorId($vendor?->id)->whereStatus(true)->get();
+            return response()->json([
+                'status'    =>  'success', 
+                'message'   =>  "Network Fetched Successfully",
+                'response'  =>  $network
+            ]);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status'  => 'failed', 
+                'message' =>  "Unable to fetch network. Try again later",
+                'error'   =>  $th->getMessage()
+            ]);
+        }
     }
 }
