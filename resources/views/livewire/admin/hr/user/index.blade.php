@@ -31,7 +31,7 @@
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             <li><a href="{{ route('admin.hr.user.show', $user->username) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
-                                             <li><a href="{{ route('admin.hr.user.show', $user->username) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i>Top</a></li>
+                                             <li><a href="{{ route('admin.crd-dbt', ['username' => $user->username]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i>Top</a></li>
                                         </ul>
                                     </div>
                                 </td>

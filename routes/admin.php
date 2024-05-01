@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SystemUser\DashboardController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SystemUser\UserCrdDbtController;
+use App\Livewire\Admin\CrdDbt\Create as CrdDbtCreate;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +85,8 @@ Route::group(['prefix' => 'admin'], function () {
         ## HR - User
         Route::get('hr/users', App\Livewire\Admin\Hr\User\Index::class)->name('admin.hr.user');
         Route::get('hr/user/{user:username}/show', App\Livewire\Admin\Hr\User\Show::class)->name('admin.hr.user.show');
+        Route::get('crd-dbt', CrdDbtCreate::class)->name('admin.crd-dbt');
+        Route::post('admin/crdt-dbt', [UserCrdDbtController::class, 'store'])->name('admin.crdt-dbt.store');
 
         ## HR - Administrators
         Route::get('hr/administrators', App\Livewire\Admin\Hr\Administrator\Index::class)->name('admin.hr.administrator');
