@@ -37,8 +37,8 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5">No records available</td>
-                            </tr>
+                                <td colspan="6">No records available</td>
+                            </tr> 
                         @endforelse
                     </x-admin.table-body>
                 </x-admin.table>

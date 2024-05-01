@@ -22,7 +22,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.hr.administrator.index', [
-            'users' =>    User::search($this->search)->whereRole('admin')->latest('created_at')->paginate($this->perPage)
+            'users' =>    User::search($this->search)->whereIn('role', ['admin', 'superadmin'])->latest('created_at')->paginate($this->perPage)
         ]);
     }
 }
