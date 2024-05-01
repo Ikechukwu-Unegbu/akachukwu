@@ -49,7 +49,7 @@
                 </div>
             </div>
             <div class="col-12">
-                <button type="submit" style="float:right;" class="float-right btn btn-warning">Create Account</button>
+                <button type="submit" style="float:right;" class="float-right btn btn-warning">Register</button>
             </div>
             <div class="mt-4 mb-4">
                 <br/>

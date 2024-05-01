@@ -31,6 +31,7 @@
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             <li><a href="{{ route('admin.hr.administrator.show', $user->username) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
+                                            <li><a href="{{ route('admin.hr.administrator.show', $user->username) }}" class="dropdown-item text-primary">Crd/Dbt</a></li>
                                         </ul>
                                     </div>
                                 </td>

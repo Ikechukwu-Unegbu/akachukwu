@@ -33,7 +33,7 @@
              <div class="mb-3 form-floating" style="display:flex; flex-direction:row; align-items:center; jusify-content:center; gap:1rem;">
                 {{-- <div class=""> --}}
                     {{-- <input type="checkbox" class="form-check-input" style="" name='remember' id="exampleCheck1"> --}}
-                    <small class="text-xs " style="font-size: 15px;" for="exampleCheck1">Dont have account? <a class="text-danger" href="{{route('register')}}"> Sign up here</a></small>
+                    <small class="text-xs " style="font-size: 15px;" for="exampleCheck1">Dont have account? <a class="text-danger" href="{{route('register')}}">Register Here</a></small>
                 {{-- </div> --}}
             </div>
           
