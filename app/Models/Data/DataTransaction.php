@@ -20,17 +20,23 @@ class DataTransaction extends Model
         'user_id',
         'vendor_id',
         'network_id',
-        'network_name',
+        'type_id',
+        'data_id',
         'amount',
+        'size',
+        'validity',
         'mobile_number',
         'balance_before',
         'balance_after',
+        'plan_network',
+        'plan_name',
+        'plan_amount',
         'api_data_id',
         'api_response',
         'status',
-        'type_id'
     
     ];
+    
 
     public function getActivitylogOptions(): LogOptions
     {
@@ -39,15 +45,20 @@ class DataTransaction extends Model
         'user_id',
         'vendor_id',
         'network_id',
-        'network_name',
+        'type_id',
+        'data_id',
         'amount',
+        'size',
+        'validity',
         'mobile_number',
         'balance_before',
         'balance_after',
+        'plan_network',
+        'plan_name',
+        'plan_amount',
         'api_data_id',
         'api_response',
-        'type_id',
-        'status', ]);
+        'status',]);
         // Chain fluent methods for configuration options
     }
 
