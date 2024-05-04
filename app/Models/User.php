@@ -20,7 +20,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
-    use LogsActivity;
+    use LogsActivity; 
 
     protected $fillable = ['name', 'text'];
 
