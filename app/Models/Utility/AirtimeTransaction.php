@@ -9,10 +9,46 @@ use App\Models\Data\DataNetwork;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class AirtimeTransaction extends Model
 {
+    use LogsActivity; 
     protected $guarded = [];
+    protected $fillable = [
+        'transaction_id',
+        'user_id',
+        'vendor_id',
+        'network_id',
+        'network_name',
+        'amount',
+        'mobile_number',
+        'balance_before',
+        'balance_after',
+        'api_data_id',
+        'api_response',
+        'status',
+    ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly([ 
+        'transaction_id',
+        'user_id',
+        'vendor_id',
+        'network_id',
+        'network_name',
+        'amount',
+        'mobile_number',
+        'balance_before',
+        'balance_after',
+        'api_data_id',
+        'api_response',
+        'status', ]);
+        // Chain fluent methods for configuration options
+    }
 
     protected static function boot()
     {

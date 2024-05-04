@@ -8,10 +8,60 @@ use App\Models\Data\DataVendor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
+
 
 class ElectricityTransaction extends Model
 {
+    use LogsActivity; 
     protected $guarded = [];
+    protected $fillable = [
+        'transaction_id',
+        'user_id',
+        'vendor_id',
+        'disco_id',
+        'disco_name',
+        'meter_number',
+        'meter_type_id',
+        'meter_type_name',
+        'amount',
+        'customer_mobile_number',
+        'customer_name',
+        'customer_address',
+        'balance_before',
+        'balance_after',
+        'api_data_id',
+        'api_response',
+        'status',
+        'created_at',
+        'updated_at',
+    ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logOnly([
+            'transaction_id',
+            'user_id',
+            'vendor_id',
+            'disco_id',
+            'disco_name',
+            'meter_number',
+            'meter_type_id',
+            'meter_type_name',
+            'amount',
+            'customer_mobile_number',
+            'customer_name',
+            'customer_address',
+            'balance_before',
+            'balance_after',
+            'api_data_id',
+            'api_response',
+            'status',
+        ]);
+        // Chain fluent methods for configuration options
+    }
 
     protected static function boot()
     {

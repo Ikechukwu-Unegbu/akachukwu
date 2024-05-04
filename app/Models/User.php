@@ -22,12 +22,29 @@ class User extends Authenticatable
 
     use LogsActivity; 
 
-    protected $fillable = ['name', 'text'];
+    protected $fillable = [
+        'name',
+        'username',
+        'email',
+        'role',
+        'email_verified_at',
+        'password',
+        'image',
+        'address',
+        'mobile',
+        'referer_username',
+        'gender',
+        'account_balance',
+        'wallet_balance',
+        'bonus_balance',
+        'remember_token',
+        'phone',
+    ];
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly(['name', 'text']);
+        ->logOnly(['name', ]);
         // Chain fluent methods for configuration options
     }
 
