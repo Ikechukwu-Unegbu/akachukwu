@@ -28,6 +28,7 @@ class DataTransaction extends Model
         'api_data_id',
         'api_response',
         'status',
+        'type_id'
     
     ];
 
@@ -45,6 +46,7 @@ class DataTransaction extends Model
         'balance_after',
         'api_data_id',
         'api_response',
+        'type_id',
         'status', ]);
         // Chain fluent methods for configuration options
     }
