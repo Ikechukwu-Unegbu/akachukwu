@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
+use App\Services\Beneficiary\BeneficiaryService;
 
 class AirtimeService 
 {
@@ -82,6 +83,8 @@ class AirtimeService
                     'api_data_id'       =>    $response->ident
                 ]);
 
+                BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
+                
                 return response()->json([
                     'status'   =>    true,
                     'error'    =>    NULL,
