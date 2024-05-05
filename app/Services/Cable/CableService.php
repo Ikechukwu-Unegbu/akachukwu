@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Utility\CableTransaction;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
+use App\Services\Beneficiary\BeneficiaryService;
 
 class CableService
 {
@@ -76,7 +77,7 @@ class CableService
                     'status'            =>    true,
                     'api_data_id'       =>    $response->response->ident ?? NULL,
                 ]);
-
+                BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
                 return response()->json([
                     'status'    =>    true,
                     'error'     =>    NULL,

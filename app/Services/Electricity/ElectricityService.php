@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
+use App\Services\Beneficiary\BeneficiaryService;
 
 class ElectricityService 
 {
@@ -87,7 +88,7 @@ class ElectricityService
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
                 ]);
-
+                BeneficiaryService::create($transaction->customer_mobile_number, 'electricity', $transaction);
                 return response()->json([
                     'status'    =>    true,
                     'error'     =>    NULL,
