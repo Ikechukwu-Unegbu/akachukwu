@@ -11,6 +11,7 @@ use App\Models\Data\DataTransaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Services\Account\AccountBalanceService;
+use App\Services\Beneficiary\BeneficiaryService;
 
 class DataService 
 {
@@ -86,6 +87,8 @@ class DataService
                     'api_data_id'       =>    $response->ident,
                     'api_response'      =>    $response->api_response,
                 ]);
+
+                BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
 
                 return response()->json([
                     'status'   =>    true,
