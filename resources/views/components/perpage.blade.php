@@ -1,64 +1,91 @@
-<div class="datatable-top">
-    <div class="datatable-dropdown">
-        <label>
-            <select class="datatable-selector" {{ $wirePageAction }}>
-                @foreach ($perPages as $perPage)
-                <option value="{{ $perPage }}">{{ $perPage }}</option>
-                @endforeach
-            </select>
-        </label>
+<div class="datatable">
+    <div class="datatable-top">
+        <div class="datatable-dropdown">
+            <label>
+                <select class="datatable-selector" {{ $wirePageAction }}>
+                    @foreach ($perPages as $perPage)
+                    <option value="{{ $perPage }}">{{ $perPage }}</option>
+                    @endforeach
+                </select>
+
+            </label>
+        </div>
+        @isset($wireSearchAction)
+        <div class="datatable-search">
+            <input class="datatable-input" type="text" placeholder="Search..." {{ $wireSearchAction }}>
+        </div>
+        @endisset
     </div>
-    @isset($wireSearchAction)
-    <div class="datatable-search">
-        <input class="datatable-input" placeholder="Search..." {{ $wireSearchAction }} type="search" title="Search...">
-    </div>
-    @endisset
 </div>
 
 <style>
+    .datatable {
+        padding: 2px;
+    }
+
     .datatable-top,
     .datatable-bottom {
-        padding: 8px 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
     }
 
-    .datatable-top>nav:first-child,
-    .datatable-top>div:first-child {
-        float: left;
-    }
-
-    .datatable-top>nav:last-child,
-    .datatable-top>div:not(first-child) {
-        float: right;
-    }
-
-    .datatable-top::after,
-    .datatable-bottom::after {
-        clear: both;
-        content: " ";
-        display: table;
+    .datatable-selector,
+    .datatable-input {
+        padding: 6px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
 
     .datatable-selector {
-        padding: 6px;
+        margin-right: 10px;
     }
 
     .datatable-input {
-        padding: 6px 12px;
+        flex: 1;
+        margin-top: 10px;
     }
 
-    /* Styles for screens smaller than 600px (phones) */
+    .pagination {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        text-align: center;
+    }
+
+    .pagination li {
+        display: inline;
+        margin-right: 5px;
+    }
+
+    .pagination li a {
+        text-decoration: none;
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        color: #333;
+    }
+
+    .pagination li a:hover {
+        background-color: #f0f0f0;
+    }
+
     @media only screen and (max-width: 600px) {
-        .datatable-top {
-            display: flex !important;
-            justify-content: center !important;
-        }
-    }
 
-    /* Styles for screens between 600px and 900px (tablets) */
-    @media only screen and (min-width: 600px) and (max-width: 900px) {
+        .datatable-selector,
+        .datatable-input {
+            width: 100%;
+            margin-right: 0;
+        }
+
+        .datatable-input {
+            margin-top: 0;
+        }
+
         .datatable-top {
-            display: flex !important;
-            justify-content: center !important;
+            justify-content: center;
         }
     }
 </style>
