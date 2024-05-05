@@ -50,5 +50,5 @@
     </section>
 </div>
 @push('title')
-    Human Resource Mgt. / Users
+Human Resource Mgt. / Users
 @endpush
