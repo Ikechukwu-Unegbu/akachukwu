@@ -16,6 +16,7 @@ class Create extends Component
         $this->username = $request->query('username');
     }
     public function render()
+
     {
         return view('livewire.admin.crd-dbt.create');
     }
