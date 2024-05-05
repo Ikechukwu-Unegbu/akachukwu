@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SystemUser\DashboardController;
+use App\Http\Controllers\SystemUser\SiteSettingsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemUser\UserCrdDbtController;
 use App\Livewire\Admin\CrdDbt\Create as CrdDbtCreate;
+use App\Livewire\Component\Admin\SiteSettings;
+use App\Models\SiteSettings as ModelsSiteSettings;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,6 +104,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('settings/role/{role:id}/user/{user:username}/permission/edit', App\Livewire\Admin\Role\Permission\Edit::class)->name('admin.settings.role.permission.edit');
 
         Route::get('profile', App\Livewire\Admin\Profile\Index::class)->name('admin.settings.profile');
+
+        Route::get('site-setting', SiteSettings::class)->name('admin.site.settings');
+        Route::post('site-setting', [SiteSettingsController::class, 'update'])->name('admin.site.update');
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');

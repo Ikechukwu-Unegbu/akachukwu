@@ -161,7 +161,9 @@
             <div class="col-lg-6 text-center">
               <h1 class="fw-bold mb-4 fs-7">Do you need support? We are here to help</h1>
               <p class="mb-5 text-info fw-medium">If you have any questions, concerns, or need support, don't hesitate to reach out to us. Click the 'Contact Us' button below, and our friendly customer support team will be happy to assist you. Your satisfaction is our priority</p>
-              <button class="btn btn-warning btn-md">Contact our expert</button>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#contactModal" class="btn btn-warning btn-md">Contact our expert</button>
+              {{-- @include('components._contact_us') --}}
+               @livewire('component.global.contact-us')
             </div>
           </div>
         </div><!-- end of .container-->
