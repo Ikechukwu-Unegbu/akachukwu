@@ -48,6 +48,7 @@ class PermissionSeeder extends Seeder
             
             'can top-up',
             'can debit',
+            'can top-up and debit',
 
             'can set site-setting'
         ];
