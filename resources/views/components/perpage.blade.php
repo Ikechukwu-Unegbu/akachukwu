@@ -21,16 +21,6 @@
         padding: 8px 10px;
     }
 
-    .datatable-top>nav:first-child,
-    .datatable-top>div:first-child {
-        float: left;
-    }
-
-    .datatable-top>nav:last-child,
-    .datatable-top>div:not(first-child) {
-        float: right;
-    }
-
     .datatable-top::after,
     .datatable-bottom::after {
         clear: both;
@@ -38,27 +28,27 @@
         display: table;
     }
 
-    .datatable-selector {
+    .datatable-selector,
+    .datatable-input {
         padding: 6px;
     }
 
-    .datatable-input {
-        padding: 6px 12px;
+    .datatable-top {
+        display: flex;
+        justify-content: space-between;
+        max-width: 500px;
     }
 
-    /* Styles for screens smaller than 600px (phones) */
-    @media only screen and (max-width: 600px) {
+    @media only screen and (max-width: 900px) {
         .datatable-top {
-            display: flex !important;
-            justify-content: center !important;
+            flex-wrap: wrap;
+            justify-content: center;
         }
     }
 
-    /* Styles for screens between 600px and 900px (tablets) */
-    @media only screen and (min-width: 600px) and (max-width: 900px) {
+    @media only screen and (max-width: 375px) {
         .datatable-top {
-            display: flex !important;
-            justify-content: center !important;
+            max-width: 100%;
         }
     }
 </style>
