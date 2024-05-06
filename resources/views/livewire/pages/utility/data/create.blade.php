@@ -53,11 +53,11 @@
     </div>
     <div class="row">
         <div class="mb-3 col-12 col-sm-6 col-md-9 col-lg-6 col-xl-6 form-floating">
-            <select name="" id="" class="form-select @error('plan') is-invalid @enderror"
+            <select class="form-select @error('plan') is-invalid @enderror"
                 wire:model.live="plan" wire:target="dataType" wire:loading.attr="disabled">
-                <option value=""></option>
+                <option></option>
                 @foreach ($plans as $__plan)
-                    <option value="{{ $__plan->data_id }}">{{ $__plan->size }} {{ $__plan->type->name }} = ₦
+                    <option value="{{ $__plan->data_id }}" {{ ($plan && $plan === $__plan->data_id) ? 'selected' : '' }}>{{ $__plan->size }} {{ $__plan->type->name }} = ₦
                         {{ number_format($__plan->amount, 1) }} {{ $__plan->validity }}</option>
                 @endforeach
             </select>
