@@ -17,6 +17,7 @@ class Index extends Component
     public function mount()
     {
         $this->authorize('view administrators');
+         
     }
     
     public function render()

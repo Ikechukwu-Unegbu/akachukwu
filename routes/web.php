@@ -9,6 +9,7 @@ use App\Http\Controllers\V1\Utilities\ElectricityController;
 use App\Http\Controllers\V1\Utilities\TVController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
