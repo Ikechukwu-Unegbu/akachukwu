@@ -84,9 +84,11 @@ class Create extends Component
         $beneficiary = Beneficiary::find($id);
         $this->phone_number = $beneficiary->beneficiary;
         $meta = json_decode($beneficiary->meta_data);
-        $this->plan = $meta->data_id;
         $this->network = $meta->network_id;
         $this->dataType = $meta->type_id;
+        $plan = DataPlan::whereVendorId($this->vendor->id)->whereTypeId($meta->type_id)->whereDataId($meta->data_id)->first();
+        $this->plan = $plan?->data_id;
+        $this->amount = $plan?->amount;
         $this->beneficiary_modal = false;
         return;
     }
@@ -94,7 +96,6 @@ class Create extends Component
     public function render()
     {
         return view('livewire.pages.utility.data.create', [
-
             'networks'      =>  $this->vendor ? DataNetwork::whereVendorId($this->vendor->id)->whereStatus(true)->get() : [],
             'dataTypes'     =>  $this->vendor && $this->network ? DataType::whereVendorId($this->vendor->id)->whereNetworkId($this->network)->whereStatus(true)->get() : [],
             'plans'         =>  $this->vendor && $this->network && $this->dataType ? DataPlan::with('type')->whereVendorId($this->vendor->id)->whereNetworkId($this->network)->whereTypeId($this->dataType)->whereStatus(true)->get() : [],
