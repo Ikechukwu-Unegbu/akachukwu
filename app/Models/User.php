@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 // use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -151,6 +152,11 @@ class User extends Authenticatable
         $this->role = 'superadmin';
         $this->save();
         return true;
+    }
+
+    public function beneficiaries() : HasMany
+    {
+        return $this->hasMany(Beneficiary::class);
     }
 
 }

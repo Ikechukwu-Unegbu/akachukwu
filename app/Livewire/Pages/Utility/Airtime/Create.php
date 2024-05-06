@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Utility\Airtime;
 
+use App\Models\Beneficiary;
 use Livewire\Component;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
@@ -11,6 +12,7 @@ use App\Services\Airtime\AirtimeService;
 use App\Models\Utility\AirtimeTransaction;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\AccountBalanceService;
+use App\Services\Beneficiary\BeneficiaryService;
 
 class Create extends Component
 {
@@ -18,6 +20,7 @@ class Create extends Component
     public $vendor;
     public $amount;
     public $phone_number;
+    public $beneficiary_modal = false;
 
     public function mount()
     {
@@ -50,11 +53,27 @@ class Create extends Component
             return redirect()->route('dashboard');
         }
     }
+
+    public function beneficiary_action()
+    {
+        $this->beneficiary_modal = true;
+    }
+
+    public function beneficiary($id)
+    {
+        $beneficiary = Beneficiary::find($id);
+        $meta = json_decode($beneficiary->meta_data);
+        $this->network = $meta->network_id;
+        $this->phone_number = $beneficiary->beneficiary;
+        $this->beneficiary_modal = false;
+        return;
+    }
     
     public function render()
     {
         return view('livewire.pages.utility.airtime.create', [
             'networks'      =>  $this->vendor ? DataNetwork::whereVendorId($this->vendor->id)->whereStatus(true)->get() : [],
+            'beneficiaries' =>  BeneficiaryService::get('airtime')
         ]);
     }
 }

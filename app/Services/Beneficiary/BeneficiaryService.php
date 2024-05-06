@@ -26,7 +26,7 @@ class BeneficiaryService
 
     public static function get($type)
     {
-        $beneficiary = Beneficiary::whereUserId(Auth::id())->whereType($type)->select('beneficiary')->get();
+        $beneficiary = Beneficiary::whereUserId(Auth::id())->whereType($type)->get();
         return $beneficiary;
     }
 }
