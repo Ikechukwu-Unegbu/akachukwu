@@ -161,7 +161,9 @@
             <div class="col-lg-6 text-center">
               <h1 class="fw-bold mb-4 fs-7">Do you need support? We are here to help</h1>
               <p class="mb-5 text-info fw-medium">If you have any questions, concerns, or need support, don't hesitate to reach out to us. Click the 'Contact Us' button below, and our friendly customer support team will be happy to assist you. Your satisfaction is our priority</p>
-              <button class="btn btn-warning btn-md">Contact our expert</button>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#contactModal" class="btn btn-warning btn-md">Contact our expert</button>
+              {{-- @include('components._contact_us') --}}
+               @livewire('component.global.contact-us')
             </div>
           </div>
         </div><!-- end of .container-->
@@ -178,30 +180,30 @@
       <section class="pt-5" id="marketing">
 
         <div class="container">
-          <h1 class="fw-bold fs-6 mb-3">Marketing Strategies</h1>
-          <p class="mb-6 text-secondary">Join 40,000+ other marketers and get proven strategies on email marketing</p>
+          <h1 class="fw-bold fs-6 mb-3">We are Trusted by hundreds of 1000s </h1>
+          <p class="mb-6 text-secondary">Join 200,000+ other netizens and purchase your utilities at best rates</p>
           <div class="row">
             <div class="col-md-4 mb-4">
               <div class="card"><img class="card-img-top" src="assets/img/marketing/marketing01.png" alt="" />
                 <div class="card-body ps-0">
-                  <p class="text-secondary">By <a class="fw-bold text-decoration-none me-1" href="#">Abdullah</a>|<span class="ms-1">03 March 2019</span></p>
-                  <h3 class="fw-bold">Increasing Prosperity With Positive Thinking</h3>
+                  {{-- <p class="text-secondary">By <a class="fw-bold text-decoration-none me-1" href="#">Abdullah</a>|<span class="ms-1">03 March 2019</span></p> --}}
+                  <h5 class="fw-bold">Over 200,000 returning users</h5>
                 </div>
               </div>
             </div>
             <div class="col-md-4 mb-4">
               <div class="card"><img class="card-img-top" src="assets/img/marketing/marketing02.png" alt="" />
                 <div class="card-body ps-0">
-                  <p class="text-secondary">By <a class="fw-bold text-decoration-none me-1" href="#">Abdullah</a>|<span class="ms-1">03 March 2019</span></p>
-                  <h3 class="fw-bold">Motivation Is The First Step To Success</h3>
+                  {{-- <p class="text-secondary">By <a class="fw-bold text-decoration-none me-1" href="#">Abdullah</a>|<span class="ms-1">03 March 2019</span></p> --}}
+                  <h5 class="fw-bold">Over 30,000 Daily Transaction</h5>
                 </div>
               </div>
             </div>
             <div class="col-md-4 mb-4">
               <div class="card"><img class="card-img-top" src="assets/img/marketing/marketing03.png" alt="" />
                 <div class="card-body ps-0">
-                  <p class="text-secondary">By <a class="fw-bold text-decoration-none me-1" href="#">Abdullah</a>|<span class="ms-1">03 March 2019</span></p>
-                  <h3 class="fw-bold">Success Steps For Your Personal Or Business Life</h3>
+                  {{-- <p class="text-secondary">By <a class="fw-bold text-decoration-none me-1" href="#">Abdullah</a>|<span class="ms-1">03 March 2019</span></p> --}}
+                  <h5 class="fw-bold">Affordable, Trusted and Reliable</h5>
                 </div>
               </div>
             </div>

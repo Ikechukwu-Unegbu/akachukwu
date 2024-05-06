@@ -6,7 +6,6 @@
     </x-admin.page-title>
 
     <section class="section">
-       
          <form method="POST" id="myForm" action={{route('admin.crdt-dbt.store')}}>
             @csrf 
             <!-- Amount Input Field -->
