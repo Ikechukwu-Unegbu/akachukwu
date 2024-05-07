@@ -56,7 +56,7 @@ class ElectricityService
                 'customer_address'          =>  $customerAddress,
                 'balance_before'            =>  Auth::user()->account_balance
             ]);
-
+            
             $response = Http::withHeaders([
                 'Authorization' => "Token " . $vendor->token,
                 'Content-Type' => 'application/json',
@@ -88,7 +88,7 @@ class ElectricityService
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
                 ]);
-                BeneficiaryService::create($transaction->customer_mobile_number, 'electricity', $transaction);
+                BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
                 return response()->json([
                     'status'    =>    true,
                     'error'     =>    NULL,

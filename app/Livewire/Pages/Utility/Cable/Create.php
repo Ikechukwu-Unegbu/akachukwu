@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages\Utility\Cable;
 
 use Livewire\Component;
+use App\Models\Beneficiary;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\CablePlan;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Utility\CableTransaction;
 use App\Services\Account\AccountBalanceService;
+use App\Services\Beneficiary\BeneficiaryService;
 
 class Create extends Component
 {
@@ -21,7 +23,8 @@ class Create extends Component
 
     public $customer;
     public $validate_action = false;
-    
+    public $beneficiary_modal = false;
+
     public function mount()
     {
         $this->vendor = DataVendor::whereStatus(true)->first();
@@ -114,11 +117,28 @@ class Create extends Component
         */
     }
 
+    public function beneficiary_action()
+    {
+        $this->beneficiary_modal = true;
+    }
+
+    public function beneficiary($id)
+    {
+        $beneficiary = Beneficiary::find($id);
+        $this->iuc_number = $beneficiary->beneficiary;
+        $meta = json_decode($beneficiary->meta_data);
+        $this->cable_name = $meta->cable_id;
+        $this->cable_plan = $meta->cable_plan_id;
+        $this->beneficiary_modal = false;
+        return;
+    }
+
     public function render()
     {
         return view('livewire.pages.utility.cable.create', [
             'cables'        =>  $this->vendor ? Cable::whereVendorId($this->vendor?->id)->whereStatus(true)->get() : [],
-            'cable_plans'   =>  $this->vendor && $this->cable_name ? CablePlan::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->whereStatus(true)->get() : []
+            'cable_plans'   =>  $this->vendor && $this->cable_name ? CablePlan::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->whereStatus(true)->get() : [],
+            'beneficiaries' =>  BeneficiaryService::get('cable')
         ]);
     }
 }

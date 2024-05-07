@@ -94,7 +94,7 @@
         </div>
       </div>
     @endif
-    <button type="submit" class="btn bg-basic text-light" wire:loading.attr="disabled">
+    <button type="submit" class="btn bg-basic text-light" wire:loading.attr="disabled" wire:target='submit'>
         <span wire:loading.remove wire:target='submit'> Continue</span>
         <span wire:loading wire:target="submit">
             <i class="fa fa-spinner fa-spin"></i> Please wait...
