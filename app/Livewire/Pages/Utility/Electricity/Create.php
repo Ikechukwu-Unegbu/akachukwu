@@ -3,6 +3,7 @@
 namespace App\Livewire\Pages\Utility\Electricity;
 
 use Livewire\Component;
+use App\Models\Beneficiary;
 use Livewire\Attributes\Rule;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\Electricity;
@@ -11,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
+use App\Services\Beneficiary\BeneficiaryService;
 use App\Services\Electricity\ElectricityService;
 
 class Create extends Component
@@ -32,7 +34,7 @@ class Create extends Component
     public $customer_name;
     public $customer_address;
     public $validate_action = false;
-
+    public $beneficiary_modal = false;
 
     public function mount()
     {
@@ -130,10 +132,28 @@ class Create extends Component
         }
     }
 
+    public function beneficiary_action()
+    {
+        $this->beneficiary_modal = true;
+    }
+
+    public function beneficiary($id)
+    {
+        $beneficiary = Beneficiary::find($id);
+        $this->meter_number = $beneficiary->beneficiary;
+        $meta = json_decode($beneficiary->meta_data);
+        $this->disco_name = $meta->disco_id;
+        $this->meter_type = $meta->meter_type_id;
+        $this->customer_phone_number = $meta->customer_mobile_number;
+        $this->beneficiary_modal = false;
+        return;
+    }
+
     public function render()
     {
         return view('livewire.pages.utility.electricity.create', [
-            'electricity' => $this->vendor ? Electricity::whereVendorId($this->vendor?->id)->whereStatus(true)->get() : []
+            'electricity' => $this->vendor ? Electricity::whereVendorId($this->vendor?->id)->whereStatus(true)->get() : [],
+            'beneficiaries' =>  BeneficiaryService::get('electricity')
         ]);
     }
 }

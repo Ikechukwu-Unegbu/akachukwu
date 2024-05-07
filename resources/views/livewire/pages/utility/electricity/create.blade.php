@@ -52,17 +52,22 @@
                 @error('customer_phone_number')<span style="font-size: 15px" class="text-danger">  {{ $message }} </span>@enderror
             </div>
         </div>      
-        
-        
-        {{-- @if (!$validate_action)
-            <button type="button" class="btn bg-basic text-light" wire:loading.attr="disabled" wire:click.prevent="validateMeterNumber">
-                <span wire:loading.remove wire:target='validateMeterNumber'> Validate Meter Number</span>
-                <span wire:loading wire:target="validateMeterNumber">
-                    <i class="fa fa-spinner fa-spin"></i> Validating...
-                </span>
-            </button>
-        @endif --}}
-
+        @if(count($beneficiaries))
+        <div class="row">
+            <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
+                <a href="javascript:void(0)" wire:click='beneficiary_action' class="beneficiary-link">Click Here to Select a Beneficiary</a>
+            </div>
+        </div>
+    
+        <div id="modal" class="modal {{ $beneficiary_modal ? 'd-inline' : 'd-none' }}" wire:target='beneficiary'>
+            <div class="modal-content">
+                @foreach ($beneficiaries as $__beneficiary)
+                    <a href="javascript:void(0)" class="link" wire:click="beneficiary({{ $__beneficiary->id }})">{{ $__beneficiary->beneficiary }}</a>
+                    {!! !$loop->last ? '<hr />' : '' !!}
+                @endforeach
+            </div>
+          </div>
+        @endif
         @if ($validate_action)
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
@@ -81,7 +86,7 @@
         </div>
         @endif
         
-        <button type="submit" class="btn bg-basic text-light" wire:loading.attr="disabled">
+        <button type="submit" class="btn bg-basic text-light" wire:loading.attr="disabled" wire:target='submit'>
             <span wire:loading.remove wire:target='submit'> {{ $validate_action ? 'Continue' : 'Validate Meter Number' }} </span>
             <span wire:loading wire:target="submit">
                 <i class="fa fa-spinner fa-spin"></i> {{ $validate_action ? 'Please wait...' : 'Validating...' }}
@@ -90,3 +95,21 @@
         
     </form>
 </div>
+@push('scripts')
+    <script>
+        var modal = document.getElementById("modal");
+        var span = document.getElementsByClassName("close")[0];
+        
+        span.onclick = function() {
+            modal.classList.remove("d-inline");
+            modal.classList.add("d-none");
+        }
+
+        window.onclick = function(event) {
+        if (event.target == modal) {
+                modal.classList.remove("d-inline");
+                modal.classList.add("d-none");
+            }
+        }
+    </script>
+@endpush
