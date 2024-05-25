@@ -29,7 +29,7 @@
             <div class="row">
                 <div class="mb-3 col-12 col-lg-4 col-xl-4 col-md-4">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body text-center">
                             <div class="card-content">
                                 <p>Wallet Balance</p>
                                 <h3>₦ {{ number_format(auth()->user()->account_balance, 2) }}</h3>
@@ -40,7 +40,7 @@
 
                 <div class="mb-3 col-12 col-lg-4 col-xl-4 col-md-4">
                     <div class="card">
-                        <div class="card-body">
+                        <div class="card-body text-center">
                             <div class="card-content">
                                 <p>Referral Bonus</p>
                                 <h3>₦ 0.0</h3>
@@ -63,12 +63,54 @@
         </div>
 
         <div class="dashboard-container">
+            <h1>Services</h1>
+            <div class="row">
+                <div class="mb-3 col-6 col-md-3">
+                    <a href="{{ route('airtime.index') }}">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6>Buy Airtime</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="mb-3 col-6 col-md-3">
+                    <a href="{{ route('data.index') }}">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6>Buy Data</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="mb-3 col-6 col-md-3">
+                    <a href="{{ route('cable.index') }}">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6>Electricity</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="mb-3 col-6 col-md-3">
+                    <a href="{{ route('electricity.index') }}">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6>Cable</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-container">
             <h1>Transaction History</h1>
             <div class="row">
                 <div class="mb-3 col-6 col-md-4">
                     <a href="{{ route('user.transaction.airtime') }}">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <h6>Airtime Transactions</h6>
                             </div>
                         </div>
@@ -77,7 +119,7 @@
                 <div class="mb-3 col-6 col-md-4">
                     <a href="{{ route('user.transaction.data') }}">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <h6>Data Transactions</h6>
                             </div>
                         </div>
@@ -86,7 +128,7 @@
                 <div class="mb-3 col-6 col-md-4">
                     <a href="{{ route('user.transaction.electricity') }}">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <h6>Electricity Transactions</h6>
                             </div>
                         </div>
@@ -95,7 +137,7 @@
                 <div class="mb-3 col-6 col-md-4">
                     <a href="{{ route('user.transaction.cable') }}">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <h6>Cable Transactions</h6>
                             </div>
                         </div>
@@ -104,15 +146,12 @@
                 <div class="mb-3 col-6 col-md-4">
                     <a href="{{ route('user.transaction.wallet') }}">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body text-center">
                                 <h6>Wallet Summary</h6>
                             </div>
                         </div>
                     </a>
                 </div>
-            </div>
-            <div class="mt-4 row">
-
             </div>
         </div>
 

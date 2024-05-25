@@ -131,13 +131,16 @@
 
                     </ul>
                     <div class="d-flex ms-lg-4">
-                        <a class="btn btn-warning ms-3"
+                        <a href="{{ auth()->user()->dashboard() }}" class="btn btn-outline-warning ms-3">
+                            Dashboard
+                        </a>
+                        <a class="btn btn-outline-warning ms-3"
                             onclick="event.preventDefault();document.getElementById('logout-form').submit();">
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
                             Logout
-                        </a>
+                        </a>                       
                     </div>
                 </div>
                 @endauth

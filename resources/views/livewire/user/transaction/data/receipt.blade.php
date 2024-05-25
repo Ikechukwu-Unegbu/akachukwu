@@ -23,7 +23,7 @@
                     <div class="text-right tm_list_desc">{{ $data->plan_name }}</div>
                 </li>
 
-                <li class="d-flex justify-content-between">
+                {{-- <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Amount:</div>
                     <div class="text-right tm_list_desc">₦ {{ $data->amount }}</div>
                 </li>
@@ -36,7 +36,7 @@
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">New Balance:</div>
                     <div class="text-right tm_list_desc"> {{ $data->balance_after ? '₦ ' . $data->balance_after : 'N/A' }}</div>
-                </li>
+                </li> --}}
 
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Status:</div>

@@ -43,7 +43,7 @@
                     <div class="text-right tm_list_desc">{{ $electricity->customer_address }}</div>
                 </li>
 
-                <li class="d-flex justify-content-between">
+                {{-- <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Previous Balance:</div>
                     <div class="text-right tm_list_desc">₦ {{ $electricity->balance_before }}</div>
                 </li>
@@ -51,7 +51,7 @@
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">New Balance:</div>
                     <div class="text-right tm_list_desc"> {{ $electricity->balance_after ? '₦ ' . $electricity->balance_after : 'N/A' }}</div>
-                </li>
+                </li> --}}
 
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Status:</div>

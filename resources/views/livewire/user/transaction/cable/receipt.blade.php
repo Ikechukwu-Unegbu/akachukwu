@@ -19,16 +19,21 @@
                 </li>
 
                 <li class="d-flex justify-content-between">
-                    <div class="tm_list_title">Amount:</div>
+                    <div class="tm_list_title">Plan Size:</div>
                     <div class="text-right tm_list_desc">₦ {{ $cable->amount }}</div>
                 </li>
+
+                {{-- <li class="d-flex justify-content-between">
+                    <div class="tm_list_title">Amount:</div>
+                    <div class="text-right tm_list_desc">₦ {{ $cable->amount }}</div>
+                </li> --}}
 
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Customer:</div>
                     <div class="text-right tm_list_desc">{{ $cable->customer_name }}</div>
                 </li>
 
-                <li class="d-flex justify-content-between">
+                {{-- <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Previous Balance:</div>
                     <div class="text-right tm_list_desc">₦ {{ $cable->balance_before }}</div>
                 </li>
@@ -36,7 +41,7 @@
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">New Balance:</div>
                     <div class="text-right tm_list_desc"> {{ $cable->balance_after ? '₦ ' . $cable->balance_after : 'N/A' }}</div>
-                </li>
+                </li> --}}
 
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Status:</div>

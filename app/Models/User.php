@@ -159,4 +159,9 @@ class User extends Authenticatable
         return $this->hasMany(Beneficiary::class);
     }
 
+    public function virtualAccounts() : HasMany
+    {
+        return $this->hasMany(VirtualAccount::class);
+    }
+
 }
