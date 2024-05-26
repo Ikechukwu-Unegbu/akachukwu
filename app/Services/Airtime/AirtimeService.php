@@ -80,7 +80,8 @@ class AirtimeService
                 $transaction->update([
                     'balance_after'     =>    self::$accountBalance->getAccountBalance(),
                     'status'            =>    true,
-                    'api_data_id'       =>    $response->ident
+                    'api_data_id'       =>    $response->ident,
+                    'api_response'      =>    $response->api_response ?? NULL
                 ]);
 
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);

@@ -10,7 +10,7 @@
               <p class="mb-6 lead text-secondary">
                 Welcome to VasTel, your one-stop destination for seamless access to airtime, internet data, online result checking, cable TV subscriptions, and more. Experience the ease of managing your essential services with just a few taps. Join us and simplify your digital lifestyle today
               </p>
-              <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="{{route('login')}}" role="button">Get started</a><a class="btn btn-link text-warning fw-medium" href="#!" role="button" data-bs-toggle="modal" data-bs-target="#popupVideo"><span class="fas fa-play me-2"></span>Watch the video </a></div>
+              <div class="text-center text-md-start"><a class="btn btn-warning me-3 btn-lg" href="{{route('login')}}" role="button">Login</a><a class="btn btn-link text-warning fw-medium" href="#!" role="button" data-bs-toggle="modal" data-bs-target="#popupVideo"><span class="fas fa-play me-2"></span>Watch the video </a></div>
             </div>
             <div class="col-md-6 text-end"><img class="pt-7 pt-md-0 img-fluid" src="{{asset('pub-pages\assets\img\hero\hero-img.png')}}" alt="" /></div>
           </div>

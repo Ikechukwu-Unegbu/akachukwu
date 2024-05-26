@@ -107,8 +107,8 @@
                         </li>
                     </ul>
                     <div class="d-flex ms-lg-4">
-                        <a class="btn btn-secondary-outline" href="{{ route('login') }}">Sign In</a>
-                        <a class="btn btn-warning ms-3" href="{{ route('register') }}">Sign Up</a>
+                        <a class="btn btn-secondary-outline" href="{{ route('login') }}">Login</a>
+                        <a class="btn btn-warning ms-3" href="{{ route('register') }}">Register</a>
                     </div>
                 </div>
                 @endguest
