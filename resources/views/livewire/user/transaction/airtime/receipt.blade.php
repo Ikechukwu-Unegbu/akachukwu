@@ -18,11 +18,11 @@
                     <div class="text-right tm_list_desc">{{ $airtime->network_name }}</div>
                 </li>
 
-                <li class="d-flex justify-content-between">
+                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Amount:</div>
                     <div class="text-right tm_list_desc">₦ {{ $airtime->amount }}</div>
                 </li>
-
+                {{--
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Previous Balance:</div>
                     <div class="text-right tm_list_desc">₦ {{ $airtime->balance_before }}</div>
@@ -31,7 +31,7 @@
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">New Balance:</div>
                     <div class="text-right tm_list_desc"> {{ $airtime->balance_after ? '₦ ' . $airtime->balance_after : 'N/A' }}</div>
-                </li>
+                </li> --}}
 
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Status:</div>

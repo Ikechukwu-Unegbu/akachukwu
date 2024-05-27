@@ -5,6 +5,7 @@ namespace App\Services\Electricity;
 use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\Electricity;
+use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
 use App\Models\Data\DataTransaction;
 use Illuminate\Support\Facades\Auth;
@@ -81,8 +82,16 @@ class ElectricityService
                 ], 401)->getData();
             }
                
-            if (isset($response->Status) && $response->Status == 'successful') {    
-                self::$account->transaction($response->amount);    
+            if (isset($response->Status) && $response->Status == 'successful') {
+
+                $amount = $response->amount;
+
+                if (auth()->user()->isReseller()) {
+                    $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
+                }
+
+                self::$account->transaction($amount);
+
                 $transaction->update([
                     'balance_after'     =>    self::$account->getAccountBalance(),
                     'status'            =>    true,

@@ -40,6 +40,7 @@ class User extends Authenticatable
         'bonus_balance',
         'remember_token',
         'phone',
+        'user_level'
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -112,6 +113,11 @@ class User extends Authenticatable
         return auth()->user()->role == 'user';
     }
 
+    public function isReseller()
+    {
+        return auth()->user()->user_level == 'reseller';
+    }
+
     public function getProfilePictureAttribute()
     {
         if ($this->image && Storage::disk('avatars')->exists($this->image)) {
@@ -157,6 +163,11 @@ class User extends Authenticatable
     public function beneficiaries() : HasMany
     {
         return $this->hasMany(Beneficiary::class);
+    }
+
+    public function virtualAccounts() : HasMany
+    {
+        return $this->hasMany(VirtualAccount::class);
     }
 
 }

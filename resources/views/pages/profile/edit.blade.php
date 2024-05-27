@@ -8,6 +8,8 @@
     
     @livewire('profile.profile-form', [App\Models\User::find(auth()->user()->id)])
 
+    @livewire('profile.kyc-form', [App\Models\User::find(auth()->user()->id)])
+
      @livewire('profile.update-password-form', [App\Models\User::find(auth()->user()->id)])
 
     @livewire('profile.delete-account', [App\Models\User::find(auth()->user()->id)])

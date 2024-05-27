@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Auth\Events\Registered;
+use App\Providers\RouteServiceProvider;
+use App\Services\Payment\MonnifyService;
 
 class RegisteredUserController extends Controller
 {
@@ -43,13 +45,23 @@ class RegisteredUserController extends Controller
             'terms_and_conditions'=>['required']
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'username' => $request->username,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'role'  =>  'user'
-        ]);
+        try {
+            DB::transaction(function () use($request) {
+                $user = User::create([
+                    'name' => $request->name,
+                    'username' => $request->username,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                    'role'  =>  'user'
+                ]);
+        
+                MonnifyService::createVirtualAccount($user);
+            });
+            session()->flash('success', 'Your account has been created successfully. Please proceed to login.');
+            return redirect(route('login'));
+        } catch (\Throwable $th) {
+            
+        }
 
         // event(new Registered($user));
 
@@ -57,6 +69,6 @@ class RegisteredUserController extends Controller
 
         // return redirect(RouteServiceProvider::HOME);
 
-        return redirect(route('login'));
+        
     }
 }

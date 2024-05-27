@@ -17,7 +17,7 @@
             </div>
             <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'Name', 'Username', 'Account Balance', 'Joined', 'Action']" />
+                    <x-admin.table-header :headers="['#', 'Name', 'Username', 'Account Balance', 'Level', 'Joined', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($users as $user)
                             <tr>
@@ -25,13 +25,15 @@
                                 <td>{{ $user->name }}</td>
                                 <td>{{ $user->username }}</td>
                                 <td>₦ {{ $user->account_balance }}</td>
+                                <td>{{ Str::title($user->user_level) }}</td>
                                 <td>{{ $user->created_at->format('d M, Y') }}</td>
                                 <td>
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             <li><a href="{{ route('admin.hr.user.show', $user->username) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
-                                             <li><a href="{{ route('admin.crd-dbt', ['username' => $user->username]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i>Top</a></li>
+                                            <li><a href="{{ route('admin.crd-dbt', ['username' => $user->username]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i>Top</a></li>
+                                            <li><a href="{{ route('admin.hr.user.upgrade', $user->username) }}" class="dropdown-item text-success"><i class="bx bx-vertical-top"></i>Upgrade</a></li>
                                         </ul>
                                         
                                     </div>
@@ -39,7 +41,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5">No records available</td>
+                                <td colspan="6">No records available</td>
                             </tr>
                         @endforelse
                     </x-admin.table-body>

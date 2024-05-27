@@ -12,12 +12,16 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Payment\MonnifyTransaction;
+use App\Models\VirtualAccount;
 use App\Services\Account\AccountBalanceService;
 
 class MonnifyService implements Payment
 {
 
     public static $accountBalance;
+
+    private CONST  LIVE = "https://api.monnify.com/";
+    private CONST TEST = "https://sandbox.monnify.com/";
 
     public function isGatewayAvailable(): bool
     {
@@ -31,7 +35,7 @@ class MonnifyService implements Payment
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => "Basic " . base64_encode(static::monnifyDetails('public_key') . ':' . static::monnifyDetails('key')),
-            ])->post('https://sandbox.monnify.com/api/v1/auth/login');
+            ])->post(self::getUrl() . 'api/v1/auth/login');
 
             $response = $response->object();
 
@@ -61,7 +65,7 @@ class MonnifyService implements Payment
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'bearer ' . $this->token(),
-            ])->post('https://sandbox.monnify.com/api/v1/merchant/transactions/init-transaction', [
+            ])->post(self::getUrl() . 'api/v1/merchant/transactions/init-transaction', [
                 'amount'                =>   $transaction->amount,
                 'customerName'          =>   $user->name,
                 'customerEmail'         =>   $user->email,
@@ -116,7 +120,7 @@ class MonnifyService implements Payment
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'bearer ' . static::token(),
-            ])->post('https://sandbox.monnify.com/api/v2/disbursements/single', [
+            ])->post(self::getUrl() . 'api/v2/disbursements/single', [
                 'amount'                    =>  $transaction->amount,
                 'reference'                 =>  $transaction->reference_id,
                 'narration'                 =>  $transaction->narration,
@@ -134,7 +138,7 @@ class MonnifyService implements Payment
             return $response->object();
 
         } catch (\Exception $e) {
-            dd($e->getMessage());
+           // dd($e->getMessage());
         }
     }
 
@@ -165,7 +169,7 @@ class MonnifyService implements Payment
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'bearer ' . $this->token(),
-        ])->get("https://sandbox.monnify.com/api/v2/transactions/$transactionId");
+        ])->get(self::getUrl() . "api/v2/transactions/$transactionId");
 
         $response = $response->object();
 
@@ -178,7 +182,106 @@ class MonnifyService implements Payment
         return false;
     }
 
+    public static function createVirtualAccount($user)
+    {
+        try {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . self::token(),
+            ])->post(self::getUrl() . "api/v2/bank-transfer/reserved-accounts", [
+                "accountReference"      =>  self::generateVirtualAccountReference(),
+                "accountName"           =>  $user->name,
+                "currencyCode"          =>  "NGN",
+                "contractCode"          =>  static::monnifyDetails('contract_code'),
+                "customerEmail"         =>  $user->email,
+                "customerName"          =>  $user->name,
+                "getAllAvailableBanks"  =>  true,
+            ]);
 
+            $response = $response->object();
+
+            if ($response->requestSuccessful) {
+                $data = [];
+                foreach ($response->responseBody->accounts as $account) {
+                    $data [] = [
+                        "reference" => $response->responseBody->accountReference,
+                        "bank_code" => $account->bankCode,
+                        "bank_name" => $account->bankName,
+                        "account_name" => $account->accountName,
+                        "account_number" => $account->accountNumber,
+                        "reservation_reference" => $response->responseBody->reservationReference,
+                        "reserved_account_type" => $response->responseBody->reservedAccountType,
+                        "restrict_payment_source" => $response->responseBody->restrictPaymentSource,
+                        "collection_channel" => $response->responseBody->collectionChannel,
+                        "status" => $response->responseBody->status,
+                        "created_on" => $response->responseBody->createdOn,
+                        "status" => $response->responseBody->status,
+                        "created_at" => now(),
+                        "updated_at" => now(),
+                        "user_id" => $user->id
+                    ];
+                }
+
+                VirtualAccount::insert($data);                
+                return true;
+            }
+    
+            return false;
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
+
+
+    }
+
+    public static function verifyKyc($kyc)
+    {
+        try {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . self::token(),
+            ])->put(self::getUrl() . "api/v1/bank-transfer/reserved-accounts/" . self::getAccountReference() . "/kyc-info", [
+                "bvn" => $kyc
+            ]);
+
+            $response = $response->object();
+
+            
+            if ($response->requestSuccessful) {
+                self::updateAccountKyc($response->responseBody->bvn);
+                return response()->json([
+                    'status'    =>    true,
+                    'error'     =>    NULL,
+                    'message'   =>    "BVN linked to your account successfully.",
+                ], 200)->getData();
+            }
+
+
+            if (!$response->requestSuccessful) {
+                return response()->json([
+                    'status'  => false,
+                    'error'   => 'Invalid BVN.',
+                    'message' => "Invalid BVN provided."
+                ], 401)->getData();
+            }
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
+
+    }
+
+    public static function getAccountReference()
+    {
+        return Auth::user()->virtualAccounts->first()?->reference;
+    }
+
+    public static function updateAccountKyc($bvn)
+    {
+        Auth::user()->virtualAccounts()->update(['bvn' => $bvn]);
+    }
+    
     private static function monnifyDetails($colunm)
     {
         return PaymentGateway::whereName('Monnify')->first()->$colunm ?? NULL;
@@ -195,5 +298,22 @@ class MonnifyService implements Payment
         // Filter out characters that are not alphanumeric, hyphens, or underscores
         $referenceId = preg_replace('/[^a-zA-Z0-9_-]/', '', $referenceId);
         return $referenceId;
+    }
+
+    public static function generateVirtualAccountReference(): string
+    {
+        $referenceId = Str::random(15);
+        // Filter out characters that are not alphanumeric, hyphens, or underscores
+        $referenceId = preg_replace('/[^a-zA-Z0-9_-]/', '', $referenceId);
+        return $referenceId;
+    }
+
+    public static function getUrl()
+    {
+        if (app()->environment() == 'production') {
+            return static::LIVE;
+        }
+
+        return static::TEST;
     }
 }

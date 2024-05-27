@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use App\Services\Beneficiary\BeneficiaryService;
+use App\Services\CalculateDiscount;
 
 class AirtimeService 
 {
@@ -75,12 +76,17 @@ class AirtimeService
 
             if (isset($response->Status) && $response->Status == 'successful') {
 
+                if (auth()->user()->isReseller()) {
+                    $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
+                }
+
                 self::$accountBalance->transaction($amount);
 
                 $transaction->update([
                     'balance_after'     =>    self::$accountBalance->getAccountBalance(),
                     'status'            =>    true,
-                    'api_data_id'       =>    $response->ident
+                    'api_data_id'       =>    $response->ident,
+                    'api_response'      =>    $response->api_response ?? NULL
                 ]);
 
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);

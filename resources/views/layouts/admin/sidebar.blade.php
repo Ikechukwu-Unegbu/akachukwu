@@ -42,6 +42,7 @@
     <li class="nav-heading">Human Resource Mgt.</li>
     <x-admin.dropdown title="HR. Mgt." icon="bx-user-plus">
       @can('view users')
+      <x-admin.dropdown-item title="Resellers" link="{{ route('admin.hr.reseller') }}" />
       <x-admin.dropdown-item title="Users" link="{{ route('admin.hr.user') }}" />
       @endcan
       @can('view administrators')
