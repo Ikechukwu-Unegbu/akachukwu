@@ -207,7 +207,7 @@
             wallet.textContent = '*******';
             isHidden = false;
             } else {
-                wallet.textContent = '₦ ' + {{ number_format(auth()->user()->account_balance, 2) }}; // Replace $100 with the actual balance value
+                wallet.textContent = '₦ ' + {{ number_format(auth()->user()->account_balance, 2) }};
                 isHidden = true;
             }
         });        

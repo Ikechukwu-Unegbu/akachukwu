@@ -40,6 +40,7 @@ class User extends Authenticatable
         'bonus_balance',
         'remember_token',
         'phone',
+        'user_level'
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -110,6 +111,11 @@ class User extends Authenticatable
     public function isUser()
     {
         return auth()->user()->role == 'user';
+    }
+
+    public function isReseller()
+    {
+        return auth()->user()->user_level == 'reseller';
     }
 
     public function getProfilePictureAttribute()

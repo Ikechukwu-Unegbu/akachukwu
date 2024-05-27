@@ -85,12 +85,19 @@ Route::group(['prefix' => 'admin'], function () {
         ## HR - User
         Route::get('hr/users', App\Livewire\Admin\Hr\User\Index::class)->name('admin.hr.user');
         Route::get('hr/user/{user:username}/show', App\Livewire\Admin\Hr\User\Show::class)->name('admin.hr.user.show');
+        Route::get('hr/user/{user:username}/upgrade', App\Livewire\Admin\Hr\User\Upgrade::class)->name('admin.hr.user.upgrade');
         Route::get('crd-dbt', CrdDbtCreate::class)->name('admin.crd-dbt');
         Route::post('admin/crdt-dbt', [UserCrdDbtController::class, 'store'])->name('admin.crdt-dbt.store');
 
         ## HR - Administrators
         Route::get('hr/administrators', App\Livewire\Admin\Hr\Administrator\Index::class)->name('admin.hr.administrator');
         Route::get('hr/administrator/{user:username}/show', App\Livewire\Admin\Hr\Administrator\Show::class)->name('admin.hr.administrator.show');
+
+        ## HR - Resellers
+        Route::get('hr/resellers', App\Livewire\Admin\Hr\Reseller\Index::class)->name('admin.hr.reseller');
+        Route::get('hr/resellers/create', App\Livewire\Admin\Hr\Reseller\Create::class)->name('admin.hr.reseller.create');
+        Route::get('hr/resellers/{reseller:id}/edit', App\Livewire\Admin\Hr\Reseller\Edit::class)->name('admin.hr.reseller.edit');
+        Route::get('hr/resellers/{reseller:id}/delete', App\Livewire\Admin\Hr\Reseller\Delete::class)->name('admin.hr.reseller.delete');
 
         ## Settings Routes
         ## Settings - Role
