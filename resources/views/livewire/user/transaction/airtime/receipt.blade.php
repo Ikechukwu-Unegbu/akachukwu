@@ -36,7 +36,7 @@
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Status:</div>
                     <div class="text-right tm_list_desc">
-                        {{ $airtime->status ? 'Successful' : 'Failed' }}
+                        {{ $airtime->status ? 'Successful' : 'Failed (Refunded)' }}
                     </div>
                 </li>
                 

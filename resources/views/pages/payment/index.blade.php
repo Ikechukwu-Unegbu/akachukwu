@@ -69,15 +69,13 @@
                             <div class="row">
                                 @foreach ($accounts as $__account)
                                     <div class="mb-3 col-6 col-md-6 col-12">
-                                        <a href="{{ route('airtime.index') }}">
-                                            <div class="card">
-                                                <div class="card-body">
-                                                    <h6>Account Number: {{ $__account->account_number }}</h6>
-                                                    <h6>Account Name: {{ $__account->account_name }}</h6>
-                                                    <h6>Bank Name: {{ $__account->bank_name }}</h6>
-                                                </div>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h6>Account Number: {{ $__account->account_number }}</h6>
+                                                <h6>Account Name: {{ $__account->account_name }}</h6>
+                                                <h6>Bank Name: {{ $__account->bank_name }}</h6>
                                             </div>
-                                        </a>
+                                        </div>
                                     </div>
                                 @endforeach
                             </div>

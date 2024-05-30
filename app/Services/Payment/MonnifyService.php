@@ -4,6 +4,7 @@ namespace App\Services\Payment;
 
 use Exception;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
 use Illuminate\Support\Collection;
 use App\Interfaces\Payment\Payment;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Payment\MonnifyTransaction;
 use App\Models\VirtualAccount;
+use App\Models\User;
 use App\Services\Account\AccountBalanceService;
 
 class MonnifyService implements Payment
@@ -190,7 +192,7 @@ class MonnifyService implements Payment
                 'Authorization' => 'Bearer ' . self::token(),
             ])->post(self::getUrl() . "api/v2/bank-transfer/reserved-accounts", [
                 "accountReference"      =>  self::generateVirtualAccountReference(),
-                "accountName"           =>  $user->name,
+                "accountName"           =>  ucwords($user->username),
                 "currencyCode"          =>  "NGN",
                 "contractCode"          =>  static::monnifyDetails('contract_code'),
                 "customerEmail"         =>  $user->email,
@@ -231,8 +233,6 @@ class MonnifyService implements Payment
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
         }
-
-
     }
 
     public static function verifyKyc($kyc)
@@ -246,7 +246,6 @@ class MonnifyService implements Payment
             ]);
 
             $response = $response->object();
-
             
             if ($response->requestSuccessful) {
                 self::updateAccountKyc($response->responseBody->bvn);
@@ -270,6 +269,76 @@ class MonnifyService implements Payment
             Log::error($th->getMessage());
         }
 
+    }
+
+    public static function webhook(Request $request)
+    {
+        try {
+            Log::info('Monnify Webhook Payload: ', $request->all());
+            // Verify the webhook signature
+            $signature = $request->header('monnify-signature');
+            $calculatedSignature = hash_hmac('sha512', json_encode($request->all()), static::monnifyDetails('key'));
+
+            if ($signature !== $calculatedSignature) {
+                return response()->json(['message' => 'Invalid signature'], 400);
+            } 
+
+            // Handle the payment notification
+            $eventType = $request->eventType;
+            $eventData = $request->eventData;
+
+            if ($eventType === 'SUCCESSFUL_TRANSACTION') {
+
+                $amountPaid = $eventData['amountPaid'];
+                $customerEmail = $eventData['customer']['email'];
+                $metaData = $eventData['metaData'];
+                $transactionReference = $eventData['transactionReference'];
+                $paymentReference = $eventData['paymentReference'];
+                $paymentStatus = $eventData['paymentStatus'];
+
+                // Find the user and update their balance
+                $user = User::where('email', $customerEmail)->first();
+
+                if ($user) {
+
+                    $transaction = MonnifyTransaction::create([
+                        'reference_id'  => $paymentReference,
+                        'trx_ref'       => $transactionReference,
+                        'user_id'       => $user->id,
+                        'amount'        => $amountPaid,
+                        'currency'      => config('app.currency', 'NGN'),
+                        'redirect_url'  => config('app.url'),
+                        'meta'          => json_encode($metaData),
+                        'status'        => $paymentStatus == 'PAID' ? true : false
+                    ]);
+
+                    $user->setAccountBalance($amountPaid);
+
+                    return response()->json([
+                        'status'   =>    true,
+                        'error'    =>    NULL,
+                        'message'  =>    "Transaction successful",
+                        'response' =>    $transaction
+                    ], 200)->getData();
+                }
+
+                return response()->json([
+                    'status'   =>    false,
+                    'error'    =>    "User not found",
+                    'message'  =>    "Transaction not successful",
+                    'response' =>    []
+                ], 200)->getData();
+            }
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response()->json([
+                'status'   =>    false,
+                'error'    =>    "Server Error",
+                'message'  =>    "",
+                'response' =>    []
+            ], 200)->getData();
+        }
     }
 
     public static function getAccountReference()

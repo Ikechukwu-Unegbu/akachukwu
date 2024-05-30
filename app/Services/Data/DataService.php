@@ -49,9 +49,10 @@ class DataService
                 'validity'           =>  $plan->validity,
                 'mobile_number'      =>  $mobile_number,
                 'balance_before'     =>  Auth::user()->account_balance,
+                'balance_after'      =>  Auth::user()->account_balance,
                 'plan_network'       =>  $network->name,
                 'plan_name'          =>  $plan->size,
-                'plan_amount'        =>  $plan->amount,
+                'plan_amount'        =>  $plan->amount
             ]);
 
             $response = Http::withHeaders([

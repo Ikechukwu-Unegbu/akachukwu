@@ -50,6 +50,7 @@ class AirtimeService
                 'amount'            =>  $amount,
                 'mobile_number'     =>  $mobile_number,
                 'balance_before'    =>  Auth::user()->account_balance,
+                'balance_after'     =>  Auth::user()->account_balance
             ]);
             
             $response = Http::withHeaders([
