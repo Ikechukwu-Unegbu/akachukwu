@@ -47,6 +47,7 @@ class CableService
                 'customer_name'       =>  $customer,
                 'amount'              =>  $cable_plan->amount,
                 'balance_before'      =>  Auth::user()->account_balance,
+                'balance_after'       =>  Auth::user()->account_balance
             ]);
 
             $response = Http::withHeaders([

@@ -55,7 +55,8 @@ class ElectricityService
                 'customer_mobile_number'    =>  $customerMobile,
                 'customer_name'             =>  $customerName,
                 'customer_address'          =>  $customerAddress,
-                'balance_before'            =>  Auth::user()->account_balance
+                'balance_before'            =>  Auth::user()->account_balance,
+                'balance_after'             =>  Auth::user()->account_balance
             ]);
             
             $response = Http::withHeaders([
