@@ -279,9 +279,9 @@ class MonnifyService implements Payment
             $signature = $request->header('monnify-signature');
             $calculatedSignature = hash_hmac('sha512', json_encode($request->all()), static::monnifyDetails('key'));
 
-            // if ($signature !== $calculatedSignature) {
-            //     return response()->json(['message' => 'Invalid signature'], 400);
-            // }
+            if ($signature !== $calculatedSignature) {
+                return response()->json(['message' => 'Invalid signature'], 400);
+            } 
 
             // Handle the payment notification
             $eventType = $request->eventType;
