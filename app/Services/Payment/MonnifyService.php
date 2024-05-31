@@ -271,15 +271,25 @@ class MonnifyService implements Payment
 
     }
 
+    public static function computeRequestValidationHash(string $stringifiedData)
+    {
+        $clientSK = static::monnifyDetails('key');
+        return hash_hmac('sha512', $stringifiedData, $clientSK);
+    }
+
     public static function webhook(Request $request)
     {
         try {
-            Log::info('Monnify Webhook Payload: ', $request->all());
+            // Log::info('Monnify Webhook Payload: ', $request->all());
             // Verify the webhook signature
-            $signature = $request->header('monnify-signature');
-            $calculatedSignature = hash_hmac('sha512', json_encode($request->all()), static::monnifyDetails('key'));
+            $monnifySignature = $request->header('monnify-signature');
 
-            if ($signature !== $calculatedSignature) {
+            $stringifiedData = json_encode($request->all());
+            $payload = $request->input('eventData');
+
+            $calculatedHash = self::computeRequestValidationHash($stringifiedData);
+
+            if ($calculatedHash !== $monnifySignature) {
                 return response()->json(['message' => 'Invalid signature'], 400);
             } 
 
@@ -308,7 +318,7 @@ class MonnifyService implements Payment
                         'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
                         'redirect_url'  => config('app.url'),
-                        'meta'          => json_encode($metaData),
+                        'meta'          => $payload,
                         'status'        => $paymentStatus == 'PAID' ? true : false
                     ]);
 
