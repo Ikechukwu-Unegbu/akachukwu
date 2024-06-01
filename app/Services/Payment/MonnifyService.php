@@ -271,26 +271,28 @@ class MonnifyService implements Payment
 
     }
 
-    public static function computeRequestValidationHash(string $stringifiedData)
-    {
-        $clientSK = static::monnifyDetails('key');
-        return hash_hmac('sha512', $stringifiedData, $clientSK);
+    private static function computeSHA512TransactionHash($stringifiedData, $clientSecret) {
+        return hash_hmac('sha512', $stringifiedData, $clientSecret);
     }
 
     public static function webhook(Request $request)
     {
         try {
-            // Log::info('Monnify Webhook Payload: ', $request->all());
             // Verify the webhook signature
             $monnifySignature = $request->header('monnify-signature');
-
-            $stringifiedData = json_encode($request->all());
+            $stringifiedData = $request->getContent();
             $payload = $request->input('eventData');
 
-            $calculatedHash = self::computeRequestValidationHash($stringifiedData);
+            $calculatedHash = self::computeSHA512TransactionHash($stringifiedData, static::monnifyDetails('key'));
 
-            if ($calculatedHash !== $monnifySignature) {
-                return response()->json(['message' => 'Invalid signature'], 400);
+            // Log the raw body and hashes for debugging
+            // Log::info('Raw Payload: ' . $stringifiedData);
+            // Log::info('Computed Hash: ' . $calculatedHash);
+            // Log::info('Monnify Signature: ' . $monnifySignature);
+
+             // Verify the hash
+            if (!hash_equals($calculatedHash, $monnifySignature)) {
+                return response()->json(['message' => 'Webhook payload verification failed.'], 400);
             } 
 
             // Handle the payment notification
@@ -311,6 +313,10 @@ class MonnifyService implements Payment
 
                 if ($user) {
 
+                    if (MonnifyTransaction::where('reference_id', $paymentReference)->exists()) {
+                        return response()->json(['message' => 'Payment Already Processed'], 200);
+                    }
+
                     $transaction = MonnifyTransaction::create([
                         'reference_id'  => $paymentReference,
                         'trx_ref'       => $transactionReference,
@@ -318,7 +324,7 @@ class MonnifyService implements Payment
                         'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
                         'redirect_url'  => config('app.url'),
-                        'meta'          => $payload,
+                        'meta'          => json_encode($payload),
                         'status'        => $paymentStatus == 'PAID' ? true : false
                     ]);
 
@@ -345,7 +351,7 @@ class MonnifyService implements Payment
             return response()->json([
                 'status'   =>    false,
                 'error'    =>    "Server Error",
-                'message'  =>    "",
+                'message'  =>    $th->getMessage(),
                 'response' =>    []
             ], 200)->getData();
         }
