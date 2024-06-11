@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Admin\Hr\Reseller;
+namespace App\Livewire\Admin\Transaction\Reseller;
 
-use App\Models\ResellerDiscount;
 use Livewire\Component;
+use App\Models\ResellerDiscount;
 
 class Create extends Component
 {
@@ -28,12 +28,12 @@ class Create extends Component
 
         $this->dispatch('success-toastr', ['message' => "Reseller Discount Added Successfully"]);
         session()->flash('success', "Reseller Discount Added Successfully");
-        $this->redirectRoute('admin.hr.reseller');
+        $this->redirectRoute('admin.transaction.reseller');
     }
-
+    
     public function render()
     {
-        return view('livewire.admin.hr.reseller.create', [
+        return view('livewire.admin.transaction.reseller.create', [
             'reseller_discounts' =>    ResellerDiscount::get()->pluck('type', 'type')->toArray()
         ]);
     }

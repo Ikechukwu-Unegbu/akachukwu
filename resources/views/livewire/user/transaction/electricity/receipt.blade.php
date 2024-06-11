@@ -97,5 +97,28 @@
             </span>
             <span class="tm_btn_text">Download</span>
         </button>
+        <a href="{{ auth()->user()->dashboard() }}" id="tm_download_btn" class="tm_invoice_btn tm_color1">
+            <span class="tm_btn_icon">
+                <svg xmlns="http://www.w3.org/2000/svg" class="ionicon" viewBox="0 0 512 512">
+                    <path 
+                        d="M80 212L256 48l176 164v232a32 32 0 0 1-32 32H112a32 32 0 0 1-32-32V212z" 
+                        fill="none" 
+                        stroke="#000" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round" 
+                        stroke-width="32">
+                    </path>
+                    <path 
+                        d="M192 448V288h128v160" 
+                        fill="none" 
+                        stroke="#000" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round" 
+                        stroke-width="32">
+                    </path>
+                </svg>
+            </span>
+            <span class="tm_btn_text">Back</span>
+        </a>
     </div>
 </div>

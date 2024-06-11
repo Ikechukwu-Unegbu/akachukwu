@@ -372,3 +372,95 @@ meter_type: *Prepaid* = 1 & *Postpaid* = 2
             "id": 12
         }
     }
+
+## User PIN Endpoint
+
+    -- Creating New PIN
+
+    POST /api/pin/create HTTP/1.1
+    Content-Type: application/json
+    Authorization: Bearer 2|0q2K7QUbnT3TcQUMsyyRh4UASupLJl9XuKjotUqqe5b1832c
+    Body : {
+        "pin": 1234,
+        "pin_confirmation": 1234
+    }
+
+    Validation Response : {
+        "errors": {
+            "pin": [
+                "The pin field is required.",
+                "The pin field must be 4 digits."
+            ],
+            "pin_confirmation": [
+                "The pin confirmation field is required.",
+                "The pin confirmation field must match pin."
+            ]
+        }
+    }
+
+    Example Response : {
+        "status": true,
+        "error": null,
+        "message": "PIN created successfully."
+    }
+
+    -- Updating Pin
+
+    POST /api/pin/update HTTP/1.1
+    Content-Type: application/json
+    Authorization: Bearer 2|0q2K7QUbnT3TcQUMsyyRh4UASupLJl9XuKjotUqqe5b1832c
+    Body : {
+        "current_pin": 1234,
+        "pin": 1234,
+        "pin_confirmation": 1234
+    }
+
+    Validation Response : {
+        "message": "The current pin field is required. (and 2 more errors)",
+        "errors": {
+            "current_pin": [
+                "The current pin field is required.",
+                "The current pin field must be 4 digits.",
+                "The current PIN is incorrect."
+            ],
+            "pin": [
+                "The pin field is required.",
+                "The pin field must be 4 digits."
+            ],
+            "pin_confirmation": [
+                "The pin confirmation field is required.",
+                "The pin confirmation field must match pin."
+            ]
+        }
+    }
+
+    Example Response : {
+        "status": true,
+        "error": null,
+        "message": "PIN updated successfully."
+    }
+
+
+    -- Validating Pin on every transaction
+    POST /api/pin/validate HTTP/1.1
+    Content-Type: application/json
+    Authorization: Bearer 2|0q2K7QUbnT3TcQUMsyyRh4UASupLJl9XuKjotUqqe5b1832c
+    Body : {
+        "pin": 1234
+    }
+
+    Validation Response : {
+        "message": "The pin field is required",
+        "errors": {
+            "pin": [
+                "The pin field is required.",
+                "The pin field must be 4 digits.",
+                "The PIN provided is incorrect. Provide a valid PIN."
+            ]
+        }
+    }
+
+    Example Response : {
+        "status": true,
+        "message": "PIN validated successfully."
+    }

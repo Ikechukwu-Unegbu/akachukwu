@@ -27,6 +27,9 @@
                     <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-12">
                         <x-admin.dashboard-card title="Customers" :data=$customers_count icon="bi-people" />
                     </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-12">
+                        <x-admin.dashboard-card title="Resellers" :data=$resellers_count icon="bi-people" />
+                    </div>
                 </div>
             </div>
         </div>

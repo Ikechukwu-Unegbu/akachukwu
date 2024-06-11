@@ -18,11 +18,11 @@ class ResellerDiscount extends Model
 
     public function editRoute()
     {
-        return route('admin.hr.reseller.edit', $this->id);
+        return route('admin.transaction.reseller.edit', $this->id);
     }
 
     public function deleteRoute()
     {
-        return route('admin.hr.reseller.delete', $this->id);
+        return route('admin.transaction.reseller.delete', $this->id);
     }
 }

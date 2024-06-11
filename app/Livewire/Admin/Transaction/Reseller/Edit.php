@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Admin\Hr\Reseller;
+namespace App\Livewire\Admin\Transaction\Reseller;
 
-use App\Models\ResellerDiscount;
 use Livewire\Component;
+use App\Models\ResellerDiscount;
 
 class Edit extends Component
 {
@@ -33,11 +33,11 @@ class Edit extends Component
 
         $this->dispatch('success-toastr', ['message' => "Reseller Discount Updated Successfully"]);
         session()->flash('success', "Reseller Discount Updated Successfully");
-        $this->redirectRoute('admin.hr.reseller');
+        $this->redirectRoute('admin.transaction.reseller');
     }
-
+    
     public function render()
     {
-        return view('livewire.admin.hr.reseller.edit');
+        return view('livewire.admin.transaction.reseller.edit');
     }
 }

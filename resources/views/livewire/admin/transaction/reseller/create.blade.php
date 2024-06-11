@@ -1,8 +1,8 @@
 <div>
-    <x-admin.page-title title="Human Resource Mgt.">
+    <x-admin.page-title title="Reseller Mgt.">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
-        <x-admin.page-title-item subtitle="HR Mgt." />
-        <x-admin.page-title-item subtitle="Reseller Discounts" link="{{ route('admin.hr.reseller') }}" />
+        <x-admin.page-title-item subtitle="Transactions" />
+        <x-admin.page-title-item subtitle="Reseller Discounts" link="{{ route('admin.transaction.reseller') }}" />
         <x-admin.page-title-item subtitle="Create" status="true" />
     </x-admin.page-title>
 
@@ -41,7 +41,7 @@
                 </div>
                 <div class="card-footer">
                     <div class="text-center">
-                        <a href="{{ route('admin.hr.reseller') }}" class="btn btn-md btn-danger" wire:loading.remove wire:target="store">
+                        <a href="{{ route('admin.transaction.reseller') }}" class="btn btn-md btn-danger" wire:loading.remove wire:target="store">
                             <i class="bx bx-x-circle"></i> 
                             Cancel
                         </a>
@@ -62,5 +62,5 @@
 </div>
 
 @push('title')
-Human Resource Mgt. / Reseller Discounts / Create
+Reseller / Reseller Discounts / Create
 @endpush

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Hr\Reseller;
+namespace App\Livewire\Admin\Transaction\Reseller;
 
 use Livewire\Component;
 use App\Models\ResellerDiscount;
@@ -19,11 +19,11 @@ class Delete extends Component
         $this->reseller->delete();
         $this->dispatch('success-toastr', ['message' => "Reseller Discount Deleted Successfully"]);
         session()->flash('success', "Reseller Discount Deleted Successfully");
-        $this->redirectRoute('admin.hr.reseller');
+        $this->redirectRoute('admin.transaction.reseller');
     }
     
     public function render()
     {
-        return view('livewire.admin.hr.reseller.delete');
+        return view('livewire.admin.transaction.reseller.delete');
     }
 }

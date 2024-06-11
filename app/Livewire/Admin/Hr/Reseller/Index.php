@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin\Hr\Reseller;
 
-use App\Models\ResellerDiscount;
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -22,7 +22,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.hr.reseller.index', [
-            'reseller_discounts' =>    ResellerDiscount::search($this->search)->latest()->paginate($this->perPage)
+            'resellers' =>    User::search($this->search)->where(['role' => 'user', 'user_level' => 'reseller'])->latest()->paginate($this->perPage)
         ]);
     }
 }

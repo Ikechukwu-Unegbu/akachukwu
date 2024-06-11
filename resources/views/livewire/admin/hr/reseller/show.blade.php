@@ -2,7 +2,7 @@
     <x-admin.page-title title="Human Resource Mgt.">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
         <x-admin.page-title-item subtitle="HR Mgt." />
-        <x-admin.page-title-item subtitle="Users" link="{{ route('admin.hr.user') }}" />
+        <x-admin.page-title-item subtitle="Resellers" link="{{ route('admin.hr.reseller') }}" />
         <x-admin.page-title-item subtitle="Show" status="true" />
     </x-admin.page-title>
 
@@ -61,5 +61,5 @@
     </section>
 </div>
 @push('title')
-Human Resource Mgt. / Users
+Human Resource Mgt. / Resellers
 @endpush

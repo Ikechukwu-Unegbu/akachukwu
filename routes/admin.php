@@ -72,6 +72,12 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('transaction/electricity', App\Livewire\Admin\Transaction\Electricity\Index::class)->name('admin.transaction.electricity');
         Route::get('transaction/electricity/{electricity:id}/show', App\Livewire\Admin\Transaction\Electricity\Show::class)->name('admin.transaction.electricity.show');
 
+        ## Transaction - Reseller
+        Route::get('transaction/resellers', App\Livewire\Admin\Transaction\Reseller\Index::class)->name('admin.transaction.reseller');
+        Route::get('transaction/resellers/create', App\Livewire\Admin\Transaction\Reseller\Create::class)->name('admin.transaction.reseller.create');
+        Route::get('transaction/resellers/{reseller:id}/edit', App\Livewire\Admin\Transaction\Reseller\Edit::class)->name('admin.transaction.reseller.edit');
+        Route::get('transaction/resellers/{reseller:id}/delete', App\Livewire\Admin\Transaction\Reseller\Delete::class)->name('admin.transaction.reseller.delete');
+
 
         ## API Routes
         ## API - Vendor
@@ -98,9 +104,8 @@ Route::group(['prefix' => 'admin'], function () {
 
         ## HR - Resellers
         Route::get('hr/resellers', App\Livewire\Admin\Hr\Reseller\Index::class)->name('admin.hr.reseller');
-        Route::get('hr/resellers/create', App\Livewire\Admin\Hr\Reseller\Create::class)->name('admin.hr.reseller.create');
-        Route::get('hr/resellers/{reseller:id}/edit', App\Livewire\Admin\Hr\Reseller\Edit::class)->name('admin.hr.reseller.edit');
-        Route::get('hr/resellers/{reseller:id}/delete', App\Livewire\Admin\Hr\Reseller\Delete::class)->name('admin.hr.reseller.delete');
+        Route::get('hr/resellers/{user:username}/show', App\Livewire\Admin\Hr\Reseller\Show::class)->name('admin.hr.reseller.show');
+        Route::get('hr/resellers/{user:username}/upgrade', App\Livewire\Admin\Hr\Reseller\Upgrade::class)->name('admin.hr.reseller.upgrade');
 
         ## Settings Routes
         ## Settings - Role

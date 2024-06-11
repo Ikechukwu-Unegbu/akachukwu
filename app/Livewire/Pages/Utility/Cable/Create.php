@@ -11,6 +11,8 @@ use App\Services\Cable\CableService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Utility\CableTransaction;
+use App\Services\Account\UserPinService;
+use Illuminate\Validation\ValidationException;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
 
@@ -24,6 +26,10 @@ class Create extends Component
     public $customer;
     public $validate_action = false;
     public $beneficiary_modal = false;
+
+    public $pin;
+    public $form_action = false;
+    public $validate_pin_action = false;
 
     public function mount()
     {
@@ -41,7 +47,31 @@ class Create extends Component
         $this->customer = null;
     }
 
-    public function submit()
+    public function closeModal()
+    {
+        $this->validate_pin_action = false;
+        $this->form_action = false;
+        return;
+    }
+
+    public function validatePin()
+    {
+        $this->validate([
+            'pin' => 'required|numeric|digits:4'
+        ]);
+
+        $userPinService = UserPinService::validatePin(Auth::user(), $this->pin);
+
+        if (!$userPinService) {
+            throw ValidationException::withMessages([
+                'pin' => __('The PIN provided is incorrect. Provide a valid PIN.'),
+            ]);
+        }
+
+        return $this->validate_pin_action = true;
+    }
+
+    public function validateIUC()
     {
         $this->validate([
             'cable_name'    =>  'required|integer',
@@ -59,11 +89,19 @@ class Create extends Component
             if ($cableValidate->status) {
                 $this->customer = $cableValidate->data->name;
                 $this->validate_action = true;
+                $this->form_action = true;
                 return $this->dispatch('success-toastr', ['message' => $cableValidate->message]);
             }
 
         }
 
+        if ($this->validate_action) {
+            return $this->form_action = true;
+        }
+    }
+
+    public function submit()
+    {
         if ($this->validate_action) {
             $cableTransaction = CableService::create($this->vendor->id, $this->cable_name, $this->cable_plan, $this->iuc_number, $this->customer);
 
@@ -74,52 +112,14 @@ class Create extends Component
             if ($cableTransaction->status) {
                 $this->dispatch('success-toastr', ['message' => $cableTransaction->message]);
                 session()->flash('success',  $cableTransaction->message);
-                return redirect()->route('dashboard');
+                return redirect()->route('user.transaction.cable.receipt', $cableTransaction->response->transaction_id);
             }
         }
-    }
-
-    public function validateIUCNumber()
-    {
-        $this->validate([
-            'cable_name'    =>  'required|integer',
-            'iuc_number'    =>  'required',
-            'cable_plan'    =>  'required|integer'
-        ]);
-
-
-        /*
-        try {
-
-            $cable = Cable::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->first();
-
-            $response = Http::withHeaders([
-                'Authorization' => "Token " . $this->vendor->token,
-                'Content-Type' => 'application/json',
-            ])->get(str_replace("/api", "", $this->vendor->api). "/ajax/validate_iuc/?smart_card_number={$this->iuc_number}&cablename={$cable->cable_name}");
-    
-            $response = $response->object();
-            
-            if (!$response->invalid) {
-                $this->customer = $response->name;
-                $this->validate_action = true;
-                $this->dispatch('success-toastr', ['message' => "IUC validated. Click Continue to proceed payment."]);;
-                return true;
-            }
-
-            return $this->dispatch('error-toastr', ['message' => 'Invalid IUC/SMARTCARD. Please provide a valid IUC/SMARTCARD']);
-        
-        } catch (\Exception $e) {
-            
-            return $this->dispatch('error-toastr', ['message' => 'Unable to Perform Cable transaction. Please check your network connection.']);
-
-        }
-        */
     }
 
     public function beneficiary_action()
     {
-        $this->beneficiary_modal = true;
+        $this->beneficiary_modal = !$this->beneficiary_modal;
     }
 
     public function beneficiary($id)

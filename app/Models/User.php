@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 // use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
@@ -40,7 +41,8 @@ class User extends Authenticatable
         'bonus_balance',
         'remember_token',
         'phone',
-        'user_level'
+        'user_level',
+        'pin'
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -65,6 +67,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'pin'
     ];
 
     /**
@@ -169,5 +172,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(VirtualAccount::class);
     }
-
 }

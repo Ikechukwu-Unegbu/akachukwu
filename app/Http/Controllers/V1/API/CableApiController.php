@@ -27,7 +27,7 @@ class CableApiController extends Controller
             $cables = Cable::whereVendorId($this->vendor?->id)->whereStatus(true)->get();
 
             return response()->json([
-                'status'   => 'failed',
+                'status'   => 'success',
                 'message'  => 'Cable Fetched Successfully.',
                 'response' =>  $cables
             ]);

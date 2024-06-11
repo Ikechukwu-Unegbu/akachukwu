@@ -12,6 +12,7 @@ use App\Http\Controllers\V1\API\Auth\AuthenticateUserController;
 use App\Http\Controllers\V1\API\CableApiController;
 use App\Http\Controllers\V1\API\DataApiController;
 use App\Http\Controllers\V1\API\ElectricityApiController;
+use App\Http\Controllers\V1\API\UserPinController;
 use App\Http\Controllers\V1\WebhookController;
 
 /*
@@ -50,6 +51,10 @@ Route::group([
 
     Route::post('electricity/validate', [ElectricityApiController::class, 'validateMeterNo']);
     Route::post('electricity/create', [ElectricityApiController::class, 'store']);
+
+    Route::post('pin/create', [UserPinController::class, 'create']);
+    Route::post('pin/update', [UserPinController::class, 'update']);
+    Route::post('pin/validate', [UserPinController::class, 'validatePin']);
 });
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
