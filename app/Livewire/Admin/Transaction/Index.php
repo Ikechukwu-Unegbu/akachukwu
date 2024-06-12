@@ -15,12 +15,20 @@ class Index extends Component
     public $perPages = [50, 100, 200];
     public $search;
 
+    public $type;
+    public $startDate;
+    public $endDate;
+
+    public function  mount(Request $request)
+    {
+        $this->type = $request->input('type');
+        $this->startDate = $request->input('start_date');
+        $this->endDate = $request->input('end_date');
+    }
+
 
     public function render(Request $request)
     {
-        $type = $request->input('type');
-        $startDate = $request->input('start_date');
-        $endDate = $request->input('end_date');
         $query = DB::table(DB::raw('
             (SELECT id, transaction_id, user_id, amount, status, "data" as type, created_at FROM data_transactions
             UNION ALL
@@ -38,16 +46,16 @@ class Index extends Component
             })
             ->orderBy('transactions.created_at', 'desc');
 
-        if ($type) {
-            $query->where('transactions.type', $type);
+        if ($this->type) {
+            $query->where('transactions.type', $this->type);
         }
         
-        if ($startDate) {
-            $query->where('transactions.created_at', '>=', $startDate);
+        if ($this->startDate) {
+            $query->where('transactions.created_at', '>=', $this->startDate);
         }
 
-        if ($endDate) {
-            $query->where('transactions.created_at', '<=', $endDate);
+        if ($this->endDate) {
+            $query->where('transactions.created_at', '<=', $this->endDate);
         }
 
         $transactions = $query->paginate($this->perPage);

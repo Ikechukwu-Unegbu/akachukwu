@@ -13,6 +13,32 @@
         </div>
         <div class="card">
             <div class="card-header">
+                <form method="GET" action="{{ route('admin.activity') }}">
+                    <div class="row">
+                        <div class="col-md-3 col-6 col-lg-3">
+                            <div>
+                                <label for="start_date">Start Date</label>
+                                <input type="date" class="form-control" name="start_date" wire:model="startDate" id="start_date">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 col-lg-3">
+                            <div>
+                                <label for="end_date">End Date</label>
+                                <input type="date" class="form-control" name="end_date" wire:model="endDate" id="end_date">
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6 col-lg-3">
+                            <div>
+                                <label for="filter"></label>
+                                <input type="submit" class="form-control btn btn-primary" value="Filter"/>
+                            </div>
+                        </div>
+                    </div>                    
+                </form>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header">
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage"
                     wireSearchAction="wire:model.live=search" />
             </div>
@@ -23,7 +49,7 @@
                         @forelse ($activity_logs as $log)
                         <tr>
                             <th scope="row">{{ $loop->index+$activity_logs->firstItem() }}</th>
-                            <td>{{ $log->causer->name }}</td>
+                            <td>{{ $log->subject?->name }}</td>
                             <td>{{ $log->description }}</td>
                             <td>{{ $log->created_at->format('M d, Y h:ia') }}</td>
                             <td>

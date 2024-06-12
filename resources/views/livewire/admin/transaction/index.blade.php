@@ -18,7 +18,7 @@
                         <div class="col-md-3 col-6 col-lg-3">
                             <div>
                                 <label for="type">Type</label>
-                                <select class="form-control" name="type" id="type">
+                                <select class="form-control" wire:model="type" name="type" id="type">
                                     <option value="">All</option>
                                     <option value="data">Data</option>
                                     <option value="airtime">Airtime</option>
@@ -30,13 +30,13 @@
                         <div class="col-md-3 col-6 col-lg-3">
                             <div>
                                 <label for="start_date">Start Date</label>
-                                <input type="date" class="form-control" name="start_date" id="start_date">
+                                <input type="date" class="form-control" wire:model="startDate" name="start_date" id="start_date">
                             </div>
                         </div>
                         <div class="col-md-3 col-6 col-lg-3">
                             <div>
                                 <label for="end_date">End Date</label>
-                                <input type="date" class="form-control" name="end_date" id="end_date">
+                                <input type="date" class="form-control" wire:model="endDate" name="end_date" id="end_date">
                             </div>
                         </div>
                         <div class="col-md-3 col-6 col-lg-3">
@@ -74,7 +74,7 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="5">No records available</td>
+                            <td colspan="6">No records available</td>
                         </tr>
                         @endforelse
                     </x-admin.table-body>
