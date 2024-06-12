@@ -48,7 +48,7 @@ class Index extends Component
             $queryLogs->where('created_at', '<=', $this->endDate);
         }
 
-        $activity_logs = $querylogs->latest()->paginate($this->perPage);
+        $activity_logs = $queryLogs->latest()->paginate($this->perPage);
 
         return view('livewire.admin.activities.index', compact('activity_logs'));
     }
