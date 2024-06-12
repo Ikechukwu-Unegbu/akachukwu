@@ -23,10 +23,10 @@ class Index extends Component
         $this->startDate = $request->input('start_date');
         $this->endDate = $request->input('end_date');
     }
-    
+
     public function render()
     {
-        $querylogs  = Activity::with(['subject', 'causer'])
+        $queryLogs  = Activity::with(['subject', 'causer'])
                 ->when($this->search, function($query, $search) {
                 $query->where('description', 'LIKE', "%{$search}%")
                 ->orWhereHas('subject', function ($subjectQuery) use ($search) {
@@ -41,11 +41,11 @@ class Index extends Component
             });
 
         if ($this->startDate) {
-            $querylogs->where('created_at', '>=', $this->startDate);
+            $queryLogs->where('created_at', '>=', $this->startDate);
         }
 
         if ($this->endDate) {
-            $querylogs->where('created_at', '<=', $this->endDate);
+            $queryLogs->where('created_at', '<=', $this->endDate);
         }
 
         $activity_logs = $querylogs->latest()->paginate($this->perPage);
