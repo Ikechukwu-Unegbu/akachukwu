@@ -33,7 +33,7 @@
                                 <input type="submit" class="form-control btn btn-primary" value="Filter"/>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
                 </form>
             </div>
         </div>
@@ -49,7 +49,7 @@
                         @forelse ($activity_logs as $log)
                         <tr>
                             <th scope="row">{{ $loop->index+$activity_logs->firstItem() }}</th>
-                            <td>{{ $log->subject?->name }}</td>
+                            <td>{{ $log->subject->name ?? $log->causer->name }}</td>
                             <td>{{ $log->description }}</td>
                             <td>{{ $log->created_at->format('M d, Y h:ia') }}</td>
                             <td>
@@ -61,7 +61,7 @@
                         </tr>
 
                         <!-- Vertically centered Modal -->
-                        
+
                         <div class="modal fade" id="action-{{ $log->id }}" tabindex="-1">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
