@@ -11,3 +11,8 @@
         </div>
     </div>
 </div>
+<style>
+    .small.text-muted {
+        display: none;
+    }
+</style>

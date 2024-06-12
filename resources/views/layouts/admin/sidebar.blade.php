@@ -23,6 +23,7 @@
     @if(auth()->user()->can('view airtime transaction') || auth()->user()->can('view data transaction') || auth()->user()->can('view cable transaction') || auth()->user()->can('view electricity transaction'))
     <li class="nav-heading">Manage Transactions</li>
     <x-admin.dropdown title="Transactions" icon="bx-money">
+      <x-admin.dropdown-item title="All Transactions" link="{{ route('admin.transaction') }}" />
       @can('view airtime transaction')
         <x-admin.dropdown-item title="Airtime" link="{{ route('admin.transaction.airtime') }}" />
       @endcan
@@ -63,6 +64,13 @@
       @endcan
     </x-admin.dropdown>
     @endif
+
+    <li class="nav-heading">Activity Logger</li>
+    <x-admin.dropdown title="Activity Logs" icon="bi-clock-history">
+      @can('view log')
+      <x-admin.dropdown-item title="Logs" link="{{ route('admin.activity') }}" />
+      @endcan
+    </x-admin.dropdown>
     
     @if(auth()->user()->can('view role'))
     <li class="nav-heading">Settings</li>
