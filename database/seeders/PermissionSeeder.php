@@ -45,20 +45,22 @@ class PermissionSeeder extends Seeder
             'create role',
             'edit role',
             'assign role',
-            
+
             'can top-up',
             'can debit',
             'can top-up and debit',
 
-            'can set site-setting'
+            'can set site-setting',
+            'view logs',
+            'view all transactions'
         ];
-        
+
         // foreach ($permissions as $permission) Permission::create(['name' => $permission]);
         foreach ($permissions as $permission) {
             // Check if the permission already exists
             if (!Permission::where('name', $permission)->exists()) {
                 Permission::create(['name' => $permission]);
-                
+
             }
         }
     }

@@ -20,6 +20,7 @@ class Index extends Component
 
     public function  mount(Request $request)
     {
+        $this->authorize('view logs');
         $this->startDate = $request->input('start_date');
         $this->endDate = $request->input('end_date');
     }

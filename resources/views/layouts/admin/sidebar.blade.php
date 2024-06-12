@@ -4,9 +4,9 @@
   <ul class="sidebar-nav" id="sidebar-nav">
 
     <x-admin.menu title="Dashboard" icon="bi-grid" link="{{ route('admin.dashboard') }}" />
-    
+
     @if(auth()->user()->can('view data utility') || auth()->user()->can('view cable utility') || auth()->user()->can('view electricity utility'))
-      <li class="nav-heading">Manage Utilities</li>   
+      <li class="nav-heading">Manage Utilities</li>
       <x-admin.dropdown title="Utilities" icon="bxs-data">
         @can('view data utility')
           <x-admin.dropdown-item title="Data" link="{{ route('admin.utility.data') }}" />
@@ -20,10 +20,12 @@
       </x-admin.dropdown>
     @endif
 
-    @if(auth()->user()->can('view airtime transaction') || auth()->user()->can('view data transaction') || auth()->user()->can('view cable transaction') || auth()->user()->can('view electricity transaction'))
+    @if(auth()->user()->can('view all transactions') || auth()->user()->can('view airtime transaction') || auth()->user()->can('view data transaction') || auth()->user()->can('view cable transaction') || auth()->user()->can('view electricity transaction'))
     <li class="nav-heading">Manage Transactions</li>
     <x-admin.dropdown title="Transactions" icon="bx-money">
+        @can('view all transactions')
       <x-admin.dropdown-item title="All Transactions" link="{{ route('admin.transaction') }}" />
+      @endcan
       @can('view airtime transaction')
         <x-admin.dropdown-item title="Airtime" link="{{ route('admin.transaction.airtime') }}" />
       @endcan
@@ -64,14 +66,14 @@
       @endcan
     </x-admin.dropdown>
     @endif
-
+    @if(auth()->user()->can('view logs'))
     <li class="nav-heading">Activity Logger</li>
     <x-admin.dropdown title="Activity Logs" icon="bi-clock-history">
-      @can('view log')
+      @can('view logs')
       <x-admin.dropdown-item title="Logs" link="{{ route('admin.activity') }}" />
       @endcan
     </x-admin.dropdown>
-    
+    @endif
     @if(auth()->user()->can('view role'))
     <li class="nav-heading">Settings</li>
     <x-admin.dropdown title="App Settings" icon="bxs-cog">

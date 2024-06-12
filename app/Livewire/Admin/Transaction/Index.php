@@ -21,6 +21,7 @@ class Index extends Component
 
     public function  mount(Request $request)
     {
+        $this->authorize('view all transactions');
         $this->type = $request->input('type');
         $this->startDate = $request->input('start_date');
         $this->endDate = $request->input('end_date');
@@ -49,7 +50,7 @@ class Index extends Component
         if ($this->type) {
             $query->where('transactions.type', $this->type);
         }
-        
+
         if ($this->startDate) {
             $query->where('transactions.created_at', '>=', $this->startDate);
         }
