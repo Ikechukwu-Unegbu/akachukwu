@@ -127,7 +127,7 @@
                     <span style="font-size: 15px" class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <button type="submit" class="btn bg-primary text-white">
+                <button type="submit" class="btn bg-basic text-light">
                     <span wire:loading.remove wire:target='validatePin'> Submit</span>
                     <span wire:loading wire:target="validatePin">
                         <i class="fa fa-spinner fa-spin"></i> Validating...
@@ -170,7 +170,7 @@
                         </div>
                         <button type="button" wire:loading.remove wire:target='submit' class="btn btn-danger btn-sm"
                             wire:click="closeModal">No</button>
-                        <button type="submit" wire:loading.remove wire:target='submit' class="btn btn-primary btn-sm"
+                        <button type="submit" wire:loading.remove wire:target='submit' class="btn bg-basic text-light btn-sm"
                             id="confirmYes">Yes</button>
                     </div>
                 </div>
