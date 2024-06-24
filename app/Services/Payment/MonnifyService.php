@@ -76,7 +76,7 @@ class MonnifyService implements Payment
                 'currencyCode'          =>   $transaction->currency,
                 'contractCode'          =>   static::monnifyDetails('contract_code'),
                 'redirectUrl'           =>   $redirectURL,
-                'paymentMethods'        =>   ['CARD', 'ACCOUNT_TRANSFER'],
+                'paymentMethods'        =>   ['CARD'],
                 'metadata'              =>   $meta,
             ]);
 
@@ -95,6 +95,11 @@ class MonnifyService implements Payment
             ]);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
+            return response()->json([
+                'status'   =>    false,
+                'error'    =>    "Server Error",
+                'message'  =>    "Opps! Unable to perform wallet funding. Please check your network connection.",
+            ], 401)->getData();
         }
     }
 
@@ -197,7 +202,8 @@ class MonnifyService implements Payment
                 "contractCode"          =>  static::monnifyDetails('contract_code'),
                 "customerEmail"         =>  $user->email,
                 "customerName"          =>  $user->name,
-                "getAllAvailableBanks"  =>  true,
+                "getAllAvailableBanks"  =>  false,
+                "preferredBanks"        =>  ["035", "50515", "232"]
             ]);
 
             $response = $response->object();
@@ -232,6 +238,11 @@ class MonnifyService implements Payment
 
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
+            return response()->json([
+                'status'   =>    false,
+                'error'    =>    "Server Error",
+                'message'  =>    "Opps! Unable to create static account. Please check your network connection.",
+            ], 401)->getData();
         }
     }
 
@@ -267,6 +278,11 @@ class MonnifyService implements Payment
 
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
+            return response()->json([
+                'status'   =>    false,
+                'error'    =>    "Server Error",
+                'message'  =>    "Opps! Unable to update your static account. Please check your network connection.",
+            ], 401)->getData();
         }
 
     }
@@ -353,7 +369,7 @@ class MonnifyService implements Payment
                 'error'    =>    "Server Error",
                 'message'  =>    $th->getMessage(),
                 'response' =>    []
-            ], 200)->getData();
+            ], 401)->getData();
         }
     }
 
@@ -380,7 +396,6 @@ class MonnifyService implements Payment
     public static function generateMoneyTransferReference(): string
     {
         $referenceId = Str::random(25);
-        // Filter out characters that are not alphanumeric, hyphens, or underscores
         $referenceId = preg_replace('/[^a-zA-Z0-9_-]/', '', $referenceId);
         return $referenceId;
     }
@@ -388,7 +403,6 @@ class MonnifyService implements Payment
     public static function generateVirtualAccountReference(): string
     {
         $referenceId = Str::random(15);
-        // Filter out characters that are not alphanumeric, hyphens, or underscores
         $referenceId = preg_replace('/[^a-zA-Z0-9_-]/', '', $referenceId);
         return $referenceId;
     }
