@@ -22,7 +22,7 @@ class MonnifyService implements Payment
 
     public static $accountBalance;
 
-    private CONST  LIVE = "https://api.monnify.com/";
+    private CONST LIVE = "https://api.monnify.com/";
     private CONST TEST = "https://sandbox.monnify.com/";
 
     public function isGatewayAvailable(): bool
@@ -197,13 +197,13 @@ class MonnifyService implements Payment
                 'Authorization' => 'Bearer ' . self::token(),
             ])->post(self::getUrl() . "api/v2/bank-transfer/reserved-accounts", [
                 "accountReference"      =>  self::generateVirtualAccountReference(),
-                "accountName"           =>  ucwords($user->username),
+                "accountName"           =>  Str::title($user->username),
                 "currencyCode"          =>  "NGN",
                 "contractCode"          =>  static::monnifyDetails('contract_code'),
                 "customerEmail"         =>  $user->email,
                 "customerName"          =>  $user->name,
                 "getAllAvailableBanks"  =>  false,
-                "preferredBanks"        =>  ["035", "50515", "232"]
+                "preferredBanks"        =>  ["035", "058"]
             ]);
 
             $response = $response->object();
