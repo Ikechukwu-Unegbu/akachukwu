@@ -37,7 +37,11 @@
                                         <td>
                                             <small>{{ $data_transaction->created_at->format('M d, Y. h:ia') }}</small>
                                         </td>
-                                        <td><span class="badge bg-{{ $data_transaction->status ? 'success' : 'danger' }}">{{ $data_transaction->status ? 'Successful' : 'Failed' }}</span></td>
+                                        <td>
+                                            <span class="badge bg-{{ $data_transaction->status ? 'success' : 'danger' }}">{{ $data_transaction->status ? 'Successful' : 'Failed' }}</span>
+                                            <br />
+                                            <small><span class="badge bg-success">{{ !$data_transaction->status ? 'Refunded' : '' }}</span></small>
+                                        </td>
                                     
                                         <td>
                                             <a href="{{ route('user.transaction.data.receipt', $data_transaction->transaction_id) }}" class="btn btn-sm"> View</a>

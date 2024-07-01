@@ -24,7 +24,11 @@
                     <h5 class="card-header">
                         User Details
                     </h5>
-                    <div class="pt-2 card-body profile-overview">                        
+                    <div class="pt-2 card-body profile-overview"> 
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 label ">Level</div>
+                            <div class="col-lg-9 col-md-8">{{ Str::title($user->user_level) }}</div>
+                        </div>                       
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Address</div>
                             <div class="col-lg-9 col-md-8">{{ $user->address ? $user->address : 'N/A'  }}</div>
@@ -41,7 +45,14 @@
                             <div class="col-lg-3 col-md-4 label ">Account Balance</div>
                             <div class="col-lg-9 col-md-8">₦ {{ $user->account_balance }}</div>
                         </div>
-                        
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 label ">Level</div>
+                            <div class="col-lg-9 col-md-8">{{ Str::title($user->user_level) }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 label ">Joined On</div>
+                            <div class="col-lg-9 col-md-8">{{ $user->created_at->format('d M, Y') }}</div>
+                        </div>
                     </div>
                 </div>
 

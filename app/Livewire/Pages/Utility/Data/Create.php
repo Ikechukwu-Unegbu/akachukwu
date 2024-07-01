@@ -9,6 +9,9 @@ use App\Models\Data\DataType;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use App\Services\Data\DataService;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Account\UserPinService;
+use Illuminate\Validation\ValidationException;
 use App\Services\Beneficiary\BeneficiaryService;
 
 class Create extends Component
@@ -20,6 +23,9 @@ class Create extends Component
     public $amount;
     public $plan;
     public $beneficiary_modal = false;
+    public $pin;
+    public $form_action = false;
+    public $validate_pin_action = false;
 
     public function mount()
     {
@@ -46,7 +52,7 @@ class Create extends Component
         $this->amount = null;
     }
 
-    public function submit()
+    public function validateForm()
     {
         $this->validate([
             'network'       =>  'required|integer',
@@ -55,6 +61,35 @@ class Create extends Component
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ]);
 
+        return $this->form_action = true;
+    }
+
+    public function closeModal()
+    {
+        $this->validate_pin_action = false;
+        $this->form_action = false;
+        return;
+    }
+
+    public function validatePin()
+    {
+        $this->validate([
+            'pin' => 'required|numeric|digits:4'
+        ]);
+
+        $userPinService = UserPinService::validatePin(Auth::user(), $this->pin);
+
+        if (!$userPinService) {
+            throw ValidationException::withMessages([
+                'pin' => __('The PIN provided is incorrect. Provide a valid PIN.'),
+            ]);
+        }
+
+        return $this->validate_pin_action = true;
+    }
+
+    public function submit()
+    {
         $dataTransaction = DataService::create(
             $this->vendor->id, 
             $this->network, 
@@ -70,13 +105,13 @@ class Create extends Component
         if ($dataTransaction->status) {
             $this->dispatch('success-toastr', ['message' => $dataTransaction->message]);
             session()->flash('success',  $dataTransaction->message);
-            return redirect()->route('dashboard');
+            return redirect()->route('user.transaction.data.receipt', $dataTransaction->response->transaction_id);
         }
     }
 
     public function beneficiary_action()
     {
-        $this->beneficiary_modal = true;
+        $this->beneficiary_modal = !$this->beneficiary_modal;
     }
 
     public function beneficiary($id)

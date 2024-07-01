@@ -32,7 +32,8 @@ class Dashboard extends Component
             'airtime_sale'          =>    AirtimeTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
             'data_sale'             =>    DataTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
             'cable_sale'            =>    CableTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
-            'electricity_sale'      =>    ElectricityTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount')
+            'electricity_sale'      =>    ElectricityTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
+            'resellers_count'       =>    User::whereUserLevel('reseller')->count()
         ]);
     }
 }

@@ -56,6 +56,7 @@ Route::group(['prefix' => 'admin'], function () {
 
     
         ## Transaction Routes
+        Route::get('transaction', App\Livewire\Admin\Transaction\Index::class)->name('admin.transaction');
         ## Transaction - Airtime
         Route::get('transaction/airtime', App\Livewire\Admin\Transaction\Airtime\Index::class)->name('admin.transaction.airtime');
         Route::get('transaction/airtime/{airtime:id}/show', App\Livewire\Admin\Transaction\Airtime\Show::class)->name('admin.transaction.airtime.show');
@@ -71,6 +72,12 @@ Route::group(['prefix' => 'admin'], function () {
         ## Transaction - Electricity
         Route::get('transaction/electricity', App\Livewire\Admin\Transaction\Electricity\Index::class)->name('admin.transaction.electricity');
         Route::get('transaction/electricity/{electricity:id}/show', App\Livewire\Admin\Transaction\Electricity\Show::class)->name('admin.transaction.electricity.show');
+
+        ## Transaction - Reseller
+        Route::get('transaction/resellers', App\Livewire\Admin\Transaction\Reseller\Index::class)->name('admin.transaction.reseller');
+        Route::get('transaction/resellers/create', App\Livewire\Admin\Transaction\Reseller\Create::class)->name('admin.transaction.reseller.create');
+        Route::get('transaction/resellers/{reseller:id}/edit', App\Livewire\Admin\Transaction\Reseller\Edit::class)->name('admin.transaction.reseller.edit');
+        Route::get('transaction/resellers/{reseller:id}/delete', App\Livewire\Admin\Transaction\Reseller\Delete::class)->name('admin.transaction.reseller.delete');
 
 
         ## API Routes
@@ -88,12 +95,18 @@ Route::group(['prefix' => 'admin'], function () {
         ## HR - User
         Route::get('hr/users', App\Livewire\Admin\Hr\User\Index::class)->name('admin.hr.user');
         Route::get('hr/user/{user:username}/show', App\Livewire\Admin\Hr\User\Show::class)->name('admin.hr.user.show');
+        Route::get('hr/user/{user:username}/upgrade', App\Livewire\Admin\Hr\User\Upgrade::class)->name('admin.hr.user.upgrade');
         Route::get('crd-dbt', CrdDbtCreate::class)->name('admin.crd-dbt');
         Route::post('admin/crdt-dbt', [UserCrdDbtController::class, 'store'])->name('admin.crdt-dbt.store');
 
         ## HR - Administrators
         Route::get('hr/administrators', App\Livewire\Admin\Hr\Administrator\Index::class)->name('admin.hr.administrator');
         Route::get('hr/administrator/{user:username}/show', App\Livewire\Admin\Hr\Administrator\Show::class)->name('admin.hr.administrator.show');
+
+        ## HR - Resellers
+        Route::get('hr/resellers', App\Livewire\Admin\Hr\Reseller\Index::class)->name('admin.hr.reseller');
+        Route::get('hr/resellers/{user:username}/show', App\Livewire\Admin\Hr\Reseller\Show::class)->name('admin.hr.reseller.show');
+        Route::get('hr/resellers/{user:username}/upgrade', App\Livewire\Admin\Hr\Reseller\Upgrade::class)->name('admin.hr.reseller.upgrade');
 
         ## Settings Routes
         ## Settings - Role
@@ -107,6 +120,10 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('site-setting', SiteSettings::class)->name('admin.site.settings');
         Route::post('site-setting', [SiteSettingsController::class, 'update'])->name('admin.site.update');
+
+        ## Activity Log
+        Route::get('activities', App\Livewire\Admin\Activities\Index::class)->name('admin.activity');
+
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');

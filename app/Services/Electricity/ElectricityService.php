@@ -5,6 +5,7 @@ namespace App\Services\Electricity;
 use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\Electricity;
+use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
 use App\Models\Data\DataTransaction;
 use Illuminate\Support\Facades\Auth;
@@ -54,9 +55,10 @@ class ElectricityService
                 'customer_mobile_number'    =>  $customerMobile,
                 'customer_name'             =>  $customerName,
                 'customer_address'          =>  $customerAddress,
-                'balance_before'            =>  Auth::user()->account_balance
+                'balance_before'            =>  Auth::user()->account_balance,
+                'balance_after'             =>  Auth::user()->account_balance
             ]);
-
+            
             $response = Http::withHeaders([
                 'Authorization' => "Token " . $vendor->token,
                 'Content-Type' => 'application/json',
@@ -81,14 +83,22 @@ class ElectricityService
                 ], 401)->getData();
             }
                
-            if (isset($response->Status) && $response->Status == 'successful') {    
-                self::$account->transaction($response->amount);    
+            if (isset($response->Status) && $response->Status == 'successful') {
+
+                $amount = $response->amount;
+
+                if (auth()->user()->isReseller()) {
+                    $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
+                }
+
+                self::$account->transaction($amount);
+
                 $transaction->update([
                     'balance_after'     =>    self::$account->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
                 ]);
-                BeneficiaryService::create($transaction->customer_mobile_number, 'electricity', $transaction);
+                BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
                 return response()->json([
                     'status'    =>    true,
                     'error'     =>    NULL,

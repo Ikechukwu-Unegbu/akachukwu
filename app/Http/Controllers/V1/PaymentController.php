@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1;
 use App\Http\Controllers\Controller;
 use App\Models\Payment\Flutterwave;
 use App\Models\PaymentGateway;
+use App\Models\VirtualAccount;
 use App\Services\Payment\FlutterwaveService;
 use App\Services\Payment\MonnifyService;
 use App\Services\Payment\PaystackService;
@@ -62,7 +63,8 @@ class PaymentController extends Controller
         }
 
         return view('pages.payment.index', [
-            'payments'  =>  PaymentGateway::whereStatus(true)->get()
+            'payments'  =>  PaymentGateway::whereStatus(true)->get(),
+            'accounts'  => VirtualAccount::whereUserId(auth()->id())->get()
         ]);
     }
 

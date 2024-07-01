@@ -5,6 +5,7 @@ namespace App\Services\Cable;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\CablePlan;
+use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
 use App\Models\Data\DataTransaction;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +47,7 @@ class CableService
                 'customer_name'       =>  $customer,
                 'amount'              =>  $cable_plan->amount,
                 'balance_before'      =>  Auth::user()->account_balance,
+                'balance_after'       =>  Auth::user()->account_balance
             ]);
 
             $response = Http::withHeaders([
@@ -70,7 +72,13 @@ class CableService
 
             if (isset($response->Status) && $response->Status == 'successful') {
 
-                self::$account->transaction($response->transaction->amount);
+                $amount = $response->transaction->amount;
+
+                if (auth()->user()->isReseller()) {
+                    $amount = CalculateDiscount::applyDiscount($amount, 'cable');
+                }
+
+                self::$account->transaction($amount);
 
                 $transaction->update([
                     'balance_after'     =>    self::$account->getAccountBalance(),

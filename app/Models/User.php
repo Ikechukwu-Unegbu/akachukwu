@@ -12,6 +12,7 @@ use Spatie\Permission\Models\Permission;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 // use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
@@ -40,6 +41,8 @@ class User extends Authenticatable
         'bonus_balance',
         'remember_token',
         'phone',
+        'user_level',
+        'pin'
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -64,6 +67,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'pin'
     ];
 
     /**
@@ -110,6 +114,11 @@ class User extends Authenticatable
     public function isUser()
     {
         return auth()->user()->role == 'user';
+    }
+
+    public function isReseller()
+    {
+        return auth()->user()->user_level == 'reseller';
     }
 
     public function getProfilePictureAttribute()
@@ -159,4 +168,8 @@ class User extends Authenticatable
         return $this->hasMany(Beneficiary::class);
     }
 
+    public function virtualAccounts() : HasMany
+    {
+        return $this->hasMany(VirtualAccount::class);
+    }
 }
