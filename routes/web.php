@@ -8,6 +8,7 @@ use App\Http\Controllers\V1\Utilities\DataController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;
 use App\Http\Controllers\V1\Utilities\TVController;
 use Illuminate\Support\Facades\Route;
+use  App\Http\Controllers\TestController;
 
 
 /*
@@ -24,6 +25,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {return view('pages.home.home');});
 Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
 Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
+Route::get('/test-email', [TestController::class, 'testmail']);
+
 
 Route::middleware(['auth', 'verified', 'user'])->group(function () {
     Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
