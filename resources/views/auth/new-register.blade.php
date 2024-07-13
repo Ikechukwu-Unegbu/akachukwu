@@ -37,6 +37,7 @@
              <div class="mb-3 form-floating">
                 <input type="password" class="form-control" name="password" id="password" placeholder="">
                 <label for="password">Password</label>
+                <small style="font-size: 0.75rem; color:red;">Include capital letters and numbers</small>
             </div>
              <div class="mb-3 form-floating">
                 <input type="password" class="form-control" name="password_confirmation" id="password_confirmation" placeholder="">
