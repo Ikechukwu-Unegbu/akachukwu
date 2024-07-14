@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="{{asset('css/ut/pin.css')}}"/>
 <!-- Off-canvas modal -->
 <div class="offcanvas {{ $formAction ? 'show' : 'close' }}" id="offcanvasPinModal">
     <div class="offcanvas-header">
