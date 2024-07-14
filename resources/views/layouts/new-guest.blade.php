@@ -135,6 +135,9 @@
                         <li class="nav-item"><a class="nav-link" aria-current="page"
                                 href="{{route('payment.index')}}">Fund Account</a>
                         </li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page"
+                            href="{{route('profile.edit')}}">Profile</a>
+                    </li>
 
                     </ul>
                     <div class="d-flex ms-lg-4">
