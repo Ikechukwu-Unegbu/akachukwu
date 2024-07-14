@@ -13,7 +13,7 @@
             <div class="container">
                 <div class="mb-5 card">
                     <div class="card-body">
-                        <h5 class="">Data {{ Str::plural('Transaction', count($education_transactions)) }}</h5>
+                        <h5 class="">Education {{ Str::plural('Transaction', count($education_transactions)) }}</h5>
                     </div>
                 </div>
                 <div class="card">
