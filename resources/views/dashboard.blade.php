@@ -144,6 +144,15 @@
                     </a>
                 </div>
                 <div class="mb-3 col-6 col-md-4">
+                    <a href="{{ route('user.transaction.education') }}">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h6>Education Transactions</h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                <div class="mb-3 col-6 col-md-4">
                     <a href="{{ route('user.transaction.wallet') }}">
                         <div class="card">
                             <div class="card-body text-center">
