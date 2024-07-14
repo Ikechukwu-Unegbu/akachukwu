@@ -126,6 +126,9 @@
                                 href="{{route('electricity.index')}}">Electricity</a>
                         </li>
                         <li class="nav-item"><a class="nav-link" aria-current="page"
+                            href="{{route('education.result.index')}}">Education</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page"
                                 href="{{route('payment.index')}}">Fund Account</a>
                         </li>
 
