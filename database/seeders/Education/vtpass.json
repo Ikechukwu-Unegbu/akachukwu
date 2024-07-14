@@ -1,0 +1,17 @@
+[
+    {
+        "name": "WAEC",
+        "amount": 3900,
+        "status": true
+    },
+    {
+        "name": "NECO",
+        "amount": 1150,
+        "status": false
+    },
+    {
+        "name": "NABTEB",
+        "amount": 850,
+        "status": false
+    }
+]

@@ -47,7 +47,25 @@ class Create extends Component
     {
         $this->validate_pin_action = false;
         $this->form_action = false;
+        $this->pin = "";
         return;
+    }
+
+    public function addDigit($digit)
+    {
+        if (strlen($this->pin) < 4) {
+            $this->pin .= $digit;
+        }
+    }
+
+    public function clearPin()
+    {
+        $this->pin = '';
+    }
+
+    public function deletePin()
+    {
+        $this->pin = substr($this->pin, 0, -1);
     }
 
     public function validatePin()
@@ -77,10 +95,12 @@ class Create extends Component
         );
 
         if (!$airtimeTransaction->status) {
+            $this->closeModal();
             return $this->dispatch('error-toastr', ['message' => $airtimeTransaction->message]);
         }
 
         if ($airtimeTransaction->status) {
+            $this->closeModal();
             $this->dispatch('success-toastr', ['message' => $airtimeTransaction->message]);
             session()->flash('success',  $airtimeTransaction->message);
             return redirect()->route('user.transaction.airtime.receipt', $airtimeTransaction->response->transaction_id);

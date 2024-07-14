@@ -72,7 +72,25 @@ class Create extends Component
     {
         $this->validate_pin_action = false;
         $this->form_action = false;
+        $this->pin = "";
         return;
+    }
+
+    public function addDigit($digit)
+    {
+        if (strlen($this->pin) < 4) {
+            $this->pin .= $digit;
+        }
+    }
+
+    public function clearPin()
+    {
+        $this->pin = '';
+    }
+
+    public function deletePin()
+    {
+        $this->pin = substr($this->pin, 0, -1);
     }
 
     public function validatePin()
@@ -124,10 +142,12 @@ class Create extends Component
             $electricityTransaction = ElectricityService::create($this->vendor->id, $this->disco_name, $this->meter_number, $this->meter_type, $this->amount, $this->customer_name, $this->customer_phone_number, $this->customer_address); 
             
             if (!$electricityTransaction->status) {
+                $this->closeModal();
                 return $this->dispatch('error-toastr', ['message' => $electricityTransaction->message]);
             }
     
             if ($electricityTransaction->status) {
+                $this->closeModal();
                 $this->dispatch('success-toastr', ['message' => $electricityTransaction->message]);
                 session()->flash('success',  $electricityTransaction->message);
                 return redirect()->route('user.transaction.electricity.receipt', $electricityTransaction->response->transaction_id);
