@@ -15,6 +15,10 @@ class Edit extends Component
     public $api;
     #[Rule('required|string')]
     public $token;
+    #[Rule('nullable|string')]
+    public $public_key;
+    #[Rule('nullable|string')]
+    public $secret_key;
     #[Rule('required|boolean')]
     public $status;
 
@@ -25,6 +29,8 @@ class Edit extends Component
         $this->name = $this->vendor->name;
         $this->api = $this->vendor->api;
         $this->token = $this->vendor->token;
+        $this->public_key = $this->vendor->public_key;
+        $this->secret_key = $this->vendor->secret_key;
         $this->status = $this->vendor->status ? true : false;
         $this->authorize('edit vendor api');
     }

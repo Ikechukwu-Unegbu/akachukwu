@@ -51,7 +51,25 @@ class Create extends Component
     {
         $this->validate_pin_action = false;
         $this->form_action = false;
+        $this->pin = "";
         return;
+    }
+
+    public function addDigit($digit)
+    {
+        if (strlen($this->pin) < 4) {
+            $this->pin .= $digit;
+        }
+    }
+
+    public function clearPin()
+    {
+        $this->pin = '';
+    }
+
+    public function deletePin()
+    {
+        $this->pin = substr($this->pin, 0, -1);
     }
 
     public function validatePin()
@@ -106,10 +124,12 @@ class Create extends Component
             $cableTransaction = CableService::create($this->vendor->id, $this->cable_name, $this->cable_plan, $this->iuc_number, $this->customer);
 
             if (!$cableTransaction->status) {
+                $this->closeModal();
                 return $this->dispatch('error-toastr', ['message' => $cableTransaction->message]);
             }
     
             if ($cableTransaction->status) {
+                $this->closeModal();
                 $this->dispatch('success-toastr', ['message' => $cableTransaction->message]);
                 session()->flash('success',  $cableTransaction->message);
                 return redirect()->route('user.transaction.cable.receipt', $cableTransaction->response->transaction_id);

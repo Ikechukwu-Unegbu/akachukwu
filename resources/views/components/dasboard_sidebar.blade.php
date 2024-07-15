@@ -40,7 +40,18 @@
                 <span class="link_val">Cable TV</span>
             </a>
         </div>
+
         <div class="sidebar-item {{ Route::currentRouteName() == 'payment.index' ? 'vastel-bg' : '' }}">
+
+        <div class="sidebar-item {{ Route::currentRouteName() == 'education.result.index' ? 'active' : '' }}">
+            <a class="sidebar_link fs-2" href="{{route('education.result.index')}}">
+                <span class="link_key">
+                   <i class="fa-solid fa-list-alt"></i>
+                </span>
+                <span class="link_val">Result Checker</span>
+            </a>
+        </div>
+        <div class="sidebar-item {{ Route::currentRouteName() == 'payment.index' ? 'active' : '' }}">
             <a class="sidebar_link fs-2" href="{{route('payment.index')}}">
                 <span class="link_key">
                    <i class="fa-solid fa-credit-card"></i>

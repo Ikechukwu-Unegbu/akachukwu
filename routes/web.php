@@ -1,15 +1,15 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\PagesController;
-use App\Http\Controllers\ProfileSettingsController;;
-use App\Http\Controllers\V1\Utilities\AirtimeController;
-use App\Http\Controllers\V1\Utilities\DataController;
-use App\Http\Controllers\V1\Utilities\ElectricityController;
-use App\Http\Controllers\V1\Utilities\TVController;
 use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\TestController;
-
+use App\Http\Controllers\PagesController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\V1\Utilities\TVController;
+use App\Http\Controllers\ProfileSettingsController;;
+use App\Http\Controllers\V1\Utilities\DataController;
+use App\Http\Controllers\V1\Utilities\AirtimeController;
+use App\Http\Controllers\V1\Utilities\ElectricityController;
+use App\Http\Controllers\V1\Education\ResultCheckerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +50,10 @@ Route::middleware(['auth', 'verified', 'user'])->group(function () {
     Route::get('transactions/cable/{cable:transaction_id}', \App\Livewire\User\Transaction\Cable\Receipt::class)->name('user.transaction.cable.receipt');
 
     Route::get('transactions/wallet', \App\Livewire\User\Transaction\Wallet\Index::class)->name('user.transaction.wallet');
+
+    Route::get('result-checker', [ResultCheckerController::class, 'index'])->name('education.result.index');
+    Route::get('transactions/result-checker', \App\Livewire\User\Transaction\Education\ResultChecker\Index::class)->name('user.transaction.education');
+    Route::get('transactions/result-checker/{checker:transaction_id}', \App\Livewire\User\Transaction\Education\ResultChecker\Receipt::class)->name('user.transaction.education.receipt');
 
     // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
 });
