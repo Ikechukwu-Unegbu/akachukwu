@@ -33,6 +33,7 @@
     <!-- ===============================================-->
     <link href="{{ asset('pub-pages\assets\css\theme.css') }}" rel="stylesheet" />
     <link href="{{ asset('pub-pages/assets/css/font-awesome.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" href="{{asset('css/ut/pin.css')}}"/>
     @yield('head')
     @stack('styles')
     <livewire:scripts />
@@ -129,8 +130,14 @@
                                 href="{{route('electricity.index')}}">Electricity</a>
                         </li>
                         <li class="nav-item"><a class="nav-link" aria-current="page"
+                            href="{{route('education.result.index')}}">Education</a>
+                        </li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page"
                                 href="{{route('payment.index')}}">Fund Account</a>
                         </li>
+                        <li class="nav-item"><a class="nav-link" aria-current="page"
+                            href="{{route('profile.edit')}}">Profile</a>
+                    </li>
 
                     </ul>
                     <div class="d-flex ms-lg-4">

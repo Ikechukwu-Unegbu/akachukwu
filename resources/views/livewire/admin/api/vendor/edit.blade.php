@@ -15,25 +15,39 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-8 col-12 col-lg-8 col-xl-8">
-                            <div class="mb-3 form-group">
+                        <div class="col-md-8 col-12 col-lg-8 col-xl-8 mb-3 mt-3">
+                            <div class="form-group">
                                 <label for="name" class="form-label">Vendor Title</label>
                                 <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" wire:model="name">
                                 @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
-                        <div class="col-md-8 col-12 col-lg-8 col-xl-8">
-                            <div class="mt-3 mb-3 form-group">
+                        <div class="col-md-8 col-12 col-lg-8 col-xl-8 mb-3">
+                            <div class="form-group">
                                 <label for="api" class="form-label">API</label>
                                 <input type="url" name="api" class="form-control @error('api') is-invalid @enderror" wire:model="api">
                                 @error('api') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
-                        <div class="col-md-8 col-12 col-lg-8 col-xl-8">
-                            <div class="mb-3 form-group">
+                        <div class="col-md-8 col-12 col-lg-8 col-xl-8 mb-3">
+                            <div class="form-group">
                                 <label for="token" class="form-label">Token</label>
                                 <input type="text" name="token" class="form-control @error('token') is-invalid @enderror" wire:model="token">
                                 @error('token') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-12 col-lg-8 col-xl-8 mb-3">
+                            <div class="form-group">
+                                <label for="public_key" class="form-label">Public Key</label>
+                                <input type="text" name="public_key" class="form-control @error('public_key') is-invalid @enderror" wire:model="public_key">
+                                @error('public_key') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-12 col-lg-8 col-xl-8 mb-3">
+                            <div class="form-group">
+                                <label for="secret_key" class="form-label">Secret Key</label>
+                                <input type="text" name="secret_key" class="form-control @error('secret_key') is-invalid @enderror" wire:model="secret_key">
+                                @error('secret_key') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div class="col-md-8 col-12 col-lg-8 col-xl-8">

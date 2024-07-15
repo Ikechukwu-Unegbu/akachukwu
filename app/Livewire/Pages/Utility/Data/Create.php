@@ -68,7 +68,25 @@ class Create extends Component
     {
         $this->validate_pin_action = false;
         $this->form_action = false;
+        $this->pin = "";
         return;
+    }
+
+    public function addDigit($digit)
+    {
+        if (strlen($this->pin) < 4) {
+            $this->pin .= $digit;
+        }
+    }
+
+    public function clearPin()
+    {
+        $this->pin = '';
+    }
+
+    public function deletePin()
+    {
+        $this->pin = substr($this->pin, 0, -1);
     }
 
     public function validatePin()
@@ -99,10 +117,12 @@ class Create extends Component
         );
 
         if (!$dataTransaction->status) {
+            $this->closeModal();
             return $this->dispatch('error-toastr', ['message' => $dataTransaction->message]);
         }
 
         if ($dataTransaction->status) {
+            $this->closeModal();
             $this->dispatch('success-toastr', ['message' => $dataTransaction->message]);
             session()->flash('success',  $dataTransaction->message);
             return redirect()->route('user.transaction.data.receipt', $dataTransaction->response->transaction_id);
