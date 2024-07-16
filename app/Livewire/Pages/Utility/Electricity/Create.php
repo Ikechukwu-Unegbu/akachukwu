@@ -22,7 +22,7 @@ class Create extends Component
     public $vendor;
     public $meter_types = [1 => "PREPAID", 2 => "POSTPAID"];
 
-    #[Rule('required|integer')]
+    #[Rule('required')]
     public $disco_name;
     #[Rule('required|integer|in:1,2')]
     public $meter_type;
@@ -122,8 +122,8 @@ class Create extends Component
             }
     
             if ($electricityValidate->status) {
-                $this->customer_name = $electricityValidate->data->name;
-                $this->customer_address = $electricityValidate->data->address;
+                $this->customer_name = $electricityValidate->response->name;
+                $this->customer_address = $electricityValidate->response->address;
                 $this->validate_action = true;
                 $this->form_action = true;
                 return $this->dispatch('success-toastr', ['message' => $electricityValidate->message]);

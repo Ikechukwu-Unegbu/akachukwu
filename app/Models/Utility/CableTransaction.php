@@ -76,7 +76,7 @@ class CableTransaction extends Model
 
     public static function generateUniqueId(): string
     {
-        return Str::slug(date('Ymd').microtime().'-cable-'.Str::random(10).microtime().Str::random(4));
+        return Str::slug(date('YmdHi').'-cable-'.Str::random(10).microtime().Str::random(4));
     }
 
     public function scopeSearch($query, $search)

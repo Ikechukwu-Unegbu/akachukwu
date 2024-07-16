@@ -11,7 +11,7 @@
                 <select name="cable_name" id="cable_name" class="form-select @error('cable_name') is-invalid @enderror" wire:model.live="cable_name">
                     <option value="">----------</option>
                     @foreach ($cables as $__cable)
-                        <option value="{{ $__cable->cable_id }}">{{ $__cable->cable_name }}</option>
+                        <option value="{{ $__cable->id }}">{{ $__cable->cable_name }}</option>
                     @endforeach
                 </select>
                 <label for="cable_name">Cable Name <span class="text-danger">*</span></label>
@@ -83,7 +83,7 @@
 >
     <div class="d-flex justify-content-between">
         <h6>Cable</h6>
-        <h6>{{ $cables->where('cable_id', $cable_name)->first()?->cable_name }}</h6>
+        <h6>{{ $cables->where('id', $cable_name)->first()?->cable_name }}</h6>
     </div>
     @if (count($cable_plans))
     <div class="d-flex justify-content-between">

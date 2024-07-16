@@ -95,7 +95,7 @@ class Create extends Component
     public function submit()
     {
         
-        $resultCheckerService = ResultCheckerService::create($this->exam_name, $this->quantity);
+        $resultCheckerService = ResultCheckerService::create($this->vendor->id, $this->exam_name, $this->quantity);
 
         if (!$resultCheckerService->status) {
             $this->closeModal();

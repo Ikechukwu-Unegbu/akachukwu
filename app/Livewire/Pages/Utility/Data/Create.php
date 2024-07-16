@@ -55,9 +55,9 @@ class Create extends Component
     public function validateForm()
     {
         $this->validate([
-            'network'       =>  'required|integer',
-            'dataType'      =>  'required|integer',
-            'plan'          =>  'required|integer',
+            'network'       =>  'required',
+            'dataType'      =>  'required',
+            'plan'          =>  'required',
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ]);
 
