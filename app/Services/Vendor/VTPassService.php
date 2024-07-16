@@ -406,7 +406,7 @@ class VTPassService
         try {
 
             $vendor = self::$vendor;
-            $cable = Cable::whereVendorId($vendor->id)->whereId($cableId)->first();
+            $cable = Cable::whereVendorId($vendor->id)->whereCableId($cableId)->first();
             $cable_plan = CablePlan::whereVendorId($vendor->id)->whereCablePlanId($cablePlan)->first();
 
             $verifyAccountBalance = self::verifyAccountBalance($cable_plan->amount);

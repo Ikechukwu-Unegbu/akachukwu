@@ -11,7 +11,7 @@
                 <select name="cable_name" id="cable_name" class="form-select @error('cable_name') is-invalid @enderror" wire:model.live="cable_name">
                     <option value="">----------</option>
                     @foreach ($cables as $__cable)
-                        <option value="{{ $__cable->id }}">{{ $__cable->cable_name }}</option>
+                        <option value="{{ $__cable->cable_id }}">{{ $__cable->cable_name }}</option>
                     @endforeach
                 </select>
                 <label for="cable_name">Cable Name <span class="text-danger">*</span></label>

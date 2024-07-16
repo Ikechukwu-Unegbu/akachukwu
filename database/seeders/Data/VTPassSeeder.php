@@ -148,7 +148,7 @@ class VTPassSeeder extends Seeder
                 ]);
     
                 foreach ($services as $service) {
-                    CablePlan::firstOrCreate([
+                    $cablePlan = CablePlan::firstOrCreate([
                         'vendor_id'     =>  $vendor->id,
                         'cable_id'      =>  $cable->id,
                         'cable_name'    =>  $cable->cable_name,
@@ -157,6 +157,8 @@ class VTPassSeeder extends Seeder
                         'amount'        =>  $service['variation_amount'],
                         'status'        =>  true
                     ]);
+
+                    $cablePlan->update(['cable_id' => $cable->cable_id]);
                 }
             }
         });
