@@ -69,7 +69,7 @@
             </div>
         </div>
         @endif
-        <button type="submit" class="btn bg-basic text-light" wire:loading.attr="disabled" wire:target='validateIUC'>
+        <button type="submit" class="btn btn-warning text-light" wire:loading.attr="disabled" wire:target='validateIUC'>
             <span wire:loading.remove wire:target='validateIUC'> {{ $validate_action ? 'Continue' : 'Validate IUC' }}</span>
             <span wire:loading wire:target="validateIUC">
                 <i class="fa fa-spinner fa-spin"></i> {{ $validate_action ? 'Please wait...' : 'Validating...' }}

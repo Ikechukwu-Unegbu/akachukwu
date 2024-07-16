@@ -41,7 +41,18 @@ class RegisteredUserController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'min:3', 'max:255', 'alpha_dash', 'unique:'.User::class],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Rules\Password::defaults(),         function ($attribute, $value, $fail) {
+                if (!preg_match('/[A-Z]/', $value)) {
+                    $fail('The '.$attribute.' must contain at least one uppercase letter.');
+                }
+                if (!preg_match('/[a-z]/', $value)) {
+                    $fail('The '.$attribute.' must contain at least one lowercase letter.');
+                }
+                if (!preg_match('/[0-9]/', $value)) {
+                    $fail('The '.$attribute.' must contain at least one number.');
+                }
+            }
+    ],
             'terms_and_conditions'=>['required']
         ]);
 
@@ -56,19 +67,13 @@ class RegisteredUserController extends Controller
                 ]);
         
                 MonnifyService::createVirtualAccount($user);
+                 event(new Registered($user));
             });
             session()->flash('success', 'Your account has been created successfully. Please proceed to login.');
             return redirect(route('login'));
         } catch (\Throwable $th) {
             
         }
-
-        // event(new Registered($user));
-
-        // Auth::login($user);
-
-        // return redirect(RouteServiceProvider::HOME);
-
         
     }
 }

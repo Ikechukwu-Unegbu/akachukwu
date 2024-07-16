@@ -98,7 +98,7 @@
             </div>
         </div>
         @endif
-        <button type="submit" class="btn bg-basic text-light" wire:loading.attr="disabled" wire:target='validateForm'>
+        <button type="submit" class="btn btn-warning text-light" wire:loading.attr="disabled" wire:target='validateForm'>
             <span wire:loading.remove wire:target='validateForm'> Continue</span>
             <span wire:loading wire:target="validateForm">
                 <i class="fa fa-spinner fa-spin"></i> Please wait...

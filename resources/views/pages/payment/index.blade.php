@@ -53,7 +53,7 @@
                         @error('gateway')<span style="font-size: 15px" class="text-danger">  {{ $message }} </span>@enderror
                     </div>
                 </div>
-                <button type="submit" class="btn bg-basic submit text-light">
+                <button type="submit" class="btn btn-warning submit text-light">
                     <span id="loader" style="display: none"><i class="fa fa-circle-notch fa-spin"></i> Please wait...</span>                        
                     <span class="continue">Continue</span>                    
                 </button>

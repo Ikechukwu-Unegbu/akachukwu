@@ -12,12 +12,12 @@
               </p>
               <div class="text-center text-md-start">
                 @guest
-                  <a class="btn btn-warning me-3 btn-lg" href="{{route('login')}}" role="button">Login</a>               
+                  <a class="btn vastel-bg me-3 btn-lg" href="{{route('login')}}" role="button">Login</a>               
                 @endguest
                 @auth
-                  <a class="btn btn-warning me-3 btn-lg" href="{{ auth()->user()->dashboard() }}" role="button">Dashboard</a>
+                  <a class="btn vastel-bg me-3 btn-lg" href="{{ auth()->user()->dashboard() }}" role="button">Dashboard</a>
                 @endauth
-                <a class="btn btn-link text-warning fw-medium" href="#!" role="button" data-bs-toggle="modal" data-bs-target="#popupVideo"><span class="fas fa-play me-2"></span>Watch the video </a></div>
+                <a class="btn btn-link vastel-test fw-medium" href="#!" role="button" data-bs-toggle="modal" data-bs-target="#popupVideo"><span class="fas fa-play me-2"></span>Watch the video </a></div>
             </div>
             <div class="col-md-6 text-end"><img class="pt-7 pt-md-0 img-fluid" src="{{asset('pub-pages\assets\img\hero\hero-img.png')}}" alt="" /></div>
           </div>
@@ -53,7 +53,7 @@
               <p class="mb-0 fw-medium text-secondary">Navigate easily for a seamless experience.</p>
             </div>
           </div>
-          <div class="text-center"><a class="btn btn-warning" href="/login" role="button">SIGN UP NOW</a></div>
+          <div class="text-center"><a class="btn vastel-bg" href="/login" role="button">Register</a></div>
         </div><!-- end of .container-->
 
       </section>
@@ -168,7 +168,7 @@
             <div class="col-lg-6 text-center">
               <h1 class="fw-bold mb-4 fs-7">Do you need support? We are here to help</h1>
               <p class="mb-5 text-info fw-medium">If you have any questions, concerns, or need support, don't hesitate to reach out to us. Click the 'Contact Us' button below, and our friendly customer support team will be happy to assist you. Your satisfaction is our priority</p>
-              <button type="button" data-bs-toggle="modal" data-bs-target="#contactModal" class="btn btn-warning btn-md">Contact our expert</button>
+              <button type="button" data-bs-toggle="modal" data-bs-target="#contactModal" class="btn vastel-bg btn-md">Contact our expert</button>
               {{-- @include('components._contact_us') --}}
                @livewire('component.global.contact-us')
             </div>

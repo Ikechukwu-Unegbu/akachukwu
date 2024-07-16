@@ -15,7 +15,9 @@
     <script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script><script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq7e27ed946742b2ef7be4a02f6a2e0772" defer></script>
 <!-- End of Chaport Live Chat code -->
 
+    <style>
 
+    </style>
     <!-- ===============================================-->
     <!--    Favicons-->
     <!-- ===============================================-->
@@ -78,6 +80,23 @@
             font-size: 16px;
             text-align: center;
         }
+        .vastel-bg{
+            background-color: #0018A8;
+            color:white;
+        }
+        .vastel-bg:hover {
+            background-color: #1d057d; /* Change this color to your desired hover effect color */
+            color: white;
+        }
+        .vastel-text{
+            background-color: #0018A8;
+        }
+        .vastel-text{
+            color: gray;
+        }
+        .vastel-text:hover, .vastel-text:focus{
+            color: #0018A8;
+        }
     </style>
 </head>
 
@@ -91,7 +110,7 @@
         <nav class="navbar navbar-expand-lg navbar-light" {{-- data-navbar-on-scroll="data-navbar-on-scroll" sticky-top
             --}}>
             <div class="container"><a class="navbar-brand" href="/"><img
-                        src="{{ asset('pub-pages/assets/img/logo.svg') }}" height="31" alt="logo" /></a>
+                        src="{{ asset('images/white_logo.png') }}" style="height: 7rem;width:7rem" alt="logo" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon">
@@ -112,7 +131,7 @@
                     </ul>
                     <div class="d-flex ms-lg-4">
                         <a class="btn btn-secondary-outline" href="{{ route('login') }}">Login</a>
-                        <a class="btn btn-warning ms-3" href="{{ route('register') }}">Register</a>
+                        <a class="btn vastel-bg ms-3" href="{{ route('register') }}">Register</a>
                     </div>
                 </div>
                 @endguest
