@@ -24,7 +24,7 @@ class ElectricityApiRequest extends FormRequest
         return [
             'amount'            =>  'required|numeric',
             'meter_number'      =>  'required|numeric',
-            'disco_id'          =>  'required|integer',
+            'disco_id'          =>  'required',
             'meter_type'        =>  'required|integer',
             'owner_name'        =>  'required|string',
             'phone_number'      =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],

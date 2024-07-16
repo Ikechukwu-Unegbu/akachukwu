@@ -28,6 +28,13 @@
                     <div class="text-right tm_list_desc">₦ {{ $electricity->amount }}</div>
                 </li>
 
+                @if ($electricity->token)
+                <li class="d-flex justify-content-between">
+                    <div class="tm_list_title">Token:</div>
+                    <div class="text-right tm_list_desc">{{ $electricity->token }}</div>
+                </li>
+                @endif
+
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Customer Name:</div>
                     <div class="text-right tm_list_desc">{{ $electricity->customer_name }}</div>

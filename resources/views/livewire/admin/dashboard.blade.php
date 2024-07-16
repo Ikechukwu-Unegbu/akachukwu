@@ -25,6 +25,9 @@
                         <x-admin.dashboard-card title="Electricity Sales" currency="₦" :data=$electricity_sale icon="bi-cart" day="Today" />
                     </div>
                     <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-12">
+                        <x-admin.dashboard-card title="Education" :data=$result_checker_count icon="bi-cart" />
+                    </div>
+                    <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-12">
                         <x-admin.dashboard-card title="Customers" :data=$customers_count icon="bi-people" />
                     </div>
                     <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-12">

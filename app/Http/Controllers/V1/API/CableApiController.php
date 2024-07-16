@@ -45,7 +45,7 @@ class CableApiController extends Controller
     {
        
         $request->validate([
-            'cable_id'  =>  'required|integer'
+            'cable_id'  =>  'required'
         ]);
 
         $cable_plans = CablePlan::whereVendorId($this->vendor?->id)->whereCableId($request->cable_id)->whereStatus(true);

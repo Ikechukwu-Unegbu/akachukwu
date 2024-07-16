@@ -1,0 +1,470 @@
+{
+    "DSTV": [
+        {
+            "variation_code": "dstv-padi",
+            "name": "DStv Padi N3,600",
+            "variation_amount": "3600.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-yanga",
+            "name": "DStv Yanga N5,100",
+            "variation_amount": "5100.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-confam",
+            "name": "Dstv Confam N9,300",
+            "variation_amount": "9300.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv79",
+            "name": "DStv  Compact N15,700",
+            "variation_amount": "15700.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv3",
+            "name": "DStv Premium N37,000",
+            "variation_amount": "37000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv6",
+            "name": "DStv Asia N12,400",
+            "variation_amount": "12400.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv7",
+            "name": "DStv Compact Plus N25,000",
+            "variation_amount": "25000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv9",
+            "name": "DStv Premium-French N57,500",
+            "variation_amount": "57500.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv10",
+            "name": "DStv Premium-Asia N42,000",
+            "variation_amount": "42000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "confam-extra",
+            "name": "DStv Confam + ExtraView N14,300",
+            "variation_amount": "14300.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "yanga-extra",
+            "name": "DStv Yanga + ExtraView N10,100",
+            "variation_amount": "10100.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "padi-extra",
+            "name": "DStv Padi + ExtraView N8,600",
+            "variation_amount": "8600.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "com-asia",
+            "name": "DStv Compact + Asia N28,100",
+            "variation_amount": "28100.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv30",
+            "name": "DStv Compact + Extra View N20,700",
+            "variation_amount": "20700.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "com-frenchtouch",
+            "name": "DStv Compact + French Touch N21,500",
+            "variation_amount": "21500.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv33",
+            "name": "DStv Premium + Extra View N42,000",
+            "variation_amount": "42000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv40",
+            "name": "DStv Compact Plus + Asia N37,400",
+            "variation_amount": "37400.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "com-frenchtouch-extra",
+            "name": "DStv Compact + French Touch + ExtraView N26,500",
+            "variation_amount": "26500.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "com-asia-extra",
+            "name": "DStv Compact + Asia + ExtraView N33,100",
+            "variation_amount": "33100.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv43",
+            "name": "DStv Compact Plus + French Plus N45,500",
+            "variation_amount": "45500.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "complus-frenchtouch",
+            "name": "DStv Compact Plus + French Touch N30,800",
+            "variation_amount": "30800.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv45",
+            "name": "DStv Compact Plus + Extra View N30,000",
+            "variation_amount": "30000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "complus-french-extraview",
+            "name": "DStv Compact Plus + FrenchPlus + Extra View N50,500",
+            "variation_amount": "50500.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv47",
+            "name": "DStv Compact + French Plus N36,200",
+            "variation_amount": "36200.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv48",
+            "name": "DStv Compact Plus + Asia + ExtraView N42,400",
+            "variation_amount": "42400.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv61",
+            "name": "DStv Premium + Asia + Extra View N54,400",
+            "variation_amount": "54400.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv62",
+            "name": "DStv Premium + French + Extra View N51,000",
+            "variation_amount": "51000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "frenchplus-addon",
+            "name": "DStv French Plus Add-on N20,500",
+            "variation_amount": "20500.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "asia-addon",
+            "name": "DStv Asian Add-on N12,400",
+            "variation_amount": "12400.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-greatwall",
+            "name": "DStv Great Wall Standalone Bouquet N2,500",
+            "variation_amount": "2500.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "frenchtouch-addon",
+            "name": "DStv French Touch Add-on N5,800",
+            "variation_amount": "5800.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "extraview-access",
+            "name": "ExtraView Access N5,000",
+            "variation_amount": "5000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "french11",
+            "name": "DStv French 11 N9,000",
+            "variation_amount": "9000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv80",
+            "name": "DStv Asian Bouquet E36 N12,400",
+            "variation_amount": "12400.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-yanga-showmax",
+            "name": "DStv Yanga + Showmax N6,550",
+            "variation_amount": "6550.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-greatwall-showmax",
+            "name": "DStv Great Wall Standalone Bouquet + Showmax N4,950",
+            "variation_amount": "4950.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-compact-plus-showmax",
+            "name": "DStv Compact Plus + Showmax N26,450",
+            "variation_amount": "26450.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-confam-showmax",
+            "name": "Dstv Confam + Showmax N10,750",
+            "variation_amount": "10750.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-compact-showmax",
+            "name": "DStv  Compact + Showmax N17,150",
+            "variation_amount": "17150.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-padi-showmax",
+            "name": "DStv Padi + Showmax N6,100",
+            "variation_amount": "6100.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-premium-asia-showmax",
+            "name": "DStv Premium W/Afr +  ASIAE36 + Showmax N27,500",
+            "variation_amount": "27500.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-asia-showmax",
+            "name": "DStv Asia + Showmax N14,900",
+            "variation_amount": "14900.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-premium-french-showmax",
+            "name": "DStv Premium + French + Showmax N57,500",
+            "variation_amount": "57500.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-premium-showmax",
+            "name": "DStv Premium + Showmax N37,000",
+            "variation_amount": "37000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-premium-str",
+            "name": "DStv Premium Streaming Subscription - N37,000",
+            "variation_amount": "37000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-prestige",
+            "name": "DStv Prestige - N850,000",
+            "variation_amount": "850000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-yanga-stream",
+            "name": "DStv Yanga OTT Streaming Subscription - N5,100",
+            "variation_amount": "5100.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-compact-plus-streem",
+            "name": "DStv Compact Plus Streaming Subscription - N25,000",
+            "variation_amount": "25000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-compact-stream",
+            "name": "DStv Compact Streaming Subscription - N15,700",
+            "variation_amount": "15700.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "dstv-confam-stream",
+            "name": "DStv Comfam Streaming Subscription - N9,300",
+            "variation_amount": "9300.00",
+            "fixedPrice": "Yes"
+        }
+    ],
+    "GOTV": [
+        {
+            "variation_code": "gotv-max",
+            "name": "GOtv Max N7,200",
+            "variation_amount": "7200.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "gotv-jolli",
+            "name": "GOtv Jolli N4,850",
+            "variation_amount": "4850.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "gotv-jinja",
+            "name": "GOtv Jinja N3,300",
+            "variation_amount": "3300.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "gotv-smallie",
+            "name": "GOtv Smallie - monthly N1575",
+            "variation_amount": "1575.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "gotv-smallie-3months",
+            "name": "GOtv Smallie - quarterly N4,175",
+            "variation_amount": "4175.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "gotv-smallie-1year",
+            "name": "GOtv Smallie - yearly N12,300",
+            "variation_amount": "12300.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "gotv-supa",
+            "name": "GOtv Supa - monthly N9,600",
+            "variation_amount": "9600.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "gotv-supa-plus",
+            "name": "GOtv Supa Plus - monthly N15,700",
+            "variation_amount": "15700.00",
+            "fixedPrice": "Yes"
+        }
+    ],
+    "STARTIMES": [
+        {
+            "variation_code": "nova",
+            "name": "Nova (Dish) - 1700 Naira - 1 Month",
+            "variation_amount": "1700.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "basic",
+            "name": "Basic (Antenna) - 3,300 Naira - 1 Month",
+            "variation_amount": "3300.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "smart",
+            "name": "Smart (Dish) - 4,200 Naira - 1 Month",
+            "variation_amount": "4200.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "classic",
+            "name": "Classic (Antenna) - 5,000 Naira - 1 Month",
+            "variation_amount": "5000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "super",
+            "name": "Super (Dish) - 8,200 Naira - 1 Month",
+            "variation_amount": "8200.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "nova-weekly",
+            "name": "Nova (Antenna) - 500 Naira - 1 Week",
+            "variation_amount": "500.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "basic-weekly",
+            "name": "Basic (Antenna) - 1100 Naira - 1 Week",
+            "variation_amount": "1100.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "smart-weekly",
+            "name": "Smart (Dish) - 1,400 Naira - 1 Week",
+            "variation_amount": "1400.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "classic-weekly",
+            "name": "Classic (Antenna) - 1700 Naira - 1 Week",
+            "variation_amount": "1700.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "super-weekly",
+            "name": "Super (Dish) - 2,800 Naira - 1 Week",
+            "variation_amount": "2800.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "uni-1",
+            "name": "Chinese (Dish) - 16,000 Naira - 1 month",
+            "variation_amount": "16000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "uni-2",
+            "name": "Nova (Antenna) - 1,700 Naira - 1 Month",
+            "variation_amount": "1700.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "special-weekly",
+            "name": "Special (Dish) - 2100 Naira - 1 Week",
+            "variation_amount": "2100.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "special-monthly",
+            "name": "Special (Dish) - 6200 Naira - 1 Month",
+            "variation_amount": "6200.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "nova-dish-weekly",
+            "name": "Nova (Dish) - 600 Naira - 1 Week",
+            "variation_amount": "600.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "super-antenna-weekly",
+            "name": "Super (Antenna) - 2,700 Naira - 1 Week",
+            "variation_amount": "2700.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "super-antenna-monthly",
+            "name": "Super (Antenna) - 8,000 Naira - 1 Month",
+            "variation_amount": "8000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "global-monthly-dish",
+            "name": "Global (Dish) - 17000 Naira - 1 Month",
+            "variation_amount": "17000.00",
+            "fixedPrice": "Yes"
+        },
+        {
+            "variation_code": "global-weekly-dish",
+            "name": "Global (Dish) - 6000 Naira - 1Week",
+            "variation_amount": "6000.00",
+            "fixedPrice": "Yes"
+        }
+    ]
+}

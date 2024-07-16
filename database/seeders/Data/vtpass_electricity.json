@@ -1,0 +1,62 @@
+[
+    {
+        "id": "ikeja-electric",
+        "name": "IKEDC - Ikeja Electric",
+        "status": true
+    },
+    {
+        "id": "eko-electric",
+        "name": "EKEDC - Eko Electricity",
+        "status": true
+    },
+    {
+        "id": "kano-electric",
+        "name": "KEDCO - Kano Electricity",
+        "status": true
+    },
+    {
+        "id": "portharcourt-electric",
+        "name": "PHED - Port Harcourt Electric",
+        "status": true
+    },
+    {
+        "id": "jos-electric",
+        "name": "JED - Jos Electricity",
+        "status": true
+    },
+    {
+        "id": "ibadan-electric",
+        "name": "IBEDC - Ibadan Electricity",
+        "status": true
+    },
+    {
+        "id": "kaduna-electric",
+        "name": "KAEDCO - Kaduna Electric",
+        "status": true
+    },
+    {
+        "id": "abuja-electric",
+        "name": "AEDC - Abuja Electric",
+        "status": true
+    },
+    {
+        "id": "enugu-electric",
+        "name": "EEDC - Enugu Electric",
+        "status": true
+    },
+    {
+        "id": "benin-electric",
+        "name": "BEDC - Benin Electric",
+        "status": true
+    },
+    {
+        "id": "aba-electric",
+        "name": "ABA - ABA Electric",
+        "status": true
+    },
+    {
+        "id": "yola-electric",
+        "name": "YEDC - YOLA Electric",
+        "status": true
+    }
+]

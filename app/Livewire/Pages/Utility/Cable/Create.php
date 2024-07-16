@@ -39,6 +39,7 @@ class Create extends Component
     public function updatedCableName()
     {
         $this->cable_plan = null;
+        
     }
 
     public function updatedIucNumber()
@@ -92,9 +93,9 @@ class Create extends Component
     public function validateIUC()
     {
         $this->validate([
-            'cable_name'    =>  'required|integer',
+            'cable_name'    =>  'required',
             'iuc_number'    =>  'required|numeric',
-            'cable_plan'    =>  'required|integer'
+            'cable_plan'    =>  'required'
         ]);
 
         if (!$this->validate_action) {
@@ -105,7 +106,7 @@ class Create extends Component
             }
     
             if ($cableValidate->status) {
-                $this->customer = $cableValidate->data->name;
+                $this->customer = $cableValidate->response->name;
                 $this->validate_action = true;
                 $this->form_action = true;
                 return $this->dispatch('success-toastr', ['message' => $cableValidate->message]);
