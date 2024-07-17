@@ -54,6 +54,7 @@ class AirtimeTransaction extends Model
     {
         parent::boot();
         static::creating(function ($model) {
+            $model->user_id = auth()->user()->id;
             $model->transaction_id = static::generateUniqueId();
         });
     }
@@ -75,7 +76,7 @@ class AirtimeTransaction extends Model
 
     public static function generateUniqueId(): string
     {
-        return Str::slug(date('Ymd').microtime().'-airtime-'.Str::random(10).microtime().Str::random(4));
+        return Str::slug(date('YmdHi').'-airtime-'.Str::random(10).microtime().Str::random(4));
     }
 
     public function scopeSearch($query, $search)

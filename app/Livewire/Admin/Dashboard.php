@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Data\DataTransaction;
+use App\Models\Education\ResultCheckerTransaction;
 use App\Models\User;
 use App\Models\Utility\AirtimeTransaction;
 use App\Models\Utility\CableTransaction;
@@ -33,7 +34,8 @@ class Dashboard extends Component
             'data_sale'             =>    DataTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
             'cable_sale'            =>    CableTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
             'electricity_sale'      =>    ElectricityTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
-            'resellers_count'       =>    User::whereUserLevel('reseller')->count()
+            'resellers_count'       =>    User::whereUserLevel('reseller')->count(),
+            'result_checker_count'  =>    ResultCheckerTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
         ]);
     }
 }

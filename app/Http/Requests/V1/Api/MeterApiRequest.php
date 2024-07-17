@@ -23,7 +23,7 @@ class MeterApiRequest extends FormRequest
     {
         return [
             'meter_number'  =>  'required|numeric',
-            'disco_id'      =>  'required|integer',
+            'disco_id'      =>  'required',
             'meter_type'    =>  'required|integer'
         ];
     }

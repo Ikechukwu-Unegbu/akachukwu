@@ -22,9 +22,9 @@ class CableApiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'cable_id'         =>  'required|integer',
+            'cable_id'         =>  'required',
             'iuc_number'       =>  'required|numeric',
-            'cable_plan_id'    =>  'required|integer',
+            'cable_plan_id'    =>  'required',
             'card_owner'       =>  'required|string'
         ];
     }

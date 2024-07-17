@@ -11,6 +11,7 @@ use App\Http\Controllers\V1\API\Auth\ForgotPasswordController;
 use App\Http\Controllers\V1\API\Auth\AuthenticateUserController;
 use App\Http\Controllers\V1\API\CableApiController;
 use App\Http\Controllers\V1\API\DataApiController;
+use App\Http\Controllers\V1\API\EducationController;
 use App\Http\Controllers\V1\API\ElectricityApiController;
 use App\Http\Controllers\V1\API\UserPinController;
 use App\Http\Controllers\V1\WebhookController;
@@ -55,6 +56,7 @@ Route::group([
     Route::post('pin/create', [UserPinController::class, 'create']);
     Route::post('pin/update', [UserPinController::class, 'update']);
     Route::post('pin/validate', [UserPinController::class, 'validatePin']);
+    Route::post('epins/create', [EducationController::class, 'create']);
 });
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
@@ -64,3 +66,4 @@ Route::post('cables', [CableApiController::class, 'index']);
 Route::post('cableplans', [CableApiController::class, 'plan']);
 Route::post('electricity/discos', [ElectricityApiController::class, 'index']);
 Route::post('webhook/monnify', WebhookController::class);
+Route::post('exams', [EducationController::class, 'index']);
