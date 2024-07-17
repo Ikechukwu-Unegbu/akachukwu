@@ -15,7 +15,7 @@ class DataPlanSeeder extends Seeder
      */
     public function run(): void
     {
-        // DataPlan::truncate();
+        DataPlan::truncate();
 
         $gladtidingsJsonContents = file_get_contents(__DIR__ . '/gladtidings.json');
 

@@ -14,6 +14,7 @@ class DataTypeSeeder extends Seeder
      */
     public function run(): void
     {   
+        DataType::truncate();
         $dataTypes = [
             'CORPORATE', 'SME', 'SME2', 'GIFTING', 'CORPORATE GIFTING', 'DATA COUPONS'
         ];

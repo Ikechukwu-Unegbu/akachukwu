@@ -13,6 +13,7 @@ class CableSeeder extends Seeder
      */
     public function run(): void
     {
+        Cable::truncate();
         $cables = [
             1 => "GOTV",
             2 => "DSTV",
