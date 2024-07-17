@@ -31,6 +31,7 @@ class ElectricityTransaction extends Model
         'customer_address',
         'balance_before',
         'balance_after',
+        'token',
         'api_data_id',
         'api_response',
         'status',
@@ -58,6 +59,7 @@ class ElectricityTransaction extends Model
             'balance_after',
             'api_data_id',
             'api_response',
+            'token',
             'status',
         ]);
         // Chain fluent methods for configuration options
@@ -83,7 +85,7 @@ class ElectricityTransaction extends Model
     
     public static function generateUniqueId(): string
     {
-        return Str::slug(date('Ymd').microtime().'-electricity-'.Str::random(10).microtime().Str::random(4));
+        return Str::slug(date('YmdHi').'-electricity-'.Str::random(10).microtime().Str::random(4));
     }
 
     public function scopeSearch($query, $search)

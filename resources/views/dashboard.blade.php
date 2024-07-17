@@ -84,7 +84,7 @@
                     </a>
                 </div>
                 <div class="mb-3 col-6 col-md-3">
-                    <a href="{{ route('cable.index') }}">
+                    <a href="{{ route('electricity.index') }}">
                         <div class="card">
                             <div class="card-body text-center">
                                 <h6>Electricity</h6>
@@ -93,7 +93,7 @@
                     </a>
                 </div>
                 <div class="mb-3 col-6 col-md-3">
-                    <a href="{{ route('electricity.index') }}">
+                    <a href="{{ route('cable.index') }}">
                         <div class="card">
                             <div class="card-body text-center">
                                 <h6>Cable</h6>

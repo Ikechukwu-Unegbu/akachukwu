@@ -26,7 +26,7 @@
     <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
     <meta name="theme-color" content="#ffffff">
 
-     <link rel="icon" href="{{ asset('images/white_logo_icon.png') }}" type="image/png">
+     <link rel="icon" href="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" type="image/png">
 
     <!-- ===============================================-->
     <!--    Stylesheets-->
@@ -108,7 +108,7 @@
         <nav class="navbar navbar-expand-lg navbar-light" {{-- data-navbar-on-scroll="data-navbar-on-scroll" sticky-top
             --}}>
             <div class="container"><a class="navbar-brand" href="/"><img
-                        src="{{ asset('images/white_logo.png') }}" style="height: 7rem;width:7rem" alt="logo" /></a>
+                        src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo" /></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon">

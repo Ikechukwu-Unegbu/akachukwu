@@ -83,7 +83,7 @@
 >
     <div class="d-flex justify-content-between">
         <h6>Cable</h6>
-        <h6>{{ $cables->where('cable_id', $cable_name)->first()?->cable_name }}</h6>
+        <h6>{{ $cables->where('id', $cable_name)->first()?->cable_name }}</h6>
     </div>
     @if (count($cable_plans))
     <div class="d-flex justify-content-between">

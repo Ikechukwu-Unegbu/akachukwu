@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\V1\API;
+namespace App\Http\Requests\V1\Api;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IUCApiRequest extends FormRequest
+class ResultCheckerRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,8 @@ class IUCApiRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'iuc_number'    =>  'required|numeric',
-            'cable_id'      =>  'required'
+            'exam_name'   =>  'required|string',
+            'quantity'    =>  'required|numeric',
         ];
     }
 }

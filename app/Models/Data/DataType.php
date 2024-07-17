@@ -14,4 +14,9 @@ class DataType extends Model
     {
         return $this->hasMany(DataPlan::class, 'type_id');
     }
+
+    public function dataNetwork()
+    {
+        return $this->belongsTo(DataNetwork::class, 'network_id');
+    }
 }

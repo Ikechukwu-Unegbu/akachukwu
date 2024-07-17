@@ -93,7 +93,7 @@ class DataTransaction extends Model
 
     public static function generateUniqueId(): string
     {
-        return Str::slug(date('Ymd').microtime().'-data-'.Str::random(10).Str::random(4));
+        return Str::slug(date('YmdHi').'-data-'.Str::random(10).Str::random(4));
     }
 
     public function scopeSearch($query, $search)
