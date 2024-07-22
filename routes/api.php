@@ -67,5 +67,5 @@ Route::post('cables', [CableApiController::class, 'index']);
 Route::post('cableplans', [CableApiController::class, 'plan']);
 Route::post('electricity/discos', [ElectricityApiController::class, 'index']);
 Route::post('webhook/monnify', WebhookController::class);
-Route::get('webhook/payvessel', PayVesselWebhookController::class);
+Route::post('webhook/payvessel', PayVesselWebhookController::class);
 Route::post('exams', [EducationController::class, 'index']);
