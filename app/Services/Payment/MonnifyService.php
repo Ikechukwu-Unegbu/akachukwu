@@ -3,18 +3,19 @@
 namespace App\Services\Payment;
 
 use Exception;
+use App\Models\User;
+use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\MoneyTransfer;
 use App\Models\PaymentGateway;
+use App\Models\VirtualAccount;
 use Illuminate\Support\Collection;
 use App\Interfaces\Payment\Payment;
-use App\Models\MoneyTransfer;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Payment\MonnifyTransaction;
-use App\Models\VirtualAccount;
-use App\Models\User;
 use App\Services\Account\AccountBalanceService;
 
 class MonnifyService implements Payment
@@ -226,23 +227,29 @@ class MonnifyService implements Payment
                         "status" => $response->responseBody->status,
                         "created_at" => now(),
                         "updated_at" => now(),
-                        "user_id" => $user->id
+                        "user_id" => $user->id,
+                        "payment_id" => self::monnifyDetails('id')
                     ];
                 }
 
                 VirtualAccount::insert($data);                
-                return true;
+                return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
             }
     
-            return false;
 
-        } catch (\Throwable $th) {
-            Log::error($th->getMessage());
-            return response()->json([
-                'status'   =>    false,
+            $errorResponse = [
                 'error'    =>    "Server Error",
                 'message'  =>    "Opps! Unable to create static account. Please check your network connection.",
-            ], 401)->getData();
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());          
+            $errorResponse = [
+                'error'    =>    "Server Error",
+                'message'  =>    "Opps! Unable to create static account. Please check your network connection.",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
     }
 

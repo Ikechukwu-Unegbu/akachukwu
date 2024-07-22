@@ -83,6 +83,8 @@
                             </div>
                         </div>
                     </div>
+                    @else
+                        @livewire('pages.virutal-account.create', [App\Models\User::find(auth()->user()->id)])
                     @endif
                 </form>
             </div>            

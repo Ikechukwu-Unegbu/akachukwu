@@ -15,4 +15,24 @@ class PaymentGateway extends Model
             $query->where('name', 'LIKE', "%{$search}%");
         });
     }
+
+    /**
+     * Set all status values to false.
+     *
+     * @return void
+     */
+    public static function setAllStatusToFalse()
+    {
+        self::query()->update(['status' => false]);
+    }
+
+    /**
+     * Set all virtual acct. status values to false.
+     *
+     * @return void
+     */
+    public static function setAllVAToFalse()
+    {
+        self::query()->update(['va_status' => false]);
+    }
 }

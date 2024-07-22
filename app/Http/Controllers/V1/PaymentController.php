@@ -162,5 +162,8 @@ class PaymentController extends Controller
         return redirect()->route('payment.index');
     }
 
-
+    private function payWithPayVessel(Request $request)
+    {
+        
+    }
 }
