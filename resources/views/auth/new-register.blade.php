@@ -27,7 +27,7 @@
                 <label for="username">Username</label>
             </div>
              <div class="mb-3 form-floating">
-                <input type="text" name="phone" class="form-control" id="phone" value="{{ old('phone') }}" placeholder="">
+                <input type="text" name="phone_number" class="form-control" id="phone" value="{{ old('phone_number') }}" placeholder="">
                 <label for="phone">Phone</label>
             </div>
              <div class="mb-3 form-floating">

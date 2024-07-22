@@ -17,13 +17,14 @@
             </div>
             <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'Gateway', 'Status', 'Action']" />
+                    <x-admin.table-header :headers="['#', 'Gateway', 'Status', 'Virtual Acct.', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($payments as $payment)
                             <tr>
                                 <th scope="row">{{ $loop->index + 1 }}</th>
                                 <td>{{ $payment->name }}</td>
                                 <td><span class="badge bg-{{ $payment->status ? 'success' : 'danger' }}">{{ $payment->status ? 'Active' : 'Not-Active' }}</span></td>
+                                <td><span class="badge bg-{{ $payment->va_status ? 'success' : 'danger' }}">{{ $payment->va_status ? 'Active' : 'Not-Active' }}</span></td>
                                 <td>
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>

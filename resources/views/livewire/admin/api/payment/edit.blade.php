@@ -52,6 +52,13 @@
                             </div>
                             @error('status') <span class="text-danger" style="font-size: .875em">{{ $message }}</span> @enderror
                         </div>
+                        <div class="col-md-8 col-12 col-lg-8 col-xl-8">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="va_status" wire:model="va_status">
+                                <label class="form-check-label" for="va_status">Virtual Account Status</label>
+                            </div>
+                            @error('va_status') <span class="text-danger" style="font-size: .875em">{{ $message }}</span> @enderror
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer">

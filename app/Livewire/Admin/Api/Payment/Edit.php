@@ -19,6 +19,8 @@ class Edit extends Component
     public $contract_code;
     #[Rule('required|boolean')]
     public $status;
+    #[Rule('required|boolean')]
+    public $va_status;
 
 
     public function mount(PaymentGateway $payment)
@@ -29,6 +31,7 @@ class Edit extends Component
         $this->public_key = $this->payment->public_key;
         $this->contract_code = $this->payment->contract_code;
         $this->status = $this->payment->status ? true : false;
+        $this->va_status = $this->payment->va_status ? true : false;
         $this->authorize('edit payment api');
     }
 
@@ -39,8 +42,12 @@ class Edit extends Component
             'public_key'      =>   'required|string',
             'contract_code'   =>   ($this->payment->name == 'Monnify')  ? 'required|numeric' : 'nullable',
             'status'          =>   'required|boolean',
+            'va_status'       =>   'required|boolean',
         ]);
-        
+
+        // if ($this->status) $this->payment->setAllStatusToFalse();
+        if ($this->va_status) $this->payment->setAllVAToFalse();
+
         $this->payment->update($validated);
 
         $this->dispatch('success-toastr', ['message' => 'Payment Gateway Updated Successfully']);
