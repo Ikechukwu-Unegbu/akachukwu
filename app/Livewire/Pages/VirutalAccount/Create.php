@@ -11,7 +11,8 @@ class Create extends Component
 {
     public function virtualAccountAction()
     {
-        if (empty(auth()->user()->mobile)) return $this->dispatch('error-toastr', ['message' => "Opps! Your Mobile number is required to create a static account."]);
+
+        if (empty(auth()->user()->phone)) return $this->dispatch('error-toastr', ['message' => "Opps! Your Mobile number is required to create a static account."]);
 
         $virtualAccountFactory = VirtualAccountServiceFactory::make();
 

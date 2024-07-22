@@ -66,7 +66,7 @@ class RegisteredUserController extends Controller
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
                     'role'  =>  'user',
-                    'mobile' => $request->phone_number
+                    'phone' => $request->phone_number
                 ]);
         
                 // MonnifyService::createVirtualAccount($user);

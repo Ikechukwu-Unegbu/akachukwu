@@ -50,7 +50,7 @@ class PayVesselService
                     "businessid"   => config('payment.payvessel.business_id'),
                     "email"        => $user->email,
                     "name"         => $user->name,
-                    "phoneNumber"  => $user->mobile,
+                    "phoneNumber"  => $user->phone,
                     "bankcode"     => [$bankCode['code']],
                     "account_type" =>  "STATIC"
                 ];
