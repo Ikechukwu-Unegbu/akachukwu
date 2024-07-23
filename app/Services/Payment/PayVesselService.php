@@ -143,8 +143,6 @@ class PayVesselService
 
     private static function computeSHA512TransactionHash($stringifiedData, $clientSecret) 
     {
-        // dd($stringifiedData);
-        dd(hash_hmac('sha512', $stringifiedData, $clientSecret));
         return hash_hmac('sha512', trim($stringifiedData), $clientSecret);
     }
 
@@ -153,20 +151,9 @@ class PayVesselService
         try {
             // Verify the webhook signature
             $payload = $request->getContent();
-            // Generate the filename with a timestamp
             $filename = 'webhook_payload_' . now()->format('Ymd_His') . '.txt';
-            // Define the full path to the public directory
             $path = public_path($filename);
-            // Save the file to the public directory
             file_put_contents($path, $payload);            
-
-
-        // static::storePayload($payload);
-        $filename = 'webhook_payload_' . now()->format('Ymd_His') . '.txt';
-        $path = public_path($filename);
-        // Save the file to the public directory
-        file_put_contents($path, $payload);
-        return;
 
             $payvesselSignature = $request->header('payvessel-http-signature');
             $ipAddress = $request->ip();
