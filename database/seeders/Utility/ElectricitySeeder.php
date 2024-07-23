@@ -13,6 +13,7 @@ class ElectricitySeeder extends Seeder
      */
     public function run(): void
     {
+        Electricity::truncate();
         $gladtidingsJsonContents = file_get_contents(__DIR__ . '/gladtidings.json');
 
         $gladtidings = json_decode($gladtidingsJsonContents);

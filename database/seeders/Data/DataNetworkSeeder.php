@@ -13,6 +13,7 @@ class DataNetworkSeeder extends Seeder
      */
     public function run(): void
     {
+        DataNetwork::truncate();
         $glad_tidings = [
             [
                 'vendor_id'     =>  1,
