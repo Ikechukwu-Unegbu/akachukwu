@@ -156,7 +156,11 @@ class PayVesselService
         Log::info('Computed Hash: ' . $calculatedHash);
         Log::info('PayVessel Signature: ' . $payvesselSignature);
 
-        static::storePayload($payload);
+        // static::storePayload($payload);
+        $filename = 'webhook_payload_' . now()->format('Ymd_His') . '.txt';
+        $path = public_path($filename);
+        // Save the file to the public directory
+        file_put_contents($path, $payload);
         return;
     }
 
