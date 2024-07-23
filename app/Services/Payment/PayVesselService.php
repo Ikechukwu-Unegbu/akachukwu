@@ -143,8 +143,6 @@ class PayVesselService
 
     private static function computeSHA512TransactionHash($stringifiedData, $clientSecret) 
     {
-        // dd($stringifiedData);
-        dd(hash_hmac('sha512', $stringifiedData, $clientSecret));
         return hash_hmac('sha512', trim($stringifiedData), $clientSecret);
     }
 
@@ -153,21 +151,18 @@ class PayVesselService
         try {
             // Verify the webhook signature
             $payload = $request->getContent();
-            // Generate the filename with a timestamp
-            $filename = 'webhook_payload_' . now()->format('Ymd_His') . '.txt';
-            // Define the full path to the public directory
-            $path = public_path($filename);
-            // Save the file to the public directory
-            file_put_contents($path, $payload);            
+            // $filename = 'webhook_payload_' . now()->format('Ymd_His') . '.txt';
+            // $path = public_path($filename);
+            // file_put_contents($path, $payload);            
 
             $payvesselSignature = $request->header('payvessel-http-signature');
-            $ipAddress = $request->ip();
+            // $ipAddress = $request->ip();
             $calculatedHash = self::computeSHA512TransactionHash($payload, config('payment.payvessel.secret'));
 
-            Log::info('Raw Payload: ' . $payload);
-            Log::info('Computed Hash: ' . $calculatedHash);
-            Log::info('Signature: ' . $payvesselSignature);
-            Log::info('IP address: ' . $ipAddress);
+            // Log::info('Raw Payload: ' . $payload);
+            // Log::info('Computed Hash: ' . $calculatedHash);
+            // Log::info('Signature: ' . $payvesselSignature);
+            // Log::info('IP address: ' . $ipAddress);
 
             if (!hash_equals($calculatedHash, $payvesselSignature)) {
                 return response()->json(['message' => 'Webhook payload verification failed.'], 400);
@@ -213,6 +208,7 @@ class PayVesselService
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
+
     }
 
     public static function storePayload($payload)
