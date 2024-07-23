@@ -3,10 +3,12 @@
 namespace App\Services\Payment;
 
 use App\Helpers\ApiHelper;
+use App\Models\Payment\PayVesselTransaction;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
 use App\Models\VirtualAccount;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
@@ -141,20 +143,23 @@ class PayVesselService
 
     private static function computeSHA512TransactionHash($stringifiedData, $clientSecret) 
     {
-        return hash_hmac('sha512', $stringifiedData, $clientSecret);
+        // dd($stringifiedData);
+        dd(hash_hmac('sha512', $stringifiedData, $clientSecret));
+        return hash_hmac('sha512', trim($stringifiedData), $clientSecret);
     }
 
     public static function webhook(Request $request)
-    {
-        // Verify the webhook signature
-        $payload = $request->getContent();
-        $payvesselSignature = $request->header('payvessel-http-signature');
-        // $ipAddress = $request->ip();
-        $calculatedHash = self::computeSHA512TransactionHash($payload, config('payment.payvessel.secret'));
-        // Log the raw body and hashes for debugging
-        Log::info('Raw Payload: ' . $payload);
-        Log::info('Computed Hash: ' . $calculatedHash);
-        Log::info('PayVessel Signature: ' . $payvesselSignature);
+    {       
+        try {
+            // Verify the webhook signature
+            $payload = $request->getContent();
+            // Generate the filename with a timestamp
+            $filename = 'webhook_payload_' . now()->format('Ymd_His') . '.txt';
+            // Define the full path to the public directory
+            $path = public_path($filename);
+            // Save the file to the public directory
+            file_put_contents($path, $payload);            
+
 
         // static::storePayload($payload);
         $filename = 'webhook_payload_' . now()->format('Ymd_His') . '.txt';
@@ -162,6 +167,61 @@ class PayVesselService
         // Save the file to the public directory
         file_put_contents($path, $payload);
         return;
+
+            $payvesselSignature = $request->header('payvessel-http-signature');
+            $ipAddress = $request->ip();
+            $calculatedHash = self::computeSHA512TransactionHash($payload, config('payment.payvessel.secret'));
+
+            Log::info('Raw Payload: ' . $payload);
+            Log::info('Computed Hash: ' . $calculatedHash);
+            Log::info('Signature: ' . $payvesselSignature);
+            Log::info('IP address: ' . $ipAddress);
+
+            if (!hash_equals($calculatedHash, $payvesselSignature)) {
+                return response()->json(['message' => 'Webhook payload verification failed.'], 400);
+            }
+
+            $payload = json_decode($payload);
+            $paymentReference = $payload->transaction->reference;
+            $transactionReference = $payload->transaction->sessionid;
+            $customerEmail = $payload->customer->email;
+            $amountPaid = $payload->order->amount;
+            $paymentStatus = $payload->message;
+
+            if ($paymentStatus == "Success") {
+
+                $user = User::where('email', $customerEmail)->first();
+    
+                if ($user) {
+    
+                    if (PayVesselTransaction::where('reference_id', $paymentReference)->exists()) {
+                        return response()->json(['message' => 'Payment Already Processed'], 200);
+                    }
+    
+                    $transaction = PayVesselTransaction::create([
+                        'reference_id'  => $paymentReference,
+                        'trx_ref'       => $transactionReference,
+                        'user_id'       => $user->id,
+                        'amount'        => $amountPaid,
+                        'currency'      => config('app.currency', 'NGN'),
+                        'meta'          => json_encode($payload),
+                        'status'        => $paymentStatus == 'Success' ? true : false
+                    ]);
+    
+                    $user->setAccountBalance($amountPaid);
+    
+                    return ApiHelper::sendResponse($transaction, "Transaction successful.");
+                }            
+            }
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());          
+            $errorResponse = [
+                'error'    =>    "Server Error",
+                'message'  =>    "Opps! Unable to complete transaction at the moment.",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+        }
+
     }
 
     public static function storePayload($payload)
