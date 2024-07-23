@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Models\PaymentGateway;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -14,6 +15,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use App\Services\Payment\MonnifyService;
+use App\Services\Payment\VirtualAccountServiceFactory;
 
 class RegisteredUserController extends Controller
 {
@@ -53,7 +55,8 @@ class RegisteredUserController extends Controller
                 }
             }
     ],
-            'terms_and_conditions'=>['required']
+            'terms_and_conditions'=>['required'],
+            'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/']
         ]);
 
         try {
@@ -63,11 +66,16 @@ class RegisteredUserController extends Controller
                     'username' => $request->username,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),
-                    'role'  =>  'user'
+                    'role'  =>  'user',
+                    'phone' => $request->phone_number
                 ]);
         
-                MonnifyService::createVirtualAccount($user);
-                 event(new Registered($user));
+                // MonnifyService::createVirtualAccount($user);
+                $activeGateway = PaymentGateway::where('va_status', true)->first();
+                $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
+                $virtualAccountFactory::createVirtualAccount($user);
+
+                event(new Registered($user));
             });
             session()->flash('success', 'Your account has been created successfully. Please proceed to login.');
             return redirect(route('login'));

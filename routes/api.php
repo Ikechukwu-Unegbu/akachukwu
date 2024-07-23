@@ -14,6 +14,7 @@ use App\Http\Controllers\V1\API\DataApiController;
 use App\Http\Controllers\V1\API\EducationController;
 use App\Http\Controllers\V1\API\ElectricityApiController;
 use App\Http\Controllers\V1\API\UserPinController;
+use App\Http\Controllers\V1\PayVesselWebhookController;
 use App\Http\Controllers\V1\WebhookController;
 
 /*
@@ -66,4 +67,5 @@ Route::post('cables', [CableApiController::class, 'index']);
 Route::post('cableplans', [CableApiController::class, 'plan']);
 Route::post('electricity/discos', [ElectricityApiController::class, 'index']);
 Route::post('webhook/monnify', WebhookController::class);
+Route::post('webhook/payvessel', PayVesselWebhookController::class);
 Route::post('exams', [EducationController::class, 'index']);
