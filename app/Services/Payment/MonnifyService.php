@@ -387,7 +387,7 @@ class MonnifyService implements Payment
 
     public static function updateAccountKyc($bvn)
     {
-        Auth::user()->virtualAccounts()->update(['bvn' => $bvn]);
+        Auth::user()->update(['bvn' => $bvn]);
     }
     
     private static function monnifyDetails($colunm)

@@ -3,8 +3,9 @@
 namespace App\Livewire\Pages\VirutalAccount;
 
 use Livewire\Component;
-use App\Services\Payment\VirtualAccountServiceFactory;
+use App\Models\PaymentGateway;
 use Illuminate\Validation\ValidationException;
+use App\Services\Payment\VirtualAccountServiceFactory;
 
 
 class Create extends Component
@@ -14,8 +15,8 @@ class Create extends Component
 
         if (empty(auth()->user()->phone)) return $this->dispatch('error-toastr', ['message' => "Opps! Your Mobile number is required to create a static account."]);
 
-        $virtualAccountFactory = VirtualAccountServiceFactory::make();
-
+        $activeGateway = PaymentGateway::where('va_status', true)->first();
+        $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
         $response = $virtualAccountFactory::createVirtualAccount(auth()->user());
 
         if (auth()->user()->virtualAccounts->count()) {

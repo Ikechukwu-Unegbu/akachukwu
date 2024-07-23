@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Models\PaymentGateway;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -70,7 +71,8 @@ class RegisteredUserController extends Controller
                 ]);
         
                 // MonnifyService::createVirtualAccount($user);
-                $virtualAccountFactory = VirtualAccountServiceFactory::make();
+                $activeGateway = PaymentGateway::where('va_status', true)->first();
+                $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
                 $virtualAccountFactory::createVirtualAccount($user);
 
                 event(new Registered($user));

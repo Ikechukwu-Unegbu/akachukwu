@@ -42,7 +42,8 @@ class User extends Authenticatable
         'remember_token',
         'phone',
         'user_level',
-        'pin'
+        'pin',
+        'bvn',
     ];
 
     public function getActivitylogOptions(): LogOptions

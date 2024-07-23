@@ -89,6 +89,56 @@ class PayVesselService
         }       
     }
 
+    public static function verifyKyc($bvn)
+    {
+        try {
+            
+            auth()->user()->virtualAccounts()->each(function ($account) use ($bvn) {
+
+                $url = self::getUrl() . "external/request/virtual-account/" . config('payment.payvessel.business_id') . "/{$account->account_number}";
+
+                $data = [
+                    "bvn" => $bvn
+                ];
+
+                $response = Http::withHeaders(self::headers())->post($url, $data);
+
+                if ($response->ok() === true) {
+                    $response = $response->object();                
+                    if (isset($response->status) && $response->status) {
+                        self::updateAccountKyc($response->bvn);
+                    }
+                }
+
+            });
+            
+            if (!empty(auth()->user()->bvn)) {
+                return ApiHelper::sendResponse([], "BVN linked to your account successfully.");
+            }
+
+            $errorResponse = [
+                'error'   => 'Invalid BVN.',
+                'message' => "Invalid BVN provided."
+            ];
+
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $errorResponse = [
+                'error'    =>    "Server Error",
+                'message'  =>    "Opps! Unable to update your static account. Please check your network connection.",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+        }
+
+    }
+
+    public static function updateAccountKyc($bvn)
+    {
+        auth()->user()->update(['bvn' => $bvn]);
+    }
+
     private static function computeSHA512TransactionHash($stringifiedData, $clientSecret) 
     {
         return hash_hmac('sha512', $stringifiedData, $clientSecret);

@@ -6,15 +6,9 @@ use App\Models\PaymentGateway;
 
 class VirtualAccountServiceFactory 
 {
-    public static function make()
+    public static function make(PaymentGateway $paymentGateway)
     {
-        $activeGateway = PaymentGateway::where('va_status', true)->first();
-
-        if (!$activeGateway) {
-            return;
-        }
-
-        switch ($activeGateway->name) {
+        switch ($paymentGateway->name) {
             case 'Monnify':
                 return new MonnifyService();
             case 'Payvessel':
