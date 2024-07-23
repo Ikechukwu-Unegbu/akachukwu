@@ -151,18 +151,8 @@ class PayVesselService
         try {
             // Verify the webhook signature
             $payload = $request->getContent();
-            // $filename = 'webhook_payload_' . now()->format('Ymd_His') . '.txt';
-            // $path = public_path($filename);
-            // file_put_contents($path, $payload);            
-
             $payvesselSignature = $request->header('payvessel-http-signature');
-            // $ipAddress = $request->ip();
             $calculatedHash = self::computeSHA512TransactionHash($payload, config('payment.payvessel.secret'));
-
-            // Log::info('Raw Payload: ' . $payload);
-            // Log::info('Computed Hash: ' . $calculatedHash);
-            // Log::info('Signature: ' . $payvesselSignature);
-            // Log::info('IP address: ' . $ipAddress);
 
             if (!hash_equals($calculatedHash, $payvesselSignature)) {
                 return response()->json(['message' => 'Webhook payload verification failed.'], 400);
