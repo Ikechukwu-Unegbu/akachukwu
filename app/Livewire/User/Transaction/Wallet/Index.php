@@ -33,6 +33,10 @@ class Index extends Component
             ->where('user_id', $userId))
             ->latest();
 
+        $transactions->union(DB::table('pay_vessel_transactions')
+            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'pay vessel' as gateway_type"))
+            ->where('user_id', $userId))
+            ->latest();
             // dd($transactions->get());
         
         return view('livewire.user.transaction.wallet.index', [
