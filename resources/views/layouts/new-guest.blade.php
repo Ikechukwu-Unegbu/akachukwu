@@ -2,14 +2,23 @@
 <html lang="en-US" dir="ltr">
 
 <head>
-    <!-- <meta charset="utf-8"> -->
+   
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Vastel is your go-to app for seamless VTU top-ups and neo banking services in Nigeria. Experience the future of banking with hassle-free transactions, instant airtime top-ups, and more.">
     <meta name="keywords" content="Vastel, VTU top-up, neo bank, Nigeria, airtime top-up, banking app, financial services, mobile payments, utility payments, neo banking">
     <meta name="author" content="Vastel">
+
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="googlebot-news" content="index, follow">
+    <meta name="googlebot-image" content="index, follow">
+    <meta name="googlebot-video" content="index, follow">
+    <meta name="googlebot-social" content="index, follow">
+
+     <!-- Canonical URL -->
+     <link rel="canonical" href="https://www.vastel.io">
 
     <!-- Open Graph Meta Tags for Facebook -->
     <meta property="og:title" content="Vastel - Nigerian VTU Top-Up and Neo Bank App">
