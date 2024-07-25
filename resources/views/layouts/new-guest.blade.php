@@ -65,6 +65,7 @@
     <link href="{{ asset('pub-pages\assets\css\theme.css') }}" rel="stylesheet" />
     <link href="{{ asset('pub-pages/assets/css/font-awesome.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{asset('css/ut/pin.css')}}"/>
+    <meta name="google-site-verification" content="RSrvupiRl2PlbPCslC1Ygbkon_UyUsWYWaCflhfrow8" />
     @yield('head')
     @stack('styles')
     <livewire:scripts />
