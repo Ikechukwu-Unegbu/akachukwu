@@ -11,7 +11,7 @@ class Edit extends Component
 {
     public $cable;
     public $vendor;
-    #[Rule('required|integer')]
+    #[Rule('required|string')]
     public $api_id;
     #[Rule('required|string')]
     public $cable_name;
