@@ -23,7 +23,7 @@
                         <div class="col-md-8 col-12 col-lg-8 col-xl-8">
                             <div class="mt-3 mb-3 form-group">
                                 <label for="api_id" class="form-label">API ID</label>
-                                <input type="number" name="api_id" class="form-control @error('api_id') is-invalid @enderror" wire:model="api_id">
+                                <input type="text" name="api_id" class="form-control @error('api_id') is-invalid @enderror" wire:model="api_id">
                                 @error('api_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>

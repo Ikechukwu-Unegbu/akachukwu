@@ -16,7 +16,7 @@ class Create extends Component
     public $type;
     public $plan;
 
-    #[Rule('required|integer')]
+    #[Rule('required|string')]
     public $api_id;
     #[Rule('required|string')]
     public $plan_size;

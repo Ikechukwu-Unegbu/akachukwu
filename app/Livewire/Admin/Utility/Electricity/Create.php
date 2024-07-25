@@ -10,7 +10,7 @@ use App\Models\Utility\Electricity;
 class Create extends Component
 {
     public $vendor;
-    #[Rule('required|integer')]
+    #[Rule('required|text')]
     public $disco_id;
     #[Rule('required|string')]
     public $disco_name;

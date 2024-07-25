@@ -13,7 +13,7 @@ class Create extends Component
     public $vendor;
     public $cable;
 
-    #[Rule('required|integer')]
+    #[Rule('required|string')]
     public $api_id;
     #[Rule('required|numeric')]
     public $amount;

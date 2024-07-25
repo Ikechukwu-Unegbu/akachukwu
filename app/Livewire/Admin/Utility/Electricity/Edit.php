@@ -11,7 +11,7 @@ class Edit extends Component
 {
     public $vendor;
     public $electricity;
-    #[Rule('required|integer')]
+    #[Rule('required|string')]
     public $disco_id;
     #[Rule('required|string')]
     public $disco_name;
