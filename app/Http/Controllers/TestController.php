@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Notifications\WelcomeEmail;
 use Illuminate\Support\Facades\Notification;
+use Spatie\Sitemap\SitemapGenerator;
 
 
 class TestController extends Controller
@@ -20,4 +21,11 @@ class TestController extends Controller
         return response()->json(['message' => 'User not found.'], 404);
     }
     
+
+    public function gen(){
+        $path = public_path('sitemap.xml');
+        
+        SitemapGenerator::create('https://vastel.io')->writeToFile($path);
+    }
+
 }
