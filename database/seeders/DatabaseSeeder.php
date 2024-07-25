@@ -8,6 +8,7 @@ use Database\Seeders\Data\DataNetworkSeeder;
 use Database\Seeders\Data\DataPlanSeeder;
 use Database\Seeders\Data\DataTypeSeeder;
 use Database\Seeders\Data\DataVendorSeeder;
+use Database\Seeders\Data\VTPassSeeder;
 use Database\Seeders\Utility\CablePlanSeeder;
 use Database\Seeders\Utility\CableSeeder;
 use Database\Seeders\Utility\ElectricitySeeder;
@@ -36,7 +37,8 @@ class DatabaseSeeder extends Seeder
             DataPlanSeeder::class,
             ElectricitySeeder::class,
             CableSeeder::class,
-            CablePlanSeeder::class
+            CablePlanSeeder::class,
+            VTPassSeeder::class,
         ]);
     }
 }
