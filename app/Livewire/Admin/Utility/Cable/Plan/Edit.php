@@ -14,7 +14,7 @@ class Edit extends Component
     public $cable;
     public $plan;
     
-    #[Rule('required|integer')]
+    #[Rule('required|string')]
     public $api_id;
     #[Rule('required|numeric')]
     public $amount;
