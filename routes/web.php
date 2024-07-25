@@ -25,7 +25,7 @@ use App\Http\Controllers\V1\Education\ResultCheckerController;
 Route::get('/', function () {return view('pages.home.home');});
 Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
 Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
-Route::get('/test-email', [TestController::class, 'testmail']);
+Route::get('/gen', [TestController::class, 'gen']);
 
 
 Route::middleware(['auth', 'verified', 'user'])->group(function () {
