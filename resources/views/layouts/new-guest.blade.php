@@ -11,11 +11,6 @@
     <meta name="author" content="Vastel">
 
     <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
-    <meta name="googlebot-news" content="index, follow">
-    <meta name="googlebot-image" content="index, follow">
-    <meta name="googlebot-video" content="index, follow">
-    <meta name="googlebot-social" content="index, follow">
 
      <!-- Canonical URL -->
      <link rel="canonical" href="https://www.vastel.io">
