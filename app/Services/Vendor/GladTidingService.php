@@ -4,6 +4,7 @@ namespace App\Services\Vendor;
 
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
+use Illuminate\Support\Str;
 use App\Models\Data\DataPlan;
 use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
@@ -561,5 +562,77 @@ class GladTidingService
         return (object) [
             'status'    =>  true
         ];
+    }
+
+    public static function getDataPlans($networkId)
+    {
+        try {
+
+            $response = static::url(self::WALLET_URL);
+
+            if (isset($response->Dataplans)) {
+
+                $network = DataNetwork::find($networkId);
+
+                $networkPlan = Str::upper($network->name) . '_PLAN';
+
+                if (isset($response->Dataplans->$networkPlan)) {
+
+                    $dataPlans = $response->Dataplans->$networkPlan;         
+                               
+                    if (isset($dataPlans->ALL)) {
+
+                        foreach ($dataPlans->ALL as $dataPlan) {
+
+                            $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->dataplan_id])->first();  
+
+                            if ($plan) {
+                                $plan->update([
+                                    'live_amount'   => $dataPlan->plan_amount,
+                                    'live_size'     => $dataPlan->plan,
+                                    'live_validity' => $dataPlan->month_validate,
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
+    }
+
+    public static function getCablePlans($networkId)
+    {
+        // $response = static::url(self::WALLET_URL);
+
+        // if (isset($response->Dataplans)) {
+
+        //     $network = DataNetwork::find($networkId);
+
+        //     $networkPlan = Str::upper($network->name) . '_PLAN';
+
+        //     if (isset($response->Dataplans->$networkPlan)) {
+
+        //         $dataPlans = $response->Dataplans->$networkPlan;         
+                           
+        //         // if (isset($dataPlans->ALL)) {
+
+        //         //     foreach ($dataPlans->ALL as $dataPlan) {
+
+        //         //         $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->dataplan_id])->first();  
+
+        //         //         if ($plan) {
+        //         //             $plan->update([
+        //         //                 'live_amount'   => $dataPlan->plan_amount,
+        //         //                 'live_size'     => $dataPlan->plan,
+        //         //                 'live_validity' => $dataPlan->month_validate,
+        //         //             ]);
+        //         //         }
+        //         //     }
+        //         // }
+        //     }
+        // }
     }
 }

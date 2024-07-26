@@ -2,7 +2,9 @@
 namespace App\Models;
 
 use App\Models\Data\DataVendor;
+use App\Models\Data\DataNetwork;
 use App\Models\Education\ResultChecker;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Vendor extends DataVendor
 {
@@ -21,5 +23,18 @@ class Vendor extends DataVendor
     public function result_checkers()
     {
         return $this->hasMany(ResultChecker::class, 'vendor_id');
+    }
+
+    public function networks() : HasMany
+    {
+        return $this->hasMany(DataNetwork::class, 'vendor_id');
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query, $search) {
+            $query->where('name', 'LIKE', "%{$search}%")
+                ->orWhere('api', 'LIKE', "%{$search}%");
+        });
     }
 }

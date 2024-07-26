@@ -29,21 +29,21 @@
                         </div>
                         <div class="col-md-8 col-12 col-lg-8 col-xl-8">
                             <div class="mb-3 form-group">
-                                <label for="plan_size" class="form-label">Data Plan Size</label>
+                                <label for="plan_size" class="form-label">Data Plan Size <strong class="text-danger"><small>{{ $plan_size !== $plan->live_size ? "({$plan->live_size})" : '' }}</small></strong></label>
                                 <input type="text" name="plan_size" class="form-control @error('plan_size') is-invalid @enderror" wire:model="plan_size">
                                 @error('plan_size') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div class="col-md-8 col-12 col-lg-8 col-xl-8">
                             <div class="mb-3 form-group">
-                                <label for="amount" class="form-label">Amount</label>
+                                <label for="amount" class="form-label">Amount <strong class="text-danger"><small>{{ $amount !== $plan->live_amount ? "({$plan->live_amount})" : '' }}</small></strong></label>
                                 <input type="number" name="amount" class="form-control @error('amount') is-invalid @enderror" wire:model="amount">
                                 @error('amount') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div class="col-md-8 col-12 col-lg-8 col-xl-8">
                             <div class="mb-3 form-group">
-                                <label for="validity" class="form-label">Validaity</label>
+                                <label for="validity" class="form-label">Validaity <strong class="text-danger"><small>{{ $validity !== $plan->live_validity ? "({$plan->live_validity})" : '' }}</small></strong></label>
                                 <input type="text" name="validity" class="form-control @error('validity') is-invalid @enderror" wire:model="validity">
                                 @error('validity') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>

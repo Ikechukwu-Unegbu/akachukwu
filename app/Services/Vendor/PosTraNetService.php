@@ -4,6 +4,7 @@ namespace App\Services\Vendor;
 
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
+use Illuminate\Support\Str;
 use App\Models\Data\DataPlan;
 use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
@@ -567,5 +568,49 @@ class PosTraNetService
         return (object) [
             'status'    =>  true
         ];
+    }
+
+    public static function getDataPlans($networkId)
+    {
+        try {
+
+            $url = self::$vendor->api . self::WALLET_URL;
+
+            $response = Http::withHeaders(self::headers())->get($url);
+
+            $response = $response->object();
+            
+            if (isset($response->Dataplans)) {
+
+                $network = DataNetwork::find($networkId);
+
+                $networkPlan = Str::upper($network->name) . '_PLAN';
+
+                if (isset($response->Dataplans->$networkPlan)) {
+
+                    $dataPlans = $response->Dataplans->$networkPlan;         
+                               
+                    if (isset($dataPlans->ALL)) {
+
+                        foreach ($dataPlans->ALL as $dataPlan) {
+
+                            $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->dataplan_id])->first();
+
+                            if ($plan) {
+                                $plan->update([
+                                    'live_amount'   => $dataPlan->plan_amount,
+                                    'live_size'     => $dataPlan->plan,
+                                    'live_validity' => $dataPlan->month_validate,
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (\Throwable $th) {
+            dd($th->getMessage());
+            Log::error($th->getMessage());
+        }
     }
 }
