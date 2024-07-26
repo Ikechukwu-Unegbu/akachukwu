@@ -562,4 +562,38 @@ class GladTidingService
             'status'    =>  true
         ];
     }
+
+    public static function getDataPlans()
+    {
+        try {
+            
+            $response = static::url(self::WALLET_URL);
+
+            if (isset($response->Dataplans)) {
+                $args = ['MTN_PLAN', 'GLO_PLAN', 'AIRTEL_PLAN', '9MOBILE_PLAN'];    
+                foreach ($args as $plan) {
+                    if (isset($response->Dataplans->$plan)) {
+                        $dataPlans = $response->Dataplans->$plan;
+                        if (isset($dataPlans->ALL)) {
+                            foreach ($dataPlans->ALL as $dataPlan) {
+                                $network = DataNetwork::where(['vendor_id' => self::$vendor->id, 'name' => $dataPlan->plan_network])->first();
+                                $type = DataType::where(['vendor_id' => self::$vendor->id, 'network_id' => $network->network_id, 'name' => $dataPlan->plan_type])->first();
+                                $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'network_id' => $network->network_id, 'type_id' => $type->id, 'data_id' => $dataPlan->dataplan_id])->first();
+
+                                dd ([
+                                    "network" => $network->getAttributes(),
+                                    "type" => $type->getAttributes(),
+                                    "plan" => $plan->getAttributes()
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (\Throwable $th) {
+
+            dd($th->getMessage());
+        }
+    }
 }
