@@ -12,8 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('data_plans', function (Blueprint $table) {
-            $table->string('live_amount')->after('service_id')->nullable();
+            $table->decimal('live_amount', 20, 2)->after('service_id')->nullable();
             $table->string('live_size')->after('live_amount')->nullable();
+            $table->string('live_validity')->after('live_size')->nullable();
         });
     }
 
@@ -25,6 +26,7 @@ return new class extends Migration
         Schema::table('data_plans', function (Blueprint $table) {
             $table->dropColumn('live_amount');
             $table->dropColumn('live_size');
+            $table->dropColumn('live_validity');
         });
     }
 };

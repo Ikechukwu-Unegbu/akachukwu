@@ -4,6 +4,7 @@ namespace App\Services\Vendor;
 
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
+use Illuminate\Support\Str;
 use App\Models\Data\DataPlan;
 use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
@@ -563,27 +564,33 @@ class GladTidingService
         ];
     }
 
-    public static function getDataPlans()
+    public static function getDataPlans($networkId)
     {
         try {
-            
+
             $response = static::url(self::WALLET_URL);
 
             if (isset($response->Dataplans)) {
-                $args = ['MTN_PLAN', 'GLO_PLAN', 'AIRTEL_PLAN', '9MOBILE_PLAN'];    
-                foreach ($args as $plan) {
-                    if (isset($response->Dataplans->$plan)) {
-                        $dataPlans = $response->Dataplans->$plan;
-                        if (isset($dataPlans->ALL)) {
-                            foreach ($dataPlans->ALL as $dataPlan) {
-                                $network = DataNetwork::where(['vendor_id' => self::$vendor->id, 'name' => $dataPlan->plan_network])->first();
-                                $type = DataType::where(['vendor_id' => self::$vendor->id, 'network_id' => $network->network_id, 'name' => $dataPlan->plan_type])->first();
-                                $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'network_id' => $network->network_id, 'type_id' => $type->id, 'data_id' => $dataPlan->dataplan_id])->first();
 
-                                dd ([
-                                    "network" => $network->getAttributes(),
-                                    "type" => $type->getAttributes(),
-                                    "plan" => $plan->getAttributes()
+                $network = DataNetwork::find($networkId);
+
+                $networkPlan = Str::upper($network->name) . '_PLAN';
+
+                if (isset($response->Dataplans->$networkPlan)) {
+
+                    $dataPlans = $response->Dataplans->$networkPlan;         
+                               
+                    if (isset($dataPlans->ALL)) {
+
+                        foreach ($dataPlans->ALL as $dataPlan) {
+
+                            $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->dataplan_id])->first();  
+
+                            if ($plan) {
+                                $plan->update([
+                                    'live_amount'   => $dataPlan->plan_amount,
+                                    'live_size'     => $dataPlan->plan,
+                                    'live_validity' => $dataPlan->month_validate,
                                 ]);
                             }
                         }
@@ -592,8 +599,40 @@ class GladTidingService
             }
 
         } catch (\Throwable $th) {
-
-            dd($th->getMessage());
+            Log::error($th->getMessage());
         }
+    }
+
+    public static function getCablePlans($networkId)
+    {
+        // $response = static::url(self::WALLET_URL);
+
+        // if (isset($response->Dataplans)) {
+
+        //     $network = DataNetwork::find($networkId);
+
+        //     $networkPlan = Str::upper($network->name) . '_PLAN';
+
+        //     if (isset($response->Dataplans->$networkPlan)) {
+
+        //         $dataPlans = $response->Dataplans->$networkPlan;         
+                           
+        //         // if (isset($dataPlans->ALL)) {
+
+        //         //     foreach ($dataPlans->ALL as $dataPlan) {
+
+        //         //         $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->dataplan_id])->first();  
+
+        //         //         if ($plan) {
+        //         //             $plan->update([
+        //         //                 'live_amount'   => $dataPlan->plan_amount,
+        //         //                 'live_size'     => $dataPlan->plan,
+        //         //                 'live_validity' => $dataPlan->month_validate,
+        //         //             ]);
+        //         //         }
+        //         //     }
+        //         // }
+        //     }
+        // }
     }
 }

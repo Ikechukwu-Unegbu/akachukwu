@@ -23,7 +23,7 @@ class Index extends Component
         $this->type = $type;
 
         $vendorFactory = VendorServiceFactory::make($this->vendor);
-        $vendorFactory::getDataPlans();
+        $vendorFactory::getDataPlans($this->network->id);
     }
 
     public function render()

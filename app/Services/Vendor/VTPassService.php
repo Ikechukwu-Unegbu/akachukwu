@@ -620,10 +620,65 @@ class VTPassService
 
     public static function getUrl()
     {
-        if (app()->environment() == 'production') {
-            return static::$vendor->api;
-        }
+        // if (app()->environment() == 'production') {
+        //     return static::$vendor->api;
+        // }
 
-        return static::TEST;
+        return static::$vendor->api;
+    }
+
+    public static function getDataPlans($networkId)
+    {
+        try {
+
+            $network = DataNetwork::find($networkId);
+            $serviceIds = [];
+
+            if ($network->name === "MTN") $serviceIds [] = self::MTN_CORPORATE;
+            if ($network->name === "AIRTEL") $serviceIds [] = self::AIRTEL_CORPORATE;
+            if ($network->name === "GLO") $serviceIds [] = self::GLO_CORPORATE;
+            if ($network->name === "GLO") $serviceIds [] = self::GLO_SME;
+            if ($network->name === "9MOBILE") $serviceIds [] = self::ETISALAT_CORPORATE;
+            if ($network->name === "9MOBILE") $serviceIds [] = self::ETISALAT_SME;
+
+            foreach ($serviceIds as $serviceId) {
+                $url = Str::remove('pay', self::getUrl()) . "service-variations?serviceID=" . $serviceId;
+
+                $response = Http::get($url);
+                $response = $response->object();
+
+                if (isset($response->response_description) && $response->response_description === "000") {
+
+                    foreach ($response->content->variations as $dataPlan) {
+
+                        $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->variation_code])->first();
+                        
+                        $size = "";
+                        $string = $dataPlan->name;
+
+                        if (strpos($string, 'Xtra') !== false) {
+                            if (preg_match('/N([0-9,]+)/', $string, $matches)) {
+                                $size =  $matches[0] . "\n";
+                            }
+                        }
+                    
+                        if (preg_match('/([0-9.]+ ?(?:TB|MB|mb|GB))/', $string, $matches)) {
+                            $size =  $matches[0] . "\n";
+                        }
+        
+                        if ($plan) {
+                            $plan->update([
+                                'live_amount'   => $dataPlan->variation_amount,
+                                'live_size'     => $size,
+                                'live_validity' => $dataPlan->name,
+                            ]);
+                        }
+                    }
+                }
+            }
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
     }
 }
