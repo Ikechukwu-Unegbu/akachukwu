@@ -35,8 +35,12 @@
                                 <td>₦{{ number_format($__dataPlan->amount, 2) }}</td>
                                 <td>{{ $__dataPlan->validity }}</td>
                                 <td>
-                                    <p class="m-0 p-0"><small>₦{{ number_format($__dataPlan->live_amount, 2) }} | {{ $__dataPlan->live_size }}</small></p>
-                                    <p class="m-0 p-0"><small>{{ $__dataPlan->live_validity }}</small></p>
+                                    @if ($__dataPlan->live_amount)
+                                    <p class="m-0 p-0 text-{{ $__dataPlan->amount !== $__dataPlan->live_amount ? 'danger fw-bold' : 'black' }}"><small>₦{{ number_format($__dataPlan->live_amount, 2) }} | {{ $__dataPlan->live_size }}</small></p>
+                                    <p class="m-0 p-0" style="font-size: 12px"><small>{{ $__dataPlan->live_validity }}</small></p>
+                                    @else
+                                    N/A
+                                    @endif
                                 </td>
                                 <td><span class="badge bg-{{ $__dataPlan->status ? 'success' : 'danger' }}">{{ $__dataPlan->status ? 'Active' : 'Not-Active' }}</span></td>
                                 <td>
