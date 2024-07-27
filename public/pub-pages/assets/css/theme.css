@@ -3461,10 +3461,10 @@ fieldset:disabled .btn {
 
 .btn-check:focus + .btn-warning, .btn-warning:focus {
   color: #FFFEFE;
-  background-color: #d98200;
-  border-color: #cc7a00;
-  -webkit-box-shadow: 0 0 0 0 rgba(255, 168, 38, 0.5);
-  box-shadow: 0 0 0 0 rgba(255, 168, 38, 0.5);
+  background-color: #1d057d;
+  border-color: #1d057d;
+  -webkit-box-shadow: 0 0 0 0 #567592;
+  box-shadow: 0 0 0 0 #567592;
 }
 
 .btn-check:checked + .btn-warning,
