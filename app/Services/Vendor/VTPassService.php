@@ -620,11 +620,11 @@ class VTPassService
 
     public static function getUrl()
     {
-        // if (app()->environment() == 'production') {
-        //     return static::$vendor->api;
-        // }
+        if (app()->environment() == 'production') {
+            return static::$vendor->api;
+        }
 
-        return static::$vendor->api;
+        return static::TEST;
     }
 
     public static function getDataPlans($networkId)
