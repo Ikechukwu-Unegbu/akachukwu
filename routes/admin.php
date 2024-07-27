@@ -124,6 +124,8 @@ Route::group(['prefix' => 'admin'], function () {
         ## Activity Log
         Route::get('activities', App\Livewire\Admin\Activities\Index::class)->name('admin.activity');
 
+        Route::get('education/result-checker', App\Livewire\Admin\Education\ResultChecker\Index::class)->name('admin.education.result-checker');
+        Route::get('education/result-checker/vendor/{vendor:id}/exam/{exam:id}/edit', App\Livewire\Admin\Education\ResultChecker\Edit::class)->name('admin.education.result-checker.edit');
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');

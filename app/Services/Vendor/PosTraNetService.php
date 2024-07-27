@@ -609,7 +609,47 @@ class PosTraNetService
             }
 
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            Log::error($th->getMessage());
+        }
+    }
+
+    public static function getCablePlans($cableId)
+    {
+        try {
+
+            $url = self::$vendor->api . self::WALLET_URL;
+
+            $response = Http::withHeaders(self::headers())->get($url);
+
+            $response = $response->object();
+           
+            if (isset($response->Cableplan)) {
+                $cable = Cable::find($cableId);
+                
+                $cablePlan = Str::upper($cable->cable_name) . 'PLAN';
+                
+                if (isset($response->Cableplan->$cablePlan)) {
+                    
+                    
+                    $cablePlans = $response->Cableplan->$cablePlan;
+
+                    if (is_array($cablePlans)) {
+                        // dd($cablePlans);
+                        foreach ($cablePlans as $cablePlan) {
+
+                            $plan = CablePlan::where(['vendor_id' => self::$vendor->id, 'cable_plan_id' => $cablePlan->cableplan_id])->first();  
+                            // dd($plan);
+                            if ($plan) {
+                                $plan->update([
+                                    'live_amount'   => $cablePlan->plan_amount,
+                                    'live_package'  => $cablePlan->package,
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
             Log::error($th->getMessage());
         }
     }

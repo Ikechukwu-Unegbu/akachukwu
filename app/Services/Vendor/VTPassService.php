@@ -620,11 +620,11 @@ class VTPassService
 
     public static function getUrl()
     {
-        // if (app()->environment() == 'production') {
-        //     return static::$vendor->api;
-        // }
+        if (app()->environment() == 'production') {
+            return static::$vendor->api;
+        }
 
-        return static::$vendor->api;
+        return static::TEST;
     }
 
     public static function getDataPlans($networkId)
@@ -673,6 +673,65 @@ class VTPassService
                                 'live_validity' => $dataPlan->name,
                             ]);
                         }
+                    }
+                }
+            }
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
+    }
+
+    public static function getCablePlans($cableId)
+    {
+        try {
+            $cable = Cable::find($cableId);
+
+            $serviceId = Str::lower($cable->cable_name);
+
+            $url = Str::remove('pay', self::getUrl()) . "service-variations?serviceID=" . $serviceId;
+
+            $response = Http::get($url);
+            $response = $response->object();
+
+            if (isset($response->response_description) && $response->response_description === "000") {
+
+                foreach ($response->content->variations as $cablePlan) {
+                    $plan = CablePlan::where(['vendor_id' => self::$vendor->id, 'cable_plan_id' => $cablePlan->variation_code])->first();
+                    
+                    if ($plan) {
+                        $plan->update([
+                            'live_amount'   => $cablePlan->variation_amount,
+                            'live_package'  => $cablePlan->name,
+                        ]);
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
+    }
+
+    public static function getEducationPins()
+    {
+        try {
+            $exams = ResultChecker::where('status', true)->get();
+
+            foreach ($exams as $exam) {
+                
+                $serviceId = Str::lower($exam->name);
+    
+                $url = Str::remove('pay', self::getUrl()) . "service-variations?serviceID=" . $serviceId;
+    
+                $response = Http::get($url);
+                $response = $response->object();
+   
+                if (isset($response->response_description) && $response->response_description === "000" && $response->content->serviceID === $serviceId) {
+    
+                    foreach ($response->content->variations as $variation) {
+                        $exam->update([
+                            'live_amount'   => $variation->variation_amount,
+                        ]);
                     }
                 }
             }

@@ -29,12 +29,12 @@ class GladTidingService
     protected static $vendor;
     protected static $authUser;
 
-    protected CONST WALLET_URL = "/user/";
-    protected CONST AIRTIME_URL = "/topup/";
-    protected CONST RESULT_CHECKER_URL = "/epin/";
-    protected CONST ELECTRICITY_URL = "/billpayment/";
-    protected CONST CABLE_URL = "/cablesub/";
-    protected CONST DATA_URL = "/data/";
+    protected const WALLET_URL = "/user/";
+    protected const AIRTIME_URL = "/topup/";
+    protected const RESULT_CHECKER_URL = "/epin/";
+    protected const ELECTRICITY_URL = "/billpayment/";
+    protected const CABLE_URL = "/cablesub/";
+    protected const DATA_URL = "/data/";
 
     public function __construct(Vendor $vendor)
     {
@@ -63,12 +63,12 @@ class GladTidingService
     {
         $response = static::url(self::WALLET_URL);
 
-        if ($response) 
+        if ($response)
             return response()->json([
                 'status'    =>  true,
                 'response'  => number_format($response->user->Account_Balance, 2)
             ], 200)->getData();
-        
+
 
         return response()->json([
             'status'    =>  false,
@@ -87,12 +87,12 @@ class GladTidingService
                 ];
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
-            
+
             $verifyAccountBalance = self::verifyAccountBalance($amount);
-            if ( ! $verifyAccountBalance->status) {
+            if (!$verifyAccountBalance->status) {
                 return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
             }
-            
+
             $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
             // Initiate Airtime Transaction
             $transaction = AirtimeTransaction::create([
@@ -150,7 +150,6 @@ class GladTidingService
                 'message'   => "Opps! Unable to Perform transaction. Please try again later.",
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
@@ -174,12 +173,12 @@ class GladTidingService
             }
 
             $verifyAccountBalance = self::verifyAccountBalance($amount);
-            if ( ! $verifyAccountBalance->status) {
+            if (!$verifyAccountBalance->status) {
                 return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
             }
-            
+
             $vendor = self::$vendor;
-            
+
             $electricity = Electricity::whereVendorId($vendor->id)->whereDiscoId($discoId)->first();
 
             $transaction = ElectricityTransaction::create([
@@ -207,7 +206,7 @@ class GladTidingService
                 'customer_name'     => $transaction->customer_name,
                 'customer_address'  => $transaction->customer_address
             ];
-            
+
             $response = self::url(self::ELECTRICITY_URL, $data);
 
 
@@ -219,7 +218,7 @@ class GladTidingService
                 ];
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
-               
+
             if (isset($response->Status) && $response->Status == 'successful') {
 
                 $amount = $response->amount;
@@ -239,7 +238,6 @@ class GladTidingService
                 BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
-                                
             }
 
             $errorResponse = [
@@ -247,7 +245,6 @@ class GladTidingService
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
@@ -255,7 +252,7 @@ class GladTidingService
                 'message'   =>  'Opps! Unable to make payment. Please check your network connection.'
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-        }        
+        }
     }
 
     public static function cable($cableId, $cablePlan, $iucNumber, $customer)
@@ -267,7 +264,7 @@ class GladTidingService
             $cable_plan = CablePlan::whereVendorId($vendor->id)->whereCablePlanId($cablePlan)->first();
 
             $verifyAccountBalance = self::verifyAccountBalance($cable_plan->amount);
-            if ( ! $verifyAccountBalance->status) {
+            if (!$verifyAccountBalance->status) {
                 return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
             }
 
@@ -284,7 +281,7 @@ class GladTidingService
                 'balance_before'      =>  Auth::user()->account_balance,
                 'balance_after'       =>  Auth::user()->account_balance
             ]);
-           
+
             $data = [
                 'cablename'         =>  $transaction->cable_id,
                 'cableplan'         =>  $transaction->cable_plan_id,
@@ -328,7 +325,6 @@ class GladTidingService
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
@@ -342,14 +338,14 @@ class GladTidingService
     public static function data($networkId, $typeId, $dataId, $mobileNumber)
     {
         try {
-            
+
             $vendor = self::$vendor;
             $network = DataNetwork::whereVendorId($vendor->id)->whereNetworkId($networkId)->first();
             $plan = DataPlan::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereDataId($dataId)->first();
             $type = DataType::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereId($typeId)->first();
 
             $verifyAccountBalance = self::verifyAccountBalance($plan->amount);
-            if ( ! $verifyAccountBalance->status) {
+            if (!$verifyAccountBalance->status) {
                 return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
             }
 
@@ -412,15 +408,13 @@ class GladTidingService
 
                 return ApiHelper::sendResponse($transaction, "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobileNumber}.");
             }
-             
+
             $errorResponse = [
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
             ];
 
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
@@ -431,7 +425,7 @@ class GladTidingService
         }
     }
 
-    public static function validateMeterNumber($meterNumber, $discoId, $meterType) 
+    public static function validateMeterNumber($meterNumber, $discoId, $meterType)
     {
         try {
 
@@ -443,10 +437,10 @@ class GladTidingService
             $vendor = self::$vendor;
 
             $response = Http::withHeaders(self::headers())->get("{$vendor->api}/validatemeter/?meternumber={$meterNumber}&disconame={$disco}&mtype={$meterType}");
-            
+
             $response = $response->object();
-            
-            if (!$response->invalid) {               
+
+            if (!$response->invalid) {
                 $responseData = [
                     'name'     => $response->name,
                     'address'  => $response->address,
@@ -460,8 +454,7 @@ class GladTidingService
             ];
 
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-
-        }  catch (\Throwable $th) {
+        } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
                 'error'     =>  'network connection error',
@@ -495,7 +488,6 @@ class GladTidingService
                 'message'   =>   'Invalid IUC/SMARTCARD. Please provide a valid IUC/SMARTCARD.',
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
@@ -506,9 +498,9 @@ class GladTidingService
         }
     }
 
-    public static function resultChecker($examId, $quantity) 
-    { 
-        if ( (int) $quantity > 5 ) {
+    public static function resultChecker($examId, $quantity)
+    {
+        if ((int) $quantity > 5) {
             return response()->json([
                 'status'    => false,
                 'error'     => [],
@@ -519,7 +511,7 @@ class GladTidingService
         $resultCheckerModel = ResultChecker::where('vendor_id', self::$vendor->id)->where('name', $examId)->first();
         $amount = ($quantity * $resultCheckerModel->amount);
 
-        if (! self::$authUser->verifyAccountBalance($amount)) 
+        if (!self::$authUser->verifyAccountBalance($amount))
             return response()->json([
                 'status'  => false,
                 'error' => 'Insufficient Account Balance.',
@@ -543,14 +535,14 @@ class GladTidingService
             "quantity"   => $quantity
         ];
 
-        $response = static::url( self::RESULT_CHECKER_URL, $data);
+        $response = static::url(self::RESULT_CHECKER_URL, $data);
 
         Log::info($response);
     }
 
     protected static function verifyAccountBalance($amount)
     {
-        if (! self::$authUser->verifyAccountBalance($amount)) {
+        if (!self::$authUser->verifyAccountBalance($amount)) {
             $errorResponse = [
                 'status'    =>  false,
                 'error'     =>  'Insufficient Account Balance.',
@@ -558,7 +550,7 @@ class GladTidingService
             ];
             return (object) $errorResponse;
         }
-        
+
         return (object) [
             'status'    =>  true
         ];
@@ -578,13 +570,13 @@ class GladTidingService
 
                 if (isset($response->Dataplans->$networkPlan)) {
 
-                    $dataPlans = $response->Dataplans->$networkPlan;         
-                               
+                    $dataPlans = $response->Dataplans->$networkPlan;
+
                     if (isset($dataPlans->ALL)) {
 
                         foreach ($dataPlans->ALL as $dataPlan) {
 
-                            $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->dataplan_id])->first();  
+                            $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->dataplan_id])->first();
 
                             if ($plan) {
                                 $plan->update([
@@ -597,42 +589,44 @@ class GladTidingService
                     }
                 }
             }
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
         }
     }
 
-    public static function getCablePlans($networkId)
+    public static function getCablePlans($cableId)
     {
-        // $response = static::url(self::WALLET_URL);
+        try {
+            $response = static::url(self::WALLET_URL);
 
-        // if (isset($response->Dataplans)) {
+            if (isset($response->Cableplan)) {
 
-        //     $network = DataNetwork::find($networkId);
+                $cable = Cable::find($cableId);
 
-        //     $networkPlan = Str::upper($network->name) . '_PLAN';
+                $cablePlan = Str::upper($cable->cable_name) . 'PLAN';
 
-        //     if (isset($response->Dataplans->$networkPlan)) {
+                if (isset($response->Cableplan->$cablePlan)) {
 
-        //         $dataPlans = $response->Dataplans->$networkPlan;         
-                           
-        //         // if (isset($dataPlans->ALL)) {
+                    $cablePlans = $response->Cableplan->$cablePlan;
 
-        //         //     foreach ($dataPlans->ALL as $dataPlan) {
+                    if (is_array($cablePlans)) {
 
-        //         //         $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->dataplan_id])->first();  
+                        foreach ($cablePlans as $cablePlan) {
 
-        //         //         if ($plan) {
-        //         //             $plan->update([
-        //         //                 'live_amount'   => $dataPlan->plan_amount,
-        //         //                 'live_size'     => $dataPlan->plan,
-        //         //                 'live_validity' => $dataPlan->month_validate,
-        //         //             ]);
-        //         //         }
-        //         //     }
-        //         // }
-        //     }
-        // }
+                            $plan = CablePlan::where(['vendor_id' => self::$vendor->id, 'cable_plan_id' => $cablePlan->cableplan_id])->first();  
+
+                            if ($plan) {
+                                $plan->update([
+                                    'live_amount'   => $cablePlan->plan_amount,
+                                    'live_package'  => $cablePlan->package,
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
     }
 }

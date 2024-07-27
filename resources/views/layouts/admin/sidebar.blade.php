@@ -20,6 +20,15 @@
       </x-admin.dropdown>
     @endif
 
+    @if(auth()->user()->can('view e-pin'))
+      <li class="nav-heading">Manage Education</li>
+      <x-admin.dropdown title="Education" icon="bxs-graduation">
+        @can('view e-pin')
+          <x-admin.dropdown-item title="Result Checker" link="{{ route('admin.education.result-checker') }}" />
+        @endcan
+      </x-admin.dropdown>
+    @endif
+
     @if(auth()->user()->can('view all transactions') || auth()->user()->can('view airtime transaction') || auth()->user()->can('view data transaction') || auth()->user()->can('view cable transaction') || auth()->user()->can('view electricity transaction'))
     <li class="nav-heading">Manage Transactions</li>
     <x-admin.dropdown title="Transactions" icon="bx-money">

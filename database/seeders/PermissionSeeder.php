@@ -52,7 +52,12 @@ class PermissionSeeder extends Seeder
 
             'can set site-setting',
             'view logs',
-            'view all transactions'
+            'view all transactions',
+
+            'view e-pin',
+            'create e-pin',
+            'edit e-pin',
+            'delete e-pin',
         ];
 
         // foreach ($permissions as $permission) Permission::create(['name' => $permission]);
