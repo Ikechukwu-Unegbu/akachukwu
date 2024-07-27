@@ -21,7 +21,7 @@
             </div>
             <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'Plan', 'API ID', 'Amount', 'Status', 'Action']" />
+                    <x-admin.table-header :headers="['#', 'Plan', 'API ID', 'Amount', 'Live Price', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($cablePlans as $__cablePlan)
                             <tr>
@@ -29,6 +29,14 @@
                                 <td>{{ $__cablePlan->cable->cable_name }} - (<strong>{{ $__cablePlan->package }}</strong>)</td>
                                 <td>{{ $__cablePlan->cable_plan_id }}</td>
                                 <td>₦{{ number_format($__cablePlan->amount, 2) }}</td>
+                                <td>
+                                    @if (!empty($__cablePlan->live_amount))
+                                    <p class="m-0 p-0 text-{{ $__cablePlan->amount !== $__cablePlan->live_amount ? 'danger fw-bold' : 'black' }}"><small>₦{{ number_format($__cablePlan->live_amount, 2) }}</small></p>
+                                    <p class="m-0 p-0" style="font-size: 12px"><small>{{ $__cablePlan->live_package }}</small></p>
+                                    @else 
+                                    N/A
+                                    @endif
+                                </td>
                                 <td><span class="badge bg-{{ $__cablePlan->status ? 'success' : 'danger' }}">{{ $__cablePlan->status ? 'Active' : 'Not-Active' }}</span></td>
                                 <td>
                                     <div class="filter">

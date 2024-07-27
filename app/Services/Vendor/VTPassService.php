@@ -626,4 +626,118 @@ class VTPassService
 
         return static::TEST;
     }
+
+    public static function getDataPlans($networkId)
+    {
+        try {
+
+            $network = DataNetwork::find($networkId);
+            $serviceIds = [];
+
+            if ($network->name === "MTN") $serviceIds [] = self::MTN_CORPORATE;
+            if ($network->name === "AIRTEL") $serviceIds [] = self::AIRTEL_CORPORATE;
+            if ($network->name === "GLO") $serviceIds [] = self::GLO_CORPORATE;
+            if ($network->name === "GLO") $serviceIds [] = self::GLO_SME;
+            if ($network->name === "9MOBILE") $serviceIds [] = self::ETISALAT_CORPORATE;
+            if ($network->name === "9MOBILE") $serviceIds [] = self::ETISALAT_SME;
+
+            foreach ($serviceIds as $serviceId) {
+                $url = Str::remove('pay', self::getUrl()) . "service-variations?serviceID=" . $serviceId;
+
+                $response = Http::get($url);
+                $response = $response->object();
+
+                if (isset($response->response_description) && $response->response_description === "000") {
+
+                    foreach ($response->content->variations as $dataPlan) {
+
+                        $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->variation_code])->first();
+                        
+                        $size = "";
+                        $string = $dataPlan->name;
+
+                        if (strpos($string, 'Xtra') !== false) {
+                            if (preg_match('/N([0-9,]+)/', $string, $matches)) {
+                                $size =  $matches[0] . "\n";
+                            }
+                        }
+                    
+                        if (preg_match('/([0-9.]+ ?(?:TB|MB|mb|GB))/', $string, $matches)) {
+                            $size =  $matches[0] . "\n";
+                        }
+        
+                        if ($plan) {
+                            $plan->update([
+                                'live_amount'   => $dataPlan->variation_amount,
+                                'live_size'     => $size,
+                                'live_validity' => $dataPlan->name,
+                            ]);
+                        }
+                    }
+                }
+            }
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
+    }
+
+    public static function getCablePlans($cableId)
+    {
+        try {
+            $cable = Cable::find($cableId);
+
+            $serviceId = Str::lower($cable->cable_name);
+
+            $url = Str::remove('pay', self::getUrl()) . "service-variations?serviceID=" . $serviceId;
+
+            $response = Http::get($url);
+            $response = $response->object();
+
+            if (isset($response->response_description) && $response->response_description === "000") {
+
+                foreach ($response->content->variations as $cablePlan) {
+                    $plan = CablePlan::where(['vendor_id' => self::$vendor->id, 'cable_plan_id' => $cablePlan->variation_code])->first();
+                    
+                    if ($plan) {
+                        $plan->update([
+                            'live_amount'   => $cablePlan->variation_amount,
+                            'live_package'  => $cablePlan->name,
+                        ]);
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
+    }
+
+    public static function getEducationPins()
+    {
+        try {
+            $exams = ResultChecker::where('status', true)->get();
+
+            foreach ($exams as $exam) {
+                
+                $serviceId = Str::lower($exam->name);
+    
+                $url = Str::remove('pay', self::getUrl()) . "service-variations?serviceID=" . $serviceId;
+    
+                $response = Http::get($url);
+                $response = $response->object();
+   
+                if (isset($response->response_description) && $response->response_description === "000" && $response->content->serviceID === $serviceId) {
+    
+                    foreach ($response->content->variations as $variation) {
+                        $exam->update([
+                            'live_amount'   => $variation->variation_amount,
+                        ]);
+                    }
+                }
+            }
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
+    }
 }

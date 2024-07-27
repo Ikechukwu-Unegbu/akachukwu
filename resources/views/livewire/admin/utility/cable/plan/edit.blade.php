@@ -25,14 +25,14 @@
                         </div>
                         <div class="col-md-8 col-12 col-lg-8 col-xl-8">
                             <div class="mb-3 form-group">
-                                <label for="package" class="form-label">Package</label>
+                                <label for="package" class="form-label">Package <strong class="text-danger"><small>{{ $package !== $plan->live_package ? "({$plan->live_package})" : '' }}</small></strong></label>
                                 <input type="text" name="package" class="form-control @error('package') is-invalid @enderror" wire:model="package">
                                 @error('package') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
                         <div class="col-md-8 col-12 col-lg-8 col-xl-8">
                             <div class="mb-3 form-group">
-                                <label for="amount" class="form-label">Amount</label>
+                                <label for="amount" class="form-label">Amount <strong class="text-danger"><small>{{ $amount !== $plan->live_amount ? "(₦{$plan->live_amount})" : '' }}</small></strong></label>
                                 <input type="number" name="amount" class="form-control @error('amount') is-invalid @enderror" wire:model="amount">
                                 @error('amount') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>

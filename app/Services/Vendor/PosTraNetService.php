@@ -4,6 +4,7 @@ namespace App\Services\Vendor;
 
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
+use Illuminate\Support\Str;
 use App\Models\Data\DataPlan;
 use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
@@ -567,5 +568,89 @@ class PosTraNetService
         return (object) [
             'status'    =>  true
         ];
+    }
+
+    public static function getDataPlans($networkId)
+    {
+        try {
+
+            $url = self::$vendor->api . self::WALLET_URL;
+
+            $response = Http::withHeaders(self::headers())->get($url);
+
+            $response = $response->object();
+            
+            if (isset($response->Dataplans)) {
+
+                $network = DataNetwork::find($networkId);
+
+                $networkPlan = Str::upper($network->name) . '_PLAN';
+
+                if (isset($response->Dataplans->$networkPlan)) {
+
+                    $dataPlans = $response->Dataplans->$networkPlan;         
+                               
+                    if (isset($dataPlans->ALL)) {
+
+                        foreach ($dataPlans->ALL as $dataPlan) {
+
+                            $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->dataplan_id])->first();
+
+                            if ($plan) {
+                                $plan->update([
+                                    'live_amount'   => $dataPlan->plan_amount,
+                                    'live_size'     => $dataPlan->plan,
+                                    'live_validity' => $dataPlan->month_validate,
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
+    }
+
+    public static function getCablePlans($cableId)
+    {
+        try {
+
+            $url = self::$vendor->api . self::WALLET_URL;
+
+            $response = Http::withHeaders(self::headers())->get($url);
+
+            $response = $response->object();
+           
+            if (isset($response->Cableplan)) {
+                $cable = Cable::find($cableId);
+                
+                $cablePlan = Str::upper($cable->cable_name) . 'PLAN';
+                
+                if (isset($response->Cableplan->$cablePlan)) {
+                    
+                    
+                    $cablePlans = $response->Cableplan->$cablePlan;
+
+                    if (is_array($cablePlans)) {
+                        // dd($cablePlans);
+                        foreach ($cablePlans as $cablePlan) {
+
+                            $plan = CablePlan::where(['vendor_id' => self::$vendor->id, 'cable_plan_id' => $cablePlan->cableplan_id])->first();  
+                            // dd($plan);
+                            if ($plan) {
+                                $plan->update([
+                                    'live_amount'   => $cablePlan->plan_amount,
+                                    'live_package'  => $cablePlan->package,
+                                ]);
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+        }
     }
 }
