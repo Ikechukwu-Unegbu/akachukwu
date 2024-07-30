@@ -164,6 +164,13 @@ class User extends Authenticatable
         return true;
     }
 
+    public function transformFromSuperAdminToUser() : bool
+    {
+        $this->role = 'user';
+        $this->save();
+        return true;
+    }
+
     public function beneficiaries() : HasMany
     {
         return $this->hasMany(Beneficiary::class);
