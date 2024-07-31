@@ -1,5 +1,36 @@
 @extends('layouts.new-guest')
 
+@section('seo')
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Register now to enjoy VTU and internet banking services with speed.">
+    <meta name="keywords" content="Vastel, VTU top-up, neo bank, Nigeria, airtime top-up, banking app, financial services, mobile payments, utility payments, neo banking">
+    <meta name="author" content="Vastel">
+
+    <meta name="robots" content="index, follow">
+
+
+    <!-- Open Graph Meta Tags for Facebook -->
+    <meta property="og:title" content="Vastel - Nigerian VTU Top-Up and Neo Bank App">
+    <meta property="og:description" content="Experience effortless VTU top-ups and modern banking services with Vastel. Your reliable partner for mobile payments, airtime top-ups, and banking needs in Nigeria.">
+    <meta property="og:image" content="https://www.vastel.io/images/og-image.jpg">
+    <meta property="og:url" content="https://www.vastel.io">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Vastel">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Vastel - Nigerian VTU Top-Up and Neo Bank App">
+    <meta name="twitter:description" content="Vastel offers convenient VTU top-ups and modern banking solutions in Nigeria. Enjoy seamless transactions and top-notch financial services with our user-friendly app.">
+    <meta name="twitter:image" content="https://www.vastel.io/images/twitter-image.jpg">
+    <meta name="twitter:url" content="https://www.vastel.io">
+    <meta name="twitter:site" content="@Vastel">
+    <meta name="twitter:creator" content="@Vastel">
+    <title>VasTel Nig | Register</title>
+@endsection 
+
 @section('head')
 <link href="{{asset('css\auth.css')}}"  rel="stylesheet"/>
 @endsection  
