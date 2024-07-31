@@ -12,9 +12,6 @@
 
     <meta name="robots" content="index, follow">
 
-     <!-- Canonical URL -->
-     <link rel="canonical" href="https://www.vastel.io">
-
     <!-- Open Graph Meta Tags for Facebook -->
     <meta property="og:title" content="Vastel - Nigerian VTU Top-Up and Neo Bank App">
     <meta property="og:description" content="Experience effortless VTU top-ups and modern banking services with Vastel. Your reliable partner for mobile payments, airtime top-ups, and banking needs in Nigeria.">
