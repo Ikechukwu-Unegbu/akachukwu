@@ -1,9 +1,10 @@
 @extends('layouts.new-guest')
 
 @section('head')
-<link rel="stylesheet" href="{{asset('css/dashboard_index.css')}}" />
+
 <link rel="stylesheet" href="{{asset('css/index.css')}}" />
 <link rel="stylesheet" href="{{asset('css/dashboard_sidebar.css')}}" />
+<link rel="stylesheet" href="{{asset('css/dashboard_index.css')}}" />
 
 <style>
     .dashboard_body {

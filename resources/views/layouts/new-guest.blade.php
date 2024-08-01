@@ -7,16 +7,7 @@
     <!-- Begin of Chaport Live Chat code -->
     <script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script><script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq7e27ed946742b2ef7be4a02f6a2e0772" defer></script>
 <!-- End of Chaport Live Chat code -->
-
-    <style>
-
-    </style>
-    <!-- ===============================================-->
-    <!--    Favicons-->
-    <!-- ===============================================-->
-   
-    
-    <meta name="msapplication-TileImage" content="assets/img/favicons/mstile-150x150.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff">
 
      <link rel="icon" href="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" type="image/png">
@@ -24,6 +15,7 @@
     <!-- ===============================================-->
     <!--    Stylesheets-->
     <!-- ===============================================-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="{{ asset('pub-pages\assets\css\theme.css') }}" rel="stylesheet" />
     <link href="{{ asset('pub-pages/assets/css/font-awesome.css') }}" rel="stylesheet" />
     <link rel="stylesheet" href="{{asset('css/ut/pin.css')}}"/>
@@ -89,6 +81,66 @@
         .vastel-text:hover, .vastel-text:focus{
             color: #0018A8;
         }
+
+        .custom-nav{
+            display: grid;
+            grid-template-columns: 1fr 3fr 1fr; /* Defines the column widths */
+            justify-content: center; /* Horizontally centers the grid items */
+            align-items: center; /* Vertically centers the grid items */
+            gap: 10px;
+            height: 4rem;
+        }
+        .main-nav{
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        .auth-nav{
+            display: flex;
+            flex-direction: row;
+            gap: 1.4rem;
+            justify-content:end;
+            align-items: center;
+        }
+        .canvas-toggle{
+            display: none;
+        }
+
+        @media(max-width:800px) {
+            .custom-nav{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .auth-nav{
+                display: none;
+              
+            }
+            .canvas-toggle{
+                display:block;
+                width: 3rem;
+                /* align-content: center; */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .main-nav{
+                display: none;
+            }
+
+        }
+        .off-canvass-nav{
+            display: flex;
+            flex-direction: column;
+            list-style: none;
+            gap: 0.4rem;
+        }
+        .off-canvass-nav a{
+            text-decoration: none;
+        }
     </style>
 </head>
 
@@ -99,75 +151,78 @@
     <!--    Main Content-->
     <!-- ===============================================-->
     <main class="main" id="top">
-        <nav class="navbar navbar-expand-lg navbar-light" {{-- data-navbar-on-scroll="data-navbar-on-scroll" sticky-top
-            --}}>
-            <div class="container"><a class="navbar-brand" href="/"><img
-                        src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo" /></a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon">
-                    </span></button>
-                @guest
-                <div class="mt-4 collapse navbar-collapse border-top border-lg-0 mt-lg-0" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                                href="{{route('airtime.index')}}">Airtime</a></li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                                href="{{route('data.index')}}">Internet Data</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                                href="{{route('cable.index')}}">Cable</a></li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                                href="{{route('electricity.index')}}">Electricity</a>
-                        </li>
-                    </ul>
-                    <div class="d-flex ms-lg-4">
-                        <a class="btn btn-secondary-outline" href="{{ route('login') }}">Login</a>
-                        <a class="btn vastel-bg ms-3" href="{{ route('register') }}">Register</a>
-                    </div>
+       
+        <nav class="navbar-light bg-light">
+           <div class="custom-nav container-fluid">
+                <div class="navbar-brand">
+                    <img  src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo">
                 </div>
-                @endguest
-                @auth
-                <div class="mt-4 collapse navbar-collapse border-top border-lg-0 mt-lg-0" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                                href="{{route('airtime.index')}}">Airtime</a></li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                                href="{{route('data.index')}}">Internet Data</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                                href="{{route('cable.index')}}">Cable</a></li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                                href="{{route('electricity.index')}}">Electricity</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                            href="{{route('education.result.index')}}">Education</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                                href="{{route('payment.index')}}">Fund Account</a>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" aria-current="page"
-                            href="{{route('profile.edit')}}">Profile</a>
-                    </li>
+                <div class="navbar-nav main-nav me-auto mb-2 mb-lg-0">
+                    <li><a class="fs-1 nav-link" href="/">Home</a></li>
+                    <li><a class="fs-1 nav-link" href="{{route('airtime.index')}}">Airtime</a></li>
+                    <li><a class="fs-1 nav-link" href="{{route('data.index')}}">Internet Data</a></li>
+                    <li><a class="fs-1 nav-link" href="{{route('dashboard')}}"> 
+                        @guest Utility Bills @else Dashboard @endguest
+                    </a></li>
+                </div>
+                <div class="auth-nav">
+                    @guest 
+                    <a class=" btn btn-warning" href="{{route('login')}}">Login</a>
+                    <div class="btn btn-warning" href="{{route('register')}}">Register</div>
+                    @else 
+                    <form action="{{route('logout')}}" method="post">
+                        @csrf 
+                        <button class="btn btn-warning">Logout</button>
+                    </form>
+                    @endguest   
+                </div>
+                <button class="canvas-toggle btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                <i class="fa-solid fa-2x fa-bars"></i>
+                </button> 
 
-                    </ul>
-                    <div class="d-flex ms-lg-4">
-                        <a href="{{ auth()->user()->dashboard() }}" class="btn btn-outline-warning ms-3">
-                            Dashboard
-                        </a>
-                        <a class="btn btn-outline-warning ms-3"
-                            onclick="event.preventDefault();document.getElementById('logout-form').submit();">
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                @csrf
-                            </form>
-                            Logout
-                        </a>                       
-                    </div>
+               
+
+           </div>
+            <!-- off canvas begins -->
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                <div class="offcanvas-header">
+                    <!-- <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5> -->
+                    <img  src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo">
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
-                @endauth
+                <div class="offcanvas-body">
+                  
+                    <ul class="off-canvass-nav">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="{{route('airtime.index')}}">Airtime</a></li>
+                        <li><a href="{{route('data.index')}}">Internet Data</a></li>
+                        <li><a href="{{route('education.result.index')}}">Result Checker</a></li>
+                        <li><a href="{{route('dashboard')}}">
+                            @guest Bills Payment @else Dashboard @endguest
+                        </a></li>
+                        <li><a href="{{route('profile.edit')}}">Profile</a></li>
+                        <li><a href="{{route('payment.index')}}">Fund Account</a></li>
+                        
+                        @guest 
+                        <li>
+                            <ul class="off-canvass-nav" style="margin-left: -1rem;">
+                                <li><a href="{{route('register')}}" class="btn btn-warning">Register</a></li>
+                                <li><a href="{{route('login')}}" class="btn btn-warning">Login</a></li>
+                            </ul>
+                        </li>
+                        @else 
+                        <form action="{{route('logout')}}" method="post">
+                            @csrf 
+                            <button class="btn btn-warning">Logout</button>
+                        </form>
+                        @endguest
+                        
+                    </ul>
+                </div>
             </div>
+             <!-- off canvas ends -->
         </nav>
-
+        
         @yield('body')
 
         {{ $slot ?? '' }}
@@ -176,6 +231,7 @@
     <!-- ===============================================-->
     <!--    End of Main Content-->
     <!-- ===============================================-->
+        
 
 
     <div class="modal fade" id="popupVideo" tabindex="-1" aria-labelledby="popupVideo" aria-hidden="true">
@@ -190,9 +246,7 @@
     </div>
 
 
-    <!-- ===============================================-->
-    <!--    JavaScripts-->
-    <!-- ===============================================-->
+    
     <script src="{{ asset('pub-pages/vendors/@popperjs/popper.min.js') }}"></script>
     <script src="{{ asset('pub-pages/vendors/bootstrap/bootstrap.min.js') }}"></script>
     <script src="{{ asset('pub-pages/vendors/is/is.min.js') }}"></script>
