@@ -104,7 +104,7 @@ h1 {
     text-align: center;
 }
 
-@media screen and (max-width: 750px){
+@media (max-width: 800px){
     .dashboard_body{
         display: flex;
         flex-direction: row;
