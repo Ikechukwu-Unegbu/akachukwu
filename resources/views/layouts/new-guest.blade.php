@@ -220,7 +220,7 @@
                     </ul>
                 </div>
             </div>
-             <!-- off canvas ends -->
+            <!-- off canvas ends -->
         </nav>
         
         @yield('body')
