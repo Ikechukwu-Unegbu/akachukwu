@@ -47,6 +47,9 @@
       @can('view electricity transaction')
       <x-admin.dropdown-item title="Electricity" link="{{ route('admin.transaction.electricity') }}" />
       @endcan
+      @can('view result-checker transaction')
+      <x-admin.dropdown-item title="E-PINs" link="{{ route('admin.transaction.result-checker') }}" />
+      @endcan
       <x-admin.dropdown-item title="Reseller Mgt." link="{{ route('admin.transaction.reseller') }}" />
     </x-admin.dropdown>
     @endif

@@ -16,9 +16,12 @@ class RedirectIfNotUser
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check()) 
-            if (!Auth::user()->isUser() && !Auth::user()->isAdmin()) 
-                return redirect()->back()->withErrors("You are not allow to access this page!");
+        if (Auth::check()) {
+            if (!Auth::user()->isUser() && !Auth::user()->isAdmin() && !Auth::user()->isSuperAdmin()) {
+                return abort(403);
+                // return redirect()->back()->withErrors("You are not allow to access this page!");
+            }
+        }
             
         return $next($request);
     }
