@@ -106,6 +106,7 @@ Route::group(['prefix' => 'admin'], function () {
         ## HR - Administrators
         Route::get('hr/administrators', App\Livewire\Admin\Hr\Administrator\Index::class)->name('admin.hr.administrator');
         Route::get('hr/administrator/{user:username}/show', App\Livewire\Admin\Hr\Administrator\Show::class)->name('admin.hr.administrator.show');
+        Route::get('hr/administrator/{user:username}/upgrade', App\Livewire\Admin\Hr\Administrator\Upgrade::class)->name('admin.hr.administrator.upgrade');
 
         ## HR - Resellers
         Route::get('hr/resellers', App\Livewire\Admin\Hr\Reseller\Index::class)->name('admin.hr.reseller');
