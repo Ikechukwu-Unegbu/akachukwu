@@ -34,10 +34,13 @@
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             <li><a href="{{ route('admin.transaction.airtime.show', $airtime_transaction->id) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
+                                            <li><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#action-{{ $airtime_transaction->id }}" class="dropdown-item text-success"><i class="bx bx-code-curly"></i> Vendor Response</a></li>
                                         </ul>
                                     </div>
                                 </td>
                             </tr>
+
+                            <x-admin.api-response id="{{ $airtime_transaction->id }}" response="{{ $airtime_transaction->api_response }}" />
                         @empty
                             <tr>
                                 <td colspan="8">No records available</td>

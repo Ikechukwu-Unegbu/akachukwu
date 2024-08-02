@@ -4,6 +4,7 @@ namespace App\Models\Education;
 
 use App\Models\User;
 use Illuminate\Support\Str;
+use App\Models\Data\DataVendor;
 use Spatie\Activitylog\LogOptions;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -51,6 +52,11 @@ class ResultCheckerTransaction extends Model
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function vendor() : BelongsTo
+    {
+        return $this->belongsTo(DataVendor::class);
     }
 
     public function scopeSearch($query, $search)
