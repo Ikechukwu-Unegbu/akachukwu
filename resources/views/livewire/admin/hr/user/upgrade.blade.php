@@ -35,6 +35,15 @@
                                     </select>
                                     @error('level') <span class="text-danger" style="font-size: .875em">{{ $message }}</span> @enderror
                                 </div>
+
+                                <div class="mt-3 mb-3 form-group">
+                                    <label for="role" class="form-label">Tranform User Role</label>
+                                    <select name="role" class="form-select" id="role @error('role') is-invalid @enderror" wire:model="role">
+                                        <option value="admin" {{ $role == 'ordinary' ? 'selected' : '' }}>Admin</option>
+                                        <option value="user" {{ $role == 'reseller' ? 'selected' : '' }}>User</option>
+                                    </select>
+                                    @error('role') <span class="text-danger" style="font-size: .875em">{{ $message }}</span> @enderror
+                                </div>
                             </div>    
                         </div>
                         <div class="card-footer">
