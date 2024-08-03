@@ -664,7 +664,7 @@ class PosTraNetService
     public static function storeApiResponse($transaction, $response)
     {
         $transaction->update([
-            'api_response' =>  $response
+            'api_response' =>  json_encode($response)
         ]);
 
         return true;
