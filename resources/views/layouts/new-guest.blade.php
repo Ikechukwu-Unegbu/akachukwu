@@ -155,7 +155,7 @@
         <nav class="navbar-light bg-light">
            <div class="custom-nav container-fluid">
                 <div class="navbar-brand">
-                    <img  src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo">
+                    <a @auth href="{{route('dashboard')}}" @else href="/" @endauth><img  src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo"></a>
                 </div>
                 <div class="navbar-nav main-nav me-auto mb-2 mb-lg-0">
                     <li><a class="fs-1 nav-link" href="/">Home</a></li>
@@ -187,7 +187,7 @@
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
                 <div class="offcanvas-header">
                     <!-- <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5> -->
-                    <img  src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo">
+                    <a @auth href="{{route('dashboard')}}" @else href="/" @endauth><img  src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo"></a>
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
