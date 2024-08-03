@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="{{asset('css/dashboard_sidebar.css')}}"/>
 <link rel="stylesheet" href="{{asset('css/ut/airtime.css')}}"/>
 <link rel="stylesheet" href="{{asset('css/ut/network_picker.css')}}"/>
+<link rel="stylesheet" href="{{asset('css/ut/offcanvas.css?t=' . time() )}}"/>
 
 @endsection
 
