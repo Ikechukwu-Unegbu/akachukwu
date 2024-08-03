@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Admin\Hr\User;
+namespace App\Livewire\Admin\Hr\Administrator;
 
 use App\Models\User;
 use Livewire\Component;
@@ -21,7 +21,7 @@ class Upgrade extends Component
         $this->user = $user;
         $this->level = $this->user->user_level;
         $this->role = $this->user->role;
-        $this->authorize('view users');    
+        $this->authorize('view administrators');    
     }
 
     public function update()
@@ -31,13 +31,13 @@ class Upgrade extends Component
             'user_level' => $this->level, 
             'role' => $this->role
         ]);
-        $this->dispatch('success-toastr', ['message' => "User Level Upgraded Successfully"]);
-        session()->flash('success', "User Level Upgraded Successfully");
-        $this->redirectRoute('admin.hr.user');
+        $this->dispatch('success-toastr', ['message' => "Administrator Level Upgraded Successfully"]);
+        session()->flash('success', "Administrator Level Upgraded Successfully");
+        $this->redirectRoute('admin.hr.administrator');
     }
     
     public function render()
     {
-        return view('livewire.admin.hr.user.upgrade');
+        return view('livewire.admin.hr.administrator.upgrade');
     }
 }

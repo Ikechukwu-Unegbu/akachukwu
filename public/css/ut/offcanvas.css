@@ -6,7 +6,7 @@
     width: 100%;
     max-width: 600px;
     /* Adjust the max-width as needed */
-    transform: translateX(-50%);
+    transform: translateX(-50%) !important;
     height: 0;
     background: white;
     overflow: hidden;
@@ -16,8 +16,13 @@
     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.offcanvas-body {
+    overflow: hidden !important;
+}
+
 .offcanvas.show {
     height: 60vh;
+    visibility: visible !important;
 }
 
 .offcanvas-header {
