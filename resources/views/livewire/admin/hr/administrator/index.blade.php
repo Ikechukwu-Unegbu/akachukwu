@@ -33,6 +33,7 @@
                                             <li><a href="{{ route('admin.hr.administrator.show', $user->username) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
                                             {{-- <li><a href="{{ route('admin.hr.administrator.show', $user->username) }}" class="dropdown-item text-primary">Crd/Dbt</a></li> --}}
                                              <li><a href="{{ route('admin.crd-dbt', ['username' => $user->username]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i>Top</a></li>
+                                             <li><a href="{{ route('admin.hr.administrator.upgrade', $user->username) }}" class="dropdown-item text-success"><i class="bx bx-vertical-top"></i>Upgrade</a></li>
                                         </ul>
                                     </div>
                                 </td>

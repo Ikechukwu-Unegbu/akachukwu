@@ -32,6 +32,7 @@ class PermissionSeeder extends Seeder
             'view data transaction',
             'view cable transaction',
             'view electricity transaction',
+            'view result-checker transaction',
             // 'manage hr',
             'view users',
             'view administrators',

@@ -2,7 +2,7 @@
     <x-admin.page-title title="Human Resource Mgt.">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
         <x-admin.page-title-item subtitle="HR Mgt." />
-        <x-admin.page-title-item subtitle="Users" link="{{ route('admin.hr.user') }}" />
+        <x-admin.page-title-item subtitle="Administrators" link="{{ route('admin.hr.administrator') }}" />
         <x-admin.page-title-item subtitle="Upgrade" status="true" />
     </x-admin.page-title>
 
@@ -23,12 +23,12 @@
                 <form wire:submit="update">
                     <div class="card">
                         <h5 class="card-header">
-                            Upgrade User
+                            Upgrade Administrator
                         </h5>
                         <div class="pt-2 card-body profile-overview">                        
                             <div class="col-md-8 col-12 col-lg-8 col-xl-8">
                                 <div class="mt-3 mb-3 form-group">
-                                    <label for="level" class="form-label">Upgrade User Level</label>
+                                    <label for="level" class="form-label">Upgrade Administrator Level</label>
                                     <select name="level" class="form-select" id="level @error('level') is-invalid @enderror" wire:model="level">
                                         <option value="ordinary" {{ $level == 'ordinary' ? 'selected' : '' }}>Ordinary</option>
                                         <option value="reseller" {{ $level == 'reseller' ? 'selected' : '' }}>Reseller</option>
@@ -48,7 +48,7 @@
                         </div>
                         <div class="card-footer">
                             <div class="text-left">
-                                <a href="{{ route('admin.hr.user') }}" class="btn btn-md btn-danger" wire:loading.remove wire:target="update">
+                                <a href="{{ route('admin.hr.administrator') }}" class="btn btn-md btn-danger" wire:loading.remove wire:target="update">
                                     <i class="bx bx-x-circle"></i> 
                                     Cancel
                                 </a>
@@ -70,5 +70,5 @@
     </section>
 </div>
 @push('title')
-Human Resource Mgt. / Users / Upgrade
+Human Resource Mgt. / Administrators / Upgrade
 @endpush

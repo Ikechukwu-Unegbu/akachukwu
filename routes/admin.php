@@ -73,6 +73,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('transaction/electricity', App\Livewire\Admin\Transaction\Electricity\Index::class)->name('admin.transaction.electricity');
         Route::get('transaction/electricity/{electricity:id}/show', App\Livewire\Admin\Transaction\Electricity\Show::class)->name('admin.transaction.electricity.show');
 
+        ## Transaction - Result-Checker
+        Route::get('transaction/result-checker', App\Livewire\Admin\Transaction\ResultChecker\Index::class)->name('admin.transaction.result-checker');
+        Route::get('transaction/result-checker/{resultChecker:id}/show', App\Livewire\Admin\Transaction\ResultChecker\Show::class)->name('admin.transaction.result-checker.show');
+
         ## Transaction - Reseller
         Route::get('transaction/resellers', App\Livewire\Admin\Transaction\Reseller\Index::class)->name('admin.transaction.reseller');
         Route::get('transaction/resellers/create', App\Livewire\Admin\Transaction\Reseller\Create::class)->name('admin.transaction.reseller.create');
@@ -102,6 +106,7 @@ Route::group(['prefix' => 'admin'], function () {
         ## HR - Administrators
         Route::get('hr/administrators', App\Livewire\Admin\Hr\Administrator\Index::class)->name('admin.hr.administrator');
         Route::get('hr/administrator/{user:username}/show', App\Livewire\Admin\Hr\Administrator\Show::class)->name('admin.hr.administrator.show');
+        Route::get('hr/administrator/{user:username}/upgrade', App\Livewire\Admin\Hr\Administrator\Upgrade::class)->name('admin.hr.administrator.upgrade');
 
         ## HR - Resellers
         Route::get('hr/resellers', App\Livewire\Admin\Hr\Reseller\Index::class)->name('admin.hr.reseller');

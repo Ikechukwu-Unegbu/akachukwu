@@ -116,6 +116,8 @@ class GladTidingService
 
             $response = static::url(self::AIRTIME_URL, $data);
 
+            self::storeApiResponse($transaction, $response);
+
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
                 $errorResponse = [
@@ -137,7 +139,7 @@ class GladTidingService
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident,
-                    'api_response'      =>    $response->api_response ?? NULL
+                    // 'api_response'      =>    $response->api_response ?? NULL
                 ]);
 
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
@@ -209,6 +211,7 @@ class GladTidingService
 
             $response = self::url(self::ELECTRICITY_URL, $data);
 
+            self::storeApiResponse($transaction, $response);
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
@@ -289,6 +292,8 @@ class GladTidingService
             ];
 
             $response = self::url(self::CABLE_URL, $data);
+
+            self::storeApiResponse($transaction, $response);
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
@@ -374,6 +379,8 @@ class GladTidingService
             ];
 
             $response = self::url(self::DATA_URL, $data);
+            
+            self::storeApiResponse($transaction, $response);
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
@@ -401,7 +408,7 @@ class GladTidingService
                     'plan_name'         =>    $response->plan_name,
                     'plan_amount'       =>    $response->plan_amount,
                     'api_data_id'       =>    $response->ident,
-                    'api_response'      =>    $response->api_response,
+                    // 'api_response'      =>    $response->api_response,
                 ]);
 
                 BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
@@ -628,5 +635,14 @@ class GladTidingService
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
         }
+    }
+
+    public static function storeApiResponse($transaction, $response)
+    {
+        $transaction->update([
+            'api_response' =>  $response
+        ]);
+
+        return true;
     }
 }
