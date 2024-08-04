@@ -1,10 +1,10 @@
 <!-- Off-canvas modal -->
-<div class="offcanvas {{ $formAction ? 'show' : 'close' }}" id="offcanvasPinModal">
-    <div class="offcanvas-header">
-        <h5 class="offcanvas-title">{{ $title }}</h5>
+<div class="offcanvas-custom {{ $formAction ? 'show' : 'close' }}" id="offcanvasPinModal">
+    <div class="offcanvas-custom-header">
+        <h5 class="offcanvas-custom-title">{{ $title }}</h5>
         <button type="button" class="btn-close" id="closeOffcanvas" wire:click="closeModal">&times;</button>
     </div>
-    <div class="offcanvas-body">
+    <div class="offcanvas-custom-body">
         @if (empty(auth()->user()->pin))
             <h6>Unable to process transaction. Your PIN is required for this transaction.</h6>
             <a class="link" href="{{ route('profile.edit') }}#pin-setup" style="color: #FF9900">Click here to create a PIN.</a>

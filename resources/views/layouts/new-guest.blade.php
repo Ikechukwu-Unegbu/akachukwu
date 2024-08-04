@@ -192,7 +192,7 @@
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
                 <div class="offcanvas-header">
                     <a @auth href="{{route('dashboard')}}" @else href="/" @endauth><img  src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo"></a>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close">&times;</button>
                 </div>
                 <div class="offcanvas-body">
                   

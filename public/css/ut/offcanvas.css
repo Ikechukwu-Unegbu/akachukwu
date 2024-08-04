@@ -1,5 +1,5 @@
  /* Off-canvas modal styles */
- .offcanvas {
+ .offcanvas-custom {
     position: fixed;
     bottom: 0;
     left: 50%;
@@ -16,16 +16,16 @@
     box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.offcanvas-body {
+.offcanvas-custom-body {
     overflow: hidden !important;
 }
 
-.offcanvas.show {
+.offcanvas-custom.show {
     height: 60vh;
     visibility: visible !important;
 }
 
-.offcanvas-header {
+.offcanvas-custom-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -33,7 +33,7 @@
     border-bottom: 1px solid #ddd;
 }
 
-.offcanvas-title {
+.offcanvas-custom-title {
     margin: 0;
 }
 
@@ -44,7 +44,7 @@
     cursor: pointer;
 }
 
-.offcanvas-body {
+.offcanvas-custom-body {
     padding: 20px;
 }
 
