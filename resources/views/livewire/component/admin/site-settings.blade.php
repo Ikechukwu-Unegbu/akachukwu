@@ -42,6 +42,14 @@
               <input type="text" class="form-control" value="{{$setting->phone1}}" id="phone1" name="phone1">
             </div>
             <div class="mb-3">
+              <label for="address_one" class="form-label">Address 1</label>
+              <input type="text" class="form-control" value="{{$setting->address_one}}" id="address_one" name="address_one">
+            </div>
+            <div class="mb-3">
+              <label for="address_two" class="form-label">Address 2</label>
+              <input type="text" class="form-control" value="{{$setting->address_two}}" id="address_two" name="address_two">
+            </div>
+            <div class="mb-3">
               <label for="phone2" class="form-label">Phone 2</label>
               <input type="text" class="form-control" value="{{$setting->phone2}}" id="phone2" name="phone2">
             </div>

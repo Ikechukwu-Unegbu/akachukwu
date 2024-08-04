@@ -49,11 +49,11 @@
           <div class="container border-top py-3">
             <div class="row justify-content-between">
               <div class="col-12 col-md-auto mb-1 mb-md-0">
-                <p class="mb-0">&copy; 2022 Your Company Inc </p>
+                <p class="mb-0">&copy; 2023 Vastel Nig. </p>
               </div>
               <div class="col-12 col-md-auto">
                 <p class="mb-0">
-                  Made with<span class="fas fa-heart mx-1 text-danger"> </span>by <a class="text-decoration-none ms-1" href="https://themewagon.com/" target="_blank">ThemeWagon</a></p>
+                  Developed by <span class="fas fa-heart mx-1 text-danger"> </span>with <a class="text-decoration-none ms-1" href="https://www.halcyonaegisinc.xyz" target="_blank">Halcyon Internet</a></p>
               </div>
             </div>
           </div>

@@ -51,6 +51,8 @@ class SiteSettingsController extends Controller
         $siteSettings->facebook = $validatedData['facebook'];
         $siteSettings->instagram = $validatedData['instagram'];
         $siteSettings->linkedin = $validatedData['linkedin'];
+        $siteSettings->address_one = $request->address_one;
+        $siteSettings->address_two = $request->address_two;
         
         $siteSettings->save();
 
