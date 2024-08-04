@@ -183,6 +183,7 @@
                 <button class="canvas-toggle btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
                 <i class="fa-solid fa-2x fa-bars"></i>
                 </button> 
+      
 
                
 
@@ -190,9 +191,6 @@
             <!-- off canvas begins -->
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
                 <div class="offcanvas-header">
-                    <!-- <h5 class="offcanvas-title" id="offcanvasExampleLabel">Offcanvas</h5> -->
-                    <a @auth href="{{route('dashboard')}}" @else href="/" @endauth><img  src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo"></a>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     <a @auth href="{{route('dashboard')}}" @else href="/" @endauth><img  src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" alt="logo"></a>
                     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close">&times;</button>
                 </div>
@@ -226,6 +224,8 @@
                     </ul>
                 </div>
             </div>
+     
+        
             <!-- off canvas ends -->
         </nav>
         
