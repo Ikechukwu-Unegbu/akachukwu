@@ -14,6 +14,9 @@
     <div class="mt-2">
         <h3>{{ !empty($user->pin) ? 'Update Your PIN' : 'Setup Your PIN' }}</h3>
     </div>
+    <div class="mb-5">
+        <a href="/dashboard"><i class="fa-solid fa-arrow-left-long"></i></a>
+    </div>
     <form wire:submit.prevent="{{ !empty($user->pin) ? 'update' : 'submit' }}">
         @if (!empty($user->pin))
         <div class="mb-3">
