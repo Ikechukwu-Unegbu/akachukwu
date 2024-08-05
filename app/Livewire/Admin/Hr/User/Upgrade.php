@@ -45,6 +45,11 @@ class Upgrade extends Component
         ]);
 
         if ($this->role === 'admin') {
+            
+            $this->validate([
+                'assign_role'   =>  'required|integer'
+            ]);
+
             $model_role = Role::find($this->assign_role);
             $this->user->assignRole($model_role->name);
             $permissions = $model_role->permissions->pluck('name', 'name')->toArray();
