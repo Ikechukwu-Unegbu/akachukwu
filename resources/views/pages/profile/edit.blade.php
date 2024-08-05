@@ -4,7 +4,7 @@
 @endsection
 
 @section('body')
-<div>
+
     
     @livewire('profile.profile-form', [App\Models\User::find(auth()->user()->id)])
 

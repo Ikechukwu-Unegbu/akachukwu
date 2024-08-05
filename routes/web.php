@@ -64,6 +64,7 @@ Route::middleware(['auth', 'verified', 'user'])->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileSettingsController::class, 'edit'])->name('profile.edit');
+    Route::get('/pins', [ProfileSettingsController::class, 'editPin'])->name('profile.pin');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
