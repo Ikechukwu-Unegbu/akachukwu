@@ -17,6 +17,12 @@ class ProfileSettingsController extends Controller
         return view('pages.profile.edit');
     }
 
+
+    public function editPin()
+    {
+        return view('pages.profile.pin');
+    }
+
      /**
      * Update the user's profile information.
      */
