@@ -38,12 +38,23 @@
 
                                 <div class="mt-3 mb-3 form-group">
                                     <label for="role" class="form-label">Tranform Role</label>
-                                    <select name="role" class="form-select" id="role @error('role') is-invalid @enderror" wire:model="role">
+                                    <select name="role" class="form-select" id="role @error('role') is-invalid @enderror" wire:model.live="role">
                                         <option value="admin">Admin</option>
                                         <option value="user">User</option>
                                     </select>
                                     @error('role') <span class="text-danger" style="font-size: .875em">{{ $message }}</span> @enderror
                                 </div>
+                                @if ($assign_role_action)
+                                <div class="mt-3 mb-3 form-group">
+                                    <label for="role" class="form-label">Assign Role</label>
+                                    <select name="assign_role" class="form-select" id="assign_role @error('assign_role') is-invalid @enderror" wire:model="assign_role">
+                                        @foreach ($roles as $__role)
+                                            <option value="{{ $__role->id }}">{{ $__role->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('assign_role') <span class="text-danger" style="font-size: .875em">{{ $message }}</span> @enderror
+                                </div>
+                                @endif
                             </div>    
                         </div>
                         <div class="card-footer">
