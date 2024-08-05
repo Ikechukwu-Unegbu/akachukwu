@@ -53,7 +53,7 @@
               </div>
               <div class="col-12 col-md-auto">
                 <p class="mb-0">
-                  Developed by <span class="fas fa-heart mx-1 text-danger"> </span>with <a class="text-decoration-none ms-1" href="https://www.halcyonaegisinc.xyz" target="_blank">Halcyon Internet</a></p>
+                  Developed with <span class="fas fa-heart mx-1 text-danger"> </span>by <a class="text-decoration-none ms-1" href="https://www.halcyonaegisinc.xyz" target="_blank">Halcyon Internet</a></p>
               </div>
             </div>
           </div>
