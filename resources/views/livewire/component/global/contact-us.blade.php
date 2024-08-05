@@ -1,7 +1,3 @@
-{{-- <button >
-  Contact Support
-</button> --}}
-
 <!-- Modal -->
 <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -15,21 +11,21 @@
     <div class="contact-info">
         <div class="contact-item">
             <i class="fas fa-envelope"></i>
-            <span>Email: <a href="mailto:support@vastel.com">support@vastel.com</a></span>
+            <span>Email: <a href="mailto:support@vastel.com">{{$settings->email}}</a></span>
         </div>
         <div class="contact-item">
             <i class="fas fa-phone"></i>
-            <span>Phone: <a href="tel:+1234567890">+1 (234) 567-890</a></span>
+            <span>Phone: <a href="">{{$settings->phone1}}</a></span>
         </div>
         <div class="contact-item">
             <i class="fas fa-map-marker-alt"></i>
-            <span>Address: 123 Main St, Cityville, State, Country</span>
+            <span>{{$settings->address_one}}</span>
         </div>
     </div>
 </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-warning vastel-bg" data-bs-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
