@@ -1,5 +1,17 @@
 <div class="profile_form border-bottom mb-7 border-3 " id="pin-setup">
-    <div>
+<div class="mt-4">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is('profile') ? 'active' : '' }}" href="{{ route('profile.edit') }}">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is('pins') ? 'active' : '' }}" href="{{ route('profile.pin') }}">Pin</a>
+        </li>
+    </ul>
+</div>
+
+
+    <div class="mt-2">
         <h3>{{ !empty($user->pin) ? 'Update Your PIN' : 'Setup Your PIN' }}</h3>
     </div>
     <form wire:submit.prevent="{{ !empty($user->pin) ? 'update' : 'submit' }}">

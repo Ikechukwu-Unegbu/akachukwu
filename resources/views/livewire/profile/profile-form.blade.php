@@ -1,5 +1,16 @@
   <div class="profile_form border-bottom border-3 mb-7">
-        <div>
+  <div class="mt-4">
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is('profile') ? 'active' : '' }}" href="{{ route('profile.edit') }}">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link {{ request()->is('pins') ? 'active' : '' }}" href="{{ route('profile.pin') }}">Pin</a>
+        </li>
+    </ul>
+</div>
+
+        <div class="mt-1">
             <h3>Profile Information</h3>
         </div>
         <div class="mb-5">
