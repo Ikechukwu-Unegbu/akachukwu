@@ -18,6 +18,7 @@ use App\Http\Controllers\V1\PayVesselWebhookController;
 use App\Http\Controllers\V1\WebhookController;
 // use Livewire\Features\SupportFileUploads\FileUploadController;
 use App\Http\Controllers\V1\API\FileUploadController;
+use App\Http\Controllers\V1\API\UpgradeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,8 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
 
     Route::post('/upload-avatar',[FileUploadController::class, 'store']);
     Route::post('/update-avatar',[FileUploadController::class, 'update']);
+
+    Route::get('/upgrade-user', [UpgradeController::class, 'store']);
 
     Route::post('airtime/create', [AirtimeApiController::class, 'store']);
     Route::post('data/create', [DataApiController::class, 'store']);

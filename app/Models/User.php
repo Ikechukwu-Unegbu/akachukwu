@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Utility\UpgradeRequest;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
@@ -51,6 +53,11 @@ class User extends Authenticatable
         return LogOptions::defaults()
         ->logOnly(['name', ]);
         // Chain fluent methods for configuration options
+    }
+
+    public function ugradeRequests()
+    {
+        return $this->hasMany(UpgradeRequest::class);
     }
 
     /**
