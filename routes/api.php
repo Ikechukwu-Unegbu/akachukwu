@@ -16,6 +16,8 @@ use App\Http\Controllers\V1\API\ElectricityApiController;
 use App\Http\Controllers\V1\API\UserPinController;
 use App\Http\Controllers\V1\PayVesselWebhookController;
 use App\Http\Controllers\V1\WebhookController;
+// use Livewire\Features\SupportFileUploads\FileUploadController;
+use App\Http\Controllers\V1\API\FileUploadController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,17 +37,17 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::get('/user/{username}', [UserProfileController::class, 'show']);
 Route::post('/change-password/{username}', [ChangePasswordController::class, 'changePassword']);
 
-Route::get('/ping', function(){
-    var_dump('we here');
-});
+
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::group([
-    'middleware' => ['auth:sanctum'],
-], function() {
+Route::group(['middleware' => ['auth:sanctum'],], function() {
+
+    Route::post('/upload-avatar',[FileUploadController::class, 'store']);
+    Route::post('/update-avatar',[FileUploadController::class, 'update']);
+
     Route::post('airtime/create', [AirtimeApiController::class, 'store']);
     Route::post('data/create', [DataApiController::class, 'store']);
     Route::post('cable/validate', [CableApiController::class, 'validateIUC']);
