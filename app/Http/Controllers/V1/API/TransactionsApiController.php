@@ -57,7 +57,7 @@ class TransactionsApiController extends Controller
             return ApiHelper::sendError(['transaction not found'], 'transaction not found');
         }
 
-        return ApiHelper::sendResponse($transaction, '');
+        return ApiHelper::sendResponse($transaction, 'Transaction fetched');
     }
 
 }
