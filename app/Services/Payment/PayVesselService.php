@@ -153,9 +153,17 @@ class PayVesselService
             $payload = $request->getContent();
             $payvesselSignature = $request->header('payvessel-http-signature');
             $calculatedHash = self::computeSHA512TransactionHash($payload, config('payment.payvessel.secret'));
+            $ip_address = $request->ip();
+            $ipAddress = ["3.255.23.38", "162.246.254.36"];
 
+            self::storePayload($request->all());
+            
             if (!hash_equals($calculatedHash, $payvesselSignature)) {
                 return response()->json(['message' => 'Webhook payload verification failed.'], 400);
+            }
+
+            if (!in_array($ip_address, $ipAddress)) {
+                return response()->json(['message' => 'Webhook payload verification failed. IP Address not Found!.'], 400);
             }
 
             $payload = json_decode($payload);
