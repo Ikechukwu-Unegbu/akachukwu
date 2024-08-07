@@ -14,7 +14,7 @@ use Spatie\Activitylog\LogOptions;
 
 class ElectricityTransaction extends Model
 {
-    use LogsActivity; 
+    use LogsActivity, HasFactory; 
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',

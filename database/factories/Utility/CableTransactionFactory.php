@@ -5,6 +5,7 @@ namespace Database\Factories\Utility;
 use App\Models\Data\DataVendor;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Utility\CableTransaction>
@@ -18,12 +19,12 @@ class CableTransactionFactory extends Factory
      */
     public function definition(): array
     {
-        $dataVendorArrays = DataVendor::pluck('id')->toArray();
-        $userIdArry = User::pluck('id')->toArray();
+        // $dataVendorArrays = DataVendor::all()->pluck('id')->toArray();
+        // $userIdArry = User::all()->pluck('id')->toArray();
         return [
             'transaction_id' => $this->generateUniqueId(),
-            'user_id' => $this->faker->randomElement($userIdArry), // Assumes a UserFactory exists
-            'vendor_id' => $this->faker->randomElement($dataVendorArrays), // Assumes a DataVendorFactory exists
+            'user_id' => $this->faker->randomElement([1, 2, 3]), // Assumes a UserFactory exists
+            'vendor_id' => $this->faker->randomElement([1, 2, 3]), // Assumes a DataVendorFactory exists
             'cable_name' => $this->faker->word,
             'cable_id' => $this->faker->uuid,
             'cable_plan_name' => $this->faker->word,
@@ -47,5 +48,10 @@ class CableTransactionFactory extends Factory
 
             'status' => $this->faker->randomElement([0, 1]),
         ];
+    }
+
+    protected function generateUniqueId(): string
+    {
+        return Str::slug(date('YmdHi').'-cable-'.Str::random(10).microtime().Str::random(4));
     }
 }
