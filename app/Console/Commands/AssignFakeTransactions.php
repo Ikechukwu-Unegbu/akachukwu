@@ -35,26 +35,16 @@ class AssignFakeTransactions extends Command
      */
     public function handle()
     {
-        // try{
-
+        try{
             $this->handleInput();
           
             $this->createFakeTransactionRecords();
-        // }catch(\Throwable $th){
-        //     $this->error($th->getMessage());
-        // }
+        }catch(\Throwable $th){
+            $this->error($th->getMessage());
+        }
     }
 
-    // public function handleInput()
-    // {
-    //     $this->email = $this->argument('email') ?? $this->ask('Enter the email or username of the user you want to transform to super admin');
 
-    //     if (! $this->email)
-    //         throw new \Exception('Email is required');
-
-    //     if (! \App\Models\User::where('email', $this->email)->orWhere('username', $this->email)->exists())
-    //         throw new \Exception('User does not exist');
-    // }
     protected function handleInput()
     {
         $this->email = $this->argument('email') ?? $this->ask('Enter the email or username of the user you want to create fake transactions for');

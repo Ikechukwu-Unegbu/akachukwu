@@ -18,6 +18,7 @@ use App\Http\Controllers\V1\PayVesselWebhookController;
 use App\Http\Controllers\V1\WebhookController;
 // use Livewire\Features\SupportFileUploads\FileUploadController;
 use App\Http\Controllers\V1\API\FileUploadController;
+use App\Http\Controllers\V1\API\TransactionsApiController;
 use App\Http\Controllers\V1\API\UpgradeController;
 
 /*
@@ -63,7 +64,12 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     Route::post('pin/update', [UserPinController::class, 'update']);
     Route::post('pin/validate', [UserPinController::class, 'validatePin']);
     Route::post('epins/create', [EducationController::class, 'create']);
+
+    // Route::get('/transactions', [TransactionsApiController::class, 'index']);
+    Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
 });
+Route::get('/transactions', [TransactionsApiController::class, 'index']);
+Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
 Route::post('datatypes', [DataApiController::class, 'index']);
