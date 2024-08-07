@@ -69,4 +69,5 @@ class TransFormUserToSuperAdmin extends Command
 
         $this->info('User has been transformed to super admin');
     }
+    
 }

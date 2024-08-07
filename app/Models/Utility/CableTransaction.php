@@ -13,7 +13,7 @@ use Spatie\Activitylog\LogOptions;
 
 class CableTransaction extends Model
 {
-    use LogsActivity; 
+    use LogsActivity, HasFactory; 
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',

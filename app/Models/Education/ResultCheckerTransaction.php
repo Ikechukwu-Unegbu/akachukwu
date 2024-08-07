@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ResultCheckerTransaction extends Model
 {
-    use LogsActivity; 
+    use LogsActivity, HasFactory; 
     
     protected $guarded = [];
 
