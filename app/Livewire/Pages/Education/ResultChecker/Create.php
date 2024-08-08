@@ -38,10 +38,18 @@ class Create extends Component
 
     public function updatedExamName()
     {
-        $checker = ResultChecker::where('vendor_id', $this->vendor->id)->where('name', $this->exam_name)->first();
-        $amount = number_format($checker->amount, 2, '.', '');
-        $amount = ($this->quantity > 1) ? $amount * $this->quantity : $amount;
-        $this->amount = number_format($amount, 2, '.', '');
+        $this->quantity = max(1, $this->quantity);
+    
+        $checker = ResultChecker::where('vendor_id', $this->vendor->id)
+                                ->where('name', $this->exam_name)
+                                ->first();
+    
+        if ($checker) {
+            $amount = $checker->amount;
+            $totalAmount = $amount * $this->quantity;
+            $this->amount = number_format($totalAmount, 2, '.', '');
+        }
+    
         return;
     }
 
