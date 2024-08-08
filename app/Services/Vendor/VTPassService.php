@@ -514,7 +514,7 @@ class VTPassService
             if (!$verifyAccountBalance->status) {
                 return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
             }
-    
+
             $resultCheckerModel = ResultChecker::where('vendor_id', self::$vendor->id)->where('name', $exam)->first();
     
             $transaction = ResultCheckerTransaction::create([
