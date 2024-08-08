@@ -6,10 +6,7 @@ use App\Models\Utility\ElectricityTransaction;
 
 class TransactionApiService{
 
-    public function getEductionTransaction()
-    {
-
-    }
+ 
 
     public static function getServiceModelTransaction($model, $userId)
     {
@@ -56,6 +53,8 @@ class TransactionApiService{
         }
     
         $transaction = $query->first();
+        $transaction = $transaction->toArray();
+        unset($transaction['id']);
         return $transaction;
     }
 
