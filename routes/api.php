@@ -66,10 +66,11 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     Route::post('epins/create', [EducationController::class, 'create']);
 
     // Route::get('/transactions', [TransactionsApiController::class, 'index']);
-    Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
+    // Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
 });
 Route::get('/transactions', [TransactionsApiController::class, 'index']);
 Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
+
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
 Route::post('datatypes', [DataApiController::class, 'index']);
