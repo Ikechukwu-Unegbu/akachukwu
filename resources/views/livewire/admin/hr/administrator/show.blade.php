@@ -90,6 +90,49 @@
                 @endif
             </div>
         </div>
+
+        <div class="card mt-5">
+            <div class="card-header">
+                <h4 class="card-title">Wallet History</h4>
+            </div>
+            <div class="card-body">                        
+                <x-table>
+                    <x-table-header :headers="['#', 'Reference', 'Gateway', 'Amount', 'Date', 'Status']" />
+                    <x-table-body>
+                        @forelse ($walletHistories as $wallet_transaction)
+                        <tr>
+                            <th scope="row">{{ $loop->index + 1 }}</th>
+                            <td>
+                                <small>{{ $wallet_transaction->reference_id }}</small>    
+                            </td>
+                            <td>{{ Str::title($wallet_transaction->gateway_type) }}</td>
+                            <td>₦ {{ number_format($wallet_transaction->amount, 2) }}</td>
+                            <td>
+                                @php $createdAt = \Carbon\Carbon::parse($wallet_transaction->created_at); @endphp
+                                <small>{{ $createdAt->format('M d, Y. h:ia') }}</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-{{ $wallet_transaction->status ? 'success' : 'danger' }}">
+                                    {{ $wallet_transaction->status ? 'Successful' : 'Failed' }}
+                                </span>
+                            </td>
+                        </tr>
+                        @if ($loop->last)
+                            <tr>
+                                <td colspan="7">
+                                    <a href="{{ route('admin.wallet.history', $user->username) }}" class="btn btn-sm btn-primary">Show More</a>
+                                </td>
+                            </tr>
+                        @endif
+                        @empty
+                        <tr>
+                            <td colspan="7">No Records Found!</td>
+                        </tr>
+                        @endforelse
+                    </x-table-body>
+                </x-table>                            
+            </div>
+        </div>
     </section>
 </div>
 @push('title')
