@@ -150,13 +150,20 @@ class PayVesselService
     {       
         try {
             // Verify the webhook signature
+            
+            $webhook = [
+                'payload' => $request->all(),
+                'ip'      => $request->ip(),
+                'time'    => date('H:i:s'),
+                'date'    => date('d-m-Y')
+            ];
+            self::storePayload($webhook);
+
             $payload = $request->getContent();
             $payvesselSignature = $request->header('payvessel-http-signature');
             $calculatedHash = self::computeSHA512TransactionHash($payload, config('payment.payvessel.secret'));
             $ip_address = $request->ip();
-            $ipAddress = ["3.255.23.38", "162.246.254.36"];
-
-            self::storePayload($request->all());
+            $ipAddress = ["3.255.23.38", "162.246.254.36"];          
             
             if (!hash_equals($calculatedHash, $payvesselSignature)) {
                 return response()->json(['message' => 'Webhook payload verification failed.'], 400);
@@ -211,8 +218,9 @@ class PayVesselService
 
     public static function storePayload($payload)
     {
+        $payloadString = json_encode($payload);
         $filename = 'webhook_payload_' . now()->format('Ymd_His') . '.txt';
-        Storage::disk('local')->put($filename, $payload);
+        Storage::disk('local')->put($filename, $payloadString);
     }
 
     private static function PayVesselModal($colunm)
