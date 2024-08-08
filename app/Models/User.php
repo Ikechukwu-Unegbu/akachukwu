@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Utility\UpgradeRequest;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
@@ -51,6 +53,11 @@ class User extends Authenticatable
         return LogOptions::defaults()
         ->logOnly(['name', ]);
         // Chain fluent methods for configuration options
+    }
+
+    public function ugradeRequests()
+    {
+        return $this->hasMany(UpgradeRequest::class);
     }
 
     /**
@@ -179,5 +186,30 @@ class User extends Authenticatable
     public function virtualAccounts() : HasMany
     {
         return $this->hasMany(VirtualAccount::class);
+    }
+
+    public function walletHistories()
+    {
+        $transactions = DB::table('flutterwave_transactions')
+            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'flutter' as gateway_type"))
+            ->where('user_id', $this->id)
+            ->latest();
+
+        $transactions->union(DB::table('paystack_transactions')
+            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'paystack' as gateway_type"))
+            ->where('user_id', $this->id))
+            ->latest();
+
+        $transactions->union(DB::table('monnify_transactions')
+            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'monnify' as gateway_type"))
+            ->where('user_id', $this->id))
+            ->latest();
+
+        $transactions->union(DB::table('pay_vessel_transactions')
+            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'pay vessel' as gateway_type"))
+            ->where('user_id', $this->id))
+            ->latest();
+
+        return $transactions;
     }
 }

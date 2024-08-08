@@ -131,6 +131,8 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('education/result-checker', App\Livewire\Admin\Education\ResultChecker\Index::class)->name('admin.education.result-checker');
         Route::get('education/result-checker/vendor/{vendor:id}/exam/{exam:id}/edit', App\Livewire\Admin\Education\ResultChecker\Edit::class)->name('admin.education.result-checker.edit');
+    
+        Route::get('wallet/user/{user:username}', App\Livewire\Admin\Wallet\Index::class)->name('admin.wallet.history');
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');
