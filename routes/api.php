@@ -20,6 +20,8 @@ use App\Http\Controllers\V1\WebhookController;
 use App\Http\Controllers\V1\API\FileUploadController;
 use App\Http\Controllers\V1\API\TransactionsApiController;
 use App\Http\Controllers\V1\API\UpgradeController;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,7 +44,7 @@ Route::post('/change-password/{username}', [ChangePasswordController::class, 'ch
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+    return User::with('virtualAccounts')->find(Auth::user()->id);
 });
 
 Route::group(['middleware' => ['auth:sanctum'],], function() {
