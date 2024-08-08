@@ -169,9 +169,9 @@ class PayVesselService
                 return response()->json(['message' => 'Webhook payload verification failed.'], 400);
             }
 
-            // if (!in_array($ip_address, $ipAddress)) {
-            //     return response()->json(['message' => 'Webhook payload verification failed. IP Address not Found!.'], 400);
-            // }
+            if (!in_array($ip_address, $ipAddress)) {
+                return response()->json(['message' => 'Webhook payload verification failed. IP Address not Found!.'], 400);
+            }
 
             $payload = json_decode($payload);
             $paymentReference = $payload->transaction->reference;

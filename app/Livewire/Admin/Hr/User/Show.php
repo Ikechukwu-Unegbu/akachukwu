@@ -17,6 +17,8 @@ class Show extends Component
 
     public function render()
     {
-        return view('livewire.admin.hr.user.show');
+        return view('livewire.admin.hr.user.show', [
+            'walletHistories' => $this->user->walletHistories()->get()->take(10)
+        ]);
     }
 }
