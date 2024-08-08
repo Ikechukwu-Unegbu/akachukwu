@@ -149,14 +149,15 @@ class PayVesselService
     public static function webhook(Request $request)
     {       
         try {
+
             // Verify the webhook signature
-            
             $webhook = [
-                'payload' => $request->all(),
                 'ip'      => $request->ip(),
                 'time'    => date('H:i:s'),
-                'date'    => date('d-m-Y')
+                'date'    => date('d-m-Y'),
+                'payload' => $request->all()
             ];
+
             self::storePayload($webhook);
 
             $payload = $request->getContent();
@@ -169,9 +170,9 @@ class PayVesselService
                 return response()->json(['message' => 'Webhook payload verification failed.'], 400);
             }
 
-            if (!in_array($ip_address, $ipAddress)) {
-                return response()->json(['message' => 'Webhook payload verification failed. IP Address not Found!.'], 400);
-            }
+            // if (!in_array($ip_address, $ipAddress)) {
+            //     return response()->json(['message' => 'Webhook payload verification failed. IP Address not Found!.'], 400);
+            // }
 
             $payload = json_decode($payload);
             $paymentReference = $payload->transaction->reference;
@@ -218,9 +219,25 @@ class PayVesselService
 
     public static function storePayload($payload)
     {
-        $payloadString = json_encode($payload);
-        $filename = 'webhook_payload_' . now()->format('Ymd_His') . '.txt';
-        Storage::disk('local')->put($filename, $payloadString);
+        $filename = 'payloads.json';
+        $payloadString = json_encode($payload, JSON_PRETTY_PRINT);
+    
+        if (Storage::disk('webhooks')->exists($filename)) {
+
+            $existingContent = Storage::disk('webhooks')->get($filename);
+    
+            $existingContent = rtrim($existingContent, "\n]");
+    
+            if (strlen($existingContent) > 1) {
+                $existingContent .= ",\n";
+            }
+
+            $newContent = $existingContent . $payloadString . "\n]";
+            Storage::disk('webhooks')->put($filename, $newContent);
+        } else {
+            $newContent = "[\n" . $payloadString . "\n]";
+            Storage::disk('webhooks')->put($filename, $newContent);
+        }
     }
 
     private static function PayVesselModal($colunm)
