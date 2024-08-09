@@ -155,7 +155,8 @@ class PayVesselService
                 'ip'      => $request->ip(),
                 'time'    => date('H:i:s'),
                 'date'    => date('d-m-Y'),
-                'payload' => $request->all()
+                'payload' => $request->all(),
+                'headers' => $request->headers->all()
             ];
 
             self::storePayload($webhook);
