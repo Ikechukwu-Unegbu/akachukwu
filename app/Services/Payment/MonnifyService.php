@@ -15,6 +15,7 @@ use App\Interfaces\Payment\Payment;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Payment\MonnifyTransaction;
 use App\Services\Account\AccountBalanceService;
 
@@ -301,7 +302,18 @@ class MonnifyService implements Payment
     public static function webhook(Request $request)
     {
         try {
+
             // Verify the webhook signature
+            $webhook = [
+                'ip'      => $request->ip(),
+                'time'    => date('H:i:s'),
+                'date'    => date('d-m-Y'),
+                'payload' => $request->all(),
+                'headers' => $request->headers->all()
+            ];
+
+            self::storePayload($webhook);
+
             $monnifySignature = $request->header('monnify-signature');
             $stringifiedData = $request->getContent();
             $payload = $request->input('eventData');
@@ -377,6 +389,29 @@ class MonnifyService implements Payment
                 'message'  =>    $th->getMessage(),
                 'response' =>    []
             ], 401)->getData();
+        }
+    }
+
+    public static function storePayload($payload)
+    {
+        $filename = 'monnify_payloads.json';
+        $payloadString = json_encode($payload, JSON_PRETTY_PRINT);
+    
+        if (Storage::disk('webhooks')->exists($filename)) {
+
+            $existingContent = Storage::disk('webhooks')->get($filename);
+    
+            $existingContent = rtrim($existingContent, "\n]");
+    
+            if (strlen($existingContent) > 1) {
+                $existingContent .= ",\n";
+            }
+
+            $newContent = $existingContent . $payloadString . "\n]";
+            Storage::disk('webhooks')->put($filename, $newContent);
+        } else {
+            $newContent = "[\n" . $payloadString . "\n]";
+            Storage::disk('webhooks')->put($filename, $newContent);
         }
     }
 
