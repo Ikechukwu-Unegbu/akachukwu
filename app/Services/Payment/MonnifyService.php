@@ -317,18 +317,19 @@ class MonnifyService implements Payment
             $monnifySignature = $request->header('monnify-signature');
             $stringifiedData = $request->getContent();
             $payload = $request->input('eventData');
+            $ipWhiteLists = [$request->header('cf-connecting-ip'), $request->header('x-forwarded-for')];
+            $ipAddress = "35.242.133.146";
 
             $calculatedHash = self::computeSHA512TransactionHash($stringifiedData, static::monnifyDetails('key'));
 
-            // Log the raw body and hashes for debugging
-            // Log::info('Raw Payload: ' . $stringifiedData);
-            // Log::info('Computed Hash: ' . $calculatedHash);
-            // Log::info('Monnify Signature: ' . $monnifySignature);
-
-             // Verify the hash
+            // Verify the hash
             if (!hash_equals($calculatedHash, $monnifySignature)) {
                 return response()->json(['message' => 'Webhook payload verification failed.'], 400);
-            } 
+            }
+
+            // if (!in_array($ipAddress, $ipWhiteLists)) {
+            //     return response()->json(['message' => 'Webhook payload verification failed. IP Address not Found!.'], 400);
+            // }
 
             // Handle the payment notification
             $eventType = $request->eventType;
@@ -348,14 +349,15 @@ class MonnifyService implements Payment
 
                 if ($user) {
 
-                    if (MonnifyTransaction::where('reference_id', $paymentReference)->exists()) {
+                    if (MonnifyTransaction::where('reference_id', $paymentReference)->where('status', true)->exists()) {
                         return response()->json(['message' => 'Payment Already Processed'], 200);
                     }
 
-                    $transaction = MonnifyTransaction::create([
+                    $transaction = MonnifyTransaction::updateOrCreate([
                         'reference_id'  => $paymentReference,
                         'trx_ref'       => $transactionReference,
                         'user_id'       => $user->id,
+                    ], [
                         'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
                         'redirect_url'  => config('app.url'),
