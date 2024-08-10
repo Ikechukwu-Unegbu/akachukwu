@@ -172,7 +172,7 @@
                 <div class="auth-nav">
                     @guest 
                     <a class=" btn btn-warning" href="{{route('login')}}">Login</a>
-                    <div class="btn btn-warning" href="{{route('register')}}">Register</div>
+                    <a class="btn btn-warning" href="{{route('register')}}">Register</a>
                     @else 
                     <form action="{{route('logout')}}" method="post">
                         @csrf 
