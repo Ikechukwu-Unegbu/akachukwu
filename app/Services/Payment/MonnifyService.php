@@ -205,7 +205,7 @@ class MonnifyService implements Payment
                 "customerEmail"         =>  $user->email,
                 "customerName"          =>  $user->name,
                 "getAllAvailableBanks"  =>  false,
-                "preferredBanks"        =>  ["035", "058"]
+                "preferredBanks"        =>  ["035", "058", "50515"]
             ]);
 
             $response = $response->object();
