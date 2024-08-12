@@ -188,28 +188,64 @@ class User extends Authenticatable
         return $this->hasMany(VirtualAccount::class);
     }
 
+    // public function walletHistories()
+    // {
+    //     $transactions = DB::table('flutterwave_transactions')
+    //         ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'flutter' as gateway_type"))
+    //         ->where('user_id', $this->id)
+    //         ->latest();
+
+    //     $transactions->union(DB::table('paystack_transactions')
+    //         ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'paystack' as gateway_type"))
+    //         ->where('user_id', $this->id))
+    //         ->latest();
+
+    //     $transactions->union(DB::table('monnify_transactions')
+    //         ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'monnify' as gateway_type"))
+    //         ->where('user_id', $this->id))
+    //         ->latest();
+
+    //     $transactions->union(DB::table('pay_vessel_transactions')
+    //         ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'pay vessel' as gateway_type"))
+    //         ->where('user_id', $this->id))
+    //         ->latest();
+        
+    //     $transactions->union(DB::table('vastel_transactions')
+    //     ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'Vastel' as gateway_type"))
+    //     ->where('user_id', $this->id))
+    //     ->latest();
+
+    //     return $transactions;
+    // }
+
     public function walletHistories()
-    {
-        $transactions = DB::table('flutterwave_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'flutter' as gateway_type"))
-            ->where('user_id', $this->id)
-            ->latest();
+{
+    $transactions = DB::table('flutterwave_transactions')
+        ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'flutter' as gateway_type"), DB::raw("NULL as type"))
+        ->where('user_id', $this->id)
+        ->latest();
 
-        $transactions->union(DB::table('paystack_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'paystack' as gateway_type"))
-            ->where('user_id', $this->id))
-            ->latest();
+    $transactions->union(DB::table('paystack_transactions')
+        ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'paystack' as gateway_type"), DB::raw("NULL as type"))
+        ->where('user_id', $this->id))
+        ->latest();
 
-        $transactions->union(DB::table('monnify_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'monnify' as gateway_type"))
-            ->where('user_id', $this->id))
-            ->latest();
+    $transactions->union(DB::table('monnify_transactions')
+        ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'monnify' as gateway_type"), DB::raw("NULL as type"))
+        ->where('user_id', $this->id))
+        ->latest();
 
-        $transactions->union(DB::table('pay_vessel_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'pay vessel' as gateway_type"))
-            ->where('user_id', $this->id))
-            ->latest();
+    $transactions->union(DB::table('pay_vessel_transactions')
+        ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'pay vessel' as gateway_type"), DB::raw("NULL as type"))
+        ->where('user_id', $this->id))
+        ->latest();
+    
+    $transactions->union(DB::table('vastel_transactions')
+        ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'Vastel' as gateway_type"), 'type')
+        ->where('user_id', $this->id))
+        ->latest();
 
-        return $transactions;
-    }
+    return $transactions; // Don't forget to actually execute the query
+}
+
 }

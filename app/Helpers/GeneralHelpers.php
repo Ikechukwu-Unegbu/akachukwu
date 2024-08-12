@@ -21,5 +21,15 @@ class GeneralHelpers{
 
         return $uuid;
     }
+    public static function generateUniqueRef(string $table): string
+    {
+        $uuid = Str::uuid();
+
+        while (DB::table($table)->where('reference_id', $uuid)->exists()) {
+            $uuid = Str::uuid();
+        }
+
+        return $uuid;
+    }
 
 }
