@@ -78,6 +78,9 @@
                             <td>
                                 <span class="badge bg-{{ $wallet_transaction->status ? 'success' : 'danger' }}">
                                     {{ $wallet_transaction->status ? 'Successful' : 'Failed' }}
+                                    @if($wallet_transaction->gateway_type==='Vastel' && $wallet_transaction->type == false)
+                                        <small class="text-xs">Debit</small>
+                                    @endif 
                                 </span>
                             </td>
                         </tr>
