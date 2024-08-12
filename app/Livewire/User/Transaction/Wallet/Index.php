@@ -17,27 +17,7 @@ class Index extends Component
     public function render()
     {
         $userId = auth()->id(); 
-
-        $transactions = DB::table('flutterwave_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'flutter' as gateway_type"))
-            ->where('user_id', $userId)
-            ->latest();
-
-        $transactions->union(DB::table('paystack_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'paystack' as gateway_type"))
-            ->where('user_id', $userId))
-            ->latest();
-
-        $transactions->union(DB::table('monnify_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'monnify' as gateway_type"))
-            ->where('user_id', $userId))
-            ->latest();
-
-        $transactions->union(DB::table('pay_vessel_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'pay vessel' as gateway_type"))
-            ->where('user_id', $userId))
-            ->latest();
-            // dd($transactions->get());
+        $transactions = auth()->user()->walletHistories();
         
         return view('livewire.user.transaction.wallet.index', [
             'wallet_transactions' => $transactions->paginate($this->perPage)
