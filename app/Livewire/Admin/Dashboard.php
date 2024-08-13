@@ -39,12 +39,20 @@ class Dashboard extends Component
 
     public function allVendorBalance()
     {
-        $vtPass = Vendor::where('name', 'VTPASS')->first();
-        $glad = Vendor::where('name', 'GLADTIDINGSDATA')->first();
-        $postranet = Vendor::where('name', 'POSTRANET')->first();
-        $vtService = new VTPassService($vtPass);
-        $postranetService = new PosTraNetService($postranet);
-        $gladService = new GladTidingService($glad);
+       
+
+        try {
+            
+            $vtPass = Vendor::where('name', 'VTPASS')->first();
+            $glad = Vendor::where('name', 'GLADTIDINGSDATA')->first();
+            $postranet = Vendor::where('name', 'POSTRANET')->first();
+            $vtService = new VTPassService($vtPass);
+            $postranetService = new PosTraNetService($postranet);
+            $gladService = new GladTidingService($glad);
+        } catch (\Exception $e) {
+            \Log::error('Failed to retrieve wallet balance: ' . $e->getMessage());
+            // Handle the error appropriately
+        }
 
         $vtBalance =  $vtService::getWalletBalance();
         $postranetBlance =  $postranetService::getWalletBalance();
