@@ -31,7 +31,9 @@
                 <label for="dropdownSelect" class="form-label">Select</label>
                 <select class="form-select" id="dropdownSelect">
                     <option selected>Select one...</option>
-                    <option value="option1">Option 1</option>
+                    @if(auth()->user()->can())
+
+                    @endcan
                     <option value="option2">Option 2</option>
                 </select>
             </div>
