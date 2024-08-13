@@ -8,12 +8,20 @@ use App\Models\User;
 use App\Models\Utility\AirtimeTransaction;
 use App\Models\Utility\CableTransaction;
 use App\Models\Utility\ElectricityTransaction;
+use App\Models\Vendor;
+use App\Services\Vendor\GladTidingService;
+use App\Services\Vendor\PosTraNetService;
+use App\Services\Vendor\VTPassService;
 use Livewire\Component;
 
 class Dashboard extends Component
 {
     public $registeredUser = [];
     public $months = [];
+    public $vtBalance;
+    public $gladBalance;
+    public $postranetBlance;
+    public $total_wallet;
 
     public function mount()
     {
@@ -24,6 +32,29 @@ class Dashboard extends Component
             $this->registeredUser[] = User::whereRole('user')->whereRaw('MONTH(created_at) = ?', $month)->count();
         
         }
+
+        $this->allVendorBalance();
+        
+    }
+
+    public function allVendorBalance()
+    {
+        $vtPass = Vendor::where('name', 'VTPASS')->first();
+        $glad = Vendor::where('name', 'GLADTIDINGSDATA')->first();
+        $postranet = Vendor::where('name', 'POSTRANET')->first();
+        $vtService = new VTPassService($vtPass);
+        $postranetService = new PosTraNetService($postranet);
+        $gladService = new GladTidingService($glad);
+
+        $vtBalance =  $vtService::getWalletBalance();
+        $postranetBlance =  $postranetService::getWalletBalance();
+        $gladBalance =  $gladService::getWalletBalance();
+
+        $this->vtBalance=  ($vtBalance->status) ? $vtBalance->response : 'N/A';
+        $this->postranetBlance = ($postranetBlance->status) ? $postranetBlance->response : 'N/A';
+        $this->gladBalance = ($gladBalance->status) ? $gladBalance->response : 'N/A';
+        $this->total_wallet = \App\Models\User::sum('account_balance');
+
     }
 
     public function render()
