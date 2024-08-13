@@ -18,13 +18,7 @@ use Illuminate\Support\Facades\Session;
 
 class UserCrdDbtController extends Controller
 {
-    public function index()
-    {
-        $username = request()->input('username');
-        $user = User::where('username', $username)->first();
-
-        return view('system-user.crd-dbt.index');
-    }
+  
 
     public function store(Request $request)
     {
@@ -37,6 +31,7 @@ class UserCrdDbtController extends Controller
         ]);
         $user = User::where('username', $validatedData['username'])->first();
         if ($validatedData['action'] == 'credit') {
+            
             
             $vastelTransaction = new VastelTransaction();
             $vastelTransaction->admin_id = Auth::user()->id;
