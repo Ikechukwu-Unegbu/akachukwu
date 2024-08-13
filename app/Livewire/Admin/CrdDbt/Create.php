@@ -13,7 +13,7 @@ class Create extends Component
 
     public function mount(Request $request)
     {
-        if(auth()->user()->can('debit') || auth()->user()->can('credit')){
+        if(auth()->user()->can('can debit') || auth()->user()->can('can top-up')){
             $this->username = $request->query('username');
 
             $this->user = User::where('username', $this->username)->firstOrFail();
