@@ -39,18 +39,28 @@ class Dashboard extends Component
 
     public function allVendorBalance()
     {
-        $vtPass = Vendor::where('name', 'VTPASS')->first();
-        $glad = Vendor::where('name', 'GLADTIDINGSDATA')->first();
-        $postranet = Vendor::where('name', 'POSTRANET')->first();
-        $vtService = new VTPassService($vtPass);
-        $postranetService = new PosTraNetService($postranet);
-        $gladService = new GladTidingService($glad);
+       
 
-        $vtBalance =  $vtService::getWalletBalance();
-        $postranetBlance =  $postranetService::getWalletBalance();
-        $gladBalance =  $gladService::getWalletBalance();
+        try {
+            
+            $vtPass = Vendor::where('name', 'VTPASS')->first();
+            $glad = Vendor::where('name', 'GLADTIDINGSDATA')->first();
+            $postranet = Vendor::where('name', 'POSTRANET')->first();
+            $vtService = new VTPassService($vtPass);
+            $postranetService = new PosTraNetService($postranet);
+            $gladService = new GladTidingService($glad);
+            
+            // $vtBalance =  $vtService::getWalletBalance();
+            $postranetBlance =  $postranetService::getWalletBalance();
+            $gladBalance =  $gladService::getWalletBalance();
+        } catch (\Exception $e) {
+            \Log::error('Failed to retrieve wallet balance: ' . $e->getMessage());
+            // Handle the error appropriately
+        }
 
-        $this->vtBalance=  ($vtBalance->status) ? $vtBalance->response : 'N/A';
+
+        $this->vtBalance = 0.00;
+    
         $this->postranetBlance = ($postranetBlance->status) ? $postranetBlance->response : 'N/A';
         $this->gladBalance = ($gladBalance->status) ? $gladBalance->response : 'N/A';
         $this->total_wallet = \App\Models\User::sum('account_balance');
