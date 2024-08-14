@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\API;
 
+use App\Helpers\GeneralHelpers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\Account\AccountBalanceService;
@@ -14,7 +15,7 @@ class TransferController extends Controller
     private $user;
     private $accountBalanceService;
 
-    public function __construct(public VastelMoneyTransfer $vastelTransfer)
+    public function __construct(public VastelMoneyTransfer $vastelTransfer, public GeneralHelpers $helpers)
     {
       
     }
@@ -24,7 +25,8 @@ class TransferController extends Controller
         // var_dump(User::find(Auth::user()->id));die;
         $request->validate([
             'recipient'=>'required|string', 
-            'amount'=>'required'
+            'amount'=>'required', 
+            'type'=>'required'
         ]);
     
         if($request->type=='vastel'){
@@ -35,8 +37,14 @@ class TransferController extends Controller
                     'message'=>'Insufficinet balance'
                 ]);
             }
+            if(!$this->vastelTransfer->getRecipient($request->recipient)){
+                return response()->json([
+                    'status'=>'failed',
+                    'message'=>'No such user'
+                ]);
+            }
             $this->vastelTransfer->transfer($request->all(), $accountBalanceService);     
         }
-        
+        //call the method for bank transfer there      
     }
 }
