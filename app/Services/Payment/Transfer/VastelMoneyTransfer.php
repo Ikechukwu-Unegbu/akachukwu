@@ -1,4 +1,5 @@
 <?php
+namespace  App\Services\Payment\Transfer;
 
 use App\Helpers\GeneralHelpers;
 use App\Models\User;
@@ -25,12 +26,12 @@ class VastelMoneyTransfer{
     }
 
 
-    public function transfer($recipient, $amount, $accountBalanceService)
+    public function transfer(array $data, AccountBalanceService $accountBalanceService)
     {
-        $accountBalanceService->transaction($amount);
+        $accountBalanceService->transaction($data['amount']);
 
-        $recipientAccount = new AccountBalanceService($this->getRecipient($recipient));
-        $recipientAccount->updateAccountBalance($amount);   
+        $recipientAccount = new AccountBalanceService($this->getRecipient($data['recipient']));
+        $recipientAccount->updateAccountBalance($data['amount']);   
     }
 }
 

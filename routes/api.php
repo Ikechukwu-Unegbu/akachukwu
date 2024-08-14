@@ -19,6 +19,7 @@ use App\Http\Controllers\V1\WebhookController;
 // use Livewire\Features\SupportFileUploads\FileUploadController;
 use App\Http\Controllers\V1\API\FileUploadController;
 use App\Http\Controllers\V1\API\TransactionsApiController;
+use App\Http\Controllers\V1\API\TransferController;
 use App\Http\Controllers\V1\API\UpgradeController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -72,6 +73,8 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
 
     Route::get('/transactions', [TransactionsApiController::class, 'index']);
     Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
+
+    Route::post('/transfer', TransferController::class);
 });
 // Route::get('/transactions', [TransactionsApiController::class, 'index']);
 

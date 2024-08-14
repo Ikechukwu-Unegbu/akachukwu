@@ -7,33 +7,35 @@ use App\Models\User;
 use App\Services\Account\AccountBalanceService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Services\Payment\Transfer\VastelMoneyTransfer;
 
 class TransferController extends Controller
 {
     private $user;
     private $accountBalanceService;
 
-    public function __construct()
+    public function __construct(public VastelMoneyTransfer $vastelTransfer)
     {
-        $this->user = User::find(Auth::user()->id);
-        $this->accountBalanceService = new AccountBalanceService($this->user);
+      
     }
 
     public function __invoke(Request $request)
     {
+        // var_dump(User::find(Auth::user()->id));die;
         $request->validate([
             'recipient'=>'required|string', 
-            'amount'=>'required|string'
+            'amount'=>'required'
         ]);
     
         if($request->type=='vastel'){
-            if($this->accountBalanceService->verifyAccountBalance($request->amount) ==false){
+            $accountBalanceService = new AccountBalanceService(Auth::user());
+            if($accountBalanceService->verifyAccountBalance($request->amount) ==false){
                 return response()->json([
                     'status'=>'failed',
                     'message'=>'Insufficinet balance'
                 ]);
-                
             }
+            $this->vastelTransfer->transfer($request->all(), $accountBalanceService);     
         }
         
     }
