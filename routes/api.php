@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\Auth;
 
 Route::post('/register', [RegisterUserController::class, 'register']);
 Route::post('/login', [AuthenticateUserController::class, 'login']);
-Route::post('logout', [AuthenticateUserController::class, 'logout']);
+
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::get('/user/{username}', [UserProfileController::class, 'show']);
 Route::post('/change-password/{username}', [ChangePasswordController::class, 'changePassword']);
@@ -48,9 +48,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['auth:sanctum'],], function() {
+    //logout
+    Route::post('logout', [AuthenticateUserController::class, 'logout']);
 
+    //image uload
     Route::post('/upload-avatar',[FileUploadController::class, 'store']);
-    Route::post('/update-avatar',[FileUploadController::class, 'update']);
+
 
     Route::get('/upgrade-user', [UpgradeController::class, 'store']);
 
