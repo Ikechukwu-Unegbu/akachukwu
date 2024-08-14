@@ -21,17 +21,39 @@ class AccountBalanceService
         return $this->user->account_balance;
     }
 
+    
+    
+    /**
+     * Update the user's account balance by adding the specified amount.
+     *
+     * This method calls the `setAccountBalance` method on the user model,
+     * which is responsible for updating the user's account balance with the
+     * specified amount.
+     *
+     * @param float $amount The amount to be added to the user's account balance.
+     * @return bool Returns true if the operation was successful.
+     */
     public function updateAccountBalance($amount)
     {
         $this->user->setAccountBalance($amount);
         return true;
     }
 
+    /**
+     * Perform a transaction by removing the specified amount from the user's balance.
+     *
+     * This method calls the `setTransaction` method on the user model,
+     * which handles deducting the specified amount from the user's account balance.
+     *
+     * @param float $amount The amount to be removed from the user's account balance.
+     * @return bool Returns true if the transaction was processed successfully.
+     */
     public function transaction($amount)
     {
         $this->user->setTransaction($amount);
         return true;
     }
+
 
     public function verifyAccountBalance($amount) : bool
     {

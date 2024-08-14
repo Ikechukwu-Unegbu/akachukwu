@@ -23,27 +23,16 @@ class TransactionsApiController extends Controller
     public function index()
     {
 
-        $userId = 2;//Auth::user()->id;
-       
-        $electricityTransactions = TransactionApiService::getServiceModelTransaction(new ElectricityTransaction(), $userId);
-        $airtimeTransactions = TransactionApiService::getServiceModelTransaction(new AirtimeTransaction(), $userId);
-        $dataTransactions = TransactionApiService::getServiceModelTransaction(new DataTransaction(), $userId);
-        $resultCheckerTransactions = TransactionApiService::getServiceModelTransaction(new ResultCheckerTransaction(), $userId);
-        $cableTransactions= TransactionApiService::getServiceModelTransaction(new CableTransaction(), $userId);
+        $category = request()->input('category');
+        $endDate = request()->input('endDate');
+        $startDate = request()->input('startDate');
+        $perPage= request()->input('perpage');
 
-        $collections = [
-            $electricityTransactions->getCollection()->map(fn($item) => $item->toArray() + ['model_source' => 'ElectricityTransaction']),
-            $airtimeTransactions->getCollection()->map(fn($item) => $item->toArray() + ['model_source' => 'AirtimeTransaction']),
-            $dataTransactions->getCollection()->map(fn($item) => $item->toArray() + ['model_source' => 'DataTransaction']),
-            $resultCheckerTransactions->getCollection()->map(fn($item) => $item->toArray() + ['model_source' => 'ResultCheckerTransaction']),
-            $cableTransactions->getCollection()->map(fn($item) => $item->toArray() + ['model_source' => 'CableTransaction']),
-        ];
-
-        $allTransactions = collect($collections)->sortByDesc('created_at');
-    
-        return ApiHelper::sendResponse($allTransactions, 'all transactions fetched');
-
+        $result = TransactionApiService::fetchTransactions($category, $startDate, $endDate, $perPage); 
+        return response()->json($result);
     }
+
+  
 
     public function show($id)
     {
@@ -59,5 +48,6 @@ class TransactionsApiController extends Controller
 
         return ApiHelper::sendResponse($transaction, 'Transaction fetched');
     }
+
 
 }
