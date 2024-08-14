@@ -2,6 +2,7 @@
 namespace App\Helpers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class GeneralHelpers{
@@ -30,6 +31,29 @@ class GeneralHelpers{
         }
 
         return $uuid;
+    }
+
+     /**
+     * Determine if the given string is an email address or a username.
+     *
+     * @param string $input
+     * @return string
+     */
+    public  function identifyStringType(string $input): string
+    {
+        // Define a simple email validation rule
+        $emailRule = 'email';
+
+        // Validate if the input is an email
+        $validator = Validator::make(['input' => $input], [
+            'input' => $emailRule,
+        ]);
+
+        if ($validator->passes()) {
+            return 'Email';
+        }
+
+        return 'Username';
     }
 
 }

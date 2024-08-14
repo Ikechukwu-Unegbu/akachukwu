@@ -70,11 +70,11 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     Route::post('pin/validate', [UserPinController::class, 'validatePin']);
     Route::post('epins/create', [EducationController::class, 'create']);
 
-    // Route::get('/transactions', [TransactionsApiController::class, 'index']);
-    // Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
+    Route::get('/transactions', [TransactionsApiController::class, 'index']);
+    Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
 });
-Route::get('/transactions', [TransactionsApiController::class, 'index']);
-Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
+// Route::get('/transactions', [TransactionsApiController::class, 'index']);
+
 
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
