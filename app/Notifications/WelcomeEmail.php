@@ -11,12 +11,16 @@ class WelcomeEmail extends Notification
 {
     use Queueable;
 
+    public $user;
+    public $otp;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    public function __construct($otp, $user)
     {
-        //
+        $this->user = $user;
+        $this->otp = $otp;   
     }
 
     /**
@@ -35,9 +39,11 @@ class WelcomeEmail extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->greeting('Hi '.$this->user->name.'!!')
+                    ->line('Your Vastel Account is ready. Thank you for using Vastel')
+                    // ->action('Notification Action', url('/'))
+                    ->line('Your OTP is: '. $this->otp)
+                    ->line('Once again, thank you for using our application!');
     }
 
     /**

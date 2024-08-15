@@ -4,8 +4,11 @@ namespace App\Http\Controllers\V1\API\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\WelcomeEmail;
+use App\Services\OTPService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class AuthenticateUserController extends Controller
 {
@@ -30,6 +33,41 @@ class AuthenticateUserController extends Controller
         }
 
         return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+
+    public function verifyOtp(Request $request, OTPService $otpService)
+    {
+        $request->validate([
+            'otp'=>'required|string',
+            'email'=>'required|string'
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+        $checkOtp = $otpService->verifyOTP($user, $request->otp);
+
+        if($checkOtp == true){
+            return response()->json([
+                'status'=>'success',
+                'message'=>'Valid Otp'
+            ], 200);
+        }
+        return response()->json([
+            'status'=>'success', 
+            'message'=>'Invalid otp'
+        ], 403);
+    }
+
+    public function resendOtp(Request $request, OTPService $otpService)
+    {
+        $user =  User::where('email', $request->email)->first();
+      
+        $otp = $otpService->generateOTP($user);
+        Notification::sendNow($user, new WelcomeEmail($otp, $user));
+        return response()->json([
+            'status'=>'success',
+            'New OTP sent'
+        ]);
     }
 
     public function logout(Request $request)
