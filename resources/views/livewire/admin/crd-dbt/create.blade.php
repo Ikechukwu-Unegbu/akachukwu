@@ -47,10 +47,10 @@
                 <label for="dropdownSelect" class="form-label">Select</label>
                 <select name="action" class="form-select" id="dropdownSelect">
                     <option selected>Select one...</option>
-                    @if(auth()->user()->can('debit'))
+                    @if(auth()->user()->can('can debit'))
                     <option value="debit">Debit</option>
                     @endif 
-                    @if(auth()->user()->can('credit'))
+                    @if(auth()->user()->can('can top-up'))
                     <option value="credit">Credit</option>
                     @endif 
                 </select>
