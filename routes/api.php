@@ -42,6 +42,8 @@ Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink
 Route::get('/user/{username}', [UserProfileController::class, 'show']);
 Route::post('/change-password/{username}', [ChangePasswordController::class, 'changePassword']);
 
+Route::post('/verify-otp', [AuthenticateUserController::class, 'verifyOtp']);
+Route::post('/resend-otp', [AuthenticateUserController::class, 'resendOtp']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
