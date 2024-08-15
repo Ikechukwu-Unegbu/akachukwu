@@ -53,13 +53,16 @@ class AuthenticateUserController extends Controller
             ], 200);
         }
         return response()->json([
-            'status'=>'success', 
+            'status'=>'failed', 
             'message'=>'Invalid otp'
         ], 403);
     }
 
     public function resendOtp(Request $request, OTPService $otpService)
     {
+        $request->validate([
+            'email'=>'required|email'
+        ]);
         $user =  User::where('email', $request->email)->first();
       
         $otp = $otpService->generateOTP($user);
