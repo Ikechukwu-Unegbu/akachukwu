@@ -28,8 +28,6 @@ class UserProfileController extends Controller
             'name' => 'required|string|max:255',
             'username'=>'required|string',
             'phone'=>'required|string',
-            // 'address'=>'nullable|string',
-            // 'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
     
         $updatedUser = $this->userApiService->updateUser($request->all());
