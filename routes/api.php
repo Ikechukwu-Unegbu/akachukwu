@@ -19,6 +19,7 @@ use App\Http\Controllers\V1\WebhookController;
 // use Livewire\Features\SupportFileUploads\FileUploadController;
 use App\Http\Controllers\V1\API\FileUploadController;
 use App\Http\Controllers\V1\API\TransactionsApiController;
+use App\Http\Controllers\V1\API\TransferController;
 use App\Http\Controllers\V1\API\UpgradeController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -36,11 +37,13 @@ use Illuminate\Support\Facades\Auth;
 
 Route::post('/register', [RegisterUserController::class, 'register']);
 Route::post('/login', [AuthenticateUserController::class, 'login']);
-Route::post('logout', [AuthenticateUserController::class, 'logout']);
+
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::get('/user/{username}', [UserProfileController::class, 'show']);
 Route::post('/change-password/{username}', [ChangePasswordController::class, 'changePassword']);
 
+Route::post('/verify-otp', [AuthenticateUserController::class, 'verifyOtp']);
+Route::post('/resend-otp', [AuthenticateUserController::class, 'resendOtp']);
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -48,8 +51,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['auth:sanctum'],], function() {
+    //logout
+    Route::post('logout', [AuthenticateUserController::class, 'logout']);
 
+    //image uload
     Route::post('/upload-avatar',[FileUploadController::class, 'store']);
+
     Route::post('user', [UserProfileController::class, 'update']);
 
     Route::get('/upgrade-user', [UpgradeController::class, 'store']);
@@ -67,11 +74,13 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     Route::post('pin/validate', [UserPinController::class, 'validatePin']);
     Route::post('epins/create', [EducationController::class, 'create']);
 
-    // Route::get('/transactions', [TransactionsApiController::class, 'index']);
-    // Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
+    Route::get('/transactions', [TransactionsApiController::class, 'index']);
+    Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
+
+    Route::post('/transfer', TransferController::class);
 });
-Route::get('/transactions', [TransactionsApiController::class, 'index']);
-Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
+// Route::get('/transactions', [TransactionsApiController::class, 'index']);
+
 
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
