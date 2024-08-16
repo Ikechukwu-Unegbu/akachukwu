@@ -22,22 +22,27 @@ class UserProfileController extends Controller
         return response()->json($this->userApiService->getUser($username));
     }
 
-    public function update(Request $request, $username)
+    public function update(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'username'=>'required|string',
             'phone'=>'required|string',
-            'address'=>'required|string',
-            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
         ]);
     
-        $updatedUser = $this->userApiService->updateUser($username, $request->all());
+        $updatedUser = $this->userApiService->updateUser($request->all());
     
         if ($updatedUser) {
-            return response()->json(['message' => 'User updated successfully', 'user' => $updatedUser]);
+            return response()->json([
+                'status'=>'success',
+                'message' => 'User updated successfully', 
+                'user' => $updatedUser
+            ]);
         } else {
-            return response()->json(['message' => 'Failed to update user'], 500);
+            return response()->json([
+                'message' => 'Failed to update user',
+                'status'=>'failed'
+            ], 500);
         }
     }
     

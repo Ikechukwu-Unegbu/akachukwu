@@ -57,6 +57,7 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     //image uload
     Route::post('/upload-avatar',[FileUploadController::class, 'store']);
 
+    Route::post('user', [UserProfileController::class, 'update']);
 
     Route::get('/upgrade-user', [UpgradeController::class, 'store']);
 
