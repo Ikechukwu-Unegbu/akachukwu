@@ -50,7 +50,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::group(['middleware' => ['auth:sanctum'],], function() {
 
     Route::post('/upload-avatar',[FileUploadController::class, 'store']);
-    Route::post('/update-avatar',[FileUploadController::class, 'update']);
+    Route::post('user', [UserProfileController::class, 'update']);
 
     Route::get('/upgrade-user', [UpgradeController::class, 'store']);
 
