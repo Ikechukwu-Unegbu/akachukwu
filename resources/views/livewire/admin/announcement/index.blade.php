@@ -3,6 +3,7 @@
     <div class="card">
         <div class="card-header">
             <h4>Announcements List</h4>
+            <a href="{{route('admin.announcement')}}">Create Announcement</a>
         </div>
         <div class="card-body table-responsive">
             <table class="table table-bordered">

@@ -2,6 +2,7 @@
     <div class="card">
         <div class="card-header">
             <h4>Create New Announcement</h4>
+            <a href="{{route('admin.announcement.index')}}">View All</a>
         </div>
         <div class="card-body">
             <form wire:submit="save">
