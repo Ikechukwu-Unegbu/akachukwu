@@ -21,14 +21,14 @@ use App\Http\Controllers\V1\Education\ResultCheckerController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::middleware(['testing'])->group(function () {
+    Route::get('/', function () {return view('pages.home.home');});
+    Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
+    Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
+    Route::get('/gen', [TestController::class, 'gen']);
+});
 
-Route::get('/', function () {return view('pages.home.home');});
-Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
-Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
-Route::get('/gen', [TestController::class, 'gen']);
-
-
-Route::middleware(['auth', 'verified', 'user'])->group(function () {
+Route::middleware(['auth', 'verified', 'user', 'testing'])->group(function () {
     Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
     Route::get('/data', [DataController::class, 'index'])->name('data.index');
     Route::get('/electricity', [ElectricityController::class, 'index'])->name('electricity.index');

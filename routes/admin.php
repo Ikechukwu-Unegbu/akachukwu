@@ -22,13 +22,13 @@ use App\Models\SiteSettings as ModelsSiteSettings;
 
 Route::group(['prefix' => 'admin'], function () {
 
-    Route::group(['middleware' => 'guest'], function() {
+    Route::group(['middleware' => ['guest', 'testing']], function() {
         Route::get('/', App\Livewire\Admin\Auth\Login::class)->name('admin.auth.login');
         Route::get('login', App\Livewire\Admin\Auth\Login::class)->name('admin.auth.login');
         Route::get('register', App\Livewire\Admin\Auth\Register::class)->name('admin.auth.register');
     });
 
-    Route::group(['middleware' => ['auth', 'admin']], function() {
+    Route::group(['middleware' => ['auth', 'admin', 'testing']], function() {
         ## Dashboard Route
         Route::get('dashboard', App\Livewire\Admin\Dashboard::class)->name('admin.dashboard');
 
@@ -127,6 +127,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('site-setting', SiteSettings::class)->name('admin.site.settings');
         Route::post('site-setting', [SiteSettingsController::class, 'update'])->name('admin.site.update');
         Route::get('/announcement', App\Livewire\Admin\Announcement\Create::class)->name('admin.announcement');
+        Route::get('/announcement/index', App\Livewire\Admin\Announcement\Index::class)->name('admin.announcement.index');
 
         ## Activity Log
         Route::get('activities', App\Livewire\Admin\Activities\Index::class)->name('admin.activity');

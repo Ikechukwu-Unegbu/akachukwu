@@ -22,7 +22,11 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.hr.user.index', [
-            'users' =>    User::search($this->search)->whereRole('user')->latest()->paginate($this->perPage)
+            'users' =>     User::search($this->search)
+            ->whereRole('user')
+            ->orderBy('account_balance', 'desc')
+            ->latest()
+            ->paginate($this->perPage)
         ]);
     }
 }
