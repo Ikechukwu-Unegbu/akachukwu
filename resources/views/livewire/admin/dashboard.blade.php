@@ -169,6 +169,10 @@
               <a href="{{route('admin.announcement')}}" class="text-decoration-none text-primary">Create Announcement</a>
               <p class="mb-0 small text-muted">Post Announcement</p>
             </li>
+            <li class="list-group-item">
+              <a href="{{route('admin.announcement')}}" class="text-decoration-none text-primary">Manage Announcement</a>
+              <p class="mb-0 small text-muted">Delete, Edit Announcements</p>
+            </li>
             @endif 
           </ul>
         </div>
