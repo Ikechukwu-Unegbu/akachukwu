@@ -52,7 +52,7 @@
             @include("components.error_message")
             <div class="mb-3 form-floating">
                 <input type="text" name="username" class="form-control" id="username" value="{{ old('username') }}" placeholder="">
-                <label for="username">Username</label>
+                <label for="username">Username or Email</label>
             </div>
              <div class="mb-3 form-floating">
                 <input type="password" name="password" class="form-control" id="password" placeholder="">
