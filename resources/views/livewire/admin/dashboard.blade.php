@@ -164,6 +164,12 @@
               <a href="{{route('admin.site.settings')}}" class="text-decoration-none text-primary">Site Settings</a>
               <p class="mb-0 small text-muted">Manage site variables like phone, email, address, logo, etc.</p>
             </li>
+            @if(Auth::user()->can('announcer'))
+            <li class="list-group-item">
+              <a href="{{route('admin.announcement')}}" class="text-decoration-none text-primary">Create Announcement</a>
+              <p class="mb-0 small text-muted">Post Announcement</p>
+            </li>
+            @endif 
           </ul>
         </div>
       </section>
