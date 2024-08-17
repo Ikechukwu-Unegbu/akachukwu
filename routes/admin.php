@@ -123,8 +123,10 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('profile', App\Livewire\Admin\Profile\Index::class)->name('admin.settings.profile');
 
+        //site params
         Route::get('site-setting', SiteSettings::class)->name('admin.site.settings');
         Route::post('site-setting', [SiteSettingsController::class, 'update'])->name('admin.site.update');
+        Route::get('/announcement', App\Livewire\Admin\Announcement\Create::class)->name('admin.announcement');
 
         ## Activity Log
         Route::get('activities', App\Livewire\Admin\Activities\Index::class)->name('admin.activity');
