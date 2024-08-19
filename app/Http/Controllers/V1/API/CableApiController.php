@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\API;
 
+use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataVendor;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\API\CableApiRequest;
 use App\Services\Cable\CableService;
 use App\Http\Requests\V1\Api\IUCApiRequest;
+use Illuminate\Support\Facades\Validator;
 
 class CableApiController extends Controller
 {
@@ -25,28 +27,20 @@ class CableApiController extends Controller
         try {
 
             $cables = Cable::whereVendorId($this->vendor?->id)->whereStatus(true)->get();
-
-            return response()->json([
-                'status'   => 'success',
-                'message'  => 'Cable Fetched Successfully.',
-                'response' =>  $cables
-            ]);
+            return ApiHelper::sendResponse($cables, 'Cable Fetched Successfully.');
 
         } catch (\Throwable $th) {
-            return response()->json([
-                'status'  => 'failed', 
-                'message' =>  "Unable to fetch cable. Try again later.",
-                'error'   =>  $th->getMessage()
-            ]);
+            return ApiHelper::sendError($th->getMessage(),"Unable to fetch cable. Try again later." );
         }
     }
 
     public function plan(Request $request)
     {
        
-        $request->validate([
+        $validator= Validator::make($request->all(), [
             'cable_id'  =>  'required'
         ]);
+        
 
         $cable_plans = CablePlan::whereVendorId($this->vendor?->id)->whereCableId($request->cable_id)->whereStatus(true);
 
