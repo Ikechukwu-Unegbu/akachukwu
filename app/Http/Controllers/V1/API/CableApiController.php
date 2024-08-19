@@ -9,7 +9,7 @@ use App\Models\Utility\CablePlan;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\API\CableApiRequest;
 use App\Services\Cable\CableService;
-use App\Http\Requests\V1\API\IUCApiRequest;
+use App\Http\Requests\V1\Api\IUCApiRequest;
 
 class CableApiController extends Controller
 {

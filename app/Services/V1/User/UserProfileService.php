@@ -12,10 +12,14 @@ class UserProfileService{
         
     }
 
-    public function getUser($username)
+    public function getUser($input)
     {
-        return User::where('username', $username)->first();
+        return User::where(function($query) use ($input) {
+            $query->where('username', $input)
+                  ->orWhere('email', $input);
+        })->first();
     }
+    
 
     public function  updateUser(array $validated)
     {
