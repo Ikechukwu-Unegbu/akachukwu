@@ -41,23 +41,19 @@ class CableApiController extends Controller
             'cable_id'  =>  'required'
         ]);
         
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return ApiHelper::sendError($errors, '');
+        }
 
         $cable_plans = CablePlan::whereVendorId($this->vendor?->id)->whereCableId($request->cable_id)->whereStatus(true);
 
         
         if ($cable_plans->exists()) {
-            return response()->json([
-                'status'   => 'success',
-                'message'  => 'Cable Plan Fetched Successfully.',
-                'response' =>  $cable_plans->get()
-            ]);
+            return ApiHelper::sendResponse($cable_plans, 'Cable plans fetched successfully');
         }
 
-        return response()->json([
-            'status'   => 'failed',
-            'message'  => 'Cable Plan Not Found.',
-            'response' =>  []
-        ]); 
+        return ApiHelper::sendError(['Cable plan not found'], 'Plan not found');
     }
 
     public function validateIUC(IUCApiRequest $request)
@@ -66,23 +62,15 @@ class CableApiController extends Controller
             $cable_plan = Cable::whereVendorId($this->vendor?->id)->whereCableId($request->cable_id);
 
             if (!$cable_plan->exists()) {
-                return response()->json([
-                    'status'   => 'failed',
-                    'message'  => 'Cable Plan Not Found.',
-                    'response' =>  []
-                ]); 
+                return ApiHelper::sendError(['Invalid IUC number'], 'Cable id is invalid');
             }
 
             $cableService = CableService::validateIUCNumber($this->vendor->id, $request->iuc_number, $cable_plan->first()->cable_id);
 
-            return $cableService;
+            return ApiHelper::sendResponse($cableService, 'Cable services returned');
 
         } catch (\Throwable $th) {
-            return response()->json([
-                'status'  => 'failed', 
-                'message' =>  "Unable to purchase cable subscription. Try again later.",
-                'error'   =>  $th->getMessage()
-            ]);
+            return ApiHelper::sendError($th->getMessage(), 'Unable to purchase cable subscription');
         }
     }
 
@@ -92,6 +80,7 @@ class CableApiController extends Controller
         $cable_plan = CablePlan::whereVendorId($this->vendor?->id)->whereCableId($request->cable_id)->whereCablePlanId($request->cable_plan_id)->exists();
         
         if (!$cable) {
+            return ApiHelper::sendError(['Transaction failed'], 'Failed transaction');
             return response()->json([
                 'status'   => 'failed',
                 'message'  => 'Cable Id Not Found.',
@@ -99,13 +88,7 @@ class CableApiController extends Controller
             ]);
         }
 
-        if (!$cable_plan) {
-            return response()->json([
-                'status'   => 'failed',
-                'message'  => 'Cable Plan Id Not Found.',
-                'response' =>  []
-            ]); 
-        }
+       
 
         $cableService = CableService::create($this->vendor->id, $request->cable_id, $request->cable_plan_id, $request->iuc_number, $request->card_owner);
         return $cableService;    
