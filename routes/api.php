@@ -41,7 +41,6 @@ Route::post('/login', [AuthenticateUserController::class, 'login']);
 
 Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::get('/user/{username}', [UserProfileController::class, 'show']);
-Route::post('/change-password/{username}', [ChangePasswordController::class, 'changePassword']);
 
 Route::post('/verify-otp', [AuthenticateUserController::class, 'verifyOtp']);
 Route::post('/resend-otp', [AuthenticateUserController::class, 'resendOtp']);
@@ -52,8 +51,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['middleware' => ['auth:sanctum'],], function() {
-    //logout
+    //protected auth routes
     Route::post('logout', [AuthenticateUserController::class, 'logout']);
+    Route::post('/change-password', [ChangePasswordController::class, 'changePassword']);
+
 
     //image uload
     Route::post('/upload-avatar',[FileUploadController::class, 'store']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\API;
 
+use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
 use App\Models\Data\DataVendor;
 use App\Http\Controllers\Controller;
@@ -25,19 +26,10 @@ class ElectricityApiController extends Controller
         try {
 
             $discos = Electricity::whereVendorId($this->vendor?->id)->whereStatus(true)->get();
-
-            return response()->json([
-                'status'   => 'success',
-                'message'  => 'Electricity Disco Fetched Successfully.',
-                'response' =>  $discos
-            ]);
+            return ApiHelper::sendResponse($discos, 'Electricity Disco Fetched Successfully.');
 
         } catch (\Throwable $th) {
-            return response()->json([
-                'status'  => 'failed', 
-                'message' =>  "Unable to Electricity Disco. Try again later.",
-                'error'   =>  $th->getMessage()
-            ]);
+            return ApiHelper::sendError($th->getMessage(), "Unable to Electricity Disco. Try again later.");
         }
     }
 
@@ -46,15 +38,11 @@ class ElectricityApiController extends Controller
         $discos = Electricity::whereVendorId($this->vendor?->id)->whereStatus(true)->whereDiscoId($request->disco_id);
 
         if (!$discos->exists()) {
-            return response()->json([
-                'status'   => 'failed',
-                'message'  => 'Electricity Disco Not Found.',
-                'response' =>  []
-            ]); 
+            return ApiHelper::sendError([],'Invalid meter number.' );
         }
 
         $electricityService = ElectricityService::validateMeterNumber($this->vendor?->id, $request->meter_number, $request->disco_id, $request->meter_type);
-        return $electricityService;
+        return ApiHelper::sendResponse($electricityService, 'Electricity service returned');
     }
 
     public function store(ElectricityApiRequest $request)
@@ -62,14 +50,10 @@ class ElectricityApiController extends Controller
         $discos = Electricity::whereVendorId($this->vendor?->id)->whereStatus(true)->whereDiscoId($request->disco_id);
 
         if (!$discos->exists()) {
-            return response()->json([
-                'status'   => 'failed',
-                'message'  => 'Electricity Disco Not Found.',
-                'response' =>  []
-            ]); 
+            return ApiHelper::sendError(['Failed transaction'], 'Fialed');
         }
 
         $electricityTransaction = ElectricityService::create($this->vendor?->id, $request->disco_id, $request->meter_number, $request->meter_type, $request->amount, $request->owner_name, $request->phone_number, $request->owner_address);
-        return $electricityTransaction;
+        return ApiHelper::sendResponse($electricityTransaction, 'Transaction successfull');
     }
 }
