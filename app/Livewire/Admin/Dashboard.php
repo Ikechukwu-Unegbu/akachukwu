@@ -53,17 +53,19 @@ class Dashboard extends Component
             // $vtBalance =  $vtService::getWalletBalance();
             $postranetBlance =  $postranetService::getWalletBalance();
             $gladBalance =  $gladService::getWalletBalance();
+
+            $this->vtBalance = 0.00;
+    
+            $this->postranetBlance = ($postranetBlance->status) ? $postranetBlance->response : 'N/A';
+            $this->gladBalance = ($gladBalance->status) ? $gladBalance->response : 'N/A';
+            $this->total_wallet = \App\Models\User::sum('account_balance');
         } catch (\Exception $e) {
             \Log::error('Failed to retrieve wallet balance: ' . $e->getMessage());
             // Handle the error appropriately
         }
 
 
-        $this->vtBalance = 0.00;
-    
-        $this->postranetBlance = ($postranetBlance->status) ? $postranetBlance->response : 'N/A';
-        $this->gladBalance = ($gladBalance->status) ? $gladBalance->response : 'N/A';
-        $this->total_wallet = \App\Models\User::sum('account_balance');
+      
 
     }
 
