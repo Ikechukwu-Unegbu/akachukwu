@@ -21,10 +21,12 @@ class UserProfileController extends Controller
     public function show($username)
     {
         $user = $this->userApiService->getUser($username);
-        if($user){
-            return ApiHelper::sendResponse($user, 'User exists');    
+        if(!$user){
+            return ApiHelper::sendError([], 'No such user');
+              
         }
-        return ApiHelper::sendError([], 'No such user');
+        return ApiHelper::sendResponse($user, 'User exists'); 
+        
     }
 
     public function update(Request $request)
