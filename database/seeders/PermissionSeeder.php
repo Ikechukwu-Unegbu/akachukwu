@@ -59,6 +59,7 @@ class PermissionSeeder extends Seeder
             'create e-pin',
             'edit e-pin',
             'delete e-pin',
+            'impersonate'
         ];
 
         // foreach ($permissions as $permission) Permission::create(['name' => $permission]);

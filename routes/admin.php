@@ -29,7 +29,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('register', App\Livewire\Admin\Auth\Register::class)->name('admin.auth.register');
     });
 
-    Route::group(['middleware' => ['auth', 'admin', 'testing']], function() {
+    
+    Route::group(['middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
         ## Dashboard Route
         Route::get('dashboard', App\Livewire\Admin\Dashboard::class)->name('admin.dashboard');
 
