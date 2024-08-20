@@ -4,20 +4,22 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Models\Utility\UpgradeRequest;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
+use Spatie\Activitylog\LogOptions;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Models\Utility\UpgradeRequest;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Support\Facades\Hash;
 // use Illuminate\Notifications\Notifiable;
 use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 
 class User extends Authenticatable
@@ -212,4 +214,40 @@ class User extends Authenticatable
 
         return $transactions;
     }
+
+    // Impersonate a user
+    public function impersonate(User $user)
+    {
+        // Store the original user ID in the session if not already stored
+        if (!Session::has('superadmin')) {
+            Session::put('superadmin', auth()->id());
+        }
+
+        // Switch to the impersonated user
+        Auth::loginUsingId($user->id, true);
+        Session::put('impersonate', $user->id);
+    }
+
+    // Stop impersonating and return to the original user
+    public function stopImpersonating()
+    {
+        // Retrieve the original user ID from the session
+        if (Session::has('superadmin')) {
+            $originalUserId = Session::get('superadmin');
+            
+            // Switch back to the original user
+            Auth::loginUsingId($originalUserId);
+            
+            // Clear the impersonation data from the session
+            Session::forget('impersonate');
+            Session::forget('superadmin');
+        }
+    }
+
+    // Check if the current user is impersonating another user
+    public function isImpersonating()
+    {
+        return Session::has('impersonate');
+    }
+
 }

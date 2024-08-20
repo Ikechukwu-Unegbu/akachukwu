@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\TestController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\V1\AdminController;
 use App\Http\Controllers\V1\Utilities\TVController;
 use App\Http\Controllers\ProfileSettingsController;;
 use App\Http\Controllers\V1\Utilities\DataController;
@@ -28,7 +29,7 @@ Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('r
 Route::get('/test-email', [TestController::class, 'testmail']);
 
 
-Route::middleware(['auth', 'verified', 'user'])->group(function () {
+Route::middleware(['auth', 'verified', 'user', 'impersonate'])->group(function () {
     Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
     Route::get('/data', [DataController::class, 'index'])->name('data.index');
     Route::get('/electricity', [ElectricityController::class, 'index'])->name('electricity.index');
@@ -59,10 +60,11 @@ Route::middleware(['auth', 'verified', 'user'])->group(function () {
 });
 
 
+Route::post('/impersonate/{user}', [AdminController::class, 'impersonate'])->name('impersonate.start');
+Route::post('/stop-impersonating', [AdminController::class, 'stopImpersonating'])->name('impersonate.stop');
 
 
-
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'impersonate'])->group(function () {
     Route::get('/profile', [ProfileSettingsController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
