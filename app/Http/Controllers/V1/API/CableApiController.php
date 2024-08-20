@@ -8,9 +8,9 @@ use App\Models\Utility\Cable;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\CablePlan;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\API\CableApiRequest;
+use App\Http\Requests\V1\Api\CableApiRequest;
 use App\Services\Cable\CableService;
-use App\Http\Requests\V1\API\IUCApiRequest;
+use App\Http\Requests\V1\Api\IUCApiRequest;
 
 class CableApiController extends Controller
 {
@@ -26,19 +26,10 @@ class CableApiController extends Controller
         try {
 
             $cables = Cable::whereVendorId($this->vendor?->id)->whereStatus(true)->get();
-
-            return response()->json([
-                'status'   => 'success',
-                'message'  => 'Cable Fetched Successfully.',
-                'response' =>  $cables
-            ]);
+            return ApiHelper::sendResponse( $cables, 'Cable Fetched Successfully.');    
 
         } catch (\Throwable $th) {
-            return response()->json([
-                'status'  => 'failed', 
-                'message' =>  "Unable to fetch cable. Try again later.",
-                'error'   =>  $th->getMessage()
-            ]);
+            return ApiHelper::sendError($th->getMessage(), 'Unable to fetch cable. Try again later.');
         }
     }
 
@@ -53,18 +44,10 @@ class CableApiController extends Controller
 
         
         if ($cable_plans->exists()) {
-            return response()->json([
-                'status'   => 'success',
-                'message'  => 'Cable Plan Fetched Successfully.',
-                'response' =>  $cable_plans->get()
-            ]);
+            return ApiHelper::sendResponse($cable_plans->get(), 'Cable Plan Fetched Successfully.');
         }
 
-        return response()->json([
-            'status'   => 'failed',
-            'message'  => 'Cable Plan Not Found.',
-            'response' =>  []
-        ]); 
+        return ApiHelper::sendError([], 'Cable Plan Not Found.');
     }
 
     public function validateIUC(IUCApiRequest $request)
@@ -73,11 +56,7 @@ class CableApiController extends Controller
             $cable_plan = Cable::whereVendorId($this->vendor?->id)->whereCableId($request->cable_id);
 
             if (!$cable_plan->exists()) {
-                return response()->json([
-                    'status'   => 'failed',
-                    'message'  => 'Cable Plan Not Found.',
-                    'response' =>  []
-                ]); 
+                return ApiHelper::sendError(['Cable Id not found'], 'Cable Plan Not Found.');
             }
 
             $cableService = CableService::validateIUCNumber($this->vendor->id, $request->iuc_number, $cable_plan->first()->cable_id);
@@ -85,11 +64,7 @@ class CableApiController extends Controller
             return $cableService;
 
         } catch (\Throwable $th) {
-            return response()->json([
-                'status'  => 'failed', 
-                'message' =>  "Unable to purchase cable subscription. Try again later.",
-                'error'   =>  $th->getMessage()
-            ]);
+            return ApiHelper::sendError($th->getMessage(), 'Unable to purchase cable subscription. Try again later.');
         }
     }
 

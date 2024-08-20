@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\V1\AdminController;
 use App\Http\Controllers\V1\Utilities\TVController;
 use App\Http\Controllers\ProfileSettingsController;;
+
 use App\Http\Controllers\V1\Utilities\DataController;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;
@@ -22,22 +23,27 @@ use App\Http\Controllers\V1\Education\ResultCheckerController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::middleware(['testing'])->group(function () {
-    Route::get('/', function () {return view('pages.home.home');});
+    Route::get('/', function () {
+        return view('pages.home.home');
+    });
     Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
     Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
     Route::get('/gen', [TestController::class, 'gen']);
 });
 
 
-Route::middleware(['auth', 'verified', 'user', 'testing'])->group(function () {
-Route::get('/', function () {return view('pages.home.home');});
-Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
-Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
-Route::get('/test-email', [TestController::class, 'testmail']);
+Route::middleware(['auth', 'verified', 'user', 'testing', 'impersonate'])->group(function () {
+    Route::get('/', function () {
+        return view('pages.home.home');
+    });
+    Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
+    Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
+    Route::get('/test-email', [TestController::class, 'testmail']);
 
 
-    Route::middleware(['auth', 'verified', 'user', 'impersonate'])->group(function () {
+    Route::middleware(['auth', 'verified', 'user'])->group(function () {
         Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
         Route::get('/data', [DataController::class, 'index'])->name('data.index');
         Route::get('/electricity', [ElectricityController::class, 'index'])->name('electricity.index');
@@ -66,7 +72,6 @@ Route::get('/test-email', [TestController::class, 'testmail']);
 
         // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
     });
-
 });
 
 Route::post('/impersonate/{user}', [AdminController::class, 'impersonate'])->name('impersonate.start');
@@ -80,6 +85,6 @@ Route::middleware(['auth', 'impersonate'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
-require __DIR__.'/admin.php';
-require __DIR__.'/feature.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/admin.php';
+require __DIR__ . '/feature.php';
