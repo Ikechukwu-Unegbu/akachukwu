@@ -171,14 +171,22 @@
                 </div>
                 <div class="auth-nav">
                     @guest 
-                    <a class=" btn btn-warning" href="{{route('login')}}">Login</a>
-                    <a class="btn btn-warning" href="{{route('register')}}">Register</a>
+                    <a class=" btn btn-warning btn-sm" href="{{route('login')}}">Login</a>
+                    <a class="btn btn-warning btn-sm" href="{{route('register')}}">Register</a>
                     @else 
                     <form action="{{route('logout')}}" method="post">
                         @csrf 
-                        <button class="btn btn-warning">Logout</button>
+                        <button class="btn btn-warning btn-sm">Logout</button>
                     </form>
-                    @endguest   
+                    @endguest 
+                    @auth
+                        @if (Auth::user()->isImpersonating())
+                        <form action="{{ route('impersonate.stop') }}" method="post">
+                            @csrf 
+                            <button class="btn btn-warning btn-sm"><small>Stop Impersonating</small></button>
+                        </form>
+                        @endif
+                    @endauth
                 </div>
                 <button class="canvas-toggle btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
                 <i class="fa-solid fa-2x fa-bars"></i>

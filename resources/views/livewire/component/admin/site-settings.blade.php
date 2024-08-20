@@ -1,4 +1,4 @@
-<div>
+s<div>
     <x-admin.page-title title="Human Resource Mgt.">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
         <x-admin.page-title-item subtitle="Site Settings" />

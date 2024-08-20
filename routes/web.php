@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\TestController;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\V1\AdminController;
 use App\Http\Controllers\V1\Utilities\TVController;
 use App\Http\Controllers\ProfileSettingsController;;
 use App\Http\Controllers\V1\Utilities\DataController;
@@ -28,41 +29,51 @@ Route::middleware(['testing'])->group(function () {
     Route::get('/gen', [TestController::class, 'gen']);
 });
 
+
 Route::middleware(['auth', 'verified', 'user', 'testing'])->group(function () {
-    Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
-    Route::get('/data', [DataController::class, 'index'])->name('data.index');
-    Route::get('/electricity', [ElectricityController::class, 'index'])->name('electricity.index');
-    Route::get('/cable-tv', [TVController::class, 'index'])->name('cable.index');
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+Route::get('/', function () {return view('pages.home.home');});
+Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
+Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
+Route::get('/test-email', [TestController::class, 'testmail']);
 
-    Route::get('transactions/airtime', \App\Livewire\User\Transaction\Airtime\Index::class)->name('user.transaction.airtime');
-    Route::get('transactions/airtime/{airtime:transaction_id}', \App\Livewire\User\Transaction\Airtime\Receipt::class)->name('user.transaction.airtime.receipt');
 
-    Route::get('transactions/data', \App\Livewire\User\Transaction\Data\Index::class)->name('user.transaction.data');
-    Route::get('transactions/data/{data:transaction_id}', \App\Livewire\User\Transaction\Data\Receipt::class)->name('user.transaction.data.receipt');
+    Route::middleware(['auth', 'verified', 'user', 'impersonate'])->group(function () {
+        Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
+        Route::get('/data', [DataController::class, 'index'])->name('data.index');
+        Route::get('/electricity', [ElectricityController::class, 'index'])->name('electricity.index');
+        Route::get('/cable-tv', [TVController::class, 'index'])->name('cable.index');
+        Route::get('/dashboard', function () {
+            return view('dashboard');
+        })->name('dashboard');
 
-    Route::get('transactions/electricity', \App\Livewire\User\Transaction\Electricity\Index::class)->name('user.transaction.electricity');
-    Route::get('transactions/electricity/{electricity:transaction_id}', \App\Livewire\User\Transaction\Electricity\Receipt::class)->name('user.transaction.electricity.receipt');
+        Route::get('transactions/airtime', \App\Livewire\User\Transaction\Airtime\Index::class)->name('user.transaction.airtime');
+        Route::get('transactions/airtime/{airtime:transaction_id}', \App\Livewire\User\Transaction\Airtime\Receipt::class)->name('user.transaction.airtime.receipt');
 
-    Route::get('transactions/cable', \App\Livewire\User\Transaction\Cable\Index::class)->name('user.transaction.cable');
-    Route::get('transactions/cable/{cable:transaction_id}', \App\Livewire\User\Transaction\Cable\Receipt::class)->name('user.transaction.cable.receipt');
+        Route::get('transactions/data', \App\Livewire\User\Transaction\Data\Index::class)->name('user.transaction.data');
+        Route::get('transactions/data/{data:transaction_id}', \App\Livewire\User\Transaction\Data\Receipt::class)->name('user.transaction.data.receipt');
 
-    Route::get('transactions/wallet', \App\Livewire\User\Transaction\Wallet\Index::class)->name('user.transaction.wallet');
+        Route::get('transactions/electricity', \App\Livewire\User\Transaction\Electricity\Index::class)->name('user.transaction.electricity');
+        Route::get('transactions/electricity/{electricity:transaction_id}', \App\Livewire\User\Transaction\Electricity\Receipt::class)->name('user.transaction.electricity.receipt');
 
-    Route::get('result-checker', [ResultCheckerController::class, 'index'])->name('education.result.index');
-    Route::get('transactions/result-checker', \App\Livewire\User\Transaction\Education\ResultChecker\Index::class)->name('user.transaction.education');
-    Route::get('transactions/result-checker/{checker:transaction_id}', \App\Livewire\User\Transaction\Education\ResultChecker\Receipt::class)->name('user.transaction.education.receipt');
+        Route::get('transactions/cable', \App\Livewire\User\Transaction\Cable\Index::class)->name('user.transaction.cable');
+        Route::get('transactions/cable/{cable:transaction_id}', \App\Livewire\User\Transaction\Cable\Receipt::class)->name('user.transaction.cable.receipt');
 
-    // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
+        Route::get('transactions/wallet', \App\Livewire\User\Transaction\Wallet\Index::class)->name('user.transaction.wallet');
+
+        Route::get('result-checker', [ResultCheckerController::class, 'index'])->name('education.result.index');
+        Route::get('transactions/result-checker', \App\Livewire\User\Transaction\Education\ResultChecker\Index::class)->name('user.transaction.education');
+        Route::get('transactions/result-checker/{checker:transaction_id}', \App\Livewire\User\Transaction\Education\ResultChecker\Receipt::class)->name('user.transaction.education.receipt');
+
+        // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
+    });
+
 });
 
+Route::post('/impersonate/{user}', [AdminController::class, 'impersonate'])->name('impersonate.start');
+Route::post('/stop-impersonating', [AdminController::class, 'stopImpersonating'])->name('impersonate.stop');
 
 
-
-
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'impersonate'])->group(function () {
     Route::get('/profile', [ProfileSettingsController::class, 'edit'])->name('profile.edit');
     Route::get('/pins', [ProfileSettingsController::class, 'editPin'])->name('profile.pin');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

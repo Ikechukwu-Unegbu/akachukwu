@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\API\AirtimeApiController;
+use App\Http\Controllers\V1\API\AppAssetsController;
 use App\Http\Controllers\V1\API\NewtworkApiController;
 use App\Http\Controllers\V1\API\UserProfileController;
 use App\Http\Controllers\V1\API\Auth\RegisterUserController;
@@ -58,6 +59,9 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
 
     //image uload
     Route::post('/upload-avatar',[FileUploadController::class, 'store']);
+    
+    //fetch logos
+    Route::get('logo', [AppAssetsController::class, 'getSpecifiedColumn']);
 
     Route::post('user', [UserProfileController::class, 'update']);
 
