@@ -70,7 +70,7 @@ class CableApiController extends Controller
 
     public function store(CableApiRequest $request)
     {
-        $cable = Cable::whereVendorId($this->vendor?->id)->whereId($request->cable_id)->whereStatus(true)->exists();        
+        $cable = Cable::whereVendorId($this->vendor?->id)->whereCableId($request->cable_id)->whereStatus(true)->exists();        
         $cable_plan = CablePlan::whereVendorId($this->vendor?->id)->whereCableId($request->cable_id)->whereCablePlanId($request->cable_plan_id)->exists();
         
         if (!$cable) {
@@ -82,7 +82,7 @@ class CableApiController extends Controller
         }
 
         $cableService = CableService::create($this->vendor->id, $request->cable_id, $request->cable_plan_id, $request->iuc_number, $request->card_owner);
-        return ApiHelper::sendResponse( $cableService, 'Cable services fetched');    
+        return $cableService;
     }
     
 }
