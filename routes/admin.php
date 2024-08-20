@@ -6,6 +6,7 @@ use App\Http\Controllers\SystemUser\SiteSettingsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemUser\UserCrdDbtController;
 use App\Livewire\Admin\CrdDbt\Create as CrdDbtCreate;
+use App\Livewire\Admin\Settings\AppLogos;
 use App\Livewire\Component\Admin\SiteSettings;
 use App\Models\SiteSettings as ModelsSiteSettings;
 
@@ -128,6 +129,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('site-setting', [SiteSettingsController::class, 'update'])->name('admin.site.update');
         Route::get('/announcement', App\Livewire\Admin\Announcement\Create::class)->name('admin.announcement');
         Route::get('/announcement/index', App\Livewire\Admin\Announcement\Index::class)->name('admin.announcement.index');
+        Route::get('/app-logos', AppLogos::class);
+
 
         ## Activity Log
         Route::get('activities', App\Livewire\Admin\Activities\Index::class)->name('admin.activity');
