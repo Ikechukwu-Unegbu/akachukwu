@@ -154,6 +154,10 @@
               <a href="{{route('admin.api.payment')}}" class="text-decoration-none text-primary">Payment Gateway APIs</a>
               <p class="mb-0 small text-muted">Manage Payment gateway APIs.</p>
             </li>
+            <li class="list-group-item">
+              <a href="{{route('admin.app-logos')}}" class="text-decoration-none text-primary">Manage Mobile App Assets</a>
+              <p class="mb-0 small text-muted">Logos and Images displayed on mobile app.</p>
+            </li>
           @if(Auth::user()->role =='superadmin')
           <li class="list-group-item">
               <a href="{{route('admin.settings.role')}}" class="text-decoration-none text-primary">Roles and Permissions</a>
