@@ -54,6 +54,6 @@ class ElectricityApiController extends Controller
         }
 
         $electricityTransaction = ElectricityService::create($this->vendor?->id, $request->disco_id, $request->meter_number, $request->meter_type, $request->amount, $request->owner_name, $request->phone_number, $request->owner_address);
-        return ApiHelper::sendResponse($electricityTransaction, 'Transaction successfull');
+        return $electricityTransaction;
     }
 }
