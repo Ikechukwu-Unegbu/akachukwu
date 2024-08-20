@@ -54,7 +54,7 @@ class GladTidingService
     {
         $url = self::$vendor->api . $url;
 
-        $response = Http::withHeaders(static::headers())->post($url, $data);
+        $response = Http::withHeaders(static::headers())->get($url, $data);
 
         return (is_object($response->object())) ? $response->object() : null;
     }
