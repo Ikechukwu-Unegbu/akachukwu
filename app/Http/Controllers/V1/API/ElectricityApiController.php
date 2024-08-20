@@ -6,7 +6,7 @@ use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
 use App\Models\Data\DataVendor;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\API\ElectricityApiRequest;
+use App\Http\Requests\V1\Api\ElectricityApiRequest;
 use App\Http\Requests\V1\Api\MeterApiRequest;
 use App\Models\Utility\Electricity;
 use App\Services\Electricity\ElectricityService;
