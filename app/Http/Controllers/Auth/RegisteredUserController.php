@@ -37,7 +37,7 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
@@ -59,8 +59,8 @@ class RegisteredUserController extends Controller
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/']
         ]);
 
-        try {
-            DB::transaction(function () use($request) {
+    
+           return DB::transaction(function () use($request) {
                 $user = User::create([
                     'name' => $request->name,
                     'username' => $request->username,
@@ -76,12 +76,11 @@ class RegisteredUserController extends Controller
                 $virtualAccountFactory::createVirtualAccount($user);
 
                 event(new Registered($user));
-            });
-            session()->flash('success', 'Your account has been created successfully. Please proceed to login.');
+
+                session()->flash('success', 'Your account has been created successfully. Please proceed to login.');
             return redirect(route('login'));
-        } catch (\Throwable $th) {
-            
-        }
+            });
+
         
     }
 }
