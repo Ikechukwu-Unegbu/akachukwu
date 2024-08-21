@@ -25,6 +25,16 @@ class ImageService{
         return env('DO_CDN').'/'.$imageUrl;
     }
 
+    
+
+    public function fileUploader($request, $path, $model, $column)
+    {
+        $imageUrl = Storage::disk('do')->put($this->path.$path, $request->file('image'), 'public');
+        $model->$column = env('DO_CDN').'/'.$imageUrl;
+        $model->save();
+        return env('DO_CDN').'/'.$imageUrl;
+    }
+
 
     public function updateAvatar($request)
     {
