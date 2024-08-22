@@ -197,7 +197,7 @@ class PosTraNetService
                 'disco_name'                =>  $electricity->disco_name,
                 'meter_number'              =>  $meterNumber,
                 'meter_type_id'             =>  $meterType,
-                'meter_type_name'           =>  $meterType == 1 ? 'prepaid' : 'postpaid',
+                'meter_type_name'           =>  $meterType == 1 ? 'Prepaid' : 'Postpaid',
                 'amount'                    =>  $amount,
                 'customer_mobile_number'    =>  $customerMobile,
                 'customer_name'             =>  $customerName,
