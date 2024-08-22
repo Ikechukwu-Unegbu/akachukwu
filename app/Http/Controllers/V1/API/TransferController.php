@@ -47,6 +47,6 @@ class TransferController extends Controller
             $this->vastelTransfer->transfer($request->all(), $accountBalanceService);    
             return  ApiHelper::sendResponse([], 'Transaction successful');
         }
-        //call the method for bank transfer there      
+          
     }
 }
