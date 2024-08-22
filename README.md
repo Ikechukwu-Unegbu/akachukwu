@@ -463,26 +463,7 @@ meter_type: *Prepaid* = 1 & *Postpaid* = 2
         "message": "PIN validated successfully."
     }
 
-## Education (Exam List)
-    POST /api/exams HTTP/1.1
-    Content-Type: application/json
-    Example Response : {
-        "status": true,
-        "response": [
-            {
-                "id": 1,
-                "vendor_id": 3,
-                "name": "WAEC",
-                "amount": "3900.00",
-                "status": 1,
-                "created_at": "2024-07-14T17:49:29.000000Z",
-                "updated_at": "2024-07-15T12:08:53.000000Z"
-            }
-        ],
-        "message": "Result Checker PIN"
-    }
 
-## Create Result Checker PIN
     POST /api/epins/create HTTP/1.1
     Content-Type: application/json
     Authorization: Bearer 2|0q2K7QUbnT3TcQUMsyyRh4UASupLJl9XuKjotUqqe5b1832c
