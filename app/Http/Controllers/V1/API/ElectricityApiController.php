@@ -42,7 +42,7 @@ class ElectricityApiController extends Controller
         }
 
         $electricityService = ElectricityService::validateMeterNumber($this->vendor?->id, $request->meter_number, $request->disco_id, $request->meter_type);
-        return ApiHelper::sendResponse($electricityService, 'Electricity service returned');
+        return $electricityService;
     }
 
     public function store(ElectricityApiRequest $request)
