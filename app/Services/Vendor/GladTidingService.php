@@ -234,6 +234,7 @@ class GladTidingService
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
+                    'token'             =>    $response->token,
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
                 ]);
