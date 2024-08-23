@@ -74,6 +74,7 @@ class DataTransaction extends Model
     public function network() : BelongsTo
     {
         return $this->belongsTo(DataNetwork::class, 'network_id', 'network_id');
+        
     }
 
     public function user() : BelongsTo
