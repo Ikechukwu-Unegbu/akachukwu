@@ -20,6 +20,7 @@ use App\Http\Controllers\V1\WebhookController;
 // use Livewire\Features\SupportFileUploads\FileUploadController;
 use App\Http\Controllers\V1\API\FileUploadController;
 use App\Http\Controllers\V1\API\NotificationsController;
+use App\Http\Controllers\V1\API\ReferralController;
 use App\Http\Controllers\V1\API\TransactionsApiController;
 use App\Http\Controllers\V1\API\TransferController;
 use App\Http\Controllers\V1\API\UpgradeController;
@@ -88,7 +89,7 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     //notification
     Route::get('/notifications', [NotificationsController::class, 'index']);
 });
-// Route::get('/transactions', [TransactionsApiController::class, 'index']);
+Route::get('/referrer', [ReferralController::class, 'index']);
 
 
 

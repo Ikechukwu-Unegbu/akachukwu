@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Models\Data\DataTransaction;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
 use Spatie\Activitylog\LogOptions;
@@ -115,6 +116,34 @@ class User extends Authenticatable
     {
         return auth()->user()->role == 'superadmin';
     }
+
+    public function referralsMade()
+    {
+        return $this->hasMany(Referral::class, 'referrer_id');//->with('referredUser');
+    }
+
+    public function referralsReceived()
+    {
+        return $this->hasMany(Referral::class, 'referred_user_id');
+    }
+
+    public function getReferredUsersWithEarnings()
+    {
+        return $this->referralsMade->map(function($ref) {
+            return [
+                'user' => User::where('id', $ref->referred_user_id)->select('name', 'username')->first(),
+                'referrerEarning' => $this->referrerEarning($ref->id)
+            ];
+        });
+    }
+
+    public function referrerEarning($userId)
+    {
+        $totalReferralPay = DataTransaction::where('user_id', $userId)->sum('referral_pay');
+    
+        return $totalReferralPay ?? 0;
+    }
+    
 
     public function isAdmin()
     {

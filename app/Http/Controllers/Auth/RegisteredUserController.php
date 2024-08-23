@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\GeneralHelpers;
 use App\Models\User;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -69,11 +70,14 @@ class RegisteredUserController extends Controller
                     'role'  =>  'user',
                     'phone' => $request->phone_number
                 ]);
+                
+                GeneralHelpers::checkReferrer($request, $user);
         
                 // MonnifyService::createVirtualAccount($user);
                 $activeGateway = PaymentGateway::where('va_status', true)->first();
                 $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
                 $virtualAccountFactory::createVirtualAccount($user);
+
 
                 event(new Registered($user));
 
