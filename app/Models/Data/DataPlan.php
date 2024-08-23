@@ -10,6 +10,7 @@ class DataPlan extends Model
 {
     protected $guarded = [];
 
+    
     public function type() : BelongsTo
     {
         return $this->belongsTo(DataType::class);
