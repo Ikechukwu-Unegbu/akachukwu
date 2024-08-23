@@ -365,6 +365,7 @@ meter_type: *Prepaid* = 1 & *Postpaid* = 2
             "balance_before": "XXXXX",
             "balance_after": "XXXXX",
             "transaction_id": "20240430032263900-1714462912-electricity-mmv8mqesxz032265900-1714462912jjgn",
+            "token": "Token : 34860165086658327630",
             "updated_at": "2024-04-30T07:41:52.000000Z",
             "created_at": "2024-04-30T07:41:52.000000Z",
             "id": 12
