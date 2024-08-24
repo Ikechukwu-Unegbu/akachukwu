@@ -317,7 +317,7 @@ class PosTraNetService
 
             if (isset($response->Status) && $response->Status == 'successful') {
 
-                $amount = $response->transaction->amount;
+                $amount = $transaction->amount;
 
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'cable');
