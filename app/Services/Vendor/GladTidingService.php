@@ -10,6 +10,7 @@ use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataNetwork;
 use App\Models\Utility\CablePlan;
+use App\Helpers\Admin\VendorHelper;
 use App\Models\Utility\Electricity;
 use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
@@ -234,7 +235,7 @@ class GladTidingService
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
-                    'token'             =>    $response->token,
+                    'token'             =>    VendorHelper::removeTokenPrefix($response->token),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
                 ]);

@@ -2,6 +2,7 @@
 
 namespace App\Services\Vendor;
 
+use App\Helpers\Admin\VendorHelper;
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
@@ -241,7 +242,7 @@ class PosTraNetService
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
-                    'token'             =>    $response->token,
+                    'token'             =>    VendorHelper::removeTokenPrefix($response->token),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
                 ]);
