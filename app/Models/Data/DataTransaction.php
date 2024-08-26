@@ -37,12 +37,6 @@ class DataTransaction extends Model
     
     ];
     
-
-    public function __construct()
-    {
-        
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
