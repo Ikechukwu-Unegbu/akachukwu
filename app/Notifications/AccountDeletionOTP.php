@@ -14,9 +14,13 @@ class AccountDeletionOTP extends Notification
     /**
      * Create a new notification instance.
      */
-    public function __construct()
+    protected $otp;
+    protected $user;
+
+    public function __construct($user, $otp)
     {
-        //
+        $this->user = $user;
+        $this->otp = $otp;
     }
 
     /**
@@ -35,8 +39,9 @@ class AccountDeletionOTP extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
+                    ->greeting('Hi, '.$this->user->name.'!')
+                    ->line('It is sad to see you go.')
+                    ->line('Here is your OTP: '.$this->otp)
                     ->line('Thank you for using our application!');
     }
 

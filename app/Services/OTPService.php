@@ -43,19 +43,17 @@ class OTPService{
      */
     public function verifyOTP(User $user, $otp)
     {
-        // Retrieve the OTP record for the user
+       
         $otpRecord = Otp::where('user_id', $user->id)
                         ->where('otp', $otp)
                         ->where('expires_at', '>', Carbon::now())
                         ->first();
 
-        // If a valid OTP record is found, delete it and return true
         if ($otpRecord) {
             $otpRecord->delete();
             return true;
         }
 
-        // Otherwise, return false
         return false;
     }
 

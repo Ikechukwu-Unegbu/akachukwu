@@ -26,7 +26,7 @@ class AccountManagementContorller extends Controller
        
         $user = User::find(Auth::user()->id);
         $otp = $this->otpService->generateOTP($user);
-        Notification::sendNow($user, new AccountDeletionOTP($user));
+        Notification::sendNow($user, new AccountDeletionOTP($user, $otp));
 
 
         return ApiHelper::sendResponse([], 'Check your email for OTP');
@@ -41,6 +41,12 @@ class AccountManagementContorller extends Controller
         if($validation->fails()){
             return ApiHelper::sendError($validation->errors(), 'Failed to delete account');
         }
+
+        $verifyOtp = $this->otpService->verifyOTP(Auth::user(), $request->otp);
+        if($verifyOtp == false){
+            return ApiHelper::sendError(['Invalid OTP'], 'Invalid otp');
+        }
+
         $user = User::find(Auth::user()->id);
         $request->user()->currentAccessToken()->delete();
         $user->delete();
