@@ -2,7 +2,7 @@
 
 namespace App\Services\Vendor;
 
-use App\Helpers\Admin\VendorHelper;
+use Carbon\Carbon;
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
@@ -11,6 +11,7 @@ use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataNetwork;
 use App\Models\Utility\CablePlan;
+use App\Helpers\Admin\VendorHelper;
 use App\Models\Utility\Electricity;
 use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
@@ -144,7 +145,6 @@ class VTPassService
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->content->transactions->transactionId,
-                    // 'api_response'      =>    $response->response_description ?? NULL
                 ]);
 
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
