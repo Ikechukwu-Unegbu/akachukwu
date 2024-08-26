@@ -2,6 +2,7 @@
 
 namespace App\Services\Vendor;
 
+use App\Helpers\Admin\VendorHelper;
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
@@ -342,7 +343,7 @@ class VTPassService
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
-                    'token'             =>    $response->purchased_code,
+                    'token'             =>    VendorHelper::removeTokenPrefix($response->purchased_code),
                     'api_data_id'       =>    $response->content->transactions->transactionId,
                     // 'api_response'      =>    $response->response_description ?? NULL
                 ]);

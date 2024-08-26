@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\API\Auth;
 
+use App\Helpers\GeneralHelpers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -48,6 +49,8 @@ class RegisterUserController extends Controller
                 'role'  =>  'user'
             ]);
             $otp = $this->otpService->generateOTP($user);
+
+            GeneralHelpers::checkReferrer($request, $user);
 
             Notification::sendNow($user, new WelcomeEmail($otp, $user));
 

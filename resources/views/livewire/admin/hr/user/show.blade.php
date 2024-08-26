@@ -4,6 +4,7 @@
         <x-admin.page-title-item subtitle="HR Mgt." />
         <x-admin.page-title-item subtitle="Users" link="{{ route('admin.hr.user') }}" />
         <x-admin.page-title-item subtitle="Show" status="true" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     </x-admin.page-title>
 
     <section class="section profile">
@@ -12,10 +13,19 @@
                 <div class="card">
                     <div class="pt-4 card-body profile-card d-flex flex-column align-items-center">
                         <img src="{{ $user->profilePicture }}" alt="Profile" class="rounded-circle">
-                        <h2>{{ $user->name }}</h2>
+                        <h2>{{ $user->name }} <span>@if($user->blocked_by_admin ==true) <i class="fa-solid fa-lock"></i> @else <i class="fa-solid fa-check"></i>@endif</span></h2>
                         <h3>{{ $user->username }}</h3>
                         <h3>{{ $user->email }}</h3>
                     </div>
+                    @if($user->blocked_by_admin == false)
+                    <button type="button"  class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#block_modal">
+                        Block this user
+                    </button>
+                    @else 
+                    <button type="button"  class="btn btn-success" data-bs-toggle="modal" data-bs-target="#unblock_modal">
+                        Unblock User
+                    </button>
+                    @endif 
                 </div>
             </div>
 
@@ -136,7 +146,46 @@
             </div>
         </div>
     </section>
+<!-- starting of modal -->
+    <div class="modal fade" id="block_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">About to Block User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3 class="text-center text-danger">Are you sure you want to block this user?</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+                <button type="button" wire:click="blockUser"  data-bs-dismiss="modal"  class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="unblock_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">About to Unblock User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3 class="text-center text-success">Are you sure about unblocking this user?</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button"  wire:click="unBlockUser" data-bs-dismiss="modal" class="btn btn-success">Yes, Unblock</button>
+            </div>
+            </div>
+        </div>
+    </div>
+<!-- end of modal -->
 </div>
+
+
 @push('title')
     Human Resource Mgt. / Users
 @endpush

@@ -10,6 +10,7 @@ use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataNetwork;
 use App\Models\Utility\CablePlan;
+use App\Helpers\Admin\VendorHelper;
 use App\Models\Utility\Electricity;
 use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
@@ -190,7 +191,7 @@ class GladTidingService
                 'disco_name'                =>  $electricity->disco_name,
                 'meter_number'              =>  $meterNumber,
                 'meter_type_id'             =>  $meterType,
-                'meter_type_name'           =>  $meterType == 1 ? 'prepaid' : 'postpaid',
+                'meter_type_name'           =>  $meterType == 1 ? 'Prepaid' : 'Postpaid',
                 'amount'                    =>  $amount,
                 'customer_mobile_number'    =>  $customerMobile,
                 'customer_name'             =>  $customerName,
@@ -234,6 +235,7 @@ class GladTidingService
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
+                    'token'             =>    VendorHelper::removeTokenPrefix($response->token),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
                 ]);
@@ -306,7 +308,7 @@ class GladTidingService
 
             if (isset($response->Status) && $response->Status == 'successful') {
 
-                $amount = $response->transaction->amount;
+                $amount = $transaction->amount;;
 
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'cable');

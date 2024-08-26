@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\API\Auth;
 
+use App\Helpers\ApiHelper;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
@@ -18,7 +19,7 @@ class ForgotPasswordController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 400);
+            return ApiHelper::sendError($validator->errors(), 'Failed validation');
         }
 
        

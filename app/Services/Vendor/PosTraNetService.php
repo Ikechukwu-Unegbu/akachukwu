@@ -2,6 +2,7 @@
 
 namespace App\Services\Vendor;
 
+use App\Helpers\Admin\VendorHelper;
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
@@ -197,7 +198,7 @@ class PosTraNetService
                 'disco_name'                =>  $electricity->disco_name,
                 'meter_number'              =>  $meterNumber,
                 'meter_type_id'             =>  $meterType,
-                'meter_type_name'           =>  $meterType == 1 ? 'prepaid' : 'postpaid',
+                'meter_type_name'           =>  $meterType == 1 ? 'Prepaid' : 'Postpaid',
                 'amount'                    =>  $amount,
                 'customer_mobile_number'    =>  $customerMobile,
                 'customer_name'             =>  $customerName,
@@ -241,6 +242,7 @@ class PosTraNetService
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
+                    'token'             =>    VendorHelper::removeTokenPrefix($response->token),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
                 ]);
@@ -315,7 +317,7 @@ class PosTraNetService
 
             if (isset($response->Status) && $response->Status == 'successful') {
 
-                $amount = $response->transaction->amount;
+                $amount = $transaction->amount;
 
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'cable');

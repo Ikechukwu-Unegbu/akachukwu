@@ -1,6 +1,8 @@
 <?php 
 namespace App\Helpers;
 
+use App\Models\Referral;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -55,5 +57,50 @@ class GeneralHelpers{
 
         return 'Username';
     }
+
+    // public static function checkReferrer($request, $user)
+    // {
+    //     if ($request->filled('referral_code')) {
+    //         $referrer = User::where('username', $request->referral_code)->first();
+    
+    //         if ($referrer) {
+    //             Referral::create([
+    //                 'referrer_id' => $referrer->id,
+    //                 'referred_user_id' => $user->id,
+    //                 // 'referral_code' => $request->referral_code,
+    //                 'referred_email' => $user->email,
+    //                 'status' => 'completed',
+    //             ]);
+    //         }
+    //     }
+    // }
+
+    public static function checkReferrer($request, $user)
+    {
+        $existingReferral = Referral::where('referred_email', $user->email)
+                                    ->where('status', '!=', 'completed')
+                                    ->first();
+
+        if ($existingReferral) {
+            $existingReferral->update([
+                'referred_user_id' => $user->id,
+                'status' => 'completed',
+            ]);
+        } else {
+            if ($request->filled('referral_code')) {
+                $referrer = User::where('username', $request->referral_code)->first();
+
+                if ($referrer) {
+                    Referral::create([
+                        'referrer_id' => $referrer->id,
+                        'referred_user_id' => $user->id,
+                        'referred_email' => $user->email,
+                        'status' => 'completed',
+                    ]);
+                }
+            }
+        }
+    }
+
 
 }

@@ -4,8 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use App\Services\V1\User\UserProfileService;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -28,10 +32,18 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request, UserProfileService $service): RedirectResponse
     {
+        $user = $service->getUser($request->username);
+        if ($user->blocked_by_admin == true) {
+            $validator = Validator::make([], []);
+            $validator->errors()->add('blocked', 'Your account has been blocked by the admin.');
+            throw new ValidationException($validator);
+            return false;
+        }
         $request->authenticate();
-
+       
+        
         $request->session()->regenerate();
 
         return redirect()->to(Auth::user()->dashboard());
