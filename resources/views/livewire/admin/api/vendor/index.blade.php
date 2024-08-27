@@ -8,7 +8,12 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Manage Vendor APIs</h5>
+                <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="card-title">Manage Vendor APIs</h5>
+                    <div>
+                        <a href="{{ route('admin.api.vendor.service') }}" class="btn btn-md btn-primary">Manage Services</a>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card">

@@ -10,6 +10,7 @@ use App\Models\Utility\CablePlan;
 use App\Services\Cable\CableService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Traits\ResolvesVendorService;
 use App\Models\Utility\CableTransaction;
 use App\Services\Account\UserPinService;
 use Illuminate\Validation\ValidationException;
@@ -18,6 +19,7 @@ use App\Services\Beneficiary\BeneficiaryService;
 
 class Create extends Component
 {
+    use ResolvesVendorService;
     public $vendor;
     public $cable_name;
     public $iuc_number;
@@ -33,7 +35,7 @@ class Create extends Component
 
     public function mount()
     {
-        $this->vendor = DataVendor::whereStatus(true)->first();
+        $this->vendor = $this->getVendorService('cable');
     }
 
     public function updatedCableName()

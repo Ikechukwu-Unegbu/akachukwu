@@ -213,9 +213,9 @@ class VTPassService
                 'amount'           =>  $transaction->amount,
                 'phone'            =>  $transaction->mobile_number
             ];
-
+            
             $response = self::url($data);
-
+            
             self::storeApiResponse($transaction, $response);
 
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
@@ -261,7 +261,6 @@ class VTPassService
 
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             Log::error($th->getMessage());
             $errorResponse = [
                 'error'     =>  'network connection error',

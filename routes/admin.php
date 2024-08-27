@@ -92,6 +92,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('api/vendor/{vendor:id}/show', App\Livewire\Admin\Api\Vendor\Show::class)->name('admin.api.vendor.show');
         Route::get('api/vendor/{vendor:id}/edit', App\Livewire\Admin\Api\Vendor\Edit::class)->name('admin.api.vendor.edit');
 
+        Route::get('api/vendors/services', App\Livewire\Admin\Api\Vendor\Service::class)->name('admin.api.vendor.service');
+
         ## API - Payment
         Route::get('api/payments', App\Livewire\Admin\Api\Payment\Index::class)->name('admin.api.payment');
         Route::get('api/payment/{payment:id}/show', App\Livewire\Admin\Api\Payment\Show::class)->name('admin.api.payment.show');

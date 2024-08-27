@@ -10,6 +10,7 @@ use App\Models\Utility\Electricity;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use App\Traits\ResolvesVendorService;
 use App\Services\Account\UserPinService;
 use App\Models\Utility\ElectricityTransaction;
 use Illuminate\Validation\ValidationException;
@@ -19,6 +20,7 @@ use App\Services\Electricity\ElectricityService;
 
 class Create extends Component
 {
+    use ResolvesVendorService;
     public $vendor;
     public $meter_types = [1 => "PREPAID", 2 => "POSTPAID"];
 
@@ -44,7 +46,7 @@ class Create extends Component
 
     public function mount()
     {
-        $this->vendor = DataVendor::whereStatus(true)->first();
+        $this->vendor = $this->getVendorService('electricity');
     }
 
     public function updatedMeterNumber()

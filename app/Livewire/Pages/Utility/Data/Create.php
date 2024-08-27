@@ -10,12 +10,14 @@ use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use App\Services\Data\DataService;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\ResolvesVendorService;
 use App\Services\Account\UserPinService;
 use Illuminate\Validation\ValidationException;
 use App\Services\Beneficiary\BeneficiaryService;
 
 class Create extends Component
 {
+    use ResolvesVendorService;
     public $network;
     public $vendor;
     public $dataType;
@@ -29,7 +31,7 @@ class Create extends Component
 
     public function mount()
     {
-        $this->vendor = DataVendor::whereStatus(true)->first();
+        $this->vendor = $this->getVendorService('data');
         $this->network = DataNetwork::whereVendorId($this->vendor?->id)->whereStatus(true)->first()?->network_id;
     }
 
