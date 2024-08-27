@@ -93,6 +93,7 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     //notification
     Route::get('/notifications', [NotificationsController::class, 'index']);
     Route::get('/referrer', [ReferralController::class, 'index']);
+    Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_wallet']);
 });
 
 
