@@ -31,9 +31,12 @@
         @if (count($cables) > 0)
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">{{ $vendors->find($vendor)->name ?? '' }} - Cable TV</h5>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="card-title">{{ $vendors->find($vendor)->name ?? '' }} - Cable TV</h5>
+                        <div><a href="{{ route('admin.utility.cable.discount', $vendors->find($vendor)->id) }}" class="btn btn-sm btn-primary">Set Discounts</a></div>
+                    </div>
                     <x-admin.table>
-                        <x-admin.table-header :headers="['#', 'Cable', 'API ID', 'Cable Plan(s)', 'Status', 'Action']" />
+                        <x-admin.table-header :headers="['#', 'Cable', 'API ID', 'Cable Plan(s)', 'Discounts(%)', 'Status', 'Action']" />
                         <x-admin.table-body>
                             @forelse ($cables as $__cable)
                                 <tr>
@@ -41,6 +44,7 @@
                                     <td>{{ $__cable->cable_name }}</td>
                                     <td>{{ $__cable->cable_id }}</td>
                                     <td>{{ $__cable->plans_count }}</td>
+                                    <td>{{ $__cable->discount }}</td>
                                     <td><span class="badge bg-{{ $__cable->status ? 'success' : 'danger' }}">{{ $__cable->status ? 'Active' : 'Not-Active' }}</span></td>
                                     <td>
                                         <div class="filter">

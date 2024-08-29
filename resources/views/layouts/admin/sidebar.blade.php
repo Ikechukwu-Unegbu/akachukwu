@@ -5,9 +5,12 @@
 
     <x-admin.menu title="Dashboard" icon="bi-grid" link="{{ route('admin.dashboard') }}" />
 
-    @if(auth()->user()->can('view data utility') || auth()->user()->can('view cable utility') || auth()->user()->can('view electricity utility'))
+    @if(auth()->user()->can('view airtime utility') || auth()->user()->can('view data utility') || auth()->user()->can('view cable utility') || auth()->user()->can('view electricity utility'))
       <li class="nav-heading">Manage Utilities</li>
       <x-admin.dropdown title="Utilities" icon="bxs-data">
+        @can('view airtime utility')
+        <x-admin.dropdown-item title="Airtime" link="{{ route('admin.utility.airtime') }}" />
+        @endcan
         @can('view data utility')
           <x-admin.dropdown-item title="Data" link="{{ route('admin.utility.data') }}" />
         @endcan

@@ -33,23 +33,23 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="card-title">{{ $vendors->find($vendor)->name ?? '' }} - Electricity</h5>
+                        <div><a href="{{ route('admin.utility.electricity.discount', $vendors->find($vendor)->id) }}" class="btn btn-sm btn-primary">Set Discounts</a>
                         @if(auth()->user()->can('create electricity utility'))
-                        <div>
                             <a href="{{ route('admin.utility.electricity.create', $vendor) }}" class="btn btn-sm btn-primary"><i class="bx bx-plus-circle"></i> Add Electricity</a>
-                        </div>
                         @endif
+                        </div>
                     </div>
                 </div>
-                <div class="card-body">
-                    
+                <div class="card-body">                    
                     <x-admin.table>
-                        <x-admin.table-header :headers="['#', 'Disco Name', 'API ID', 'Status', 'Action']" />
+                        <x-admin.table-header :headers="['#', 'Disco Name', 'API ID', 'Discounts(%)', 'Status', 'Action']" />
                         <x-admin.table-body>
                             @forelse ($electricity as $__electricity)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
                                     <td>{{ $__electricity->disco_name }}</td>
                                     <td>{{ $__electricity->disco_id }}</td>
+                                    <td>{{ $__electricity->discount }}</td>
                                     <td><span class="badge bg-{{ $__electricity->status ? 'success' : 'danger' }}">{{ $__electricity->status ? 'Active' : 'Not-Active' }}</span></td>
                                     <td>
                                         <div class="filter">

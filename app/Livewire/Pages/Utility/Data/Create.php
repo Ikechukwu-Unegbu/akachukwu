@@ -9,6 +9,7 @@ use App\Models\Data\DataType;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use App\Services\Data\DataService;
+use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\ResolvesVendorService;
 use App\Services\Account\UserPinService;
@@ -28,6 +29,7 @@ class Create extends Component
     public $pin;
     public $form_action = false;
     public $validate_pin_action = false;
+    public $calculatedDiscount = 0;
 
     public function mount()
     {
@@ -46,6 +48,8 @@ class Create extends Component
     {
         $this->amount = DataPlan::whereVendorId($this->vendor?->id)->whereNetworkId($this->network)->whereDataId($this->plan)->first()?->amount;
         $this->amount = number_format($this->amount, 1);
+        $discount = DataNetwork::whereVendorId($this->vendor?->id)->whereNetworkId($this->network)->first()->data_discount;
+        $this->calculatedDiscount = CalculateDiscount::calculate((float) max(1, $this->amount), (float) $discount);
     }
 
     public function updatedDataType()

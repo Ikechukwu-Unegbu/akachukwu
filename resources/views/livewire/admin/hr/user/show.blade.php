@@ -34,13 +34,15 @@
                     <div class="card-header">
                         <div class="d-flex justify-content-between">
                             <h4>User Details</h4>
+                            @can('impersonate')
                             <div class="filter">
-                                <a class="btn btn-primary btn-sm" href="#" data-bs-toggle="dropdown">Action</a>
+                                <a class="btn btn-primary btn-sm" href="#" data-bs-toggle="dropdown">Action</a>                                
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                     <li><a href="#" class="dropdown-item text-success" data-bs-toggle="modal"
                                             data-bs-target="#impersonateUserModal">Login as {{ $user->name }}</a></li>
                                 </ul>
                             </div>
+                            @endcan
                         </div>
                     </div>
                     <div class="pt-2 card-body profile-overview">

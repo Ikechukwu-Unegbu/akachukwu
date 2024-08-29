@@ -15,6 +15,7 @@ use App\Models\Utility\AirtimeTransaction;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
+use App\Services\CalculateDiscount;
 
 class Create extends Component
 {
@@ -28,6 +29,7 @@ class Create extends Component
     public $pin;
     public $form_action = false;
     public $validate_pin_action = false;
+    public $calculatedDiscount = 0;
 
     public function mount()
     {
@@ -35,11 +37,17 @@ class Create extends Component
         $this->network = DataNetwork::whereVendorId($this->vendor?->id)->whereStatus(true)->first()?->network_id;
     }
 
+    public function updatedAmount()
+    {
+        $discount = DataNetwork::whereVendorId($this->vendor?->id)->whereNetworkId($this->network)->first()->airtime_discount;
+        $this->calculatedDiscount = CalculateDiscount::calculate((float) max(1, $this->amount), (float) $discount);
+    }
+
     public function validateForm()
     {
         $this->validate([
             'network'       =>  'required|integer',
-            'amount'        =>  'required|numeric',
+            'amount'        =>  'required|numeric|min:0',
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ]);
 

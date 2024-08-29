@@ -1,18 +1,18 @@
 @push('title')
-    Utilities / Data / Network
+    Utilities / Airtime / Network
 @endpush
 
 <div>
     <x-admin.page-title title="Utilities">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
         <x-admin.page-title-item subtitle="Utility" />
-        <x-admin.page-title-item subtitle="Data" status="true" />
+        <x-admin.page-title-item subtitle="Airtime" status="true" />
     </x-admin.page-title>
 
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5 class="">Manage Data Network</h5>
+                <h5 class="">Manage Airtime Network</h5>
             </div>
             <div class="card-body">
                 <div class="mt-3 row">
@@ -36,37 +36,19 @@
             <div class="card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="card-title">{{ $vendors->find($vendor)->name ?? '' }} - Data {{ Str::plural('Network', $networks->count()) }}</h5>
-                        <div><a href="{{ route('admin.utility.data.discount', $vendors->find($vendor)->id) }}" class="btn btn-sm btn-primary">Set Discounts</a></div>
+                        <h5 class="card-title">{{ $vendors->find($vendor)->name ?? '' }} - Airtime {{ Str::plural('Network', $networks->count()) }}</h5>
+                        <div><a href="{{ route('admin.utility.airtime.discount', $vendors->find($vendor)->id) }}" class="btn btn-sm btn-primary">Set Discounts</a></div>
                     </div>
                     <x-admin.table>
-                        <x-admin.table-header :headers="['#', 'Network(s)', 'API ID', 'Data Type(s)', 'Data Plan(s)', 'Discounts(%)', 'Status', 'Action']" />
+                        <x-admin.table-header :headers="['#', 'Network(s)', 'API ID', 'Discounts(%)', 'Status']" />
                         <x-admin.table-body>
                             @forelse ($networks as $__network)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
                                     <td>{{ $__network->name }}</td>
                                     <td>{{ $__network->network_id }}</td>
-                                    <td>{{ $__network->data_types_count }}</td>
-                                    <td>{{ $__network->data_plans_count }}</td>
-                                    <td>{{ $__network->data_discount }}</td>
+                                    <td>{{ $__network->airtime_discount }}</td>
                                     <td><span class="badge bg-{{ $__network->status ? 'success' : 'danger' }}">{{ $__network->status ? 'Active' : 'Not-Active' }}</span></td>
-                                    <td>
-                                        <div class="filter">
-                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                                @can ('view data utility')
-                                                <li><a href="{{ route('admin.utility.data.type', [$vendor, $__network->id]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> Manage</a></li>
-                                                @endcan
-                                                @can ('edit data utility')
-                                                <li><a href="{{ route('admin.utility.data.network.edit', [$vendor, $__network->id]) }}" class="dropdown-item text-secondary"><i class="bx bx-edit"></i> Edit</a></li>
-                                                @endcan
-                                                {{-- <li><a href="" class="dropdown-item text-danger"><i class="bx bx-trash"></i> DEL</a></li> --}}
-                                            </ul>
-                                        </div>
-
-                                    </td>
-
                                 </tr>
                             @empty
                                 <tr>

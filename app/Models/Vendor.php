@@ -4,6 +4,8 @@ namespace App\Models;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use App\Models\Education\ResultChecker;
+use App\Models\Utility\Cable;
+use App\Models\Utility\Electricity;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Vendor extends DataVendor
@@ -36,5 +38,15 @@ class Vendor extends DataVendor
             $query->where('name', 'LIKE', "%{$search}%")
                 ->orWhere('api', 'LIKE', "%{$search}%");
         });
+    }
+
+    public function cables()
+    {
+        return $this->hasMany(Cable::class, 'vendor_id');
+    }
+
+    public function electricity()
+    {
+        return $this->hasMany(Electricity::class, 'vendor_id');
     }
 }

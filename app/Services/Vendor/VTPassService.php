@@ -102,6 +102,7 @@ class VTPassService
             }
 
             $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
+            
             // Initiate Airtime Transaction
             $transaction = AirtimeTransaction::create([
                 'vendor_id'         =>  self::$vendor->id,
@@ -139,12 +140,16 @@ class VTPassService
                     $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
                 }
 
+                $discount = $network->airtime_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->content->transactions->transactionId,
+                    'amount'            =>    $amount
                 ]);
 
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
@@ -238,6 +243,9 @@ class VTPassService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'data');
                 }
+
+                $discount = $network->data_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
 
@@ -336,6 +344,9 @@ class VTPassService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
                 }
+                $discount = $electricity->discount;
+                dd($amount, $discount);
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
 
