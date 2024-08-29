@@ -7,6 +7,7 @@ use App\Models\Beneficiary;
 use Livewire\Attributes\Rule;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\Electricity;
+use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -28,7 +29,7 @@ class Create extends Component
     public $disco_name;
     #[Rule('required|integer|in:1,2')]
     public $meter_type;
-    #[Rule('required|numeric')]
+    #[Rule('required|numeric|min:0')]
     public $amount;
     #[Rule('required|numeric')]
     public $meter_number;
@@ -43,10 +44,17 @@ class Create extends Component
     public $pin;
     public $form_action = false;
     public $validate_pin_action = false;
+    public $calculatedDiscount = 0;
 
     public function mount()
     {
         $this->vendor = $this->getVendorService('electricity');
+    }
+
+    public function updatedAmount()
+    {
+        $discount = Electricity::whereVendorId($this->vendor->id)->first()->discount;
+        $this->calculatedDiscount = CalculateDiscount::calculate((float) max(1, $this->amount), (float) $discount);
     }
 
     public function updatedMeterNumber()
@@ -54,6 +62,7 @@ class Create extends Component
         $this->validate_action = false;
         $this->customer_name = null;
         $this->customer_address = null;
+        $this->calculatedDiscount = 0;
     }
 
     public function updatedDiscoName()
@@ -61,6 +70,7 @@ class Create extends Component
         $this->validate_action = false;
         $this->customer_name = null;
         $this->customer_address = null;
+        $this->calculatedDiscount = 0;
     }
 
     public function updatedMeterType()
@@ -68,6 +78,7 @@ class Create extends Component
         $this->validate_action = false;
         $this->customer_name = null;
         $this->customer_address = null;
+        $this->calculatedDiscount = 0;
     }
 
     public function closeModal()

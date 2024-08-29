@@ -7,6 +7,7 @@ use App\Models\Beneficiary;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\CablePlan;
+use App\Services\CalculateDiscount;
 use App\Services\Cable\CableService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -32,6 +33,7 @@ class Create extends Component
     public $pin;
     public $form_action = false;
     public $validate_pin_action = false;
+    public $calculatedDiscount = 0;
 
     public function mount()
     {
@@ -41,13 +43,21 @@ class Create extends Component
     public function updatedCableName()
     {
         $this->cable_plan = null;
-        
+        $this->calculatedDiscount = 0;
+    }
+
+    public function updatedCablePlan()
+    {
+        $discount = Cable::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->first()->discount;
+        $amount = CablePlan::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->whereCablePlanId($this->cable_plan)->first()->amount;
+        $this->calculatedDiscount = CalculateDiscount::calculate((float) max(1, $amount), (float) $discount);
     }
 
     public function updatedIucNumber()
     {
         $this->validate_action = false;
         $this->customer = null;
+        $this->calculatedDiscount = 0;
     }
 
     public function closeModal()
@@ -153,6 +163,7 @@ class Create extends Component
         $this->cable_name = $meta->cable_id;
         $this->cable_plan = $meta->cable_plan_id;
         $this->beneficiary_modal = false;
+        $this->updatedCablePlan();
         return;
     }
 

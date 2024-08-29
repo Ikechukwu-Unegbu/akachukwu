@@ -133,8 +133,12 @@ class GladTidingService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
                 }
+                
+                $discount = $network->airtime_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
+
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
@@ -231,6 +235,9 @@ class GladTidingService
                     $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
                 }
 
+                $discount = $electricity->discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
@@ -313,6 +320,9 @@ class GladTidingService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'cable');
                 }
+
+                $discount = $cable->discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
 
@@ -400,6 +410,9 @@ class GladTidingService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'data');
                 }
+
+                $discount = $network->data_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
 

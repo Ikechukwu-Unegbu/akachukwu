@@ -140,6 +140,9 @@ class PosTraNetService
                     $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
                 }
 
+                $discount = $network->airtime_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
@@ -238,6 +241,9 @@ class PosTraNetService
                     $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
                 }
 
+                $discount = $electricity->discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
@@ -322,6 +328,9 @@ class PosTraNetService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'cable');
                 }
+
+                $discount = $cable->discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
 
@@ -410,6 +419,9 @@ class PosTraNetService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'data');
                 }
+
+                $discount = $network->data_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
 

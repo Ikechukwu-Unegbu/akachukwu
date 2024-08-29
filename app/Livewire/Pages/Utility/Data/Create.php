@@ -42,6 +42,7 @@ class Create extends Component
         $this->plan = null;
         $this->amount = null;
         $this->dataType = null;
+        $this->calculatedDiscount = 0;
     }
 
     public function updatedPlan()
@@ -151,6 +152,7 @@ class Create extends Component
         $this->plan = $plan?->data_id;
         $this->amount = $plan?->amount;
         $this->beneficiary_modal = false;
+        $this->updatedPlan();
         return;
     }
 

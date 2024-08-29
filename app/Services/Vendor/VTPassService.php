@@ -344,8 +344,8 @@ class VTPassService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
                 }
+
                 $discount = $electricity->discount;
-                dd($amount, $discount);
                 $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
@@ -475,6 +475,9 @@ class VTPassService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
                 }
+
+                $discount = $cable->discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
 
