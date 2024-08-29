@@ -81,3 +81,4 @@ Route::middleware(['auth', 'impersonate'])->group(function () {
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/feature.php';
+require __DIR__ . '/new-web.php';
