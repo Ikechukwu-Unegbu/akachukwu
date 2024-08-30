@@ -144,6 +144,7 @@ class GladTidingService
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident,
+                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->api_response ?? NULL
                 ]);
 
@@ -245,6 +246,7 @@ class GladTidingService
                     'token'             =>    VendorHelper::removeTokenPrefix($response->token),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
+                    'discount'          =>    $discount
                 ]);
 
                 BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
@@ -330,6 +332,7 @@ class GladTidingService
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->response->ident ?? NULL,
+                    'discount'          =>    $discount
                 ]);
 
                 BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
@@ -423,6 +426,7 @@ class GladTidingService
                     'plan_name'         =>    $response->plan_name,
                     'plan_amount'       =>    $response->plan_amount,
                     'api_data_id'       =>    $response->ident,
+                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->api_response,
                 ]);
 

@@ -149,7 +149,8 @@ class VTPassService
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->content->transactions->transactionId,
-                    'amount'            =>    $amount
+                    'amount'            =>    $amount,
+                    'discount'          =>    $discount
                 ]);
 
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
@@ -254,6 +255,7 @@ class VTPassService
                     'status'            =>    true,
                     'plan_amount'       =>    $response->amount,
                     'api_data_id'       =>    $response->content->transactions->transactionId,
+                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->response_description ?? NULL
                 ]);
 
@@ -355,6 +357,7 @@ class VTPassService
                     'status'            =>    true,
                     'token'             =>    VendorHelper::removeTokenPrefix($response->purchased_code),
                     'api_data_id'       =>    $response->content->transactions->transactionId,
+                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->response_description ?? NULL
                 ]);
 
@@ -485,6 +488,7 @@ class VTPassService
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->content->transactions->transactionId,
+                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->response_description ?? NULL
                 ]);
 
