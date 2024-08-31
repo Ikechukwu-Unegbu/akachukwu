@@ -17,13 +17,13 @@
             <span class="font-semibold">vastel</span>
         </div>
         <div class="hidden md:flex space-x-6">
-            <a href="#" class="text-gray-600 hover:text-blue-900">Home</a>
-            <a href="#" class="text-gray-600 hover:text-blue-900">Company</a>
-            <a href="#" class="text-gray-600 hover:text-blue-900">Blog</a>
+            <a href="#" class="text-gray-600 hover:text-vastel_blue">Home</a>
+            <a href="#" class="text-gray-600 hover:text-vastel_blue">Company</a>
+            <a href="#" class="text-gray-600 hover:text-vastel_blue">Blog</a>
         </div>
         <div class="hidden md:flex space-x-4">
-            <a href="#" class="text-gray-600 hover:text-blue-900">Log In</a>
-            <a href="#" class="bg-blue-900 text-white py-2 px-4 rounded-md hover:bg-blue-800">Register</a>
+            <a href="#" class="text-gray-600 hover:text-vastel_blue">Log In</a>
+            <a href="#" class="bg-vastel_blue text-white py-2 px-4 rounded-md hover:bg-vastel_blue">Register</a>
         </div>
         <button class="md:hidden text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -142,6 +142,36 @@
             </div>
         </section>
     </div>
+
+
+    <!-- download -->
+    <div class="flex items-center justify-center min-h-screen bg-white">
+    <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+        <!-- Phone Image Placeholder -->
+        <div class="flex justify-center w-full md:w-1/2">
+            <div class="bg-gray-200 rounded-lg w-72 h-96 md:w-80 md:h-[500px] flex items-center justify-center">
+                <!-- Placeholder for the mobile image -->
+                <span class="text-gray-500">Phone Image Placeholder</span>
+            </div>
+        </div>
+
+        <!-- QR Code and Download Section -->
+        <div class="mt-8 md:mt-0 md:w-1/2 flex flex-col items-center md:items-start">
+            <div class="flex flex-col items-center md:items-start">
+                <img src="https://via.placeholder.com/100" alt="QR Code" class="mb-4">
+                <p class="text-center md:text-left text-gray-700 text-lg">
+                    Use Your Phone's Camera To Scan And Download The Vastel App<br>
+                    Available On IOS And Android
+                </p>
+            </div>
+            <div class="flex mt-4 space-x-4">
+                <img src="https://via.placeholder.com/120x40?text=App+Store" alt="Download on the App Store">
+                <img src="https://via.placeholder.com/120x40?text=Google+Play" alt="Get it on Google Play">
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- download ends -->
 
 
     <!-- Testimonials Section -->

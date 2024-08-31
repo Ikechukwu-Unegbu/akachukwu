@@ -6,6 +6,14 @@
     <title>Wallet Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.8.0/flowbite.min.js"></script>
+    <script src="
+https://cdn.jsdelivr.net/npm/heroicons-css@0.1.1/heroicons.min.js
+"></script>
+<link href="
+https://cdn.jsdelivr.net/npm/heroicons-css@0.1.1/heroicons.min.css
+" rel="stylesheet">
 </head>
 <body class="bg-white font-sans">
     <div class="flex flex-col md:flex-row h-screen">

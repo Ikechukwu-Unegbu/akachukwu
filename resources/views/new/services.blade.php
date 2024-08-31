@@ -1,8 +1,8 @@
 @extends('layouts.new-dashboard')
 
 @section('body')
-<div class="bg-gray-100 p-4 md:p-8">
-    <div class="max-w-md mx-auto bg-white rounded-lg shadow-md p-6">
+<!-- <div class="bg-gray-100 p-4 md:p-8"> -->
+    <div class=" bg-white rounded-lg shadow-md p-6">
         <h1 class="text-2xl font-bold mb-6">Bill Payment</h1>
         
         <!-- Main Services -->
@@ -62,5 +62,5 @@
             </div>
         </div>
     </div>
-</div>
+<!-- </div> -->
 @endsection 
