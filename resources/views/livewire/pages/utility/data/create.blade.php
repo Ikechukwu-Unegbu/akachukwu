@@ -79,6 +79,15 @@
                 <label for="amount">Amount</label>
             </div>
         </div>
+        @if ($network && $networks->where('network_id', $network)->first()?->data_discount > 0)
+        <div class="row">
+            <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
+                <div class="text-danger">
+                    Amount to Pay (₦{{ $calculatedDiscount }}) {{ $network ? $networks->where('network_id', $network)->first()?->data_discount . '% Discount' : '' }}
+                </div>
+            </div>
+        </div>
+        @endif
         @if(count($beneficiaries))
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">

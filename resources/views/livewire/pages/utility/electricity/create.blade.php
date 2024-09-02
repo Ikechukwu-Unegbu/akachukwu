@@ -40,18 +40,27 @@
         </div> 
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
-                <input type="number" wire:model="amount" class="form-control @error('amount') is-invalid @enderror" id="amount" placeholder="">
+                <input type="number" wire:model="customer_phone_number" class="form-control @error('customer_phone_number') is-invalid @enderror" id="customer_phone_number" placeholder="">
+                <label for="customer_phone_number">Customer Phone Number <span class="text-danger">*</span></label>
+                @error('customer_phone_number')<span style="font-size: 15px" class="text-danger">  {{ $message }} </span>@enderror
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
+                <input type="number" wire:model.live="amount" class="form-control @error('amount') is-invalid @enderror" id="amount" placeholder="">
                 <label for="amount">Amount <span class="text-danger">*</span></label>
                 @error('amount')<span style="font-size: 15px" class="text-danger">  {{ $message }} </span>@enderror
             </div>
         </div> 
+        @if ($disco_name && $electricity->where('disco_id', $disco_name)->first()?->discount > 0)
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
-                <input type="text" wire:model="customer_phone_number" class="form-control @error('customer_phone_number') is-invalid @enderror" id="customer_phone_number" placeholder="">
-                <label for="customer_phone_number">Customer Phone Number <span class="text-danger">*</span></label>
-                @error('customer_phone_number')<span style="font-size: 15px" class="text-danger">  {{ $message }} </span>@enderror
+                <div class="text-danger">
+                    Amount to Pay (₦{{ $calculatedDiscount }}) {{ $disco_name ? $electricity->where('disco_id', $disco_name)->first()?->discount . '% Discount' : '' }}
+                </div>
             </div>
-        </div>      
+        </div>
+        @endif
         @if(count($beneficiaries))
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
@@ -86,7 +95,7 @@
         </div>
         @endif
         
-        <button type="submit" class="btn btn-warning text-light" wire:loading.attr="disabled" wire:target='validateIUC'>
+        <button type="submit" class="btn btn-warning text-light" wire:loading.attr="disabled" wire:target='validateIUC' wire:target='amount'>
             <span wire:loading.remove wire:target='validateIUC'> {{ $validate_action ? 'Continue' : 'Validate Meter Number' }} </span>
             <span wire:loading wire:target="validateIUC">
                 <i class="fa fa-spinner fa-spin"></i> {{ $validate_action ? 'Please wait...' : 'Validating...' }}

@@ -34,7 +34,7 @@
         </div>
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
-                <input type="number" wire:model="amount" class="form-control @error('amount') is-invalid @enderror"
+                <input type="number" wire:model.live="amount" class="form-control @error('amount') is-invalid @enderror"
                     id="amount" placeholder="">
                 <label for="amount">Amount <span class="text-danger">*</span></label>
                 @error('amount')
@@ -42,6 +42,15 @@
                 @enderror
             </div>
         </div>
+        @if ($network && $networks->where('network_id', $network)->first()?->airtime_discount > 0)
+        <div class="row">
+            <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
+                <div class="text-danger">
+                    Amount to Pay (₦{{ $calculatedDiscount }}) {{ $network ? $networks->where('network_id', $network)->first()?->airtime_discount . '% Discount' : '' }}
+                </div>
+            </div>
+        </div>
+        @endif
         @if(count($beneficiaries))
         <div class="row">
             <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
@@ -61,7 +70,7 @@
             </div>
         </div>
         @endif
-        <button type="submit" class="btn btn-warning text-light" wire:loading.attr="disabled" wire:target='validateForm'>
+        <button type="submit" class="btn btn-warning text-light" wire:loading.attr="disabled" wire:target='validateForm' wire:target='airtime'>
             <span wire:loading.remove wire:target='validateForm'> Continue</span>
             <span wire:loading wire:target="validateForm">
                 <i class="fa fa-spinner fa-spin"></i> Please wait...

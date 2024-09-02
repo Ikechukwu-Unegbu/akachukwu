@@ -3,13 +3,16 @@
 namespace App\Services\Airtime;
 
 use App\Models\Vendor;
+use App\Traits\ResolvesVendorService;
 use App\Services\Vendor\VendorServiceFactory;
+
 class AirtimeService 
 {
+    use ResolvesVendorService;
+
     public static function create($vendorId, $networkId, $amount, $mobileNumber)
     {
-        $vendor = Vendor::find($vendorId);
-        $vendorFactoryService = VendorServiceFactory::make($vendor);
-        return $vendorFactoryService::airtime($networkId, $amount, $mobileNumber);
+        $vendorService = (new self)->resolveServiceClass('airtime');
+        return $vendorService::airtime($networkId, $amount, $mobileNumber);
     }
 }

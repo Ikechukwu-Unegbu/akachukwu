@@ -102,6 +102,7 @@ class VTPassService
             }
 
             $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
+            
             // Initiate Airtime Transaction
             $transaction = AirtimeTransaction::create([
                 'vendor_id'         =>  self::$vendor->id,
@@ -139,12 +140,17 @@ class VTPassService
                     $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
                 }
 
+                $discount = $network->airtime_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->content->transactions->transactionId,
+                    'amount'            =>    $amount,
+                    'discount'          =>    $discount
                 ]);
 
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
@@ -213,9 +219,9 @@ class VTPassService
                 'amount'           =>  $transaction->amount,
                 'phone'            =>  $transaction->mobile_number
             ];
-
+            
             $response = self::url($data);
-
+            
             self::storeApiResponse($transaction, $response);
 
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
@@ -239,6 +245,9 @@ class VTPassService
                     $amount = CalculateDiscount::applyDiscount($amount, 'data');
                 }
 
+                $discount = $network->data_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
@@ -246,6 +255,7 @@ class VTPassService
                     'status'            =>    true,
                     'plan_amount'       =>    $response->amount,
                     'api_data_id'       =>    $response->content->transactions->transactionId,
+                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->response_description ?? NULL
                 ]);
 
@@ -261,7 +271,6 @@ class VTPassService
 
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             Log::error($th->getMessage());
             $errorResponse = [
                 'error'     =>  'network connection error',
@@ -338,6 +347,9 @@ class VTPassService
                     $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
                 }
 
+                $discount = $electricity->discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
@@ -345,6 +357,7 @@ class VTPassService
                     'status'            =>    true,
                     'token'             =>    VendorHelper::removeTokenPrefix($response->purchased_code),
                     'api_data_id'       =>    $response->content->transactions->transactionId,
+                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->response_description ?? NULL
                 ]);
 
@@ -466,12 +479,16 @@ class VTPassService
                     $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
                 }
 
+                $discount = $cable->discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->content->transactions->transactionId,
+                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->response_description ?? NULL
                 ]);
 

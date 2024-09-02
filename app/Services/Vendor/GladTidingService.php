@@ -133,13 +133,18 @@ class GladTidingService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
                 }
+                
+                $discount = $network->airtime_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
+
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident,
+                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->api_response ?? NULL
                 ]);
 
@@ -231,6 +236,9 @@ class GladTidingService
                     $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
                 }
 
+                $discount = $electricity->discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
@@ -238,6 +246,7 @@ class GladTidingService
                     'token'             =>    VendorHelper::removeTokenPrefix($response->token),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
+                    'discount'          =>    $discount
                 ]);
 
                 BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
@@ -314,12 +323,16 @@ class GladTidingService
                     $amount = CalculateDiscount::applyDiscount($amount, 'cable');
                 }
 
+                $discount = $cable->discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->response->ident ?? NULL,
+                    'discount'          =>    $discount
                 ]);
 
                 BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
@@ -401,6 +414,9 @@ class GladTidingService
                     $amount = CalculateDiscount::applyDiscount($amount, 'data');
                 }
 
+                $discount = $network->data_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
                 self::$authUser->transaction($amount);
 
                 $transaction->update([
@@ -410,6 +426,7 @@ class GladTidingService
                     'plan_name'         =>    $response->plan_name,
                     'plan_amount'       =>    $response->plan_amount,
                     'api_data_id'       =>    $response->ident,
+                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->api_response,
                 ]);
 
