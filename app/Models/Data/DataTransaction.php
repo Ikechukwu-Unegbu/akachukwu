@@ -34,6 +34,7 @@ class DataTransaction extends Model
         'api_data_id',
         'api_response',
         'status',
+        'discount'
     
     ];
     
@@ -57,7 +58,8 @@ class DataTransaction extends Model
         'plan_amount',
         'api_data_id',
         'api_response',
-        'status',]);
+        'status',
+        'discount']);
         // Chain fluent methods for configuration options
     }
 

@@ -30,7 +30,8 @@ class CableTransaction extends Model
         'balance_after',
         'api_data_id',
         'api_response',
-        'status'
+        'status',
+        'discount'
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -51,7 +52,8 @@ class CableTransaction extends Model
             'balance_after',
             'api_data_id',
             'api_response',
-            'status'
+            'status',
+            'discount'
         ]);
         // Chain fluent methods for configuration options
     }
