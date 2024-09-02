@@ -101,6 +101,7 @@ class PosTraNetService
             }
             
             $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
+            $discount = $network->airtime_discount;
             // Initiate Airtime Transaction
             $transaction = AirtimeTransaction::create([
                 'user_id'           =>  Auth::id(),
@@ -110,7 +111,8 @@ class PosTraNetService
                 'amount'            =>  $amount,
                 'mobile_number'     =>  $mobileNumber,
                 'balance_before'    =>  Auth::user()->account_balance,
-                'balance_after'     =>  Auth::user()->account_balance
+                'balance_after'     =>  Auth::user()->account_balance,
+                'discount'          =>  $discount
             ]);
 
             $data = [
@@ -140,7 +142,6 @@ class PosTraNetService
                     $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
                 }
 
-                $discount = $network->airtime_discount;
                 $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
@@ -149,7 +150,6 @@ class PosTraNetService
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident,
-                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->api_response ?? NULL
                 ]);
 
@@ -194,6 +194,7 @@ class PosTraNetService
             $vendor = self::$vendor;
             
             $electricity = Electricity::whereVendorId($vendor->id)->whereDiscoId($discoId)->first();
+            $discount = $electricity->discount;
 
             $transaction = ElectricityTransaction::create([
                 'user_id'                   =>  Auth::id(),
@@ -208,7 +209,8 @@ class PosTraNetService
                 'customer_name'             =>  $customerName,
                 'customer_address'          =>  $customerAddress,
                 'balance_before'            =>  Auth::user()->account_balance,
-                'balance_after'             =>  Auth::user()->account_balance
+                'balance_after'             =>  Auth::user()->account_balance,
+                'discount'                  =>  $discount
             ]);
 
             $data = [
@@ -242,7 +244,6 @@ class PosTraNetService
                     $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
                 }
 
-                $discount = $electricity->discount;
                 $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
@@ -252,7 +253,6 @@ class PosTraNetService
                     'token'             =>    VendorHelper::removeTokenPrefix($response->token),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->ident ?? NULL,
-                    'discount'          =>    $discount
                 ]);
 
                 BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
@@ -290,6 +290,8 @@ class PosTraNetService
                 return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
             }
 
+            $discount = $cable->discount;
+
             $transaction = CableTransaction::create([
                 'user_id'             =>  Auth::id(),
                 'vendor_id'           =>  $vendor->id,
@@ -301,7 +303,8 @@ class PosTraNetService
                 'customer_name'       =>  $customer,
                 'amount'              =>  $cable_plan->amount,
                 'balance_before'      =>  Auth::user()->account_balance,
-                'balance_after'       =>  Auth::user()->account_balance
+                'balance_after'       =>  Auth::user()->account_balance,
+                'discount'            =>  $discount
             ]);
            
             $data = [
@@ -331,7 +334,6 @@ class PosTraNetService
                     $amount = CalculateDiscount::applyDiscount($amount, 'cable');
                 }
 
-                $discount = $cable->discount;
                 $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
@@ -340,7 +342,6 @@ class PosTraNetService
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
                     'api_data_id'       =>    $response->response->ident ?? NULL,
-                    'discount'          =>    $discount
                 ]);
 
                 BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
@@ -378,6 +379,8 @@ class PosTraNetService
                 return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
             }
 
+            $discount = $network->data_discount;
+
             $transaction = DataTransaction::create([
                 'user_id'            =>  Auth::id(),
                 'vendor_id'          =>  $vendor->id,
@@ -392,7 +395,8 @@ class PosTraNetService
                 'balance_after'      =>  Auth::user()->account_balance,
                 'plan_network'       =>  $network->name,
                 'plan_name'          =>  $plan->size,
-                'plan_amount'        =>  $plan->amount
+                'plan_amount'        =>  $plan->amount,
+                'discount'           =>    $discount
             ]);
 
             $data = [
@@ -423,7 +427,6 @@ class PosTraNetService
                     $amount = CalculateDiscount::applyDiscount($amount, 'data');
                 }
 
-                $discount = $network->data_discount;
                 $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
@@ -435,7 +438,6 @@ class PosTraNetService
                     'plan_name'         =>    $response->plan_name,
                     'plan_amount'       =>    $response->plan_amount,
                     'api_data_id'       =>    $response->ident,
-                    'discount'          =>    $discount
                     // 'api_response'      =>    $response->api_response,
                 ]);
 
