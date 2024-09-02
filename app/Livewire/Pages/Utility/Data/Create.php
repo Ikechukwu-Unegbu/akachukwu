@@ -9,13 +9,16 @@ use App\Models\Data\DataType;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use App\Services\Data\DataService;
+use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Auth;
+use App\Traits\ResolvesVendorService;
 use App\Services\Account\UserPinService;
 use Illuminate\Validation\ValidationException;
 use App\Services\Beneficiary\BeneficiaryService;
 
 class Create extends Component
 {
+    use ResolvesVendorService;
     public $network;
     public $vendor;
     public $dataType;
@@ -26,10 +29,11 @@ class Create extends Component
     public $pin;
     public $form_action = false;
     public $validate_pin_action = false;
+    public $calculatedDiscount = 0;
 
     public function mount()
     {
-        $this->vendor = DataVendor::whereStatus(true)->first();
+        $this->vendor = $this->getVendorService('data');
         $this->network = DataNetwork::whereVendorId($this->vendor?->id)->whereStatus(true)->first()?->network_id;
     }
 
@@ -38,12 +42,15 @@ class Create extends Component
         $this->plan = null;
         $this->amount = null;
         $this->dataType = null;
+        $this->calculatedDiscount = 0;
     }
 
     public function updatedPlan()
     {
         $this->amount = DataPlan::whereVendorId($this->vendor?->id)->whereNetworkId($this->network)->whereDataId($this->plan)->first()?->amount;
         $this->amount = number_format($this->amount, 1);
+        $discount = DataNetwork::whereVendorId($this->vendor?->id)->whereNetworkId($this->network)->first()->data_discount;
+        $this->calculatedDiscount = CalculateDiscount::calculate((float) max(1, $this->amount), (float) $discount);
     }
 
     public function updatedDataType()
@@ -145,6 +152,7 @@ class Create extends Component
         $this->plan = $plan?->data_id;
         $this->amount = $plan?->amount;
         $this->beneficiary_modal = false;
+        $this->updatedPlan();
         return;
     }
 

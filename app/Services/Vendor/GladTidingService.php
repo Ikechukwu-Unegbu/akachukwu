@@ -95,6 +95,7 @@ class GladTidingService
             }
 
             $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
+            $discount = $network->airtime_discount;
             // Initiate Airtime Transaction
             $transaction = AirtimeTransaction::create([
                 'user_id'           =>  Auth::id(),
@@ -104,7 +105,8 @@ class GladTidingService
                 'amount'            =>  $amount,
                 'mobile_number'     =>  $mobileNumber,
                 'balance_before'    =>  Auth::user()->account_balance,
-                'balance_after'     =>  Auth::user()->account_balance
+                'balance_after'     =>  Auth::user()->account_balance,
+                'discount'          =>  $discount
             ]);
 
             $data = [
@@ -133,8 +135,11 @@ class GladTidingService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
                 }
+                
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
+
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
@@ -183,6 +188,7 @@ class GladTidingService
             $vendor = self::$vendor;
 
             $electricity = Electricity::whereVendorId($vendor->id)->whereDiscoId($discoId)->first();
+            $discount = $electricity->discount;
 
             $transaction = ElectricityTransaction::create([
                 'user_id'                   =>  Auth::id(),
@@ -197,7 +203,8 @@ class GladTidingService
                 'customer_name'             =>  $customerName,
                 'customer_address'          =>  $customerAddress,
                 'balance_before'            =>  Auth::user()->account_balance,
-                'balance_after'             =>  Auth::user()->account_balance
+                'balance_after'             =>  Auth::user()->account_balance,
+                'discount'                  =>  $discount
             ]);
 
             $data = [
@@ -230,6 +237,8 @@ class GladTidingService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
                 }
+
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
 
@@ -273,6 +282,8 @@ class GladTidingService
                 return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
             }
 
+            $discount = $cable->discount;
+
             $transaction = CableTransaction::create([
                 'user_id'             =>  Auth::id(),
                 'vendor_id'           =>  $vendor->id,
@@ -284,7 +295,8 @@ class GladTidingService
                 'customer_name'       =>  $customer,
                 'amount'              =>  $cable_plan->amount,
                 'balance_before'      =>  Auth::user()->account_balance,
-                'balance_after'       =>  Auth::user()->account_balance
+                'balance_after'       =>  Auth::user()->account_balance,
+                'discount'            =>  $discount
             ]);
 
             $data = [
@@ -313,6 +325,9 @@ class GladTidingService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'cable');
                 }
+
+                
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
 
@@ -356,6 +371,8 @@ class GladTidingService
                 return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
             }
 
+            $discount = $network->data_discount;
+
             $transaction = DataTransaction::create([
                 'user_id'            =>  Auth::id(),
                 'vendor_id'          =>  $vendor->id,
@@ -370,7 +387,8 @@ class GladTidingService
                 'balance_after'      =>  Auth::user()->account_balance,
                 'plan_network'       =>  $network->name,
                 'plan_name'          =>  $plan->size,
-                'plan_amount'        =>  $plan->amount
+                'plan_amount'        =>  $plan->amount,
+                'discount'           =>  $discount
             ]);
 
             $data = [
@@ -400,6 +418,8 @@ class GladTidingService
                 if (auth()->user()->isReseller()) {
                     $amount = CalculateDiscount::applyDiscount($amount, 'data');
                 }
+
+                $amount = CalculateDiscount::calculate($amount, $discount);
 
                 self::$authUser->transaction($amount);
 

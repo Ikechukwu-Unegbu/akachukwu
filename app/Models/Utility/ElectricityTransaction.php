@@ -37,6 +37,7 @@ class ElectricityTransaction extends Model
         'status',
         'created_at',
         'updated_at',
+        'discount'
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -61,6 +62,7 @@ class ElectricityTransaction extends Model
             'api_response',
             'token',
             'status',
+            'discount'
         ]);
         // Chain fluent methods for configuration options
     }

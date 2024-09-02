@@ -5,8 +5,22 @@
                 <h5 class="modal-title">Vendor API Response</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <pre><code>{!! json_encode($response, JSON_PRETTY_PRINT) !!}</code></pre>
+            <div class="modal-body"> 
+                @if (!empty($response))           
+                @php
+                    $decodedHtml = html_entity_decode($response);
+                    $decodedResponse = json_decode($decodedHtml, true);
+                @endphp
+                <ul>
+                    @if (is_array($decodedResponse))
+                    @foreach ($decodedResponse as $key => $value)
+                        @if (!is_array($key) && !is_array($value))
+                        <li>{{ $key }}: {{ $value }}</li>
+                        @endif
+                    @endforeach
+                    @endif
+                </ul>
+                @endif
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -17,4 +17,19 @@ class CalculateDiscount
 
         return $amount;
     }
+
+    public static function calculate(float $amount, float $discountRate): int
+    {
+        if ($discountRate == 0) {
+            return (int) $amount;
+        }
+    
+        if ($discountRate < 0 || $discountRate > 100) {
+            throw new \InvalidArgumentException('Discount rate must be between 0 and 100.');
+        }
+    
+        $discount = ($discountRate / 100) * $amount;
+    
+        return (int) ($amount - $discount);
+    }
 }

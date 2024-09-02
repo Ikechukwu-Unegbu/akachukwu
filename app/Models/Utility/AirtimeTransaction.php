@@ -29,6 +29,7 @@ class AirtimeTransaction extends Model
         'api_data_id',
         'api_response',
         'status',
+        'discount'
     ];
 
     public function getActivitylogOptions(): LogOptions
@@ -46,7 +47,8 @@ class AirtimeTransaction extends Model
         'balance_after',
         'api_data_id',
         'api_response',
-        'status', ]);
+        'status',
+        'discount' ]);
         // Chain fluent methods for configuration options
     }
 

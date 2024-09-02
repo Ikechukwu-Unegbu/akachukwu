@@ -34,15 +34,10 @@ class DataTransaction extends Model
         'api_data_id',
         'api_response',
         'status',
+        'discount'
     
     ];
     
-
-    public function __construct()
-    {
-        
-    }
-
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -63,7 +58,8 @@ class DataTransaction extends Model
         'plan_amount',
         'api_data_id',
         'api_response',
-        'status',]);
+        'status',
+        'discount']);
         // Chain fluent methods for configuration options
     }
 

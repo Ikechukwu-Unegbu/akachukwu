@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\API\AccountManagementContorller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\V1\API\AirtimeApiController;
@@ -64,7 +65,10 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     //fetch logos
     Route::get('logo', [AppAssetsController::class, 'getSpecifiedColumn']);
 
+
     Route::post('user', [UserProfileController::class, 'update']);
+    Route::get('delete-user', [AccountManagementContorller::class, 'initiateAccountDeletion']);
+    Route::post('confirm-delete', [AccountManagementContorller::class, 'confirmAccountDeletion']);
 
     Route::get('/upgrade-user', [UpgradeController::class, 'store']);
 
@@ -89,6 +93,7 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     //notification
     Route::get('/notifications', [NotificationsController::class, 'index']);
     Route::get('/referrer', [ReferralController::class, 'index']);
+    Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_wallet']);
 });
 
 
