@@ -8,40 +8,100 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <title>{{ config('app.name', 'Laravel') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.css" rel="stylesheet" />
 </head>
 
 <body class="bg-white text-gray-800">
     <!-- Navbar -->
-    <nav class="flex justify-between items-center p-4 shadow-md">
-        <div class="text-2xl font-bold text-blue-900">
-            <span class="font-semibold">vastel</span>
+    <nav class="flex justify-between items-center p-4 md:px-[3rem] shadow-md">
+        <div class="text-2xl font-bold text-vastel_blue">
+            <!-- <span class="font-semibold">vastel</span> -->
+             <img class="" src="{{asset('images/vastel-logo.svg')}}" alt="">
         </div>
         <div class="hidden md:flex space-x-6">
-            <a href="#" class="text-gray-600 hover:text-vastel_blue">Home</a>
-            <a href="#" class="text-gray-600 hover:text-vastel_blue">Company</a>
-            <a href="#" class="text-gray-600 hover:text-vastel_blue">Blog</a>
+            <a href="#" class="text-vastel_blue hover:text-vastel_blue">Home</a>
+            <a href="#" class="text-vastel_blue hover:text-vastel_blue">Company</a>
+            <a href="#" class="text-vastel_blue hover:text-vastel_blue">Blog</a>
         </div>
         <div class="hidden md:flex space-x-4">
-            <a href="#" class="text-gray-600 hover:text-vastel_blue">Log In</a>
+            <a href="#" class="text-vastel_blue hover:text-vastel_blue">Log In</a>
             <a href="#" class="bg-vastel_blue text-white py-2 px-4 rounded-md hover:bg-vastel_blue">Register</a>
         </div>
-        <button class="md:hidden text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600">
+        <button type="button" class="md:hidden text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600" data-drawer-target="new-nav" data-drawer-show="new-nav" aria-controls="new-nav">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M4 6h16M4 12h16M4 18h16" />
             </svg>
         </button>
+     
+
+         <!-- off canvas begin -->
+    <div id="new-nav" class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-label">
+        <h5 id="drawer-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400"><svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>Info</h5>
+        <button type="button" data-drawer-hide="new-nav" aria-controls="new-nav" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">Close menu</span>
+        </button>
+            
+        <!-- <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">Supercharge your hiring by taking advantage of our <a href="#" class="text-blue-600 underline dark:text-blue-500 hover:no-underline">limited-time sale</a> for Flowbite Docs + Job Board. Unlimited access to over 190K top-ranked candidates and the #1 design job board.</p> -->
+        <!-- <div class="grid grid-cols-2 gap-4">
+            <a href="#" class="px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Learn more</a>
+            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Get access <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+        </svg></a>
+        </div> -->
+        <div class="off-canvas-nav  text-vastel_blue p-4">
+    <ul class="flex flex-col gap-[1rem]">
+        <li><a href="/" class="text-vastel_blue hover:text-blue-400">Home</a></li>
+        <li><a href="{{ route('airtime.index') }}" class="text-vastel_blue hover:text-blue-400">Airtime</a></li>
+        <li><a href="{{ route('data.index') }}" class="text-vastel_blue hover:text-blue-400">Internet Data</a></li>
+        <li><a href="{{ route('education.result.index') }}" class="text-vastel_blue hover:text-blue-400">Result Checker</a></li>
+        <li>
+            <a href="{{ route('dashboard') }}" class="text-vastel_blue hover:text-blue-400">
+                @guest Bills Payment @else Dashboard @endguest
+            </a>
+        </li>
+        <li><a href="{{ route('profile.edit') }}" class="text-vastel_blue hover:text-blue-400">Profile</a></li>
+        <li><a href="{{ route('payment.index') }}" class="text-vastel_blue hover:text-blue-400">Fund Account</a></li>
+
+        @guest
+        <li>
+            <ul class="flex flex-col gap-[1rem]">
+                <li><a href="{{ route('register') }}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Register</a></li>
+                <li><a href="{{ route('login') }}" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Login</a></li>
+            </ul>
+        </li>
+        @else
+        <li>
+            <form action="{{ route('logout') }}" method="post">
+                @csrf
+                <button class="bg-blue-500 text-white py-2 rounded hover:bg-blue-600 w-full text-left">Logout</button>
+            </form>
+        </li>
+        @endguest
+    </ul>
+</div>
+
+
+    </div>
+    <!-- off canvas end -->
     </nav>
 
+   
+
     <!-- Hero Section -->
-    <section class="flex flex-col gap-5 md:flex-row items-center justify-between px-4 py-12 max-w-7xl mx-auto">
+    <section class="flex flex-col gap-5 md:flex-row items-center justify-between px-4 py-12  bg-gray-50 md:px-[3rem]">
         <!-- Text Content -->
         <div class="md:w-1/2 space-y-6">
-            <h1 class="text-4xl md:text-5xl font-bold text-blue-900">Empower Your Everyday Transactions With Ease</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-vastel_blue">Empower Your Everyday Transactions With Ease</h1>
             <p class="text-lg text-gray-600">Fund Your Account, Send Money, Pay Bills, And More — All In One App.</p>
             <a href="#"
-                class="bg-blue-900 text-white py-3 px-6 rounded-md hover:bg-blue-800 inline-block text-lg font-semibold">Get
+                class="bg-vastel_blue text-white py-3 px-6 rounded-md hover:bg-blue-800 inline-block text-lg font-semibold">Get
                 Started</a>
         </div>
 
@@ -60,7 +120,7 @@
             <div class="bg-blue-50 p-6 rounded-lg shadow-md">
                 <div class="flex items-center justify-center w-12 h-12 mb-4 bg-white rounded-full">
                     <!-- Placeholder for Icon -->
-                    <img src="https://via.placeholder.com/40" alt="Icon 1">
+                    <img src="{{asset('images/card.svg')}}" alt="Icon 1">
                 </div>
                 <p class="text-gray-600">Simplify your bill payments for airtime, data, electricity, and cable TV with our intuitive, all-in-one app</p>
             </div>
@@ -68,7 +128,7 @@
             <div class="bg-blue-50 p-6 rounded-lg shadow-md">
                 <div class="flex items-center justify-center w-12 h-12 mb-4 bg-white rounded-full">
                     <!-- Placeholder for Icon -->
-                    <img src="https://via.placeholder.com/40" alt="Icon 2">
+                    <img src="{{asset('images/sync.svg')}}" alt="Icon 2">
                 </div>
                 <p class="text-gray-600">Enjoy absolute peace of mind with our top-notch security, including 2FA and encrypted transactions.</p>
             </div>
@@ -76,7 +136,7 @@
             <div class="bg-blue-50 p-6 rounded-lg shadow-md">
                 <div class="flex items-center justify-center w-12 h-12 mb-4 bg-white rounded-full">
                     <!-- Placeholder for Icon -->
-                    <img src="https://via.placeholder.com/40" alt="Icon 3">
+                    <img src="{{asset('images/upgrade.svg')}}" alt="Icon 3">
                 </div>
                 <p class="text-gray-600">Upgrade to a Reseller account, earn by reselling airtime and data, and manage everything.</p>
             </div>
@@ -84,7 +144,7 @@
             <div class="bg-blue-50 p-6 rounded-lg shadow-md md:col-span-2">
                 <div class="flex items-center justify-center w-12 h-12 mb-4 bg-white rounded-full">
                     <!-- Placeholder for Icon -->
-                    <img src="https://via.placeholder.com/40" alt="Icon 4">
+                    <img src="{{asset('images/widget.svg')}}" alt="Icon 3">
                 </div>
                 <p class="text-gray-600">Access a wide range of services, from funding your wallet to managing transactions and earning referral bonuses.</p>
             </div>
@@ -92,7 +152,7 @@
             <div class="bg-blue-50 p-6 rounded-lg shadow-md">
                 <div class="flex items-center justify-center w-12 h-12 mb-4 bg-white rounded-full">
                     <!-- Placeholder for Icon -->
-                    <img src="https://via.placeholder.com/40" alt="Icon 5">
+                    <img src="{{asset('images/card.svg')}}" alt="Icon 1">
                 </div>
                 <p class="text-gray-600">Simplify your bill payments for airtime, data, electricity, and cable TV with our intuitive, all-in-one app</p>
             </div>
@@ -100,43 +160,46 @@
     </section>
 
     <!--  -->
+
+
+    
     <div class="bg-gray-50">
         <section class="max-w-7xl mx-auto px-4 py-12">
             <!-- Header -->
             <div class="text-center mb-12">
-                <h2 class="text-2xl md:text-4xl font-semibold text-blue-900">How To Get The Best Vastel App</h2>
+                <h2 class="text-2xl md:text-4xl font-semibold text-vastel_blue">How To Get The Best Vastel App</h2>
                 <p class="text-gray-600 mt-4">Follow these four easy steps to get the best of the vastel Web and mobile application</p>
             </div>
             <!-- Steps -->
             <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
                 <!-- Step 1 -->
                 <div class="bg-white p-6 rounded-lg shadow text-center">
-                    <img src="path/to/image1.svg" alt="Step 1" class="mx-auto mb-6">
-                    <h3 class="font-semibold text-lg text-blue-900 mb-2">Step 1</h3>
+                    <img src="{{asset('images/step1.svg')}}" alt="Step 1" class="mx-auto mb-6">
+                    <h3 class="font-semibold text-lg text-vastel_blue mb-2">Step 1</h3>
                     <p class="text-gray-600">Sign up and create your account on the web or mobile app.</p>
                 </div>
                 <!-- Step 2 -->
                 <div class="bg-white p-6 rounded-lg shadow text-center">
-                    <img src="path/to/image2.svg" alt="Step 2" class="mx-auto mb-6">
-                    <h3 class="font-semibold text-lg text-blue-900 mb-2">Step 2</h3>
+                    <img src="{{asset('images/step2.svg')}}" alt="Step 2" class="mx-auto mb-6">
+                    <h3 class="font-semibold text-lg text-vastel_blue mb-2">Step 2</h3>
                     <p class="text-gray-600">Add funds to your wallet.</p>
                 </div>
                 <!-- Step 3 -->
                 <div class="bg-white p-6 rounded-lg shadow text-center">
-                    <img src="path/to/image3.svg" alt="Step 3" class="mx-auto mb-6">
-                    <h3 class="font-semibold text-lg text-blue-900 mb-2">Step 3</h3>
+                    <img src="{{asset('images/step3.svg')}}" alt="Step 3" class="mx-auto mb-6">
+                    <h3 class="font-semibold text-lg text-vastel_blue mb-2">Step 3</h3>
                     <p class="text-gray-600">Explore and use our services — send money, pay bills, and more.</p>
                 </div>
                 <!-- Step 4 -->
                 <div class="bg-white p-6 rounded-lg shadow text-center">
-                    <img src="path/to/image4.svg" alt="Step 4" class="mx-auto mb-6">
-                    <h3 class="font-semibold text-lg text-blue-900 mb-2">Step 4</h3>
+                    <img src="{{asset('images/step4.svg')}}" alt="Step 4" class="mx-auto mb-6">
+                    <h3 class="font-semibold text-lg text-vastel_blue mb-2">Step 4</h3>
                     <p class="text-gray-600">Refer friends and start earning or become a merchant.</p>
                 </div>
             </div>
             <!-- CTA Button -->
             <div class="text-center mt-12">
-                <a href="#" class="bg-blue-900 text-white py-3 px-6 rounded-lg shadow hover:bg-blue-800 transition duration-300">
+                <a href="#" class="bg-vastel_blue text-white py-3 px-6 rounded-lg shadow hover:bg-blue-800 transition duration-300">
                     Open An Account In Minutes →
                 </a>
             </div>
@@ -149,10 +212,11 @@
     <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
         <!-- Phone Image Placeholder -->
         <div class="flex justify-center w-full md:w-1/2">
-            <div class="bg-gray-200 rounded-lg w-72 h-96 md:w-80 md:h-[500px] flex items-center justify-center">
+            <!-- <div class="bg-gray-200 rounded-lg w-72 h-96 md:w-80 md:h-[500px] flex items-center justify-center"> -->
                 <!-- Placeholder for the mobile image -->
-                <span class="text-gray-500">Phone Image Placeholder</span>
-            </div>
+                 <img src="{{asset('images/phone.svg')}}" alt="">
+                <!-- <span class="text-gray-500">Phone Image Placeholder</span> -->
+            <!-- </div> -->
         </div>
 
         <!-- QR Code and Download Section -->
@@ -165,7 +229,7 @@
                 </p>
             </div>
             <div class="flex mt-4 space-x-4">
-                <img src="https://via.placeholder.com/120x40?text=App+Store" alt="Download on the App Store">
+                <img src="{{}}" alt="Download on the App Store">
                 <img src="https://via.placeholder.com/120x40?text=Google+Play" alt="Get it on Google Play">
             </div>
         </div>
@@ -178,8 +242,7 @@
 <section class="py-16 bg-white">
     <div class="max-w-6xl mx-auto px-4">
         <h2 class="text-3xl font-bold text-center text-blue-800 mb-8">What Our Users Are Saying</h2>
-        <div class="flex justify-between items-center mb-8">
-            <div class="flex space-x-4">
+            <div class="flex space-x-4 flex-col md:flex-row md:gap-[2rem] gap-[2rem]">
                 <!-- Testimonial Item 1 -->
                 <div class="max-w-sm bg-white rounded-lg shadow-md p-6">
                     <img src="https://via.placeholder.com/150" alt="User 1" class="w-full h-48 object-cover rounded-lg mb-4">
@@ -208,7 +271,7 @@
 </section>
 
 <!-- Footer Section -->
-<footer class="bg-blue-900 text-white py-10">
+<footer class="bg-vastel_blue text-white py-10">
     <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Column 1 -->
         <div>
@@ -265,7 +328,7 @@
     </div>
 </footer>
 
-
+<script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
 </body>
 
 </html>
