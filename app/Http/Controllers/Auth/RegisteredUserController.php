@@ -41,10 +41,11 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'min:3', 'max:255', 'alpha_dash', 'unique:'.User::class],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults(),         function ($attribute, $value, $fail) {
+            'password' => ['required', Rules\Password::defaults(),         function ($attribute, $value, $fail) {
                 if (!preg_match('/[A-Z]/', $value)) {
                     $fail('The '.$attribute.' must contain at least one uppercase letter.');
                 }
@@ -57,13 +58,14 @@ class RegisteredUserController extends Controller
             }
     ],
             'terms_and_conditions'=>['required'],
-            'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/']
+            'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
+            'referral_code'=>['nullable', 'string']
         ]);
 
     
            return DB::transaction(function () use($request) {
                 $user = User::create([
-                    'name' => $request->name,
+                    'name' => $request->first_name.' '.$request->last_name,
                     'username' => $request->username,
                     'email' => $request->email,
                     'password' => Hash::make($request->password),

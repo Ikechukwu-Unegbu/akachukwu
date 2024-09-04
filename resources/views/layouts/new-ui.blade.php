@@ -19,6 +19,8 @@
             display: none;
         }
     </style>
+
+    @yield('head')
 </head>
 
 <body class="bg-white text-gray-800">

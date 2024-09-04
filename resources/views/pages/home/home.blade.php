@@ -233,7 +233,7 @@
             </div>
         </div>
         <!-- <p>&copy; 2024 Vastel.io</p> -->
-        <p class="font-semibold">&copy; 2024 Vastel.io</p>
+        <p class="font-semibold">&copy; 2024 Vastel</p>
 <p class="font-semibold">Made with ❤️ by <a href="https://www.halcyonaegisinc.xyz" class="text-white font-semibold hover:underline" target="_blank">Halcyon Aegis Internet</a></p>
 
     </div>
