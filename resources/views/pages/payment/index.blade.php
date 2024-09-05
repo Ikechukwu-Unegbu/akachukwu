@@ -23,7 +23,7 @@
         <div class="dashboard_section">
             <!-- card indicators -->
             <div class="airtime_form">
-                <form action="{{ route('payment.process') }}" method="POST" class="utility-form">
+                <form action="{{ route('payment.process') }}" method="GET" class="utility-form">
                     @csrf
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
@@ -33,6 +33,7 @@
                     <div class="row">
                         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
                             <div class="mb-3 form-floating">
+                                <input type="hidden" value="{{ auth()->user()->username }}" name="user">
                                 <input type="number" name="amount" class="form-control @error('amount') is-invalid @enderror" id="amount" placeholder="">
                                 <label for="amount">Enter Amount</label>
                                 <span style="font-size: 15px" class="text-danger" id="amount_err"></span>
