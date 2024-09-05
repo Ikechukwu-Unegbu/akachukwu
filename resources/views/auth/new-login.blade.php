@@ -34,8 +34,7 @@
     <div class=" px-[6rem] py-2 h-[4rem]  flex justify-between items-center">
         <!-- Logo Section -->
         <div class="flex items-center space-x-2">
-            <img src="{{asset('images/vastel-logo.svg')}}"  alt="Vastel Logo" class="h-[5rem] w-[5rem]">
-            <!-- <span class="text-blue-600 text-lg font-semibold">vastel</span> -->
+            <a href="/"><img src="{{asset('images/vastel-logo.svg')}}"  alt="Vastel Logo" class="h-[5rem] w-[5rem]"></a>
         </div>
 
         <!-- Contact Support -->
@@ -52,7 +51,7 @@
     <!-- Left Section -->
     <div class="w-full md:w-[50%] bg-white p-8 shadow-lg">
         <div class="mb-6">
-            <a href="#" class="text-blue-600"><i class="fas fa-arrow-left"></i> Back</a>
+            <a href="/" class="text-blue-600"><i class="fas fa-arrow-left"></i> Back</a>
         </div>
         <h2 class="text-3xl font-bold mb-6">Welcome back</h2>
         <p class="text-gray-500 mb-4">Login to you account so you can pay and purchase top-ups faster.</p>
@@ -97,7 +96,7 @@
                 </button>
             </form>
         <div class="mt-6 text-center font-semibold">
-            <p>Have an account? <a href="#" class="text-blue-600 font-semibold">Click here to login</a></p>
+            <p>Don't have account? <a href="{{route('register')}}" class="text-blue-600 font-semibold">Click here to Register</a></p>
         </div>
         <div class="mt-6 flex justify-center space-x-4">
             <a href="#"><img src="{{asset('images/playstore.svg')}}" alt="App Store" class="w-24"></a>

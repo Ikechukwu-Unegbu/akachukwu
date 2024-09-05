@@ -5,7 +5,7 @@
     <div class=" px-[6rem] py-2 h-[4rem]  flex justify-between items-center">
         <!-- Logo Section -->
         <div class="flex items-center space-x-2">
-            <img src="{{asset('images/vastel-logo.svg')}}"  alt="Vastel Logo" class="h-[5rem] w-[5rem]">
+            <a href="/"><img src="{{asset('images/vastel-logo.svg')}}"  alt="Vastel Logo" class="h-[5rem] w-[5rem]"></a>
             <!-- <span class="text-blue-600 text-lg font-semibold">vastel</span> -->
         </div>
 
@@ -23,7 +23,7 @@
     <!-- Left Section -->
     <div class="w-full md:w-[50%] bg-white p-8 shadow-lg">
         <div class="mb-6">
-            <a href="#" class="text-blue-600"><i class="fas fa-arrow-left"></i> Back</a>
+            <a href="/" class="text-blue-600"><i class="fas fa-arrow-left"></i> Back</a>
         </div>
         <h2 class="text-3xl font-bold mb-6">Get started</h2>
         <p class="text-gray-500 mb-4">Create an account so you can pay and purchase top-ups faster.</p>
