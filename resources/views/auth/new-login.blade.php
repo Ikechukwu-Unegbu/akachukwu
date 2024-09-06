@@ -81,10 +81,10 @@
     </button>
 </div>
 
-<div class="mb-3 form-floating">
+            <div class="mb-3 form-floating">
                 <div class="form-check">
                     <input type="checkbox" name="terms_and_conditions" class="form-check-input" id="exampleCheck1">
-                    <label class="text-xs form-check-label" for="exampleCheck1">I agree to <a class="text-danger" href="#"> terms and conditions</a></label>
+                    <label class="text-xs form-check-label" for="exampleCheck1">Remember me?</label>
                 </div>
             </div>
 
