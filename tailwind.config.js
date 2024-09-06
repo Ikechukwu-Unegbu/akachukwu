@@ -14,6 +14,10 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors:{
+                vastel_blue:'#0018A8',
+                hell:"red"
+            },
         },
     },
 
