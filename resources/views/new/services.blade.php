@@ -2,64 +2,64 @@
 
 @section('body')
 <!-- <div class="bg-gray-100 p-4 md:p-8"> -->
-    <div class=" bg-white rounded-lg shadow-md p-6">
+    <div class=" bg-white rounded-lg  p-6">
         <h1 class="text-2xl font-bold mb-6">Bill Payment</h1>
         
         <!-- Main Services -->
         <div class="grid grid-cols-3 sm:grid-cols-5 gap-4 mb-8">
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                    <i class="fas fa-mobile-alt text-blue-600 text-xl"></i>
+            <a href="" class="flex flex-col w-[100%] md:w-[60%] rounded-[10px] shadow-lg  p-5 md:p-2 shadow-lg p-5 items-center">
+                <div class="w-12 h-12  flex items-center justify-center">
+                    <i class="fas  fa-mobile-alt text-vastel_blue text-3xl"></i>
                 </div>
-                <span class="text-xs text-center">Airtime</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                    <i class="fas fa-wifi text-blue-600 text-xl"></i>
+                <span class="font-semibold text-vastel_blue text-xs text-center">Airtime</span>
+            </a>
+            <a href="" class="flex flex-col w-[100%] md:w-[60%] rounded-[10px] shadow-lg  p-5 md:p-2 items-center">
+                <div class="w-12 h-12  flex items-center justify-center">
+                    <i class="fas  fa-wifi text-vastel_blue text-3xl"></i>
                 </div>
-                <span class="text-xs text-center">Data</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                    <i class="fas fa-tv text-blue-600 text-xl"></i>
+                <span class="font-semibold text-vastel_blue text-xs text-center">Data</span>
+            </a>
+            <a href="" class="flex flex-col w-[100%] md:w-[60%] rounded-[10px] shadow-lg  p-5 md:p-2 items-center">
+                <div class="w-12 h-12  flex items-center justify-center">
+                    <i class="fas  fa-tv text-vastel_blue text-3xl"></i>
                 </div>
-                <span class="text-xs text-center">TV</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                    <i class="fas fa-bolt text-blue-600 text-xl"></i>
+                <span class="font-semibold text-vastel_blue text-xs text-center">TV</span>
+            </a>
+            <a href="" class="flex flex-col w-[100%] md:w-[60%] rounded-[10px] shadow-lg  p-5 md:p-2 items-center">
+                <div class="w-12 h-12  flex items-center justify-center">
+                    <i class="fas  fa-bolt text-vastel_blue text-3xl"></i>
                 </div>
-                <span class="text-xs text-center">Electricity</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                    <i class="fas fa-exchange-alt text-blue-600 text-xl"></i>
+                <span class="font-semibold text-vastel_blue text-xs text-center">Electricity</span>
+            </a>
+            <!-- <div class="flex flex-col w-[100%] md:w-[60%] rounded-[10px] shadow-lg  p-5 md:p-2 items-center">
+                <div class="w-12 h-12  flex items-center justify-center">
+                    <i class="fas  fa-exchange-alt text-vastel_blue text-3xl"></i>
                 </div>
-                <span class="text-xs text-center">Internet</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                    <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
+                <span class="font-semibold text-vastel_blue text-xs text-center">Internet</span>
+            </div> -->
+            <a href="" class="flex flex-col w-[100%] md:w-[60%] rounded-[10px] shadow-lg  p-5 md:p-2 items-center">
+                <div class="w-12 h-12  flex items-center justify-center">
+                    <i class="fas  fa-graduation-cap text-vastel_blue text-3xl"></i>
                 </div>
-                <span class="text-xs text-center">Education</span>
-            </div>
+                <span class="font-semibold text-vastel_blue text-xs text-center">Education</span>
+            </a>
         </div>
 
         <!-- Others Section -->
         <h2 class="text-lg font-semibold mb-4">Others</h2>
         <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                    <i class="fas fa-university text-blue-600 text-xl"></i>
+            <a href="" class="flex flex-col w-[100%] md:w-[60%] rounded-[10px] shadow-lg  p-5 md:p-2 items-center">
+                <div class="w-12 h-12  flex items-center justify-center">
+                    <i class="fas  fa-university text-vastel_blue text-3xl"></i>
                 </div>
-                <span class="text-xs text-center">Transfer</span>
-            </div>
-            <div class="flex flex-col items-center">
-                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-2">
-                    <i class="fas fa-hand-holding-usd text-blue-600 text-xl"></i>
+                <span class="font-semibold text-vastel_blue text-xs text-center">Transfer</span>
+            </a>
+            <a href="" class="flex flex-col w-[100%] md:w-[60%] rounded-[10px] shadow-lg  p-5 md:p-2 items-center">
+                <div class="w-12 h-12  flex items-center justify-center">
+                    <i class="fas  fa-hand-holding-usd text-vastel_blue text-3xl"></i>
                 </div>
-                <span class="text-xs text-center">Refer & Earn</span>
-            </div>
+                <span class="font-semibold text-vastel_blue text-xs text-center">Refer & Earn</span>
+            </a>
         </div>
     </div>
 <!-- </div> -->

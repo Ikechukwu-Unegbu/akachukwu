@@ -2,148 +2,112 @@
 
 @section('body')
 
-
-    <!-- Transactions Header -->
-    <div class="flex justify-between items-center mb-6">
-        <h2 class="text-xl font-bold">Transactions</h2>
-        <div class="flex space-x-4">
-            <!-- Categories Dropdown -->
-            <div class="relative">
-                <select class="appearance-none border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                    <option>All Categories</option>
-                    <option>Airtime</option>
-                    <option>Data</option>
-                    <option>Electricity</option>
-                    <option>Transfers</option>
-                </select>
-                <svg xmlns="http://www.w3.org/2000/svg" class="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 12a1 1 0 01-.707-.293l-4-4a1 1 0 111.414-1.414L10 9.586l3.293-3.293a1 1 0 011.414 1.414l-4 4A1 1 0 0110 12z" clip-rule="evenodd" />
-                </svg>
+<div class="max-w-lg w-full bg-white p-8 ">
+        <div class="flex items-center mb-6">
+            <a href="#" class="text-blue-600">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+        <h2 class="text-2xl font-bold mb-4">Airtime Purchase</h2>
+        
+        <form>
+        <button type="button" data-modal-target="beneficiaryModal" data-modal-toggle="beneficiaryModal" class="w-full bg-gray-100 text-gray-900 border border-gray-300 py-2 rounded-lg mb-4">
+                Select Beneficiary
+            </button>
+            <div class="relative z-0 mb-6 w-full group">
+                <input type="text" name="mobile-number" id="mobile-number" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                <label for="mobile-number" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Mobile Number</label>
+                <i class="fas fa-user absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400"></i>
             </div>
-
-            <!-- Date Selector -->
-            <div class="relative">
-                <select class="appearance-none border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600">
-                    <option>Mar 2024</option>
-                    <option>Feb 2024</option>
-                    <option>Jan 2024</option>
+            <div class="relative z-0 mb-6 w-full group">
+                <input type="number" name="amount" id="amount" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                <label for="amount" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Amount (₦)</label>
+            </div>
+            {{--<div class="relative z-0 mb-6 w-full group">
+                <select id="network" name="network" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                    <option disabled selected>Select Network</option>
+                    <option>MTN</option>
+                    <option>Airtel</option>
+                    <option>Glo</option>
+                    <option>9mobile</option>
                 </select>
-                <svg xmlns="http://www.w3.org/2000/svg" class="absolute right-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 12a1 1 0 01-.707-.293l-4-4a1 1 0 111.414-1.414L10 9.586l3.293-3.293a1 1 0 011.414 1.414l-4 4A1 1 0 0110 12z" clip-rule="evenodd" />
-                </svg>
+                <label for="network" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Select Network</label>
+            </div>--}}
+            <div class="relative z-0 mb-6 w-full group">
+                <!-- <label for="network" class="block mb-2 text-sm text-gray-500 dark:text-gray-400">Select Network</label> -->
+                <button id="dropdownNetwork" data-dropdown-toggle="networkDropdown" class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer">
+                    <span id="selectedNetwork">Select Network</span>
+                </button>
+                <div id="networkDropdown" class="hidden z-10 w-full bg-white rounded-lg shadow-lg">
+                    <ul class="py-2 text-sm text-gray-700">
+                        <li class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100" onclick="selectNetwork('MTN', 'mtn.png')">
+                            <img src="https://via.placeholder.com/24x24" alt="MTN Logo" class="mr-3 w-6 h-6"> MTN
+                        </li>
+                        <li class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100" onclick="selectNetwork('Airtel', 'airtel.png')">
+                            <img src="https://via.placeholder.com/24x24" alt="Airtel Logo" class="mr-3 w-6 h-6"> Airtel
+                        </li>
+                        <li class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100" onclick="selectNetwork('Glo', 'glo.png')">
+                            <img src="https://via.placeholder.com/24x24" alt="Glo Logo" class="mr-3 w-6 h-6"> Glo
+                        </li>
+                        <li class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100" onclick="selectNetwork('9mobile', '9mobile.png')">
+                            <img src="https://via.placeholder.com/24x24" alt="9mobile Logo" class="mr-3 w-6 h-6"> 9Mobile
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <button type="submit" class="w-full bg-vastel_blue text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700">Proceed</button>
+        </form>
+    </div>
+
+    
+  <!-- Main modal -->
+   <!-- Modal -->
+   <div id="beneficiaryModal" tabindex="-1" class="hidden fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+        <div class="bg-white rounded-lg w-full max-w-sm p-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="text-lg font-medium text-gray-900">Select Beneficiary</h3>
+                <button type="button" class="text-gray-400 hover:text-gray-500" data-modal-hide="beneficiaryModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="py-4">
+                <!-- Beneficiary List -->
+                <ul class="space-y-2">
+                    <li class="bg-gray-100 py-2 px-4 rounded cursor-pointer hover:bg-gray-200">08123456789</li>
+                    <li class="bg-gray-100 py-2 px-4 rounded cursor-pointer hover:bg-gray-200">08123456789</li>
+                    <li class="bg-gray-100 py-2 px-4 rounded cursor-pointer hover:bg-gray-200">08123456789</li>
+                </ul>
+                
             </div>
         </div>
     </div>
 
-    <!-- Transactions List -->
-    <div class="bg-white rounded-lg shadow p-4 space-y-4">
-        <!-- Transaction Item -->
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <!-- Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 6h18M3 14h18m-9 4h9" />
-                </svg>
-                <div>
-                    <p class="font-semibold">Airtime Purchased (MTN)</p>
-                    <p class="text-sm text-gray-500">Phone No: 08123456789</p>
-                    <p class="text-sm text-gray-500">2024-03-23 09:15:33</p>
-                    <a href="#" class="text-blue-600 text-sm">View Receipt</a>
-                </div>
-            </div>
-            <div class="text-right">
-                <p class="font-bold text-green-600">₦200</p>
-                <span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">Successful</span>
-            </div>
-        </div>
 
-        <hr>
 
-        <!-- Another Transaction Item -->
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <!-- Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m-6 0l3-3V8m-6 8h18" />
-                </svg>
-                <div>
-                    <p class="font-semibold">Transfer to JOSEPHINE AYO</p>
-                    <p class="text-sm text-gray-500">Panpay | 05075368</p>
-                    <p class="text-sm text-gray-500">2024-03-23 09:15:33</p>
-                    <a href="#" class="text-blue-600 text-sm">View Receipt</a>
-                </div>
-            </div>
-            <div class="text-right">
-                <p class="font-bold text-green-600">₦200</p>
-                <span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">Successful</span>
-            </div>
-        </div>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.5.0/flowbite.min.js"></script> -->
 
-        <hr>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.5.0/flowbite.min.js"></script> -->
+    <script>
+        function selectNetwork(networkName, logoSrc) {
+            document.getElementById('selectedNetwork').innerHTML = `<img src="${logoSrc}" alt="${networkName} Logo" class="inline-block mr-3 w-6 h-6"> ${networkName}`;
+            document.getElementById('networkDropdown').classList.add('hidden');
+        }
+    </script>
 
-        <!-- Another Transaction Item -->
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <!-- Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-                <div>
-                    <p class="font-semibold">Transfer to AYOBAMI JOYCE</p>
-                    <p class="text-sm text-gray-500">Panpay | 05075363</p>
-                    <p class="text-sm text-gray-500">2024-03-23 09:15:33</p>
-                    <a href="#" class="text-blue-600 text-sm">View Receipt</a>
-                </div>
-            </div>
-            <div class="text-right">
-                <p class="font-bold text-red-600">₦200</p>
-                <span class="text-xs text-red-600 bg-red-100 px-2 py-1 rounded-full">Failed</span>
-            </div>
-        </div>
+<script>
+        // Custom close modal functionality
+        document.querySelectorAll('.close-modal').forEach(button => {
+            button.addEventListener('click', function() {
+                const modal = document.getElementById('beneficiaryModal');
+                modal.classList.add('hidden');
+            });
+        });
 
-        <hr>
-
-        <!-- Another Transaction Item -->
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <!-- Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 6h18M3 14h18m-9 4h9" />
-                </svg>
-                <div>
-                    <p class="font-semibold">Data Purchased (GLO)</p>
-                    <p class="text-sm text-gray-500">Phone No: 08123456789</p>
-                    <p class="text-sm text-gray-500">2024-03-23 09:15:33</p>
-                    <a href="#" class="text-blue-600 text-sm">View Receipt</a>
-                </div>
-            </div>
-            <div class="text-right">
-                <p class="font-bold text-green-600">₦400</p>
-                <span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">Successful</span>
-            </div>
-        </div>
-
-        <hr>
-
-        <!-- Another Transaction Item -->
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <!-- Icon -->
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14m-7 7V5" />
-                </svg>
-                <div>
-                    <p class="font-semibold">Electricity Purchase (IKEJA Electric)</p>
-                    <p class="text-sm text-gray-500">Account No: 1234567890</p>
-                    <p class="text-sm text-gray-500">2024-03-23 09:15:33</p>
-                    <a href="#" class="text-blue-600 text-sm">View Receipt</a>
-                </div>
-            </div>
-            <div class="text-right">
-                <p class="font-bold text-green-600">₦500</p>
-                <span class="text-xs text-green-600 bg-green-100 px-2 py-1 rounded-full">Successful</span>
-            </div>
-        </div>
-    </div>
-
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('beneficiaryModal');
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+    </script>
 @endsection 

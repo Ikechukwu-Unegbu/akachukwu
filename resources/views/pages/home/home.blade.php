@@ -150,7 +150,7 @@
 
 
     <!-- Testimonials Section -->
-<section class="py-16 bg-white">
+{{--<section class="py-16 bg-white">
     <div class="max-w-6xl mx-auto px-4">
         <h2 class="text-3xl font-bold text-center text-blue-800 mb-8">What Our Users Are Saying</h2>
             <div class="flex space-x-4 flex-col md:flex-row md:gap-[2rem] gap-[2rem]">
@@ -179,10 +179,10 @@
             </div>
         </div>
     </div>
-</section>
+</section>--}}
 
 <!-- Footer Section -->
-<footer class="bg-vastel_blue text-white py-10">
+<footer class="bg-vastel_blue vastel_bg text-white py-10">
     <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Column 1 -->
         <div>
