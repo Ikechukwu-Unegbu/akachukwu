@@ -1,6 +1,8 @@
 <?php
 namespace App\Helpers;
 
+use App\Helpers\Admin\VendorHelper;
+
 class ApiHelper
 {
     public static function sendResponse($result, $message)
@@ -11,7 +13,7 @@ class ApiHelper
             'message'   => $message,
 
         ];
-        return response()->json($response, 200)->getData();
+        return response()->json(VendorHelper::parseApiResponse($response), 200)->getData();
     }
 
     public static function sendError($errors, $feedback, $code = 401)

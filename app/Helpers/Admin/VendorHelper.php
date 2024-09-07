@@ -12,4 +12,12 @@ class VendorHelper
         }
         return $string;
     }
+
+    public static function parseApiResponse(array $response): array
+    {
+        if (isset($response['response']['api_response']) && is_string($response['response']['api_response'])) {
+            $response['response']['api_response'] = json_decode($response['response']['api_response'], true);
+        }
+        return $response;
+    }
 }
