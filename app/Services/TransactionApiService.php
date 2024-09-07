@@ -48,6 +48,34 @@ class TransactionApiService{
         $userId = auth()->user()->id;
         // $userId = request()->user()->id;
     
+        // $query = DB::table(DB::raw('(
+        //     SELECT id, transaction_id, user_id, amount, status, "data" as type, created_at FROM data_transactions
+        //     UNION ALL
+        //     SELECT id, transaction_id, user_id, amount, status, "airtime" as type, created_at FROM airtime_transactions
+        //     UNION ALL
+        //     SELECT id, transaction_id, user_id, amount, status, "cable" as type, created_at FROM cable_transactions
+        //     UNION ALL
+        //     SELECT id, transaction_id, user_id, amount, status, "electricity" as type, created_at FROM electricity_transactions
+        //     UNION ALL
+        //     SELECT id, transaction_id, user_id, amount, status, "education" as type, created_at FROM result_checker_transactions
+        // ) as transactions'))
+        // ->join('users', 'transactions.user_id', '=', 'users.id')
+        // ->select('transactions.*', 'users.name as user_name')
+        // ->where('transactions.user_id', $userId) // Filter by logged-in user
+        // ->when($type, function ($query, $type) {
+        //     $query->where('transactions.type', $type);
+        // })
+        // ->when($startDate, function ($query, $startDate) {
+        //     $query->where('transactions.created_at', '>=', $startDate);
+        // })
+        // ->when($endDate, function ($query, $endDate) {
+        //     $query->where('transactions.created_at', '<=', $endDate);
+        // })
+        // ->orderBy('transactions.created_at', 'desc');
+    
+        // $transactions = $query->paginate(15);
+    
+        // return $transactions;
         $query = DB::table(DB::raw('(
             SELECT id, transaction_id, user_id, amount, status, "data" as type, created_at FROM data_transactions
             UNION ALL
@@ -58,6 +86,16 @@ class TransactionApiService{
             SELECT id, transaction_id, user_id, amount, status, "electricity" as type, created_at FROM electricity_transactions
             UNION ALL
             SELECT id, transaction_id, user_id, amount, status, "education" as type, created_at FROM result_checker_transactions
+            UNION ALL
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "vastel" as type, created_at FROM vastel_transactions
+            UNION ALL
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, created_at FROM monnify_transactions
+            UNION ALL
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, created_at FROM pay_vessel_transactions
+            UNION ALL
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, created_at FROM paystack_transactions
+            UNION ALL
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, created_at FROM flutterwave_transactions
         ) as transactions'))
         ->join('users', 'transactions.user_id', '=', 'users.id')
         ->select('transactions.*', 'users.name as user_name')
@@ -72,10 +110,11 @@ class TransactionApiService{
             $query->where('transactions.created_at', '<=', $endDate);
         })
         ->orderBy('transactions.created_at', 'desc');
-    
-        $transactions = $query->paginate(15);
-    
-        return $transactions;
+
+$transactions = $query->paginate(15);
+
+return $transactions;
+
     }
 
  
