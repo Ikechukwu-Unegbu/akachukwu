@@ -106,116 +106,79 @@ class TransactionApiService{
     }
 
 
-    // public static function getSingleTransaction($type, $id)
-    // {
-    //     switch ($type) {
-    //         case 'data':
-    //             $model = \App\Models\Data\DataTransaction::class;
-    //             break;
-    
-    //         case 'electricity':
-    //             $model = \App\Models\Utility\ElectricityTransaction::class;
-    //             break;
-    
-    //         case 'cable':
-    //             $model = \App\Models\Utility\CableTransaction::class;
-    //             break;
-    
-    //         case 'airtime':
-    //             $model = \App\Models\Utility\AirtimeTransaction::class;
-    //             break;
-    
-    //         case 'result_checker':
-    //             $model = \App\Models\Education\ResultCheckerTransaction::class;
-    //             break;
-    
-    //         default:
-    //             return ApiHelper::sendError(['invalid transaction type'], 'invalid transaction type');
-    //     }
-    
-    //     $query = $model::where('transaction_id', $id);
-    
-    //     if (in_array($type, ['data', 'airtime'])) {
-    //         $query->with('network');
-    //     }
-    
-    //     $transaction = $query->first();
-    //     $transaction = $transaction->toArray();
-    //     unset($transaction['id']);
-    //     return $transaction;
-    // }
+   
 
     public static function getSingleTransaction($type, $id)
-{
-    switch ($type) {
-        case 'data':
-            $model = \App\Models\Data\DataTransaction::class;
-            $idColumn = 'transaction_id';
-            break;
+    {
+        switch ($type) {
+            case 'data':
+                $model = \App\Models\Data\DataTransaction::class;
+                $idColumn = 'transaction_id';
+                break;
 
-        case 'electricity':
-            $model = \App\Models\Utility\ElectricityTransaction::class;
-            $idColumn = 'transaction_id';
-            break;
+            case 'electricity':
+                $model = \App\Models\Utility\ElectricityTransaction::class;
+                $idColumn = 'transaction_id';
+                break;
 
-        case 'cable':
-            $model = \App\Models\Utility\CableTransaction::class;
-            $idColumn = 'transaction_id';
-            break;
+            case 'cable':
+                $model = \App\Models\Utility\CableTransaction::class;
+                $idColumn = 'transaction_id';
+                break;
 
-        case 'airtime':
-            $model = \App\Models\Utility\AirtimeTransaction::class;
-            $idColumn = 'transaction_id';
-            break;
+            case 'airtime':
+                $model = \App\Models\Utility\AirtimeTransaction::class;
+                $idColumn = 'transaction_id';
+                break;
 
-        case 'result_checker':
-            $model = \App\Models\Education\ResultCheckerTransaction::class;
-            $idColumn = 'transaction_id';
-            break;
+            case 'result_checker':
+                $model = \App\Models\Education\ResultCheckerTransaction::class;
+                $idColumn = 'transaction_id';
+                break;
 
-        case 'paystack':
-            $model = Paystack::class;
-            $idColumn = 'reference_id';
-            break;
+            case 'paystack':
+                $model = Paystack::class;
+                $idColumn = 'reference_id';
+                break;
 
-        case 'flutterwave':
-            $model = Flutterwave::class;
-            $idColumn = 'reference_id';
-            break;
+            case 'flutterwave':
+                $model = Flutterwave::class;
+                $idColumn = 'reference_id';
+                break;
 
-        case 'payvessle':
-            $model = PayVesselTransaction::class;
-            $idColumn = 'reference_id';
-            break;
+            case 'payvessle':
+                $model = PayVesselTransaction::class;
+                $idColumn = 'reference_id';
+                break;
 
-        case 'monnify':
-            $model = MonnifyTransaction::class;
-            $idColumn = 'reference_id';
-            break;
+            case 'monnify':
+                $model = MonnifyTransaction::class;
+                $idColumn = 'reference_id';
+                break;
 
-        default:
-            return ApiHelper::sendError(['invalid transaction type'], 'invalid transaction type');
+            default:
+                return ApiHelper::sendError(['invalid transaction type'], 'invalid transaction type');
+        }
+
+        // Query the model with the appropriate ID column
+        $query = $model::where($idColumn, $id);
+
+        // Include related data for specific types
+        if (in_array($type, ['data', 'airtime'])) {
+            $query->with('network');
+        }
+
+        $transaction = $query->first();
+
+        if (!$transaction) {
+            return ApiHelper::sendError(['transaction not found'], 'transaction not found');
+        }
+
+        $transaction = $transaction->toArray();
+        unset($transaction['id']); // Remove the 'id' field from the result
+
+        return $transaction;
     }
-
-    // Query the model with the appropriate ID column
-    $query = $model::where($idColumn, $id);
-
-    // Include related data for specific types
-    if (in_array($type, ['data', 'airtime'])) {
-        $query->with('network');
-    }
-
-    $transaction = $query->first();
-
-    if (!$transaction) {
-        return ApiHelper::sendError(['transaction not found'], 'transaction not found');
-    }
-
-    $transaction = $transaction->toArray();
-    unset($transaction['id']); // Remove the 'id' field from the result
-
-    return $transaction;
-}
 
 
 
