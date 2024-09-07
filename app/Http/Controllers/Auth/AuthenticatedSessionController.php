@@ -35,11 +35,13 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request, UserProfileService $service): RedirectResponse
     {
         $user = $service->getUser($request->username);
-        if ($user->blocked_by_admin == true) {
-            $validator = Validator::make([], []);
-            $validator->errors()->add('blocked', 'Your account has been blocked by the admin.');
-            throw new ValidationException($validator);
-            return false;
+        if($user){
+            if ($user->blocked_by_admin == true) {
+                $validator = Validator::make([], []);
+                $validator->errors()->add('blocked', 'Your account has been blocked by the admin.');
+                throw new ValidationException($validator);
+                return false;
+            }
         }
         $request->authenticate();
        
