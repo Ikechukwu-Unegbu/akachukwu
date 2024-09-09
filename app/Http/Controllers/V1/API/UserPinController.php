@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\V1\API;
 
+use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Account\UserPinService;
 use Illuminate\Validation\ValidationException;
+use App\Http\Requests\V1\Api\ResetUserPinRequest;
 use App\Http\Requests\V1\Api\CreateUserPinRequest;
 use App\Http\Requests\V1\Api\UpdateUserPinRequest;
 
@@ -82,5 +85,16 @@ class UserPinController extends Controller
                 'error'   =>  $th->getMessage()
             ], 422);
         }
+    }
+
+    public function resetPin(ResetUserPinRequest $request)
+    {
+        $resetPinService = UserPinService::resetPin($request->validated());
+
+        if (!$resetPinService) {
+            return ApiHelper::sendResponse(['Reset PIN failed'], $resetPinService['current_password']);
+        }
+
+        return ApiHelper::sendResponse([], 'PIN reset successfully');
     }
 }

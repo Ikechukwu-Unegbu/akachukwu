@@ -83,6 +83,7 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     Route::post('pin/create', [UserPinController::class, 'create']);
     Route::post('pin/update', [UserPinController::class, 'update']);
     Route::post('pin/validate', [UserPinController::class, 'validatePin']);
+    Route::post('pin/reset', [UserPinController::class, 'resetPin']);
     Route::post('epins/create', [EducationController::class, 'create']);
 
     Route::get('/transactions', [TransactionsApiController::class, 'index']);
