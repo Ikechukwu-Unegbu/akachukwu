@@ -26,13 +26,17 @@ class Create extends Component
     public $amount;
     public $phone_number;
     public $beneficiary_modal = false;
-    public $pin;
+    public $pin = [];
     public $form_action = false;
     public $validate_pin_action = false;
     public $calculatedDiscount = 0;
+    public $transaction_modal = false;
+    public $transaction_status = false;
+    public $transaction_link;
 
     public function mount()
     {
+        $this->pin = array_fill(1, 4, '');
         $this->vendor = $this->getVendorService('airtime');
         $this->network = DataNetwork::whereVendorId($this->vendor?->id)->whereStatus(true)->first()?->network_id;
     }
@@ -40,43 +44,38 @@ class Create extends Component
     public function updatedAmount()
     {
         $discount = DataNetwork::whereVendorId($this->vendor?->id)->whereNetworkId($this->network)->first()->airtime_discount;
-        $this->calculatedDiscount = CalculateDiscount::calculate((float) max(1, $this->amount), (float) $discount);
+        $this->calculatedDiscount = CalculateDiscount::calculate((float) $this->amount, (float) $discount);
     }
 
     public function validateForm()
     {
         $this->validate([
-            'network'       =>  'required|integer',
+            'network'       =>  'required|exists:data_networks,network_id',
             'amount'        =>  'required|numeric|min:0',
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ]);
-
+        
         return $this->form_action = true;
     }
 
     public function closeModal()
     {
+        $this->transaction_modal = false;
         $this->validate_pin_action = false;
         $this->form_action = false;
-        $this->pin = "";
+        $this->pin = array_fill(1, 4, '');
         return;
     }
 
-    public function addDigit($digit)
+    public function submitPin()
     {
-        if (strlen($this->pin) < 4) {
-            $this->pin .= $digit;
+        if (!is_array($this->pin)) {
+            $this->pin = (array) $this->pin;
         }
-    }
 
-    public function clearPin()
-    {
-        $this->pin = '';
-    }
+        $this->pin = implode('', $this->pin);
 
-    public function deletePin()
-    {
-        $this->pin = substr($this->pin, 0, -1);
+        $this->validatePin();
     }
 
     public function validatePin()
@@ -88,11 +87,11 @@ class Create extends Component
         $userPinService = UserPinService::validatePin(Auth::user(), $this->pin);
 
         if (!$userPinService) {
+            $this->pin = array_fill(1, 4, '');
             throw ValidationException::withMessages([
                 'pin' => __('The PIN provided is incorrect. Provide a valid PIN.'),
             ]);
         }
-
         return $this->validate_pin_action = true;
     }
 
@@ -107,14 +106,18 @@ class Create extends Component
 
         if (!$airtimeTransaction->status) {
             $this->closeModal();
+            $this->transaction_modal = true;
+            $this->transaction_status = false;
+            $this->transaction_link = "";
             return $this->dispatch('error-toastr', ['message' => $airtimeTransaction->message]);
         }
 
         if ($airtimeTransaction->status) {
             $this->closeModal();
-            $this->dispatch('success-toastr', ['message' => $airtimeTransaction->message]);
-            session()->flash('success',  $airtimeTransaction->message);
-            return redirect()->route('user.transaction.airtime.receipt', $airtimeTransaction->response->transaction_id);
+            $this->phone_number = "";
+            $this->transaction_status = true;
+            $this->transaction_modal = true;
+            $this->transaction_link = route('user.transaction.airtime.receipt', $airtimeTransaction->response->transaction_id);
         }
     }
 

@@ -16,9 +16,12 @@ class Create extends Component
     public $exam_name;
     public $quantity = 1;
     public $amount;
-    public $pin;
+    public $pin = [];
     public $form_action = false;
     public $validate_pin_action = false;
+    public $transaction_modal = false;
+    public $transaction_status = false;
+    public $transaction_link;
 
     public function mount()
     {
@@ -60,27 +63,22 @@ class Create extends Component
 
     public function closeModal()
     {
+        $this->transaction_modal = false;
         $this->validate_pin_action = false;
         $this->form_action = false;
-        $this->pin = "";
+        $this->pin = array_fill(1, 4, '');
         return;
     }
 
-    public function addDigit($digit)
+    public function submitPin()
     {
-        if (strlen($this->pin) < 4) {
-            $this->pin .= $digit;
+        if (!is_array($this->pin)) {
+            $this->pin = (array) $this->pin;
         }
-    }
 
-    public function clearPin()
-    {
-        $this->pin = '';
-    }
+        $this->pin = implode('', $this->pin);
 
-    public function deletePin()
-    {
-        $this->pin = substr($this->pin, 0, -1);
+        $this->validatePin();
     }
 
     public function validatePin()
@@ -92,6 +90,7 @@ class Create extends Component
         $userPinService = UserPinService::validatePin(Auth::user(), $this->pin);
 
         if (!$userPinService) {
+            $this->pin = array_fill(1, 4, '');
             throw ValidationException::withMessages([
                 'pin' => __('The PIN provided is incorrect. Provide a valid PIN.'),
             ]);
@@ -107,14 +106,18 @@ class Create extends Component
 
         if (!$resultCheckerService->status) {
             $this->closeModal();
+            $this->transaction_modal = true;
+            $this->transaction_status = false;
+            $this->transaction_link = "";
             return $this->dispatch('error-toastr', ['message' => $resultCheckerService->message]);
         }
 
         if ($resultCheckerService->status) {
             $this->closeModal();
-            $this->dispatch('success-toastr', ['message' => $resultCheckerService->message]);
-            session()->flash('success',  $resultCheckerService->message);
-            return redirect()->route('user.transaction.education.receipt', $resultCheckerService->response->transaction_id);
+            $this->quantity = 1;
+            $this->transaction_status = true;
+            $this->transaction_modal = true;
+            $this->transaction_link = route('user.transaction.education.receipt', $resultCheckerService->response->transaction_id);
         }
     }
 

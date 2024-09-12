@@ -1,169 +1,197 @@
-<div class="utility-form">
-    <form wire:submit.prevent="validateForm" >
-        <div class="row">
-            <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
-                <h3 class="text-warning">Buy Data Plan</h3>
-            </div>
-            <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6"></div>
-        </div>
-        <div class="row">
-            <div class="mb-3 col-12 col-sm-6 col-md-9 col-lg-6 col-xl-6 form-floating">
-                <select name="" id="" class="form-select @error('network') is-invalid @enderror"
-                    wire:model.live="network">
-                    @foreach ($networks as $__network)
-                    <option value="{{ $__network->network_id }}">{{ $__network->name }}</option>
-                    @endforeach
-                </select>
-                <label for="floatingInput">Network <span class="text-danger">*</span></label>
-                @error('network')
-                <span style="font-size: 15px" class="text-danger"> {{ $message }} </span>
-                @enderror
-            </div>
-            <div class="col-12 col-sm-6 col-md-9 col-lg-6 col-xl-6"></div>
-        </div>
-        <div class="row">
-            <div class="mb-3 col-12 col-sm-6 col-md-9 col-lg-6 col-xl-6 form-floating">
-                <select name="" id="" class="form-select @error('dataType') is-invalid @enderror"
-                    wire:model.live="dataType" wire:target="network" wire:loading.attr="disabled">
-                    <option value=""></option>
-                    @foreach ($dataTypes as $__dataType)
-                    <option value="{{ $__dataType->id }}">{{ $__dataType->name }}</option>
-                    @endforeach
-                </select>
-                <label for="floatingInput">Data Type <span class="text-danger">*</span></label>
-                @error('dataType')
-                <span style="font-size: 15px" class="text-danger"> {{ $message }} </span>
-                @enderror
-            </div>
-            <div class="mt-3 col-12 col-sm-6 col-md-9 col-lg-6 col-xl-6">
-                <div wire:loading wire:target="network" class="">
-                    <i style="font-size: 20px" class="fa fa-circle-notch fa-spin"></i>
+<div>
+    <!-- Form Start -->
+    <form wire:submit.prevent="validateForm">
+        @if (count($beneficiaries))
+            <button type="button" data-modal-target="beneficiaryModal" data-modal-toggle="beneficiaryModal"
+                class="w-full bg-gray-100 text-gray-900 border border-gray-300 py-2 rounded-lg mb-4">
+                Select Beneficiary
+            </button>
+            <!-- Modal -->
+            <div id="beneficiaryModal" tabindex="-1"
+                class="fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-50 {{ $beneficiary_modal ? 'flex' : 'hidden' }}">
+                <div class="bg-white rounded-lg w-full max-w-sm p-4">
+                    <div class="flex justify-between items-center border-b pb-3">
+                        <h3 class="text-lg font-medium text-gray-900">Select Beneficiary</h3>
+                        <button type="button" class="text-gray-400 hover:text-gray-500"
+                            data-modal-hide="beneficiaryModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="py-4">
+                        <!-- Beneficiary List -->
+                        <ul class="space-y-2">
+                            @foreach ($beneficiaries as $__beneficiary)
+                                <li wire:click="beneficiary({{ $__beneficiary->id }})"
+                                    class="bg-gray-100 py-2 px-4 rounded cursor-pointer hover:bg-gray-200">
+                                    {{ $__beneficiary->beneficiary }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="mb-3 col-12 col-sm-6 col-md-9 col-lg-6 col-xl-6 form-floating">
-                <input type="number" wire:model="phone_number"
-                    class="form-control @error('phone_number') is-invalid @enderror" id="mobile" placeholder="">
-                <label for="mobile">Phone Number</label>
-                @error('phone_number')
-                <span style="font-size: 15px" class="text-danger"> {{ $message }} </span>
-                @enderror
-            </div>
-        </div>
-        <div class="row">
-            <div class="mb-3 col-12 col-sm-6 col-md-9 col-lg-6 col-xl-6 form-floating">
-                <select class="form-select @error('plan') is-invalid @enderror" wire:model.live="plan"
-                    wire:target="dataType" wire:loading.attr="disabled">
-                    <option></option>
-                    @foreach ($plans as $__plan)
-                    <option value="{{ $__plan->data_id }}" {{ ($plan && $plan === $__plan->data_id) ? 'selected' : ''
-                        }}>{{ $__plan->size }} {{ $__plan->type->name }} = ₦
-                        {{ number_format($__plan->amount, 1) }} {{ $__plan->validity }}</option>
-                    @endforeach
-                </select>
-                <label for="floatingInput">Plan <span class="text-danger">*</span></label>
-                @error('plan')
-                <span style="font-size: 15px" class="text-danger"> {{ $message }} </span>
-                @enderror
-            </div>
-            <div class="mt-3 col-12 col-sm-6 col-md-9 col-lg-6 col-xl-6">
-                <div wire:loading wire:target="dataType" class="">
-                    <i style="font-size: 20px" class="fa fa-spinner fa-spin"></i>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="mb-3 col-12 col-sm-6 col-md-9 col-lg-6 col-xl-6 form-floating">
-                <input type="text" wire:model="amount" class="form-control" id="amount" disabled>
-                <label for="amount">Amount</label>
-            </div>
-        </div>
-        @if ($network && $networks->where('network_id', $network)->first()?->data_discount > 0)
-        <div class="row">
-            <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
-                <div class="text-danger">
-                    Amount to Pay (₦{{ $calculatedDiscount }}) {{ $network ? $networks->where('network_id', $network)->first()?->data_discount . '% Discount' : '' }}
-                </div>
-            </div>
-        </div>
         @endif
-        @if(count($beneficiaries))
-        <div class="row">
-            <div class="mb-3 col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6 form-floating">
-                <a href="javascript:void(0)" wire:click='beneficiary_action' class="beneficiary-link">Click Here to
-                    Select a Beneficiary</a>
-            </div>
+        <!-- Network Type -->
+        <div class="relative z-0 mb-6 w-full group">
+            <select id="network"
+                class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
+                wire:model.live="network">
+                @foreach ($networks as $__network)
+                    <option value="{{ $__network->network_id }}">{{ $__network->name }}</option>
+                @endforeach
+            </select>
+            @error('network')
+                <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
+            @enderror
+        </div>
+        <!-- Data Type -->
+        <div class="relative z-0 mb-6 w-full group">
+            <select id="dataType"
+                class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
+                wire:model.live="dataType" wire:target="network" wire:loading.attr="disabled">
+                <option></option>
+                @foreach ($dataTypes as $__dataType)
+                    <option value="{{ $__dataType->id }}">{{ $__dataType->name }}</option>
+                @endforeach
+            </select>
+            <p class="mt-1 text-xs text-gray-400">Select Plan Type
+                {{ implode(', ', $dataTypes->pluck('name', 'name')->toArray()) }}</p>
+            @error('dataType')
+                <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
+            @enderror
         </div>
 
-        <div id="modal" class="modal {{ $beneficiary_modal ? 'd-inline' : 'd-none' }}" wire:target='beneficiary'>
-            <div class="modal-content">
-                @foreach ($beneficiaries as $__beneficiary)
-                <a href="javascript:void(0)" class="link" wire:click="beneficiary({{ $__beneficiary->id }})">{{
-                    $__beneficiary->beneficiary }}</a>
-                {!! !$loop->last ? '
-                <hr />' : '' !!}
+        <!-- Mobile Number -->
+        <div class="relative z-0 mb-6 w-full group">
+            <input type="text" id="mobileNumber"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
+                placeholder=" " wire:model="phone_number" />
+            <label for="mobileNumber"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-vastel_blue peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Mobile
+                Number*</label>
+
+            @error('phone_number')
+                <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
+            @enderror
+        </div>
+
+        <!-- Plan -->
+        <div class="relative z-0 mb-6 w-full group">
+            <select id="plan"
+                class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
+                wire:model.live="plan" wire:target="dataType" wire:loading.attr="disabled">
+                <option></option>
+                @foreach ($plans as $__plan)
+                    <option value="{{ $__plan->data_id }}"
+                        {{ $plan && $plan === $__plan->data_id ? 'selected' : '' }}>{{ $__plan->size }}
+                        {{ $__plan->type->name }} = ₦
+                        {{ number_format($__plan->amount, 1) }} {{ $__plan->validity }}</option>
                 @endforeach
-            </div>
+            </select>
+            <label for="plan"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-vastel_blue peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Plan*</label>
+
+            @error('plan')
+                <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
+            @enderror
+        </div>
+
+        <!-- Amount -->
+        <div class="relative z-0 mb-6 w-full group">
+            <input type="text" id="amount"
+                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
+                wire:model="amount" readonly />
+            <label for="amount"
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-vastel_blue peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Amount</label>
+        </div>
+
+        @if ($network && $networks->where('network_id', $network)->first()?->data_discount > 0)
+        <div class="text-red-500 font-semibold pb-7 mt-3">
+            Amount to Pay (₦{{ number_format($calculatedDiscount, 2) }}) {{ $network ? $networks->where('network_id', $network)->first()?->data_discount . '% Discount' : '' }}
         </div>
         @endif
-        <button type="submit" class="btn btn-warning text-light" wire:loading.attr="disabled" wire:target='validateForm'>
-            <span wire:loading.remove wire:target='validateForm'> Continue</span>
+
+        <!-- Proceed Button -->
+        <button type="submit" wire:loading.attr="disabled" wire:target='validateForm' wire:target='airtime'
+            class="w-full bg-vastel_blue text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
+            <span wire:loading.remove wire:target='validateForm'>Proceed</span>
             <span wire:loading wire:target="validateForm">
-                <i class="fa fa-spinner fa-spin"></i> Please wait...
+                <i class="fa fa-circle-notch fa-spin text-sm"></i>
             </span>
         </button>
     </form>
-
-    <x-pin-validation 
-        title="Data" 
-        :formAction="$form_action" 
-        :validatePinAction="$validate_pin_action"
-    >
-        <div class="d-flex justify-content-between">
+    <x-pin-validation title="Data" :formAction="$form_action" :validatePinAction="$validate_pin_action">
+        <div class="flex justify-between">
             <h6>Network</h6>
             <h6>{{ $networks->where('network_id', $network)->first()?->name }}</h6>
         </div>
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-between">
             <h6>Plan</h6>
             @if (count($plans))
-            @php
-                $get_plan = $plans->where('data_id', $plan)->first();
-            @endphp
-            <h6>{{ $get_plan?->size }} {{ $get_plan?->validity }} ({{ $get_plan?->type->name }})</h6>
+                @php
+                    $get_plan = $plans->where('data_id', $plan)->first();
+                @endphp
+                <h6>{{ $get_plan?->size }} {{ $get_plan?->validity }} ({{ $get_plan?->type->name }})</h6>
             @endif
         </div>
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-between">
             <h6>Number</h6>
             <h6>{{ $phone_number }}</h6>
         </div>
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-between">
             <h6>Amount</h6>
             <h6>₦{{ $amount }}</h6>
         </div>
-        <div class="d-flex justify-content-between">
+        <div class="flex justify-between">
             <h6>Wallet</h6>
             <h6>₦{{ auth()->user()->account_balance }}</h6>
         </div>
     </x-pin-validation>
-
+    <x-transaction-status :status="$transaction_status" utility="Data" :link="$transaction_link" :modal="$transaction_modal" />
 </div>
 @push('scripts')
-<script>
-    var modal = document.getElementById("modal");
-        var span = document.getElementsByClassName("close")[0];
-        
-        span.onclick = function() {
-            modal.classList.remove("d-inline");
-            modal.classList.add("d-none");
+    <script>
+        var modal = document.getElementById("beneficiaryModal");
+
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('beneficiaryModal');
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+
+        document.querySelectorAll('.close-modal').forEach(button => {
+            button.addEventListener('click', function() {
+                const modal = document.getElementById('beneficiaryModal');
+                modal.classList.add('hidden');
+            });
+        });
+
+        const observer = new MutationObserver((mutationsList) => {
+            for (let mutation of mutationsList) {
+                if (mutation.type === 'childList') {
+                    hideModalBackdrop();
+                }
+            }
+        });
+
+        function hideModalBackdrop() {
+            const modalBackdrop = document.querySelector('div[modal-backdrop]');
+
+            if (modalBackdrop && modalBackdrop.classList.contains('fixed')) {
+                modalBackdrop.classList.replace('fixed', 'hidden');
+            }
         }
 
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+
         window.onclick = function(event) {
-        if (event.target == modal) {
-                modal.classList.remove("d-inline");
-                modal.classList.add("d-none");
+            if (event.target == modal) {
+                hideModalBackdrop();
                 @this.call('beneficiary_action')
             }
         }
-</script>
+    </script>
 @endpush

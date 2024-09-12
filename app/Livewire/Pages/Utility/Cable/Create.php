@@ -30,14 +30,32 @@ class Create extends Component
     public $validate_action = false;
     public $beneficiary_modal = false;
 
-    public $pin;
+    public $pin = [];
     public $form_action = false;
     public $validate_pin_action = false;
     public $calculatedDiscount = 0;
+    public $transaction_modal = false;
+    public $transaction_status = false;
+    public $transaction_link;
 
     public function mount()
     {
+        $this->pin = array_fill(1, 4, '');
         $this->vendor = $this->getVendorService('cable');
+    }
+
+    public function selectedCable(Cable $cable)
+    {
+        $this->cable_name = $cable->cable_id;
+        $this->updatedCableName();
+        return true;
+    }
+
+    public function selectedPackage(CablePlan $cablePlan)
+    {
+        $this->cable_plan = $cablePlan->cable_plan_id;
+        $this->updatedCablePlan();
+        return true;
     }
 
     public function updatedCableName()
@@ -50,7 +68,7 @@ class Create extends Component
     {
         $discount = Cable::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->first()->discount;
         $amount = CablePlan::whereVendorId($this->vendor?->id)->whereCableId($this->cable_name)->whereCablePlanId($this->cable_plan)->first()->amount;
-        $this->calculatedDiscount = CalculateDiscount::calculate((float) max(1, $amount), (float) $discount);
+        $this->calculatedDiscount = CalculateDiscount::calculate((float) $amount, (float) $discount);
     }
 
     public function updatedIucNumber()
@@ -62,27 +80,22 @@ class Create extends Component
 
     public function closeModal()
     {
+        $this->transaction_modal = false;
         $this->validate_pin_action = false;
         $this->form_action = false;
-        $this->pin = "";
+        $this->pin = array_fill(1, 4, '');
         return;
     }
 
-    public function addDigit($digit)
+    public function submitPin()
     {
-        if (strlen($this->pin) < 4) {
-            $this->pin .= $digit;
+        if (!is_array($this->pin)) {
+            $this->pin = (array) $this->pin;
         }
-    }
 
-    public function clearPin()
-    {
-        $this->pin = '';
-    }
+        $this->pin = implode('', $this->pin);
 
-    public function deletePin()
-    {
-        $this->pin = substr($this->pin, 0, -1);
+        $this->validatePin();
     }
 
     public function validatePin()
@@ -94,6 +107,7 @@ class Create extends Component
         $userPinService = UserPinService::validatePin(Auth::user(), $this->pin);
 
         if (!$userPinService) {
+            $this->pin = array_fill(1, 4, '');
             throw ValidationException::withMessages([
                 'pin' => __('The PIN provided is incorrect. Provide a valid PIN.'),
             ]);
@@ -138,14 +152,22 @@ class Create extends Component
 
             if (!$cableTransaction->status) {
                 $this->closeModal();
+                $this->transaction_modal = true;
+                $this->transaction_status = false;
+                $this->transaction_link = "";
                 return $this->dispatch('error-toastr', ['message' => $cableTransaction->message]);
             }
     
             if ($cableTransaction->status) {
                 $this->closeModal();
-                $this->dispatch('success-toastr', ['message' => $cableTransaction->message]);
-                session()->flash('success',  $cableTransaction->message);
-                return redirect()->route('user.transaction.cable.receipt', $cableTransaction->response->transaction_id);
+                $this->cable_name = "";
+                $this->iuc_number = "";
+                $this->cable_plan = "";
+                $this->validate_action = false;
+                $this->transaction_status = true;
+                $this->transaction_modal = true;
+                $this->transaction_link = route('user.transaction.cable.receipt', $cableTransaction->response->transaction_id);
+                return true;
             }
         }
     }

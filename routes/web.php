@@ -35,36 +35,38 @@ Route::middleware(['testing'])->group(function () {
 
 
 Route::middleware(['auth', 'verified', 'user', 'testing', 'impersonate'])->group(function () {
-  
-    Route::middleware(['auth', 'verified', 'user'])->group(function () {
-        Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
-        Route::get('/data', [DataController::class, 'index'])->name('data.index');
-        Route::get('/electricity', [ElectricityController::class, 'index'])->name('electricity.index');
-        Route::get('/cable-tv', [TVController::class, 'index'])->name('cable.index');
-        Route::get('/dashboard', function () {
-            return view('dashboard');
-        })->name('dashboard');
 
-        Route::get('transactions/airtime', \App\Livewire\User\Transaction\Airtime\Index::class)->name('user.transaction.airtime');
-        Route::get('transactions/airtime/{airtime:transaction_id}', \App\Livewire\User\Transaction\Airtime\Receipt::class)->name('user.transaction.airtime.receipt');
+    Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
+    Route::get('/data', [DataController::class, 'index'])->name('data.index');
+    Route::get('/electricity', [ElectricityController::class, 'index'])->name('electricity.index');
+    Route::get('/cable-tv', [TVController::class, 'index'])->name('cable.index');
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
 
-        Route::get('transactions/data', \App\Livewire\User\Transaction\Data\Index::class)->name('user.transaction.data');
-        Route::get('transactions/data/{data:transaction_id}', \App\Livewire\User\Transaction\Data\Receipt::class)->name('user.transaction.data.receipt');
+    Route::get('/services', function () {
+        return view('pages.utilities.services');
+    })->name('services');
 
-        Route::get('transactions/electricity', \App\Livewire\User\Transaction\Electricity\Index::class)->name('user.transaction.electricity');
-        Route::get('transactions/electricity/{electricity:transaction_id}', \App\Livewire\User\Transaction\Electricity\Receipt::class)->name('user.transaction.electricity.receipt');
+    Route::get('transactions/airtime', \App\Livewire\User\Transaction\Airtime\Index::class)->name('user.transaction.airtime');
+    Route::get('transactions/airtime/{airtime:transaction_id}', \App\Livewire\User\Transaction\Airtime\Receipt::class)->name('user.transaction.airtime.receipt');
 
-        Route::get('transactions/cable', \App\Livewire\User\Transaction\Cable\Index::class)->name('user.transaction.cable');
-        Route::get('transactions/cable/{cable:transaction_id}', \App\Livewire\User\Transaction\Cable\Receipt::class)->name('user.transaction.cable.receipt');
+    Route::get('transactions/data', \App\Livewire\User\Transaction\Data\Index::class)->name('user.transaction.data');
+    Route::get('transactions/data/{data:transaction_id}', \App\Livewire\User\Transaction\Data\Receipt::class)->name('user.transaction.data.receipt');
 
-        Route::get('transactions/wallet', \App\Livewire\User\Transaction\Wallet\Index::class)->name('user.transaction.wallet');
+    Route::get('transactions/electricity', \App\Livewire\User\Transaction\Electricity\Index::class)->name('user.transaction.electricity');
+    Route::get('transactions/electricity/{electricity:transaction_id}', \App\Livewire\User\Transaction\Electricity\Receipt::class)->name('user.transaction.electricity.receipt');
 
-        Route::get('result-checker', [ResultCheckerController::class, 'index'])->name('education.result.index');
-        Route::get('transactions/result-checker', \App\Livewire\User\Transaction\Education\ResultChecker\Index::class)->name('user.transaction.education');
-        Route::get('transactions/result-checker/{checker:transaction_id}', \App\Livewire\User\Transaction\Education\ResultChecker\Receipt::class)->name('user.transaction.education.receipt');
+    Route::get('transactions/cable', \App\Livewire\User\Transaction\Cable\Index::class)->name('user.transaction.cable');
+    Route::get('transactions/cable/{cable:transaction_id}', \App\Livewire\User\Transaction\Cable\Receipt::class)->name('user.transaction.cable.receipt');
 
-        // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
-    });
+    Route::get('transactions/wallet', \App\Livewire\User\Transaction\Wallet\Index::class)->name('user.transaction.wallet');
+
+    Route::get('result-checker', [ResultCheckerController::class, 'index'])->name('education.result.index');
+    Route::get('transactions/result-checker', \App\Livewire\User\Transaction\Education\ResultChecker\Index::class)->name('user.transaction.education');
+    Route::get('transactions/result-checker/{checker:transaction_id}', \App\Livewire\User\Transaction\Education\ResultChecker\Receipt::class)->name('user.transaction.education.receipt');
+
+    // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
 });
 
 Route::post('/impersonate/{user}', [AdminController::class, 'impersonate'])->name('impersonate.start');

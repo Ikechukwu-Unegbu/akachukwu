@@ -314,4 +314,33 @@ class User extends Authenticatable
     {
         return Session::has('impersonate');
     }
+
+    public function transactionHistories($limit = 5)
+    {
+        $query = DB::table(DB::raw('
+            (
+                SELECT id, transaction_id, user_id, amount, status, "data" as type, created_at FROM data_transactions
+                UNION ALL
+                SELECT id, transaction_id, user_id, amount, status, "airtime" as type, created_at FROM airtime_transactions
+                UNION ALL
+                SELECT id, transaction_id, user_id, amount, status, "cable" as type, created_at FROM cable_transactions
+                UNION ALL
+                SELECT id, transaction_id, user_id, amount, status, "electricity" as type, created_at FROM electricity_transactions
+                UNION ALL
+                SELECT id, transaction_id, user_id, amount, status, "education" as type, created_at FROM result_checker_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, created_at FROM flutterwave_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, created_at FROM paystack_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, created_at FROM monnify_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessel" as type, created_at FROM pay_vessel_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, "vastel" as type, created_at FROM vastel_transactions
+            ) as transactions
+        '))->where('transactions.user_id', '=', $this->id)->orderBy('transactions.created_at', 'desc');
+
+        return $query->get()->take($limit);
+    }
 }
