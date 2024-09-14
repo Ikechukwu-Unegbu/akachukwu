@@ -35,12 +35,13 @@
                     <div>
                         <p class="font-semibold">{{ $transaction->title }} ({{ Str::upper($transaction->type !== 'funding' ? $transaction->plan_name : $transaction->utility) }})</p>
                         @if ($transaction->type !== 'funding')
-                        <p class="text-sm text-gray-500">{{ $transaction->type }}: {{ $transaction->subscribed_to }}</p>
+                        <p class="text-sm text-gray-500">{{ Str::title($transaction->type) }}: {{ $transaction->subscribed_to }}</p>
                         @endif
-                        <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:iA') }}</p>
                         @if ($transaction->type === 'funding')
                             <a class="text-blue-600 text-sm">{{ $transaction->transaction_id }}</a>
-                        @else
+                        @endif
+                        <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:iA') }}</p>
+                        @if ($transaction->type !== 'funding')
                             <a href="{{ route("user.transaction.{$transaction->utility}.receipt", $transaction->transaction_id) }}" class="text-blue-600 text-sm">View Receipt</a>
                         @endif
                     </div>

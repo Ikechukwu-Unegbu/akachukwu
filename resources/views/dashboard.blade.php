@@ -247,7 +247,7 @@
             @foreach (auth()->user()->transactionHistories(10) as $transaction)
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
-                        <i class="fas fa-mobile-alt bg-blue-100 p-2 rounded-full mr-3"></i>
+                        <i class="fas {{ $transaction->icon }} bg-blue-100 p-2 rounded-full mr-3"></i>
                         <div>
                             <p class="font-semibold">{{ Str::title($transaction->utility) }}</p>
                             <p class="text-sm text-gray-500">
@@ -319,42 +319,26 @@
 @endsection
 @push('scripts')
     <script>
-        // const walletAction = document.getElementById('wallet-action');
-        // const wallet = document.getElementById('wallet');
-        // let isHidden = true;
-        // walletAction.addEventListener('click', () => {
-        //     if (isHidden) {
-        //         wallet.textContent = '*******';
-        //         isHidden = false;
-        //     } else {
-        //         wallet.textContent = '₦ ' + {{ number_format(auth()->user()->account_balance, 2) }};
-        //         isHidden = true;
-        //     }
-        // });
+        let button = document.querySelector(".copy-button");
+        let textToCopy = document.querySelector(".account-number");
 
-        document.addEventListener('DOMContentLoaded', function() {
-            document.body.addEventListener('click', function(e) {
-                if (e.target.classList.contains('copy-button')) {
-                    const accountNumberElement = e.target.previousElementSibling; // Targets the span directly before the button
-                    copyToClipboard(accountNumberElement.textContent); // Copies the textContent of the span
-                }
-            });
-        });
-
-        function copyToClipboard(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
+        button.addEventListener("click", () => {
+            const storage = document.createElement('textarea');
+            storage.value = textToCopy.innerHTML;
+            textToCopy.appendChild(storage);
+            storage.select();
+            storage.setSelectionRange(0, 99999);
             try {
                 const successful = document.execCommand('copy');
-                const msg = successful ? 'Copied!' : 'Failed to copy!';
-                alert(msg);
+                if (successful) {
+                    toastr.success('Account No. Copied Successfully!');
+                } else {
+                    toastr.warning('Failed to copy!');
+                }
             } catch (err) {
                 alert('Failed to copy!');
-            }
-            document.body.removeChild(textarea);
-        }
-
+            }           
+            textToCopy.removeChild(storage);
+        });
     </script>
 @endpush
