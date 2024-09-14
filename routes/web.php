@@ -12,6 +12,7 @@ use App\Http\Controllers\V1\Utilities\DataController;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;
 use App\Http\Controllers\V1\Education\ResultCheckerController;
+use App\Http\Controllers\V1\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,8 @@ Route::middleware(['auth', 'verified', 'user', 'testing', 'impersonate'])->group
     Route::get('/services', function () {
         return view('pages.utilities.services');
     })->name('services');
+
+    Route::get('transactions', TransactionController::class)->name('transactions');
 
     Route::get('transactions/airtime', \App\Livewire\User\Transaction\Airtime\Index::class)->name('user.transaction.airtime');
     Route::get('transactions/airtime/{airtime:transaction_id}', \App\Livewire\User\Transaction\Airtime\Receipt::class)->name('user.transaction.airtime.receipt');

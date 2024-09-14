@@ -45,6 +45,13 @@
         .vastel_bg {
             background-color: #0018A8;
         }
+
+        .active {
+            background-color: #ffffff;
+            color: #0018A8 !important;
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+        }
     </style>
 
     <link rel="stylesheet" href="{{ asset('css/ut/offcanvas.css?t=' . time()) }}" />
@@ -174,7 +181,7 @@
                     <span class="ml-2 hidden lg:inline">Dashboard</span>
                 </a> -->
                 <a href="{{ auth()->user()->dashboard() }}"
-                    class="flex items-center text-vastel_blue w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2">
+                    class="flex items-center  w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}">
                     <i class="fas fa-home text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Dashboard</span>
                 </a>
@@ -183,11 +190,11 @@
                     <i class="fas fa-chart-bar text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Statistics</span>
                 </a>
-                <a href="#" class="flex items-center p-2">
+                <a href="{{ route('transactions') }}" class="flex items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'transactions' ? 'active' : '' }}">
                     <i class="fas fa-exchange-alt text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Transactions</span>
                 </a>
-                <a href="#" class="flex items-center p-2">
+                <a href="#" class="flex items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}">
                     <i class="fas fa-cog text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Settings</span>
                 </a>

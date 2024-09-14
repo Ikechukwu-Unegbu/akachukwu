@@ -241,7 +241,7 @@
     <div class="px-[2rem] bg-white rounded-lg shadow p-6">
         <div class="flex justify-between items-center mb-4">
             <h3 class="text-lg font-semibold">Recent Transactions</h3>
-            <a href="#" class="text-blue-600 text-sm">See all Transactions</a>
+            <a href="{{ route('transactions') }}" class="text-blue-600 text-sm">See all Transactions</a>
         </div>
         <div class="space-y-4">
             @foreach (auth()->user()->transactionHistories(10) as $transaction)
@@ -249,14 +249,14 @@
                     <div class="flex items-center">
                         <i class="fas fa-mobile-alt bg-blue-100 p-2 rounded-full mr-3"></i>
                         <div>
-                            <p class="font-semibold">{{ Str::title($transaction->type) }}</p>
+                            <p class="font-semibold">{{ Str::title($transaction->utility) }}</p>
                             <p class="text-sm text-gray-500">
                                 {{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</p>
                         </div>
                     </div>
                     <div class="text-right">
                         <p class="text-{{ $transaction->status ? 'green' : 'red' }}-500 font-semibold">
-                            ₦{{ $transaction->amount }}</p>
+                            ₦{{ number_format($transaction->amount, 2) }}</p>
                         <p class="text-sm text-gray-500">{{ $transaction->status ? 'Success' : 'Failed' }}</p>
                     </div>
                 </div>
