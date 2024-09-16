@@ -25,7 +25,8 @@ class CableSeeder extends Seeder
                 'vendor_id'     =>  1,
                 'cable_id'      =>  $key,
                 'cable_name'    =>  $cable,
-                'status'        =>  true
+                'status'        =>  true,
+                'discount'      =>1,
             ]);            
         }
 
@@ -34,7 +35,8 @@ class CableSeeder extends Seeder
                 'vendor_id'     =>  2,
                 'cable_id'      =>  $key,
                 'cable_name'    =>  $cable,
-                'status'        =>  true
+                'status'        =>  true,
+                'discount'      =>1,
             ]);
         }
     }

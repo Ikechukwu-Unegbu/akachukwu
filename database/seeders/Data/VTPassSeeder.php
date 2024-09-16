@@ -63,6 +63,8 @@ class VTPassSeeder extends Seeder
                     'network_id' =>  $network['network_id'], 
                     'name' => $network['name'],
                     'status' => $network['status'],
+                    'airtime_discount'  =>  1,
+                    'data_discount'     =>  1,
                 ]);
 
                 foreach ($dataTypes as $type) {
@@ -132,6 +134,7 @@ class VTPassSeeder extends Seeder
                     'vendor_id' =>  $vendor->id,
                     'disco_id'  =>  $data['id'],
                     'disco_name'=>  $data['name'],
+                    'discount'      =>1,
                 ], ['status'  =>  $data['status']]);
             });
     
@@ -144,6 +147,7 @@ class VTPassSeeder extends Seeder
                     'vendor_id' => $vendor->id,
                     'cable_name'  => $index,
                     'cable_id'  => Str::lower($index),
+                    'discount'      =>1,
                     'status'    =>  true
                 ]);
     
