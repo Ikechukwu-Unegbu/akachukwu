@@ -14,32 +14,43 @@ class DataNetworkSeeder extends Seeder
     public function run(): void
     {
         DataNetwork::truncate();
+        
         $glad_tidings = [
             [
-                'vendor_id'     =>  1,
-                'network_id'    =>  1,
-                'name'          =>  'MTN',
+                'vendor_id'         =>  1,
+                'network_id'        =>  1,
+                'name'              =>  'MTN',
+                'airtime_discount'  =>  1,
+                'data_discount'     =>  1,
             ],
             [
-                'vendor_id'     =>  1,
-                'network_id'    =>  2,
-                'name'          =>  'GLO',
+                'vendor_id'         =>  1,
+                'network_id'        =>  2,
+                'name'              =>  'GLO',
+                'airtime_discount'  =>  1,
+                'data_discount'     =>  1,
             ],
             [
-                'vendor_id'     =>  1,
-                'network_id'    =>  3,
-                'name'          =>  'AIRTEL',
+                'vendor_id'         =>  1,
+                'network_id'        =>  3,
+                'name'              =>  'AIRTEL',
+                'airtime_discount'  =>  1,
+                'data_discount'     =>  1,
             ],
             [
-                'vendor_id'     =>  1,
-                'network_id'    =>  6,
-                'name'          =>  '9MOBILE',
+                'vendor_id'         =>  1,
+                'network_id'        =>  6,
+                'name'              =>  '9MOBILE',
+                'airtime_discount'  =>  1,
+                'data_discount'     =>  1,
             ],
             [
-                'vendor_id'     =>  1,
-                'network_id'    =>  7,
-                'name'          =>  'SMILE',
-                'status'        =>  false
+                'vendor_id'         =>  1,
+                'network_id'        =>  7,
+                'name'              =>  'SMILE',
+                'status'            =>  false,
+                'airtime_discount'  =>  1,
+                'data_discount'     =>  1,
             ],
         ];
 
@@ -49,35 +60,45 @@ class DataNetworkSeeder extends Seeder
 
         $postranet = [
             [
-                'vendor_id'     =>  2,
-                'network_id'    =>  1,
-                'name'          =>  'MTN',
+                'vendor_id'         =>  2,
+                'network_id'        =>  1,
+                'name'              =>  'MTN',
+                'airtime_discount'  =>  1,
+                'data_discount'     =>  1,
             ],
             [
-                'vendor_id'     =>  2,
-                'network_id'    =>  2,
-                'name'          =>  'GLO',
+                'vendor_id'         =>  2,
+                'network_id'        =>  2,
+                'name'              =>  'GLO',
+                'airtime_discount'  =>  1,
+                'data_discount'     =>  1,
             ],
             [
-                'vendor_id'     =>  2,
-                'network_id'    =>  3,
-                'name'          =>  '9MOBILE',
+                'vendor_id'         =>  2,
+                'network_id'        =>  3,
+                'name'              =>  '9MOBILE',
+                'airtime_discount'  =>  1,
+                'data_discount'     =>  1,
             ],
             [
-                'vendor_id'     =>  2,
-                'network_id'    =>  4,
-                'name'          =>  'AIRTEL',
+                'vendor_id'         =>  2,
+                'network_id'        =>  4,
+                'name'              =>  'AIRTEL',
+                'airtime_discount'  =>  1,
+                'data_discount'     =>  1,
             ],
             [
-                'vendor_id'     =>  2,
-                'network_id'    =>  5,
-                'name'          =>  'SMILE',
-                'status'        =>  false
+                'vendor_id'         =>  2,
+                'network_id'        =>  5,
+                'name'              =>  'SMILE',
+                'status'            =>  false,
+                'airtime_discount'  =>  1,
+                'data_discount'     =>  1,
             ],
         ];
+        
         foreach ($postranet as $data) {
             DataNetwork::create($data);
         }
-
     }
 }
