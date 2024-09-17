@@ -194,7 +194,7 @@
                     <i class="fas fa-exchange-alt text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Transactions</span>
                 </a>
-                <a href="#" class="flex items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'settings' ? 'active' : '' }}">
+                <a href="{{ route('settings.credentials') }}" class="flex items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'settings.credentials' ? 'active' : '' }}">
                     <i class="fas fa-cog text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Settings</span>
                 </a>
