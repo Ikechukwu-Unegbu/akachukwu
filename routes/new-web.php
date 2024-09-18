@@ -21,7 +21,7 @@ Route::prefix('new')->group(function () {
    Route::view('dashboard/services/electricity', 'new.electricity');
 
    Route::view('/dashboard/profile', 'new.profile');
-   Route::view('/dashboard/support', 'new.support');
+   Route::view('/dashboard/support', 'new.support')->name('new.support');
 
    //settings 
    Route::view('/dashboard/settings', 'new.settings');
