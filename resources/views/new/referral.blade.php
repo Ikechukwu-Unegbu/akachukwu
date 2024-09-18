@@ -1,8 +1,9 @@
 @extends('layouts.new-dashboard')
 
 @section('body')
+<!-- <link href="https://cdn.jsdelivr.net/npm/flowbite@1.4.7/dist/flowbite.min.css" rel="stylesheet"> -->
  <!-- Back Button -->
- <a href="#" class="text-blue-600 flex items-center mb-4">
+ <a href="#" class="text-vastel_blue flex items-center mb-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
         </svg>
@@ -10,28 +11,43 @@
     </a>
 
     <!-- Referral & Bonus Section -->
-    <div class="bg-white shadow rounded-lg p-6 mb-6">
-        <div class="flex justify-between items-center">
-            <div class="flex items-center space-x-4">
-                <div class="text-center">
-                    <div class="text-xl font-bold">₦ 500</div>
-                    <div class="text-gray-500">Total Earned</div>
-                </div>
-                <div class="text-center">
-                    <div class="text-xl font-bold">5</div>
-                    <div class="text-gray-500">Total Invited</div>
+   
+    <div class="bg-white p-6  w-[70%]">
+        <h2 class="text-xl font-semibold mb-4">Referral & Bonus</h2>
+        <div class="flex justify-between items-center mb-6">
+            <!-- Total Earned -->
+            <div class="flex flex-col items-center space-x-2">
+                <i class="fas fa-money-bill-wave text-4xl text-vastel_blue"></i>
+                <div class="flex flex-row gap-5 font-semibold text-vastel_blue">
+                    <p class="text-sm text-vastel_blue">Total Earned:</p>
+                    <p class="text-sm ">₦ 500</p>
                 </div>
             </div>
-            <button class="bg-blue-600 text-white py-2 px-4 rounded-lg">Share Link And Earn</button>
+            <!-- Total Invited -->
+            <div class="flex flex-col items-center space-x-2">
+                <i class="fas fa-users text-4xl text-vastel_blue"></i>
+                <div class="flex flex-row font-semibold text-vastel_blue">
+                    <p class="text-sm text-vastel_blue">Total Invited:</p>
+                    <p class="text-sm ">5</p>
+                </div>
+            </div>
         </div>
-        <p class="text-center text-gray-500 mt-4">Share your invitation link with your friends to earn</p>
+
+        <!-- Share Link and Earn Button -->
+        <div class="flex flex-col items-start">
+            <button class="bg-vastel_blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300" data-modal-target="shareModal" data-modal-toggle="shareModal">
+                Share Link And Earn
+            </button>
+          
+            <p class="text-sm text-gray-500 mt-2">Share your invitation link with your friends to earn</p>
+        </div>
     </div>
 
     <!-- Referral History Section -->
     <div class="bg-white shadow rounded-lg p-6">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-lg font-bold">Referral History</h2>
-            <button class="bg-blue-600 text-white py-2 px-4 rounded-lg">Withdraw Bonus</button>
+            <button class="bg-vastel_blue text-white py-2 px-4 rounded-lg" data-modal-target="transferModal" data-modal-toggle="transferModal">Withdraw Bonus</button>
         </div>
 
         <!-- Referral History List -->
@@ -44,10 +60,104 @@
                         <div class="text-gray-500">Phone No: 08123456789</div>
                         <div class="text-gray-500 text-sm">2024-09-23 05:13:33</div>
                     </div>
-                    <div class="text-blue-600 font-bold">₦100</div>
+                    <div class="text-vastel_blue font-bold">₦100</div>
                 </div>
             </div>
             <!-- End of block -->
         </div>
     </div>
+
+    <!-- sharing to social modal -->
+        <!-- Modal -->
+    <div id="shareModal" tabindex="-1" aria-hidden="true" class="hidden fixed z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
+        <div class="relative w-full h-full max-w-md md:h-auto">
+            <!-- Modal content -->
+            <div class="relative bg-white rounded-lg shadow">
+                <!-- Modal header -->
+                <div class="flex items-start justify-between p-4 border-b rounded-t">
+                    <h3 class="text-xl font-semibold">Share</h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="shareModal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <!-- Modal body -->
+                <div class="p-6 space-y-4">
+                    <div class="flex justify-around">
+                        <!-- Social buttons -->
+                        <div class="flex flex-col items-center">
+                            <i class="fab fa-facebook text-vastel_blue text-4xl"></i>
+                            <span class="text-sm mt-2">Facebook</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fab fa-instagram text-pink-600 text-4xl"></i>
+                            <span class="text-sm mt-2">Instagram</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fab fa-whatsapp text-green-600 text-4xl"></i>
+                            <span class="text-sm mt-2">WhatsApp</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <i class="fas fa-times text-gray-600 text-4xl"></i>
+                            <span class="text-sm mt-2">X</span>
+                        </div>
+                    </div>
+                    <!-- Or copy link section -->
+                    <p class="text-center">Or copy link</p>
+                    <div class="flex items-center justify-between bg-gray-100 p-2 rounded-lg">
+                        <input id="shareLink" type="text" value="https://www.yourlink.com/share" class="bg-gray-100 outline-none text-vastel_blue w-full border-none">
+                        <button class="ml-2 text-vastel_blue" onclick="copyToClipboard()">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- end of share to social modal -->
+
+    <!-- withdrawal modal -->
+        <!-- Modal -->
+<div id="transferModal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full h-full bg-black bg-opacity-30 flex items-center justify-center">
+    <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow">
+            <!-- Modal header -->
+            <div class="flex justify-between items-center p-5 rounded-t">
+                <h3 class="text-xl font-medium text-gray-900">
+                    Confirm Transfer
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-toggle="transferModal">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 9.293a1 1 0 011.414 0L10 13.586l4.293-4.293a1 1 0 011.414 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                </button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="p-6 space-y-6 text-center">
+                <p>You are about to transfer <strong>₦ 1,000</strong> to your wallet balance.</p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="flex justify-between p-6">
+                <button data-modal-toggle="transferModal" class="text-vastel_blue bg-white border border-vastel_blue focus:ring-4 focus:outline-none focus:ring-vastel_blue rounded-lg text-sm px-5 py-2.5 hover:text-gray-900 hover:bg-gray-100">
+                    Cancel
+                </button>
+                <button class="text-white bg-vastel_blue focus:ring-4 focus:outline-none focus:ring-blue-600 font-medium rounded-lg text-sm px-5 py-2.5">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+    <!-- end of withdrawal modal -->
+
+    <script>
+        // Function to copy link to clipboard
+        function copyToClipboard() {
+            var copyText = document.getElementById("shareLink");
+            copyText.select();
+            document.execCommand("copy");
+            alert("Link copied to clipboard: " + copyText.value);
+        }
+    </script>
 @endsection 

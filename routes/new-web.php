@@ -19,9 +19,13 @@ Route::prefix('new')->group(function () {
    Route::view('dashboard/services/status', 'new.status_modal');
    Route::view('dashboard/services/education', 'new.result');
    Route::view('dashboard/services/electricity', 'new.electricity');
+
+   Route::view('/dashboard/profile', 'new.profile');
+   Route::view('/dashboard/support', 'new.support');
+
    //settings 
    Route::view('/dashboard/settings', 'new.settings');
-   Route::view('/dashboard/security', 'new.security');
-   Route::view('/dashboard/referral', 'new.referral');
+   Route::view('/dashboard/security', 'new.security')->name('new.security');
+   Route::view('/dashboard/referral', 'new.referral')->name('new.referral');
 
 });

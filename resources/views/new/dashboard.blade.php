@@ -1,4 +1,4 @@
-@extends('layouts.new-dashboard')
+@extends('layouts.new-guest')
 
 @section('body')
     <!-- Wallet Balance -->

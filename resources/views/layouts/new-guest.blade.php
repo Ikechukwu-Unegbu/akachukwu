@@ -67,111 +67,13 @@
     <!-- ===============================================-->
     <!--    Main Content-->
     <!-- ===============================================-->
-    {{-- <main class="main" id="top">
+   
 
-        <nav class="navbar-light bg-light">
-            <div class="custom-nav container-fluid">
-                <div class="navbar-brand">
-                    <a @auth href="{{ route('dashboard') }}" @else href="/" @endauth><img
-                            src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;"
-                            alt="logo"></a>
-                </div>
-                <div class="navbar-nav main-nav me-auto mb-2 mb-lg-0">
-                    <li><a class="fs-1 nav-link" href="/">Home</a></li>
-                    <li><a class="fs-1 nav-link" href="{{ route('airtime.index') }}">Airtime</a></li>
-                    <li><a class="fs-1 nav-link" href="{{ route('data.index') }}">Internet Data</a></li>
-                    <li><a class="fs-1 nav-link" href="{{ route('dashboard') }}">
-                            @guest Utility Bills
-                            @else
-                            Dashboard @endguest
-                        </a></li>
-                </div>
-                <div class="auth-nav">
-                    @guest
-                        <a class=" btn btn-warning btn-sm" href="{{ route('login') }}">Login</a>
-                        <a class="btn btn-warning btn-sm" href="{{ route('register') }}">Register</a>
-                    @else
-                        <form action="{{ route('logout') }}" method="post">
-                            @csrf
-                            <button class="btn btn-warning btn-sm">Logout</button>
-                        </form>
-                    @endguest
-                    @auth
-                        @if (Auth::user()->isImpersonating())
-                            <form action="{{ route('impersonate.stop') }}" method="post">
-                                @csrf
-                                <button class="btn btn-warning btn-sm"><small>Stop Impersonating</small></button>
-                            </form>
-                        @endif
-                    @endauth
-                </div>
-                <button class="canvas-toggle btn " type="button" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-                    <i class="fa-solid fa-2x fa-bars"></i>
-                </button>
-
-
-
-
-            </div>
-            <!-- off canvas begins -->
-            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
-                aria-labelledby="offcanvasExampleLabel">
-                <div class="offcanvas-header">
-                    <a @auth href="{{ route('dashboard') }}" @else href="/" @endauth><img
-                            src="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;"
-                            alt="logo"></a>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
-                        aria-label="Close">&times;</button>
-                </div>
-                <div class="offcanvas-body">
-
-                    <ul class="off-canvass-nav">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="{{ route('airtime.index') }}">Airtime</a></li>
-                        <li><a href="{{ route('data.index') }}">Internet Data</a></li>
-                        <li><a href="{{ route('education.result.index') }}">Result Checker</a></li>
-                        <li><a href="{{ route('dashboard') }}">
-                                @guest Bills Payment
-                                @else
-                                Dashboard @endguest
-                            </a></li>
-                        <li><a href="{{ route('profile.edit') }}">Profile</a></li>
-                        <li><a href="{{ route('payment.index') }}">Fund Account</a></li>
-
-                        @guest
-                            <li>
-                                <ul class="off-canvass-nav" style="margin-left: -1rem;">
-                                    <li><a href="{{ route('register') }}" class="btn btn-warning">Register</a></li>
-                                    <li><a href="{{ route('login') }}" class="btn btn-warning">Login</a></li>
-                                </ul>
-                            </li>
-                        @else
-                            <form action="{{ route('logout') }}" method="post">
-                                @csrf
-                                <button class="btn btn-warning">Logout</button>
-                            </form>
-                        @endguest
-
-                    </ul>
-                </div>
-            </div>
-
-
-            <!-- off canvas ends -->
-        </nav>
-
-        @yield('body')
-
-        {{ $slot ?? '' }}
-
-    </main> --}}
-
-    <div class="flex flex-col md:flex-row h-screen">
+    <div class="flex flex-col md:flex-row h-full">
         <!-- Sidebar -->
         <nav
-            class="bg-vastel_blue text-white w-full hidden md:w-16 lg:w-64 md:flex flex-row md:flex-col justify-between md:justify-start ">
-            <div class="flex items-center mb-8 py-[5px] border-b border-b-4 h-[5rem]">
+            class="bg-vastel_blue text-white  w-full hidden md:w-16 lg:w-64 md:flex flex-row md:flex-col justify-between md:justify-start ">
+            <div class="flex items-center mb-8 py-[5px] border-b border-b-2 h-[5rem]">
                 <i class="fas fa-wifi text-2xl md:text-3xl"></i>
                 <span class="ml-2 hidden lg:inline">vastal</span>
             </div>
@@ -181,32 +83,33 @@
                     <span class="ml-2 hidden lg:inline">Dashboard</span>
                 </a> -->
                 <a href="{{ route('dashboard') }}"
-                    class="flex items-center  w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}">
+                    class="flex flex-col items-center  w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}">
                     <i class="fas fa-home text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Dashboard</span>
                 </a>
 
-                <a href="#" class="flex items-center p-2">
-                    <i class="fas fa-chart-bar text-xl"></i>
-                    <span class="ml-2 hidden lg:inline">Statistics</span>
+                <a href="{{route('services')}}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'services' ? 'active' : '' }}">
+                    <!-- <i class="fas fa-chart-bar text-xl"></i> -->
+                    <i class="fa-solid fa-cubes-stacked text-xl"></i>
+                    <span class="ml-2 hidden lg:inline">Services</span>
                 </a>
-                <a href="{{ route('transactions') }}" class="flex items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'transactions' ? 'active' : '' }}">
+                <a href="{{ route('transactions') }}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'transactions' ? 'active' : '' }}">
                     <i class="fas fa-exchange-alt text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Transactions</span>
                 </a>
-                <a href="{{ route('settings.credentials') }}" class="flex items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'settings.credentials' ? 'active' : '' }}">
+                <a href="{{ route('settings.credentials') }}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'settings.credentials' ? 'active' : '' }}">
                     <i class="fas fa-cog text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Settings</span>
                 </a>
-                <a href="javascript:void(0)" class="flex items-center p-2"
+                <a href="javascript:void(0)" class="flex mb-[3rem] flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2"
                     onclick="event.preventDefault();document.getElementById('logout-form').submit();"
                 >
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                   <form id="logout-form" action="{{ route('logout') }}" method="POST"
                         style="display: none;">
                         @csrf
                     </form>
                     <i class="fas fa-sign-out-alt text-xl"></i>
-                    <span class="ml-2 hidden lg:inline">Logout</span>
+                    <span class=" hidden lg:inline">Logout</span>
                 </a>
             </div>
         </nav>
@@ -215,7 +118,7 @@
         <main class="flex-1 overflow-y-auto">
             <!-- Header -->
             <header
-                class="flex justify-between text-vastel_blue bg-white items-center mb-8 py-[5px] border-b border-b-4 h-[5rem] px-[2rem]">
+                class="flex justify-between text-vastel_blue bg-white items-center mb-8 py-[5px] border-b border-b-2 h-[5rem] px-[2rem]">
                 <h1 class="text-2xl font-bold">Hi, {{ auth()->user()->name }}</h1>
                 <div class="flex items-center space-x-4">
                     <i class="far fa-bell text-xl"></i>
