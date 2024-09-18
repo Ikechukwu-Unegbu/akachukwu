@@ -24,7 +24,7 @@ Route::prefix('new')->group(function () {
    Route::view('/dashboard/support', 'new.support')->name('new.support');
 
    //settings 
-   Route::view('/dashboard/settings', 'new.settings');
+   Route::view('/dashboard/settings', 'new.settings')->name('new.setting');
    Route::view('/dashboard/security', 'new.security')->name('new.security');
    Route::view('/dashboard/referral', 'new.referral')->name('new.referral');
 
