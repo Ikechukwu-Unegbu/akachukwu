@@ -1,4 +1,4 @@
-<div>
+<div class="max-w-lg w-full bg-white p-8 ">
     <h1 class="text-2xl font-bold mb-6 mt-4">{{ !empty($user->pin) ? 'Update Your PIN' : 'Setup Your PIN' }}</h1>
     <form wire:submit.prevent="{{ !empty($user->pin) ? 'update' : 'submit' }}">
         @if (!empty($user->pin))

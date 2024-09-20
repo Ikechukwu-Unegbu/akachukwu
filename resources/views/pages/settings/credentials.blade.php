@@ -2,7 +2,7 @@
 @section('body')
     <div class="max-w-lg w-full bg-white p-8 ">
         <div class="flex items-center mb-6">
-            <a href="{{ route('dashboard') }}" class="text-blue-600">
+            <a href="{{ route('settings.index') }}" class="text-blue-600">
                 <i class="fas fa-arrow-left"></i> Back
             </a>
         </div>

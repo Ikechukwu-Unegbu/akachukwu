@@ -69,7 +69,7 @@
             <a href="{{ route('transactions') }}" class="text-blue-600 text-sm">See all Transactions</a>
         </div>
         <div class="space-y-4">
-            @foreach (auth()->user()->transactionHistories(10) as $transaction)
+            @forelse (auth()->user()->transactionHistories(10) as $transaction)
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <i class="fas {{ $transaction->icon }} bg-blue-100 p-2 rounded-full mr-3"></i>
@@ -85,7 +85,13 @@
                         <p class="text-sm text-gray-500">{{ $transaction->status ? 'Success' : 'Failed' }}</p>
                     </div>
                 </div>
-            @endforeach
+                @empty
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <h4 class="text-red-500 font-semibold">No Recent Transactions Found!</h4>
+                    </div>
+                </div>
+            @endforelse
         </div>
     </div>
 

@@ -98,16 +98,16 @@
                     <span class="ml-2 hidden lg:inline">Dashboard</span>
                 </a>
 
-                <a href="{{route('services')}}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'services' ? 'active' : '' }}">
+                <a href="{{route('services')}}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs(['services.*', 'airtime.*', 'data.*', 'electricity.*', 'cable.*']) ? 'active' : '' }}">
                     <!-- <i class="fas fa-chart-bar text-xl"></i> -->
                     <i class="fa-solid fa-cubes-stacked text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Services</span>
                 </a>
-                <a href="{{ route('transactions') }}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'transactions' ? 'active' : '' }}">
+                <a href="{{ route('transactions') }}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs('transactions') ? 'active' : '' }}">
                     <i class="fas fa-exchange-alt text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Transactions</span>
                 </a>
-                <a href="{{ route('settings.credentials') }}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'settings.credentials' ? 'active' : '' }}">
+                <a href="{{ route('settings.index') }}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                     <i class="fas fa-cog text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Settings</span>
                 </a>
@@ -133,7 +133,9 @@
                 <div class="flex items-center space-x-4">
                     <i class="far fa-bell text-xl"></i>
                     <i class="far fa-question-circle text-xl"></i>
-                    <div class="w-8 h-8 bg-red-500 rounded-full"></div>
+                    <div class=" bg-red-500 rounded-full">
+                        <img src="{{ auth()->user()->profilePicture }}" class="rounded-full w-12 h-12" alt="">
+                    </div>
                 </div>
             </header>
 
