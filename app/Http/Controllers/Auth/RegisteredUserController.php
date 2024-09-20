@@ -92,7 +92,7 @@ class RegisteredUserController extends Controller
             // MonnifyService::createVirtualAccount($user);
             $activeGateway = PaymentGateway::where('va_status', true)->first();
             $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-            // $virtualAccountFactory::createVirtualAccount($user);
+            $virtualAccountFactory::createVirtualAccount($user); 
 
             event(new Registered($user));
 
