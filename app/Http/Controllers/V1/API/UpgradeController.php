@@ -12,7 +12,7 @@ class UpgradeController extends Controller
     public function store()
     {
         $upgradeService = new UpgradeService();
-        $upgradeService->requestUpgrate();
+        $upgradeService->requestUpgrade();
         return ApiHelper::sendResponse([], 'upgrade request successful');
     }
 }

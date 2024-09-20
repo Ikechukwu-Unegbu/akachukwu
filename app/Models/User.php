@@ -59,7 +59,7 @@ class User extends Authenticatable
         // Chain fluent methods for configuration options
     }
 
-    public function ugradeRequests()
+    public function upgradeRequests()
     {
         return $this->hasMany(UpgradeRequest::class);
     }
@@ -132,7 +132,7 @@ class User extends Authenticatable
     {
         return $this->referralsMade->map(function($ref) {
             return [
-                'user' => User::where('id', $ref->referred_user_id)->select('name', 'username', 'mobile', 'created_at')->first(),
+                'user' => User::where('id', $ref->referred_user_id)->select('name', 'username', 'phone', 'created_at')->first(),
                 'referrerEarning' => $this->referrerEarning($ref->id)
             ];
         });

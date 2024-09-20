@@ -59,7 +59,7 @@
                     <div class="flex justify-between items-center">
                         <div>
                             <div class="font-bold">{{ $referral['user']->name }}</div>
-                            <div class="text-gray-500">Phone No: {{ $referral['user']->mobile ?? 'N/A' }}</div>
+                            <div class="text-gray-500">Phone No: {{ $referral['user']->phone ?? 'N/A' }}</div>
                             <div class="text-gray-500 text-sm">{{ $referral['user']->created_at->format('d M, Y') }}
                             </div>
                         </div>
@@ -157,9 +157,7 @@
 
                 <!-- Modal body -->
                 <div class="p-6 space-y-6 text-center">
-                    <p>You are about to transfer <strong>₦
-                            {{ number_format(auth()->user()->referrerEarning(auth()->id()), 2) }}</strong> to your wallet
-                        balance.</p>
+                    <p>You are about to transfer <strong>₦ {{ number_format(auth()->user()->referrerEarning(auth()->id()), 2) }}</strong> to your wallet balance.</p>
                 </div>
 
                 <!-- Modal footer -->
