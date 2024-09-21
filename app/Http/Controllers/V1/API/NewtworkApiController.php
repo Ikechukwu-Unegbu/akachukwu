@@ -6,13 +6,16 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
+use App\Traits\ResolvesVendorService;
 
 class NewtworkApiController extends Controller
 {
+    use ResolvesVendorService;
+    
     public function index()
     {
         try {
-            $vendor = DataVendor::whereStatus(true)->first();
+            $vendor = $this->getVendorService('data');
             $network = DataNetwork::whereVendorId($vendor?->id)->whereStatus(true)->get();
             return response()->json([
                 'status'    =>  'success', 

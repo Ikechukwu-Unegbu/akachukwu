@@ -27,6 +27,8 @@ class EducationController extends Controller
         if (count($response)) {
             return ApiHelper::sendResponse($response, "Result Checker PIN");
         }
+
+        return ApiHelper::sendResponse([], "Result Checker PIN not found!");
     }
 
     public function create(ResultCheckerRequest $request)

@@ -5,19 +5,22 @@ namespace App\Http\Controllers\V1\API;
 use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
 use App\Models\Data\DataVendor;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\Api\ElectricityApiRequest;
-use App\Http\Requests\V1\Api\MeterApiRequest;
 use App\Models\Utility\Electricity;
+use App\Http\Controllers\Controller;
+use App\Traits\ResolvesVendorService;
+use App\Http\Requests\V1\Api\MeterApiRequest;
 use App\Services\Electricity\ElectricityService;
+use App\Http\Requests\V1\Api\ElectricityApiRequest;
 
 class ElectricityApiController extends Controller
 {
+    use ResolvesVendorService;
+
     protected $vendor;
     
-    public function __construct(DataVendor $datavendor)
+    public function __construct()
     {
-        $this->vendor = $datavendor->where('status', true)->firstOrFail();
+        $this->vendor = $this->getVendorService('electricity');
     }
 
 
