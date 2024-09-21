@@ -22,7 +22,7 @@ class NewtworkApiController extends Controller
             return ApiHelper::sendError([], 'Network not found');
         }
 
-        $queryNetwork = Str::lower($request->query('network'));
+        $queryNetwork = Str::lower($request->query('type'));
         
         try {
             $vendor = $this->getVendorService($queryNetwork);
