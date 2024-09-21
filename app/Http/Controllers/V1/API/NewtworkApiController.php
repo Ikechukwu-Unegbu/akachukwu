@@ -18,7 +18,7 @@ class NewtworkApiController extends Controller
     {
         $args = ['data', 'airtime'];
 
-        if (!$request->query('network') || !in_array($request->query('network'), $args)) {
+        if (!$request->query('type') || !in_array($request->query('type'), $args)) {
             return ApiHelper::sendError([], 'Network not found');
         }
 
