@@ -8,17 +8,20 @@ use App\Models\Utility\Cable;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\CablePlan;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\Api\CableApiRequest;
 use App\Services\Cable\CableService;
+use App\Traits\ResolvesVendorService;
 use App\Http\Requests\V1\Api\IUCApiRequest;
+use App\Http\Requests\V1\Api\CableApiRequest;
 
 class CableApiController extends Controller
 {
+    use ResolvesVendorService;
+    
     protected $vendor;
     
-    public function __construct(DataVendor $datavendor)
+    public function __construct()
     {
-        $this->vendor = $datavendor->where('status', true)->firstOrFail();
+        $this->vendor = $this->getVendorService('cable');
     }
 
     public function index()
