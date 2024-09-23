@@ -59,7 +59,7 @@ class User extends Authenticatable
         // Chain fluent methods for configuration options
     }
 
-    public function ugradeRequests()
+    public function upgradeRequests()
     {
         return $this->hasMany(UpgradeRequest::class);
     }
@@ -132,7 +132,7 @@ class User extends Authenticatable
     {
         return $this->referralsMade->map(function($ref) {
             return [
-                'user' => User::where('id', $ref->referred_user_id)->select('name', 'username')->first(),
+                'user' => User::where('id', $ref->referred_user_id)->select('name', 'username', 'phone', 'created_at')->first(),
                 'referrerEarning' => $this->referrerEarning($ref->id)
             ];
         });
@@ -167,8 +167,14 @@ class User extends Authenticatable
             return Storage::disk('avatars')->url($this->image);
         }
 
-        $firstLetter = strtoupper(substr($this->username, 0, 1));
-        return "https://via.placeholder.com/50/3498db/FFFFFF/?text={$firstLetter}";
+        $nameParts = explode(' ', $this->name);
+        $alias = substr($nameParts[0], 0, 1);
+        if (isset($nameParts[1])) {
+            $alias .= substr($nameParts[1], 0, 1);
+        }
+        return "https://via.placeholder.com/90/FF0000/FFFFFF/?text={$alias}";
+        // $firstLetter = strtoupper(substr($this->username, 0, 1));
+        // return "https://via.placeholder.com/50/3498db/FFFFFF/?text={$firstLetter}";
     }
 
     public function scopeSearch($query, $search)
@@ -218,6 +224,20 @@ class User extends Authenticatable
     public function virtualAccounts() : HasMany
     {
         return $this->hasMany(VirtualAccount::class);
+    }
+
+    public function otp()
+    {
+        return $this->belongsTo(Otp::class);
+    }
+
+    public function otpVerified()
+    {
+        if ($this->otp && $this->otp->status !== 'unused') {
+            return false;
+        }
+
+        return true;
     }
 
     // public function walletHistories()

@@ -11,7 +11,7 @@ class Index extends Component
 {
     use WithPagination;
 
-    protected $paginationTheme = 'Tailwind';
+    protected $paginationTheme = 'tailwind';
 
     public $perPage = 50;
     public $selectedDate;

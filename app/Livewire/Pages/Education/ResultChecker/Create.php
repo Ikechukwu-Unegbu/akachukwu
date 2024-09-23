@@ -70,6 +70,11 @@ class Create extends Component
         return;
     }
 
+    public function updatePin($index, $value)
+    {
+        $this->otp[$index] = $value;
+    }
+
     public function submitPin()
     {
         if (!is_array($this->pin)) {

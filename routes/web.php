@@ -6,7 +6,10 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\V1\AdminController;
 use App\Http\Controllers\V1\Utilities\TVController;
-use App\Http\Controllers\ProfileSettingsController;;
+use App\Http\Controllers\ProfileSettingsController;
+use App\Http\Controllers\UpgradeToResellerController;
+
+;
 
 use App\Http\Controllers\V1\Utilities\DataController;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
@@ -36,7 +39,7 @@ Route::middleware(['testing'])->group(function () {
 });
 
 
-Route::middleware(['auth', 'verified', 'user', 'testing', 'impersonate'])->group(function () {
+Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate'])->group(function () {
 
     Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
     Route::get('/data', [DataController::class, 'index'])->name('data.index');
@@ -50,7 +53,10 @@ Route::middleware(['auth', 'verified', 'user', 'testing', 'impersonate'])->group
         return view('pages.utilities.services');
     })->name('services');
 
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::get('settings/referrals', [SettingsController::class, 'referral'])->name('settings.referral');
     Route::get('settings/credentials', [SettingsController::class, 'credentials'])->name('settings.credentials');
+    Route::get('settings/support', [SettingsController::class, 'support'])->name('settings.support');
 
     Route::get('transactions', TransactionController::class)->name('transactions');
 
@@ -71,7 +77,11 @@ Route::middleware(['auth', 'verified', 'user', 'testing', 'impersonate'])->group
     Route::get('result-checker', [ResultCheckerController::class, 'index'])->name('education.result.index');
     Route::get('transactions/result-checker', \App\Livewire\User\Transaction\Education\ResultChecker\Index::class)->name('user.transaction.education');
     Route::get('transactions/result-checker/{checker:transaction_id}', \App\Livewire\User\Transaction\Education\ResultChecker\Receipt::class)->name('user.transaction.education.receipt');
-
+    Route::get('otp/verify', function () {
+        return view('auth.otp');
+    })->name('otp');
+    
+    Route::post('/upgrade-to-reseller', UpgradeToResellerController::class)->name('reseller-upgrade');
     // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
 });
 

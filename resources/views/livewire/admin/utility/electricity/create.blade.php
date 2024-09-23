@@ -26,11 +26,30 @@
                             </div>
                         </div>
                         <div class="col-md-8 col-12 col-lg-8 col-xl-8">
-                            <div class="mb-4 form-group">
+                            <div class="mb-3 form-group">
                                 <label for="disco_name" class="mb-2 form-label">Disco Name</label>
                                 <input type="text" name="disco_name" class="form-control @error('disco_name') is-invalid @enderror" wire:model="disco_name">
                                 @error('disco_name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
+                        </div>
+                        <div class="col-md-8 col-12 col-lg-8 col-xl-8">
+                            <div class="mb-3 form-group">
+                                <label for="discount" class="mb-2 form-label">Discount %</label>
+                                <input type="number" name="discount" class="form-control @error('discount') is-invalid @enderror" wire:model="discount">
+                                @error('discount') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-12 col-lg-8 col-xl-8">
+                            <div class="mb-3 form-group">
+                                <label for="image" class="mb-2 form-label">Image</label>
+                                <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" accept="image/*" class="img-fluid img-thumbnail" wire:model="image">
+                                @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            @if ($image)
+                                <div class="mb-4">
+                                    <img src="{{ $image->temporaryUrl() }}" alt="image" width="80" />
+                                </div>
+                            @endif
                         </div>
                         <div class="col-md-8 col-12 col-lg-8 col-xl-8">
                             <div class="form-check form-switch">

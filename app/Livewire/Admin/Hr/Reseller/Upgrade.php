@@ -25,6 +25,11 @@ class Upgrade extends Component
     {
         $this->validate();
         $this->user->update(['user_level' => $this->level]);
+        if ($this->user->upgradeRequests()->count()) {
+            $this->user->upgradeRequests()->each(function ($q) {
+                $q->update(['status' => 'success']);
+            });
+        }
         $this->dispatch('success-toastr', ['message' => "User Level Upgraded Successfully"]);
         session()->flash('success', "User Level Upgraded Successfully");
         $this->redirectRoute('admin.hr.reseller');

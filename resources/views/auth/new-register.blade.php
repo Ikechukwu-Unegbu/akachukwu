@@ -104,7 +104,7 @@
                 </button>
             </form>
         <div class="mt-6 text-center">
-            <p>Have an account? <a href="#" class="text-vastel_blue">Click here to login</a></p>
+            <p>Have an account? <a href="{{ route('login') }}" class="text-vastel_blue">Click here to login</a></p>
         </div>
         <div class="mt-6 flex justify-center space-x-4">
             <a href="#"><img src="{{asset('images/playstore.svg')}}" alt="App Store" class="w-24"></a>
