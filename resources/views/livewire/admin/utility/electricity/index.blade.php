@@ -47,7 +47,16 @@
                             @forelse ($electricity as $__electricity)
                                 <tr>
                                     <th scope="row">{{ $loop->index+1 }}</th>
-                                    <td>{{ $__electricity->disco_name }}</td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="me-3">
+                                                <img src="{{ $__electricity->image_url }}" width="60" height="60" class="img-fluid img-thumbnail" alt="">
+                                            </div>
+                                            <div>
+                                                {{ $__electricity->disco_name }}
+                                            </div>
+                                        </div>
+                                    </td>
                                     <td>{{ $__electricity->disco_id }}</td>
                                     <td>{{ $__electricity->discount }}</td>
                                     <td><span class="badge bg-{{ $__electricity->status ? 'success' : 'danger' }}">{{ $__electricity->status ? 'Active' : 'Not-Active' }}</span></td>

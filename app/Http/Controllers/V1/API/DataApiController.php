@@ -10,17 +10,19 @@ use App\Models\Data\DataNetwork;
 use Illuminate\Validation\Rules;
 use App\Services\Data\DataService;
 use App\Http\Controllers\Controller;
+use App\Traits\ResolvesVendorService;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\V1\Api\DataApiRequest;
 use Illuminate\Validation\ValidationException;
 
 class DataApiController extends Controller
 {
+    use ResolvesVendorService;
     protected $vendor;
     
-    public function __construct(DataVendor $datavendor)
+    public function __construct()
     {
-        $this->vendor = $datavendor->where('status', true)->firstOrFail();
+        $this->vendor = $this->getVendorService('data');
     }
 
     public function index(Request $request)

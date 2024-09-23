@@ -66,4 +66,22 @@ class UserPinService
         $user->pin = Hash::make($pin);
         $user->save();
     }
+
+    public static function resetPin($data)
+    {
+        $user = Auth::user();
+
+        $currentPassword = $data['current_password'];
+        $pin = $data['pin'];
+
+        if (!Hash::check($currentPassword, $user->password)) {
+            throw ValidationException::withMessages([
+                'current_password' => __('Your password does not match.'),
+            ]);
+        }
+
+        self::updatePin($user, $pin);
+
+        return true;
+    }
 }
