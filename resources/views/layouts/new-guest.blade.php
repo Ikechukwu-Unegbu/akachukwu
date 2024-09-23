@@ -98,7 +98,7 @@
                     <span class="ml-2 hidden lg:inline">Dashboard</span>
                 </a>
 
-                <a href="{{route('services')}}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs(['services.*', 'airtime.*', 'data.*', 'electricity.*', 'cable.*']) ? 'active' : '' }}">
+                <a href="{{route('services')}}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs(['services', 'airtime.*', 'data.*', 'electricity.*', 'cable.*']) ? 'active' : '' }}">
                     <!-- <i class="fas fa-chart-bar text-xl"></i> -->
                     <i class="fa-solid fa-cubes-stacked text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Services</span>
