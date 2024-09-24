@@ -3,7 +3,7 @@
 @section('body')
 <div class="w-full lg:w-[60%] bg-white p-6">
         <!-- Back button -->
-        <a href="#" class="inline-flex items-center mb-4 text-blue-600 hover:text-blue-800">
+        <a href="{{route('dashboard')}}" class="inline-flex items-center mb-4 text-blue-600 hover:text-blue-800">
             <i class="fas fa-chevron-left mr-2"></i>
             Back
         </a>
@@ -16,7 +16,7 @@
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <i class="fas fa-lock text-gray-400"></i>
                 </div>
-                <input type="password" id="old-password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Old Password" required>
+                <input type="password" id="old-password" name="current_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Old Password" required>
                 <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
                     <i class="fas fa-eye text-gray-400"></i>
                 </button>
@@ -27,7 +27,7 @@
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <i class="fas fa-lock text-gray-400"></i>
                 </div>
-                <input type="password" id="new-password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="New Password" required>
+                <input type="password" id="new-password" name="new_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="New Password" required>
                 <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
                     <i class="fas fa-eye text-gray-400"></i>
                 </button>
@@ -38,7 +38,7 @@
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                     <i class="fas fa-lock text-gray-400"></i>
                 </div>
-                <input type="password" id="confirm-new-password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Confirm New Password" required>
+                <input type="password" id="confirm-new-password" name="confirm_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5" placeholder="Confirm New Password" required>
                 <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
                     <i class="fas fa-eye text-gray-400"></i>
                 </button>
