@@ -7,6 +7,63 @@
         Open Transaction Pin Modal
     </button>
 
+    <div class="w-full max-w-sm mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+        <ul class="divide-y divide-gray-200">
+            <li class="flex justify-between items-center p-4">
+                <span class="text-gray-700">100MB for 1 Day</span>
+                <div class="flex flex-row gap-3">
+                    <span class="text-green-600 font-bold">₦98.00</span>
+                    <span class="line-through text-gray-400">₦100.00</span>
+                </div>
+            </li>
+            <li class="flex justify-between items-center p-4">
+                <span class="text-gray-700">100MB for 1 Day</span>
+                <div class="flex flex-row gap-3">
+                    <span class="text-green-600 font-bold">₦98.00</span>
+                    <span class="line-through text-gray-400">₦100.00</span>
+                </div>
+            </li>
+            <li class="flex justify-between items-center p-4">
+                <span class="text-gray-700">100MB for 1 Day</span>
+                <div class="flex flex-row gap-3">
+                    <span class="text-green-600 font-bold">₦98.00</span>
+                    <span class="line-through text-gray-400">₦100.00</span>
+                </div>
+            </li>
+            <li class="flex justify-between items-center p-4">
+                <span class="text-gray-700">100MB for 1 Day</span>
+                <div class="flex flex-row gap-3">
+                    <span class="text-green-600 font-bold">₦98.00</span>
+                    <span class="line-through text-gray-400">₦100.00</span>
+                </div>
+            </li>
+            <li class="flex justify-between items-center p-4">
+                <span class="text-gray-700">100MB for 1 Day</span>
+                <div class="flex flex-row gap-3">
+                    <span class="text-green-600 font-bold">₦98.00</span>
+                    <span class="line-through text-gray-400">₦100.00</span>
+                </div>
+            </li>
+            <li class="flex justify-between items-center p-4">
+                <span class="text-gray-700">100MB for 1 Day</span>
+                <div class="flex flex-row gap-3">
+                    <span class="text-green-600 font-bold">₦98.00</span>
+                    <span class="line-through text-gray-400">₦100.00</span>
+                </div>
+            </li>
+            <li class="flex justify-between items-center p-4">
+                <span class="text-gray-700">100MB for 1 Day</span>
+                <div class="flex flex-row gap-3">
+                    <span class="text-green-600 font-bold">₦98.00</span>
+                    <span class="line-through text-gray-400">₦100.00</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+
+
+
     <!-- Modal -->
     <div id="pinModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center">
         <div class="relative w-full max-w-md max-h-full">
