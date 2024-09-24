@@ -31,7 +31,7 @@
             </div>
         @endif
     
-        <div class="relative z-0 w-full mb-6 group">
+        {{-- <div class="relative z-0 w-full mb-6 group">
             <select id="provider" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer" wire:model.live="disco_name">
                 <option>Select Provider</option>
                 @foreach ($electricity as $__electricity)
@@ -42,6 +42,32 @@
             @error('disco_name')
                 <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
             @enderror
+        </div> --}}
+
+        <div class="relative z-50 mb-6 w-full group pt-6">
+            <!-- Button to toggle dropdown -->
+            <button type="button" id="dropdown"
+                class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
+                @if ($electricity->where('disco_id', $disco_name)->count())
+                    <div class="flex">
+                        <img src="{{ $electricity->where('disco_id', $disco_name)->first()?->image_url }}" alt="Logo" class="mr-3 w-6 h-6"> 
+                        <h4>{{ $electricity->where('disco_id', $disco_name)->first()?->disco_name  }}</h4>
+                    </div>
+                @else
+                    Select Disco
+                @endif
+            </button>
+
+            <!-- Dropdown menu -->
+            <div id="electricityDropdown" class="hidden absolute z-10 w-full bg-white rounded-lg shadow-lg">
+                <ul class="py-2 text-sm text-gray-700">
+                    @foreach ($electricity as $__electricity)
+                        <li wire:click="selectedElectricity({{ $__electricity->id }})" class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100">
+                            <img src="{{ $__electricity->image_url }}" alt="{{ $__electricity->disco_name }} Logo" class="mr-3 w-6 h-6"> {{ $__electricity->disco_name }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
     
         <div class="relative z-0 w-full mb-6 group">
@@ -198,4 +224,41 @@
             }
         }
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeDropdown('dropdown', 'electricityDropdown', 'selectedPackage');
+    });
+</script>
+<script>
+    /**
+     * Initializes a dropdown menu with specified behavior.
+     * @param {string} dropdownButtonId - The ID of the button that toggles the dropdown.
+     * @param {string} dropdownMenuId - The ID of the dropdown menu.
+     * @param {string} selectedTextId - The ID of the element where the selected item text is displayed.
+     */
+    function initializeDropdown(dropdownButtonId, dropdownMenuId, selectedTextId) {
+        const dropdownButton = document.getElementById(dropdownButtonId);
+        const dropdownMenu = document.getElementById(dropdownMenuId);
+        const selectedText = document.getElementById(selectedTextId);
+        
+        // Toggle dropdown visibility
+        dropdownButton.addEventListener('click', () => {
+            dropdownMenu.classList.toggle('hidden');
+        });
+
+        // Create and assign a unique selectItem function to the global scope
+        window[`selectItem_${dropdownButtonId}`] = function(itemName) {
+            selectedText.innerHTML = `${itemName}`;
+            dropdownMenu.classList.add('hidden');
+        };
+
+        // Close the dropdown if clicked outside
+        document.addEventListener('click', function (event) {
+            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.add('hidden');
+            }
+        });
+    }
+</script>
 @endpush

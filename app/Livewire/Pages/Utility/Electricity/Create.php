@@ -61,6 +61,15 @@ class Create extends Component
         $this->calculatedDiscount = CalculateDiscount::calculate((float) max(1, $this->amount), (float) $discount);
     }
 
+    public function selectedElectricity(Electricity $electricity)
+    {
+        $this->disco_name = $electricity->disco_id;
+        $this->updatedAmount();
+        $this->updatedMeterNumber();
+        $this->updatedDiscoName();
+        $this->updatedMeterType();
+    }
+
     public function updatedMeterNumber()
     {
         $this->validate_action = false;

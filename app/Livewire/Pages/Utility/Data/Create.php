@@ -88,6 +88,12 @@ class Create extends Component
         $this->pin[$index] = $value;
     }
 
+    public function selectedNetwork(DataNetwork $network)
+    {
+        $this->network = $network->network_id;
+        $this->updatedNetwork();
+        $this->updatedPlan();
+    }
 
     public function validatePin()
     {

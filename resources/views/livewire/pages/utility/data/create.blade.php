@@ -31,7 +31,7 @@
             </div>
         @endif
         <!-- Network Type -->
-        <div class="relative z-0 mb-6 w-full group">
+        {{-- <div class="relative z-0 mb-6 w-full group">
             <select id="network"
                 class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
                 wire:model.live="network">
@@ -42,7 +42,34 @@
             @error('network')
                 <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
             @enderror
+        </div> --}}
+
+        <div class="relative z-50 mb-6 w-full group pt-6">
+            <!-- Button to toggle dropdown -->
+            <button type="button" id="dropdown"
+                class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
+                @if ($networks->where('network_id', $network)->count())
+                    <div class="flex">
+                        <img src="{{ $networks->where('network_id', $network)->first()?->logo() }}" alt="Logo" class="mr-3 w-6 h-6"> 
+                        <h4>{{ $networks->where('network_id', $network)->first()->name  }}</h4>
+                    </div>
+                @else
+                    Select Network
+                @endif
+            </button>
+
+            <!-- Dropdown menu -->
+            <div id="networkDropdown" class="hidden absolute z-10 w-full bg-white rounded-lg shadow-lg">
+                <ul class="py-2 text-sm text-gray-700">
+                    @foreach ($networks as $__network)
+                        <li wire:click="selectedNetwork({{ $__network->id }})" class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100">
+                            <img src="{{ $__network->logo() }}" alt="{{ $__network->name }} Logo" class="mr-3 w-6 h-6"> {{ $__network->name }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
+
         <!-- Data Type -->
         <div class="relative z-0 mb-6 w-full group">
             <select id="dataType"
@@ -192,6 +219,42 @@
                 hideModalBackdrop();
                 @this.call('beneficiary_action')
             }
+        }
+    </script>
+     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeDropdown('dropdown', 'networkDropdown', 'selectedPackage');
+        });
+    </script>
+    <script>
+        /**
+         * Initializes a dropdown menu with specified behavior.
+         * @param {string} dropdownButtonId - The ID of the button that toggles the dropdown.
+         * @param {string} dropdownMenuId - The ID of the dropdown menu.
+         * @param {string} selectedTextId - The ID of the element where the selected item text is displayed.
+         */
+        function initializeDropdown(dropdownButtonId, dropdownMenuId, selectedTextId) {
+            const dropdownButton = document.getElementById(dropdownButtonId);
+            const dropdownMenu = document.getElementById(dropdownMenuId);
+            const selectedText = document.getElementById(selectedTextId);
+            
+            // Toggle dropdown visibility
+            dropdownButton.addEventListener('click', () => {
+                dropdownMenu.classList.toggle('hidden');
+            });
+
+            // Create and assign a unique selectItem function to the global scope
+            window[`selectItem_${dropdownButtonId}`] = function(itemName) {
+                selectedText.innerHTML = `${itemName}`;
+                dropdownMenu.classList.add('hidden');
+            };
+
+            // Close the dropdown if clicked outside
+            document.addEventListener('click', function (event) {
+                if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                    dropdownMenu.classList.add('hidden');
+                }
+            });
         }
     </script>
 @endpush
