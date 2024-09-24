@@ -107,7 +107,9 @@
                     <i class="fas fa-exchange-alt text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Transactions</span>
                 </a>
-                <a href="{{ route('settings.index') }}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+
+                <a href="{{ route('settings.index') }}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'settings.credentials' ? 'active' : '' }}">
+
                     <i class="fas fa-cog text-xl"></i>
                     <span class="ml-2 hidden lg:inline">Settings</span>
                 </a>
@@ -129,7 +131,19 @@
             <!-- Header -->
             <header
                 class="flex justify-between text-vastel_blue bg-white items-center mb-8 py-[5px] border-b border-b-2 h-[5rem] px-[2rem]">
-                <h1 class="text-2xl font-bold">Hi, {{ auth()->user()->name }}</h1>
+                <div class="">
+                    <h1 class="text-2xl hidden md:inline  font-bold">Hi, {{ auth()->user()->name }}</h1>
+                    <div class="flex flex-row-reverse md:hidden">
+                        <img src="{{asset('images/clear-log.svg')}}" class="w-[3rem] h-[3rem]" alt="">
+                        <button data-drawer-target="drawer-example" data-drawer-show="drawer-example" aria-controls="drawer-example" type="button" class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" >
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                            </svg>
+                        </button>
+
+                    </div>
+                </div>
                 <div class="flex items-center space-x-4">
                     <i class="far fa-bell text-xl"></i>
                     <i class="far fa-question-circle text-xl"></i>
@@ -149,32 +163,70 @@
 
 
 
-    {{-- <div class="modal fade" id="popupVideo" tabindex="-1" aria-labelledby="popupVideo" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <iframe class="rounded" style="width:100%;height:500px;" src="https://www.youtube.com/embed/_lhdhL4UDIo"
-                    title="YouTube video player"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen></iframe>
-            </div>
-        </div>
-    </div> --}}
 
 
 
-    {{-- <script src="{{ asset('pub-pages/vendors/@popperjs/popper.min.js') }}"></script>
-    <script src="{{ asset('pub-pages/vendors/bootstrap/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('pub-pages/vendors/is/is.min.js') }}"></script>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script>
-    <script src="{{ asset('pub-pages/vendors/fontawesome/all.min.js') }}"></script>
-    <script src="{{ asset('pub-pages/assets/js/theme.js') }}"></script>
 
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&amp;family=Volkhov:wght@700&amp;display=swap"
-        rel="stylesheet"> --}}
-    <script src="{{ asset('pub-pages/vendors/jquery/jquery.min.js') }}"
-        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ 
+
+    <!-- off can vas -->
+    <div id="drawer-example" class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-label">
+        <h5 id="drawer-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400"><svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+        </svg>Info</h5>
+        <button type="button" data-drawer-hide="drawer-example" aria-controls="drawer-example" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">Close menu</span>
+        </button>
+
+        <nav class="flex flex-col text-blue-800 space-y-2 p-4">
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fas fa-home"></i>
+                <span>Home</span>   
+            </a>
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fas fa-phone-alt"></i>
+                <span>Airtime</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fas fa-wifi"></i>
+                <span>Internet Data</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fas fa-check"></i>
+                <span>Result Checker</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fas fa-user"></i>
+                <span>Profile</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fas fa-wallet"></i>
+                <span>Fund Account</span>
+            </a>
+            <a href="#" class="flex items-center space-x-2 text-white bg-blue-700 rounded-md p-2">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </nav>
+
+            
+        <!-- <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">Supercharge your hiring by taking advantage of our <a href="#" class="text-blue-600 underline dark:text-blue-500 hover:no-underline">limited-time sale</a> for Flowbite Docs + Job Board. Unlimited access to over 190K top-ranked candidates and the #1 design job board.</p>
+        <div class="grid grid-cols-2 gap-4">
+            <a href="#" class="px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Learn more</a>
+            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Get access <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+        </svg></a>
+        </div> -->
+    </div>
+    <!-- end off can vas -->
+   
     <x-toastr />
 
     @stack('scripts')

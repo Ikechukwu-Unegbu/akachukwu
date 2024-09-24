@@ -100,7 +100,7 @@
         @endif
 
         <!-- Proceed Button -->
-        <button type="submit" class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center">
+        <button type="submit" class="text-white bg-vastel_blue hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-[8rem] px-5 py-2.5 text-center">
             <span wire:loading.remove wire:target='validateIUC'> {{ $validate_action ? 'Proceed' : 'Validate IUC' }}</span>
             <span wire:loading wire:target="validateIUC">
                 <i class="fa fa-circle-notch fa-spin text-sm"></i> {{ $validate_action ? 'Please wait...' : 'Validating...' }}
