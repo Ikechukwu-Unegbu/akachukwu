@@ -95,6 +95,12 @@ class Create extends Component
         $this->updatedPlan();
     }
 
+    public function selectPlan(DataPlan $dataPlan)
+    {
+        $this->plan = $dataPlan->data_id;
+        $this->updatedPlan();
+    }
+
     public function validatePin()
     {
         if (!is_array($this->pin)) {
