@@ -54,7 +54,7 @@
                 </div>
                 <span class="font-semibold text-vastel_blue text-xs text-center">Transfer</span>
             </a>
-            <a href="#" class="flex flex-col w-[100%] md:w-[60%] rounded-[10px] shadow-lg  p-5 md:p-2 items-center">
+            <a href="{{route('settings.referral')}}" class="flex flex-col w-[100%] md:w-[60%] rounded-[10px] shadow-lg  p-5 md:p-2 items-center">
                 <div class="w-12 h-12  flex items-center justify-center">
                     <i class="fas  fa-hand-holding-usd text-vastel_blue text-3xl"></i>
                 </div>

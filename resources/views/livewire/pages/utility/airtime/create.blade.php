@@ -28,21 +28,25 @@
                 </div>
             </div>
         @endif
+       
+
         <div class="relative z-0 mb-6 w-full group">
             <input type="number" wire:model="phone_number" name="phone_number" id="phone_number"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-            />
+                class="block py-2.5 px-2 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                placeholder=" " />
             <label for="phone_number"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Mobile
+                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-8 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-8">Mobile
                 Number</label>
             <i class="fas fa-mobile-retro absolute top-1/2 right-4 transform -translate-y-1/2 text-gray-400"></i>
             @error('phone_number')
                 <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
             @enderror
         </div>
+
+        
         <div class="relative z-0 mb-6 w-full group">
             <input type="number" name="amount" wire:model.live="amount" id="amount"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                class="block py-2.5 px-2 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=""  />
             <label for="amount"
                 class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Amount(₦)</label>
@@ -52,7 +56,7 @@
         </div>
         <div class="relative z-0 mb-6 w-full group">
             <select id="network" wire:model.live="network" name="network"
-                class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
+                class="block py-2.5 px-2 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
                 <option disabled selected>Select Network</option>
                 @foreach ($networks as $__network)
                     <option value="{{ $__network->network_id }}">{{ $__network->name }}</option>
@@ -62,7 +66,7 @@
                 class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Select
                 Network</label>
         </div>
-        {{-- <div class="relative z-0 pt-3 w-full group">
+        <div class="relative z-0 pt-3 w-full group">
             <!-- <label for="network" class="block mb-2 text-sm text-gray-500 dark:text-gray-400">Select Network</label> -->
             <button type="button" id="dropdownNetwork" data-dropdown-toggle="networkDropdown"
                 class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer">
@@ -80,14 +84,14 @@
                     @endforeach
                 </ul>
             </div>
-        </div> --}}
+        </div>
         @if ($network && $networks->where('network_id', $network)->first()?->airtime_discount > 0)
         <div class="text-red-500 font-semibold pb-7 mt-3">
             Amount to Pay (₦{{ $calculatedDiscount }}) {{ $network ? $networks->where('network_id', $network)->first()?->airtime_discount . '% Discount' : '' }}
         </div>
         @endif
         <button type="submit" wire:loading.attr="disabled" wire:target='validateForm' wire:target='airtime'
-            class="w-full bg-vastel_blue text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
+            class="w-[8rem] bg-vastel_blue text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
             <span wire:loading.remove wire:target='validateForm'>Proceed</span>
             <span wire:loading wire:target="validateForm">
                 <i class="fa fa-circle-notch fa-spin text-sm"></i>

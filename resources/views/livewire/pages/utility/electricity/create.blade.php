@@ -111,7 +111,7 @@
         </div>
         @endif
     
-        <button type="submit" class="w-full bg-blue-700 text-white py-2 rounded text-sm font-semibold hover:bg-blue-800 transition"> 
+        <button type="submit" class="w-[8rem] bg-vastel_blue text-white py-2 rounded text-sm font-semibold hover:bg-blue-800 transition"> 
             <span wire:loading.remove wire:target='validateIUC'> {{ $validate_action ? 'Proceed' : 'Validate IUC' }}</span>
             <span wire:loading wire:target="validateIUC">
                 <i class="fa fa-circle-notch fa-spin text-sm"></i> {{ $validate_action ? 'Please wait...' : 'Validating...' }}

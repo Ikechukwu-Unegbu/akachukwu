@@ -112,7 +112,7 @@
 
         <!-- Proceed Button -->
         <button type="submit" wire:loading.attr="disabled" wire:target='validateForm' wire:target='airtime'
-            class="w-full bg-vastel_blue text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
+            class="w-[8rem] bg-vastel_blue text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
             <span wire:loading.remove wire:target='validateForm'>Proceed</span>
             <span wire:loading wire:target="validateForm">
                 <i class="fa fa-circle-notch fa-spin text-sm"></i>
