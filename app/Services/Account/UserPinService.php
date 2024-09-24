@@ -84,4 +84,15 @@ class UserPinService
 
         return true;
     }
+
+    public static function resetPinAux($data)
+    {
+        $user = Auth::user();
+
+        $pin = $data['pin'];
+
+        self::updatePin($user, $pin);
+
+        return true;
+    }
 }
