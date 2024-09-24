@@ -119,7 +119,7 @@
                     <!-- Or copy link section -->
                     <p class="text-center">Or copy link</p>
                     <div class="flex items-center justify-between bg-gray-100 p-2 rounded-lg">
-                        <input id="shareLink" type="text" value="https://www.yourlink.com/share"
+                        <input id="shareLink" type="text" value="https://www.vastel.io/register?ref={{Auth::user()->username}}"
                             class="bg-gray-100 outline-none text-vastel_blue w-full border-none">
                         <button class="ml-2 text-vastel_blue" onclick="copyToClipboard()">
                             <i class="fas fa-copy"></i>
