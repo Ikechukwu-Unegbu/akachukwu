@@ -23,6 +23,7 @@ class ElectricitySeeder extends Seeder
                 'vendor_id'     =>  1,
                 'disco_id'      =>  $electricity->disco_id,
                 'disco_name'    =>  $electricity->disco_name,
+                'discount'      =>1,
                 'status'        =>  $electricity->status,
             ]);
         }
@@ -38,6 +39,7 @@ class ElectricitySeeder extends Seeder
                 'disco_id'      =>  $electricity->disco_id,
                 'disco_name'    =>  $electricity->disco_name,
                 'status'        =>  $electricity->status,
+                'discount'      =>1,
             ]);
         }
     }
