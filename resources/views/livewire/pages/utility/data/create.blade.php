@@ -31,19 +31,6 @@
             </div>
         @endif
         <!-- Network Type -->
-        {{-- <div class="relative z-0 mb-6 w-full group">
-            <select id="network"
-                class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
-                wire:model.live="network">
-                @foreach ($networks as $__network)
-                    <option value="{{ $__network->network_id }}">{{ $__network->name }}</option>
-                @endforeach
-            </select>
-            @error('network')
-                <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
-            @enderror
-        </div> --}}
-
         <div class="relative z-50 mb-6 w-full group pt-6">
             <!-- Button to toggle dropdown -->
             <button type="button" id="dropdown"
@@ -101,34 +88,17 @@
             @enderror
         </div>
 
-        <!-- Plan -->
-        <div class="relative z-0 mb-6 w-full group">
-            <select id="plan"
-                class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
-                wire:model.live="plan" wire:target="dataType" wire:loading.attr="disabled">
-                <option></option>
-                @foreach ($plans as $__plan)
-                    <option value="{{ $__plan->data_id }}"
-                        {{ $plan && $plan === $__plan->data_id ? 'selected' : '' }}>{{ $__plan->size }}
-                        {{ $__plan->type->name }} = ₦
-                        {{ number_format($__plan->amount, 1) }} {{ $__plan->validity }}</option>
-                @endforeach
-            </select>
-            <label for="plan"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-vastel_blue peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Plan*</label>
-
-            @error('plan')
-                <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
-            @enderror
-        </div>
-
         <!-- Amount -->
         <div class="relative z-0 mb-6 w-full group">
             <input type="text" id="amount"
                 class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
-                wire:model="amount" readonly />
+                placeholder=" " wire:model="amount" readonly />
             <label for="amount"
                 class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-vastel_blue peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Amount</label>
+
+            @error('amount')
+                <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
+            @enderror
         </div>
 
         @if ($network && $networks->where('network_id', $network)->first()?->data_discount > 0)
@@ -136,7 +106,35 @@
             Amount to Pay (₦{{ number_format($calculatedDiscount, 2) }}) {{ $network ? $networks->where('network_id', $network)->first()?->data_discount . '% Discount' : '' }}
         </div>
         @endif
+        <!-- Plan -->
+        <div class="relative z-0 mb-6 w-full group">
+            <button type="button" id="datatypeDropdown"
+                class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
+                @if (count($plans) && $plans->where('data_id', $plan)->count())
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">{{ $plans->where('data_id', $plan)->first()?->size }} for {{ $plans->where('data_id', $plan)->first()?->validity }}</span>
+                        <div class="flex flex-row gap-3">
+                            <span class="text-green-600 font-bold">₦{{ number_format($plans->where('data_id', $plan)->first()?->amount, 1) }}</span>
+                        </div>
+                    </div>
+                @else
+                    Select Data Type
+                @endif
+            </button>
 
+            <div id="selectDataTypeDropdown" class="w-full hidden absolute bg-white shadow-lg rounded-lg overflow-hidden z-0">
+                <ul class="divide-y divide-gray-200">
+                    @foreach ($plans as $__plan)
+                    <li wire:click="selectPlan({{ $__plan->id }})" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
+                        <span class="text-gray-700">{{ $__plan->size }} for {{ $__plan->validity }}</span>
+                        <div class="flex flex-row gap-3">
+                            <span class="text-green-600 font-bold">₦{{ number_format($__plan->amount, 1) }}</span>
+                        </div>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
         <!-- Proceed Button -->
         <button type="submit" wire:loading.attr="disabled" wire:target='validateForm' wire:target='airtime'
             class="w-[8rem] bg-vastel_blue text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
@@ -224,6 +222,7 @@
      <script>
         document.addEventListener('DOMContentLoaded', function() {
             initializeDropdown('dropdown', 'networkDropdown', 'selectedPackage');
+            initializeDropdown('datatypeDropdown', 'selectDataTypeDropdown', 'selectedPackage');
         });
     </script>
     <script>

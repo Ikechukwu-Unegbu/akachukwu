@@ -47,6 +47,12 @@ class Create extends Component
         $this->calculatedDiscount = CalculateDiscount::calculate((float) $this->amount, (float) $discount);
     }
 
+    public function selectedNetwork(DataNetwork $network)
+    {
+        $this->network = $network->network_id;
+        $this->updatedAmount();
+    }
+
     public function validateForm()
     {
         $this->validate([

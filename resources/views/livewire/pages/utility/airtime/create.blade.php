@@ -28,8 +28,32 @@
                 </div>
             </div>
         @endif
-       
 
+        <div class="relative z-50 mb-6 w-full group pt-6">
+            <!-- Button to toggle dropdown -->
+            <button type="button" id="dropdown"
+                class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
+                @if ($networks->where('network_id', $network)->count())
+                    <div class="flex">
+                        <img src="{{ $networks->where('network_id', $network)->first()?->logo() }}" alt="Logo" class="mr-3 w-6 h-6"> 
+                        <h4>{{ $networks->where('network_id', $network)->first()->name  }}</h4>
+                    </div>
+                @else
+                    Select Network
+                @endif
+            </button>
+
+            <!-- Dropdown menu -->
+            <div id="networkDropdown" class="hidden absolute z-10 w-full bg-white rounded-lg shadow-lg">
+                <ul class="py-2 text-sm text-gray-700">
+                    @foreach ($networks as $__network)
+                        <li wire:click="selectedNetwork({{ $__network->id }})" class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100">
+                            <img src="{{ $__network->logo() }}" alt="{{ $__network->name }} Logo" class="mr-3 w-6 h-6"> {{ $__network->name }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
         <div class="relative z-0 mb-6 w-full group">
             <input type="number" wire:model="phone_number" name="phone_number" id="phone_number"
                 class="block py-2.5 px-2 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -41,9 +65,7 @@
             @error('phone_number')
                 <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
             @enderror
-        </div>
-
-        
+        </div>        
         <div class="relative z-0 mb-6 w-full group">
             <input type="number" name="amount" wire:model.live="amount" id="amount"
                 class="block py-2.5 px-2 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -53,37 +75,6 @@
             @error('amount')
                 <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
             @enderror
-        </div>
-        <div class="relative z-0 mb-6 w-full group">
-            <select id="network" wire:model.live="network" name="network"
-                class="block py-2.5 px-2 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer">
-                <option disabled selected>Select Network</option>
-                @foreach ($networks as $__network)
-                    <option value="{{ $__network->network_id }}">{{ $__network->name }}</option>
-                @endforeach
-            </select>
-            <label for="network"
-                class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Select
-                Network</label>
-        </div>
-        <div class="relative z-0 pt-3 w-full group">
-            <!-- <label for="network" class="block mb-2 text-sm text-gray-500 dark:text-gray-400">Select Network</label> -->
-            <button type="button" id="dropdownNetwork" data-dropdown-toggle="networkDropdown"
-                class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer">
-                <span id="selectedNetwork">Select Network</span>
-            </button>
-            @error('network')
-                <span style="font-size: 15px" class="text-red-500"> {{ $message }} </span>
-            @enderror
-            <div id="networkDropdown" class="hidden z-10 w-full bg-white rounded-lg shadow-lg">
-                <ul class="py-2 text-sm text-gray-700">
-                    @foreach ($networks as $__network)
-                    <li class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100" wire:model.live="network" onclick="selectNetwork('{{ $__network->name }}', '{{ Str::lower($__network->name) }}.png')">
-                        <img src="https://via.placeholder.com/24x24" alt="{{ $__network->name }} Logo" class="mr-3 w-6 h-6"> {{ $__network->name }}
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
         </div>
         @if ($network && $networks->where('network_id', $network)->first()?->airtime_discount > 0)
         <div class="text-red-500 font-semibold pb-7 mt-3">
@@ -172,11 +163,40 @@
             }
         }
     </script>
-    <script>
-        function selectNetwork(networkName, logoSrc) {
-            document.getElementById('selectedNetwork').innerHTML =
-                `<img src="${logoSrc}" alt="${networkName} Logo" class="inline-block mr-3 w-6 h-6"> ${networkName}`;
-            document.getElementById('networkDropdown').classList.add('hidden');
-        }
-    </script>
+         <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                initializeDropdown('dropdown', 'networkDropdown', 'selectedPackage');
+            });
+        </script>
+        <script>
+            /**
+             * Initializes a dropdown menu with specified behavior.
+             * @param {string} dropdownButtonId - The ID of the button that toggles the dropdown.
+             * @param {string} dropdownMenuId - The ID of the dropdown menu.
+             * @param {string} selectedTextId - The ID of the element where the selected item text is displayed.
+             */
+            function initializeDropdown(dropdownButtonId, dropdownMenuId, selectedTextId) {
+                const dropdownButton = document.getElementById(dropdownButtonId);
+                const dropdownMenu = document.getElementById(dropdownMenuId);
+                const selectedText = document.getElementById(selectedTextId);
+                
+                // Toggle dropdown visibility
+                dropdownButton.addEventListener('click', () => {
+                    dropdownMenu.classList.toggle('hidden');
+                });
+    
+                // Create and assign a unique selectItem function to the global scope
+                window[`selectItem_${dropdownButtonId}`] = function(itemName) {
+                    selectedText.innerHTML = `${itemName}`;
+                    dropdownMenu.classList.add('hidden');
+                };
+    
+                // Close the dropdown if clicked outside
+                document.addEventListener('click', function (event) {
+                    if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                        dropdownMenu.classList.add('hidden');
+                    }
+                });
+            }
+        </script>
 @endpush
