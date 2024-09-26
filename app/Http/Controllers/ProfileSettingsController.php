@@ -14,7 +14,8 @@ class ProfileSettingsController extends Controller
 {
     public function edit()
     {
-        return view('pages.profile.edit');
+        // return view('pages.profile.edit');
+        return view('pages.profile.profile');
     }
 
 

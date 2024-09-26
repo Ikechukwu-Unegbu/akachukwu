@@ -146,11 +146,29 @@
                 </div>
                 <div class="flex items-center space-x-4">
                     <i class="far fa-bell text-xl"></i>
-                    <i class="far fa-question-circle text-xl"></i>
-                    <div class=" bg-red-500 rounded-full">
+                    <a href="{{route('settings.support')}}"><i class="far fa-question-circle text-xl"></i></a>
+                    <button class=" bg-red-500 rounded-full" data-dropdown-toggle="dropdown" type="button">
                         <img src="{{ auth()->user()->profilePicture }}" class="rounded-full w-12 h-12" alt="">
-                    </div>
+                    </button>
                 </div>
+                <!-- dropdown -->
+                <div id="dropdown" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                    <li>
+                        <a href="{{route('dashboard')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Dashboard</a>
+                    </li>
+                    <li>
+                        <a href="{{route('profile.edit')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+                    </li>
+                    <!-- <li>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
+                    </li>
+                    <li>
+                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
+                    </li> -->
+                    </ul>
+                </div>
+                <!-- end of dropdown -->
             </header>
 
             @yield('body')
