@@ -5,13 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\User;
+use App\Services\Uploads\ImageService;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
-
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProfileSettingsController extends Controller
 {
+
+    public function __construct(public ImageService $imageService)
+    {
+        
+    }
+
     public function edit()
     {
         // return view('pages.profile.edit');
@@ -29,14 +37,33 @@ class ProfileSettingsController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = User::find(Auth::user()->id);
+        
+        $request->validate([
+            'firstname' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            'phone' => 'required|string|max:15',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user = User::find(Auth::user()->id);
+        if ($request->hasFile('image-upload')) {
+            if($user->image == null){
+                $fileUrl = $this->imageService->storeAvatar($request);
+            }else{
+                $fileUrl = $this->imageService->updateAvatar($request);
+            }  
         }
 
-        $request->user()->save();
+        $user->name = $request->input('firstname') . ' ' . $request->input('lastname');
+        $user->username = $request->input('username');
+     
+        $user->phone = $request->input('phone');
+        
+        $user->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return back()->with('success', 'Profile updated successfully.');
+
     }
 }

@@ -163,8 +163,8 @@ class User extends Authenticatable
 
     public function getProfilePictureAttribute()
     {
-        if ($this->image && Storage::disk('avatars')->exists($this->image)) {
-            return Storage::disk('avatars')->url($this->image);
+        if ($this->image) {
+            return $this->image;
         }
 
         $nameParts = explode(' ', $this->name);
