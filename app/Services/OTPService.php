@@ -19,8 +19,7 @@ class OTPService{
      */
     public function generateOTP(User $user)
     {
-        // Generate a 6-digit OTP code
-        $otp = Str::random(4);
+        $otp = mt_rand(1000, 9999);
 
         // Create or update the OTP record
         OTP::updateOrCreate(
