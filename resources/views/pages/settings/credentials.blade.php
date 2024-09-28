@@ -49,7 +49,7 @@
 
                 <!-- General Info Message -->
                 @if (session('info'))
-                <div class="bg-blue-100 border border-blue-400 text-blue-700 px-4 py-3 rounded relative" role="alert">
+                <div class="bg-blue-100 border border-blue-400 text-vastel_blue px-4 py-3 rounded relative" role="alert">
                     <strong class="font-bold">Heads up!</strong>
                     <span class="block sm:inline">{{ session('info') }}</span>
                     <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
@@ -96,7 +96,7 @@
             </div>
 
             <!-- Save Changes Button -->
-            <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-[8rem] mb-6">
+            <button type="submit" class="text-white bg-vastel_blue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-[8rem] mb-6">
                 Save Changes
             </button>
         </form>
@@ -105,7 +105,7 @@
         <div class="border-t pt-6">
             <h2 class="text-xl font-semibold mb-2">Change Security Pin</h2>
             <p class="text-gray-600 text-sm mb-4">Send a request to change your security pin</p>
-            <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-[16rem]">
+            <button type="button" data-modal-target="step1" data-modal-toggle="step1" class="text-white bg-vastel_blue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-[16rem]">
                 Request Security Pin Change
             </button>
         </div>
@@ -154,7 +154,7 @@
                         <div class="flex flex-col justify-between gap-7">
                             <form action="{{route('logout')}}" method="post">
                                 @csrf 
-                                <button  type="submit" class="text-white bg-vastel_blue hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
+                                <button  type="submit" class="text-white bg-vastel_blue hover:bg-vastel_blue focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2">
                                 Deactivate Account
                                 </button>
                             </form>
@@ -229,4 +229,54 @@
 
 
     <!-- end of account deactivation -->
+
+
+<!-- Step 1: Reset Success Modal -->
+<div id="step1" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+  <div class="bg-white rounded-lg shadow p-6 w-1/3 text-center">
+    <div class="text-green-500 text-6xl mb-4">✓</div>
+    <p class="text-lg font-semibold">You have successfully reset your transaction pin!</p>
+    <button onclick="nextStep(2)" class="bg-blue-500 text-white px-4 py-2 rounded mt-6">Done</button>
+  </div>
+</div>
+
+<!-- Step 2: OTP Verification Modal -->
+<div id="step2" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+  <div class="bg-white rounded-lg shadow p-6 w-1/3 text-center">
+    <h2 class="text-lg font-semibold mb-2">OTP Verification</h2>
+    <p>A 6-digit code has been sent to your email address.</p>
+    <div class="flex justify-center gap-2 mt-4">
+      <input type="text" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="text" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="text" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="text" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="text" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="text" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+    </div>
+    <p class="text-blue-500 mt-4 cursor-pointer">Didn't receive the OTP? <span class="underline">Resend code</span></p>
+    <button onclick="nextStep(3)" class="bg-blue-500 text-white px-4 py-2 rounded mt-6">Continue</button>
+  </div>
+</div>
+
+<!-- Step 3: Enter New Transaction Pin Modal -->
+<div id="step3" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
+  <div class="bg-white rounded-lg shadow p-6 w-1/3 text-center">
+    <h2 class="text-lg font-semibold mb-2">Change Transaction Pin</h2>
+    <p>Enter your new 4-digit transaction pin.</p>
+    <div class="flex justify-center gap-2 mt-4">
+      <input type="password" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="password" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="password" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="password" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+    </div>
+    <div class="flex justify-center gap-2 mt-4">
+      <input type="password" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="password" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="password" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+      <input type="password" maxlength="1" class="w-12 h-12 text-center border border-gray-300 rounded" />
+    </div>
+    <button class="bg-blue-500 text-white px-4 py-2 rounded mt-6">Continue</button>
+  </div>
+</div>
+
 @endsection 

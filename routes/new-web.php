@@ -11,7 +11,7 @@ Route::prefix('new')->group(function () {
 
 
    Route::view('dashboard/services/kyc', 'new.kyc');
-   Route::view('dashboard/services/status', 'new.status_modal');
+   Route::view('/otp', 'new.otp');
 
 
 
