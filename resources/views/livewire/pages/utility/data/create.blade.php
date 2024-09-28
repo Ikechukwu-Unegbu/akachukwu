@@ -33,7 +33,7 @@
         <!-- Network Type -->
         <div class="relative z-50 mb-6 w-full group pt-6">
             <!-- Button to toggle dropdown -->
-            <button type="button" id="dropdown"
+            <button type="button" id="networkDropdownButton"
                 class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
                 @if ($networks->where('network_id', $network)->count())
                     <div class="flex">
@@ -221,7 +221,7 @@
     </script>
      <script>
         document.addEventListener('DOMContentLoaded', function() {
-            initializeDropdown('dropdown', 'networkDropdown', 'selectedPackage');
+            initializeDropdown('networkDropdownButton', 'networkDropdown', 'selectedPackage');
             initializeDropdown('datatypeDropdown', 'selectDataTypeDropdown', 'selectedPackage');
         });
     </script>
