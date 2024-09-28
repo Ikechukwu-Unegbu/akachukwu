@@ -54,7 +54,6 @@
       <x-admin.dropdown-item title="E-PINs" link="{{ route('admin.transaction.result-checker') }}" />
       @endcan
       <x-admin.dropdown-item title="Reseller Mgt." link="{{ route('admin.transaction.reseller') }}" />
-      <x-admin.dropdown-item title="Refunds" link="{{ route('admin.transaction.reseller') }}" />
     </x-admin.dropdown>
     @endif
 

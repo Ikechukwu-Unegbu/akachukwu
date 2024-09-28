@@ -128,6 +128,14 @@ class VTPassService
 
             self::storeApiResponse($transaction, $response);
 
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
+            }
+
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
+
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
                 // Insufficient API Wallet Balance Error
                 $errorResponse = [
@@ -138,14 +146,6 @@ class VTPassService
             }
 
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "delivered") {
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
-                }
-
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
@@ -228,6 +228,16 @@ class VTPassService
             
             self::storeApiResponse($transaction, $response);
 
+            $amount = $plan->amount;
+
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'data');
+            }
+
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
+
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
                 // Insufficient API Wallet Balance Error
                 $errorResponse = [
@@ -242,16 +252,6 @@ class VTPassService
                 isset($response->content->transactions->status) &&
                 $response->content->transactions->status === "delivered"
             ) {
-
-                $amount = $plan->amount;
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'data');
-                }
-
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
 
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
@@ -335,6 +335,16 @@ class VTPassService
 
             self::storeApiResponse($transaction, $response);
 
+            $amount = $transaction->amount;
+
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
+            }
+
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
+
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
                 // Insufficient API Wallet Balance Error
                 $errorResponse = [
@@ -345,17 +355,6 @@ class VTPassService
             }
 
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "delivered") {
-
-                $amount = $transaction->amount;
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
-                }
-
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
@@ -425,7 +424,6 @@ class VTPassService
 
     public static function cable($cableId, $cablePlan, $iucNumber, $customer)
     {
-
         try {
 
             $vendor = self::$vendor;
@@ -468,6 +466,16 @@ class VTPassService
 
             self::storeApiResponse($transaction, $response);
 
+            $amount = $transaction->amount;
+
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
+            }
+            
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
+
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
                 // Insufficient API Wallet Balance Error
                 $errorResponse = [
@@ -478,17 +486,6 @@ class VTPassService
             }
 
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "delivered") {
-
-                $amount = $transaction->amount;
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
-                }
-                
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
@@ -500,8 +497,6 @@ class VTPassService
 
                 return ApiHelper::sendResponse($transaction, "Cable subscription successful: {$transaction->cable_plan_name} for ₦{$transaction->amount} on {$transaction->customer_name} ({$transaction->smart_card_number}).");
             }
-
-
             $errorResponse = [
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
@@ -560,15 +555,14 @@ class VTPassService
             $response = self::url($data);
 
             self::storeApiResponse($transaction, $response);
-            
+            self::$authUser->transaction($amount);
             if (isset($response->content->transactions) && $response->content->transactions->status === "delivered") {
                 foreach ($response->cards as $card) {
                     $transaction->result_checker_pins()->create([
                         'serial' => $card->Serial,
                         'pin' => $card->Pin
                     ]);
-                }
-                self::$authUser->transaction($amount);
+                }                
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'api_data_id'       =>    $response->content->transactions->transactionId,
