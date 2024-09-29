@@ -4,9 +4,32 @@
     <form wire:submit.prevent="{{ !empty($user->pin) ? 'update' : 'submit' }}">
         <h2 class="text-lg font-semibold">{{ !empty($user->pin) ? 'Change Transaction Pin ' : 'Setup Transaction PIN' }}
         </h2>
-        <p class="mt-2 text-sm text-gray-600">{{ !empty($user->pin) ? 'Old Transaction Pin ' : '4-digit new transaction pin' }}</p>
+
         <div x-data="pinForm()">
+
+            @if (!empty($user->pin))
+                <p class="mt-4 text-sm text-gray-600">Current PIN</p>
+                <!-- Confirm Pin Inputs -->
+                <div class="flex justify-center mt-4 space-x-2">
+                    @foreach (range(1, 4) as $index)
+                        <input type="text" maxlength="1"
+                            class="w-12 h-12 text-center border rounded-md"
+                            x-on:input="handleInput($event, {{ $index }}, 'current_pin')" 
+                            x-ref="current_pin{{ $index }}"
+                            x-on:keyup.backspace="handleBackspace($event, {{ $index }}, 'current_pin')"
+                            wire:change="updateCurrentPin({{ $index }}, $event.target.value)"
+                            wire:model.defer="current_pin.{{ $index }}"
+                            :class="{ 'border-blue-500': isComplete }"
+                        />
+                    @endforeach
+                </div>
+                @error('current_pin')
+                    <span class="text-red-500 text-sm font-bold flex justify-center">{{ $message }}</span>
+                @enderror
+            @endif
+
             <!-- New Pin Inputs -->
+            <p class="mt-2 text-sm text-gray-600">4-digit new transaction PIN</p>
             <div class="flex justify-center mt-4 space-x-2">
                 @foreach (range(1, 4) as $index)
                     <input type="text" maxlength="1"
@@ -23,7 +46,7 @@
             @error('pin')
                 <span class="text-red-500 text-sm font-bold flex justify-center">{{ $message }}</span>
             @enderror
-            {{-- @if (!empty($user->pin)) --}}
+            
             <p class="mt-4 text-sm text-gray-600">Confirm your transaction pin</p>
             <!-- Confirm Pin Inputs -->
             <div class="flex justify-center mt-4 space-x-2">
@@ -42,7 +65,7 @@
             @error('pin_confirmation')
                 <span class="text-red-500 text-sm font-bold flex justify-center">{{ $message }}</span>
             @enderror
-            {{-- @endif --}}
+            
             <button x-show="isComplete" type="submit" id="closeChangePinModal" class="mt-6 bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">                
                 <span wire:loading.remove wire:target="{{ !empty($user->pin) ? 'update' : 'submit' }}">Proceed</span>
                 <span wire:loading wire:target="{{ !empty($user->pin) ? 'update' : 'submit' }}">
@@ -115,11 +138,18 @@
 @push('scripts')
 <script>
 function pinForm() {
+    const requireCurrentPin =  "{{ !empty($user->pin) ? true : false }}";
+
     return {
         pin: Array(4).fill(''),
+        current_pin: requireCurrentPin === "1" ? Array(4).fill('') : null,
         pinConfirmation: Array(4).fill(''),
         get isComplete() {
-            return this.pin.every(digit => digit.length === 1) && this.pinConfirmation.every(digit => digit.length === 1);
+            const pinComplete = this.pin.every(digit => digit.length === 1) && this.pinConfirmation.every(digit => digit.length === 1);
+            if (requireCurrentPin) {
+                return pinComplete && this.current_pin.every(digit => digit.length === 1);
+            }
+            return pinComplete;
         },
         handleInput(event, index, type) {
             const input = event.target;
@@ -128,6 +158,8 @@ function pinForm() {
             }
             if (type === 'pin') {
                 this.pin[index - 1] = input.value;
+            } else if (type === 'current_pin' && requireCurrentPin) {
+                this.current_pin[index - 1] = input.value;
             } else {
                 this.pinConfirmation[index - 1] = input.value;
             }
@@ -138,6 +170,8 @@ function pinForm() {
             }
             if (type === 'pin') {
                 this.pin[index - 1] = event.target.value;
+            } else if (type === 'current_pin' && requireCurrentPin) {
+                this.current_pin[index - 1] = event.target.value;
             } else {
                 this.pinConfirmation[index - 1] = event.target.value;
             }

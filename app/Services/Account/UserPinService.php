@@ -28,21 +28,21 @@ class UserPinService
         return true;
     }
 
-    public static function updatePinWithCurrent(string $currentPin, string $newPin): bool
+    public static function updatePinWithCurrent(string $currentPin, string $newPin, string $newPinConfirmation): bool
     {
         $user = Auth::user();
 
         if (!self::validatePin($user, $currentPin)) {
             throw ValidationException::withMessages([
-                'pin' => __('The current PIN is incorrect.'),
+                'current_pin' => __('The current PIN is incorrect.'),
             ]);
         }
 
-        // if ($newPin !== $newPinConfirmation) {
-        //     throw ValidationException::withMessages([
-        //         'pin' => __('The new PIN confirmation does not match.'),
-        //     ]);
-        // }
+        if ($newPin !== $newPinConfirmation) {
+            throw ValidationException::withMessages([
+                'pin' => __('The new PIN confirmation does not match.'),
+            ]);
+        }
 
         self::updatePin($user, $newPin);
         return true;

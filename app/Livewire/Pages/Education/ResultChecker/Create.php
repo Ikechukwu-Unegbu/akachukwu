@@ -75,24 +75,12 @@ class Create extends Component
         $this->otp[$index] = $value;
     }
 
-    public function submitPin()
-    {
-        if (!is_array($this->pin)) {
-            $this->pin = (array) $this->pin;
-        }
-
-        $this->pin = implode('', $this->pin);
-
-        $this->validatePin();
-    }
-
     public function validatePin()
     {
-        $this->validate([
-            'pin' => 'required|numeric|digits:4'
-        ]);
+        if (!is_array($this->pin)) $pin = (array) $this->pin;
+        $pin = implode('', $this->pin);
 
-        $userPinService = UserPinService::validatePin(Auth::user(), $this->pin);
+        $userPinService = UserPinService::validatePin(Auth::user(), $pin);
 
         if (!$userPinService) {
             $this->pin = array_fill(1, 4, '');

@@ -118,11 +118,11 @@
 
         <!-- Change Security Pin Section -->
         <div class="border-t pt-6">
-            <h2 class="text-xl font-semibold mb-2">Change Security PIN</h2>
-            <p class="text-gray-600 text-sm mb-4">Click the button below to change your security PIN</p>
+            <h2 class="text-xl font-semibold mb-2">{{ !empty(auth()->user()->pin) ? 'Change Security PIN ' : 'Setup Security PIN' }}</h2>
+            <p class="text-gray-600 text-sm mb-4">Click the button below to {{ !empty(auth()->user()->pin) ? 'change' : 'setup' }} your security PIN</p>
             <button type="button" id="openChangePinResetBtn"
                 class="text-white bg-vastel_blue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-[16rem]">
-                    Change PIN
+                {{ !empty(auth()->user()->pin) ? 'Change Pin ' : 'Setup PIN' }}
             </button>
         </div>
         <div id="pinResetModal" class="hidden fixed inset-0 items-center justify-center bg-gray-800 bg-opacity-50">

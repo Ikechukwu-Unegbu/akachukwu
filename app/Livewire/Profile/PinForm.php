@@ -17,12 +17,18 @@ class PinForm extends Component
     {
         $this->user = $user;
         $this->pin = array_fill(1, 4, '');
+        $this->current_pin = array_fill(1, 4, '');
         $this->pin_confirmation = array_fill(1, 4, '');
     }
 
     public function updatePin($index, $value)
     {
         $this->pin[$index] = $value;
+    }
+
+    public function updateCurrentPin($index, $value)
+    {
+        $this->current_pin[$index] = $value;
     }
 
     public function updatePinConfirmation($index, $value)
@@ -35,6 +41,7 @@ class PinForm extends Component
         if (!is_array($this->pin)) $pin = (array) $this->pin;
         if (!is_array($this->pin_confirmation)) $pin_confirmation = (array) $this->pin_confirmation;
         $pin = implode('', $this->pin);
+        
         $pin_confirmation = implode('', $this->pin_confirmation);
 
         $userPinService = UserPinService::createPin($pin, $pin_confirmation);
@@ -49,11 +56,13 @@ class PinForm extends Component
     public function update()
     {
         if (!is_array($this->pin)) $pin = (array) $this->pin;
+        if (!is_array($this->pin)) $current_pin = (array) $this->current_pin;
         if (!is_array($this->pin_confirmation)) $pin_confirmation = (array) $this->pin_confirmation;
         $pin = implode('', $this->pin);
         $pin_confirmation = implode('', $this->pin_confirmation);
+        $current_pin = implode('', $this->current_pin);
 
-        $userPinService = UserPinService::updatePinWithCurrent($pin, $pin_confirmation);
+        $userPinService = UserPinService::updatePinWithCurrent($current_pin, $pin, $pin_confirmation);
         
         if ($userPinService) {
             $this->dispatch('success-toastr', ['message' => "Pin updated successfully"]);
