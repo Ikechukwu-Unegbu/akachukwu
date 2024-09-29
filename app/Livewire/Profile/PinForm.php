@@ -16,16 +16,28 @@ class PinForm extends Component
     public function mount(User $user)
     {
         $this->user = $user;
+        $this->pin = array_fill(1, 4, '');
+        $this->pin_confirmation = array_fill(1, 4, '');
+    }
+
+    public function updatePin($index, $value)
+    {
+        $this->pin[$index] = $value;
+    }
+
+    public function updatePinConfirmation($index, $value)
+    {
+        $this->pin_confirmation[$index] = $value;
     }
 
     public function submit()
     {
-        $this->validate([
-            'pin'   =>  'required|numeric|digits:4',
-            'pin_confirmation'  =>  'required|same:pin'
-        ]);
-        
-        $userPinService = UserPinService::createPin($this->pin, $this->pin_confirmation);
+        if (!is_array($this->pin)) $pin = (array) $this->pin;
+        if (!is_array($this->pin_confirmation)) $pin_confirmation = (array) $this->pin_confirmation;
+        $pin = implode('', $this->pin);
+        $pin_confirmation = implode('', $this->pin_confirmation);
+
+        $userPinService = UserPinService::createPin($pin, $pin_confirmation);
 
         if ($userPinService) {
             $this->dispatch('success-toastr', ['message' => "Pin created successfully"]);
@@ -36,13 +48,12 @@ class PinForm extends Component
 
     public function update()
     {
-        $this->validate([
-            'current_pin'   =>  'required|numeric|digits:4',
-            'pin'   =>  'required|numeric|digits:4',
-            'pin_confirmation'  =>  'required|same:pin'
-        ]);
+        if (!is_array($this->pin)) $pin = (array) $this->pin;
+        if (!is_array($this->pin_confirmation)) $pin_confirmation = (array) $this->pin_confirmation;
+        $pin = implode('', $this->pin);
+        $pin_confirmation = implode('', $this->pin_confirmation);
 
-        $userPinService = UserPinService::updatePinWithCurrent($this->current_pin, $this->pin, $this->pin_confirmation);
+        $userPinService = UserPinService::updatePinWithCurrent($pin, $pin_confirmation);
         
         if ($userPinService) {
             $this->dispatch('success-toastr', ['message' => "Pin updated successfully"]);

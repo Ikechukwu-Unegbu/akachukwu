@@ -1,7 +1,58 @@
-<div class="max-w-lg w-full bg-white p-8 ">
-    <h1 class="text-2xl font-bold mb-6 mt-4">{{ !empty($user->pin) ? 'Update Your PIN' : 'Setup Your PIN' }}</h1>
+<div>
+    {{-- <h1 class="text-2xl font-bold mb-6 mt-4">{{ !empty($user->pin) ? 'Update Your PIN' : 'Setup Your PIN' }}</h1> --}}
+
     <form wire:submit.prevent="{{ !empty($user->pin) ? 'update' : 'submit' }}">
-        @if (!empty($user->pin))
+        <h2 class="text-lg font-semibold">{{ !empty($user->pin) ? 'Change Transaction Pin ' : 'Setup Transaction PIN' }}
+        </h2>
+        <p class="mt-2 text-sm text-gray-600">{{ !empty($user->pin) ? 'Old Transaction Pin ' : '4-digit new transaction pin' }}</p>
+        <div x-data="pinForm()">
+            <!-- New Pin Inputs -->
+            <div class="flex justify-center mt-4 space-x-2">
+                @foreach (range(1, 4) as $index)
+                    <input type="text" maxlength="1"
+                        class="w-12 h-12 text-center border rounded-md"
+                        x-on:input="handleInput($event, {{ $index }}, 'pin')" 
+                        x-ref="pin{{ $index }}"
+                        x-on:keyup.backspace="handleBackspace($event, {{ $index }}, 'pin')"
+                        wire:change="updatePin({{ $index }}, $event.target.value)"
+                        wire:model.defer="pin.{{ $index }}"
+                        :class="{ 'border-blue-500': isComplete }"
+                    />
+                @endforeach
+            </div>
+            @error('pin')
+                <span class="text-red-500 text-sm font-bold flex justify-center">{{ $message }}</span>
+            @enderror
+            {{-- @if (!empty($user->pin)) --}}
+            <p class="mt-4 text-sm text-gray-600">Confirm your transaction pin</p>
+            <!-- Confirm Pin Inputs -->
+            <div class="flex justify-center mt-4 space-x-2">
+                @foreach (range(1, 4) as $index)
+                    <input type="text" maxlength="1"
+                        class="w-12 h-12 text-center border rounded-md"
+                        x-on:input="handleInput($event, {{ $index }}, 'pin_confirmation')" 
+                        x-ref="pin_confirmation{{ $index }}"
+                        x-on:keyup.backspace="handleBackspace($event, {{ $index }}, 'pin_confirmation')"
+                        wire:change="updatePinConfirmation({{ $index }}, $event.target.value)"
+                        wire:model.defer="pin_confirmation.{{ $index }}"
+                        :class="{ 'border-blue-500': isComplete }"
+                    />
+                @endforeach
+            </div>
+            @error('pin_confirmation')
+                <span class="text-red-500 text-sm font-bold flex justify-center">{{ $message }}</span>
+            @enderror
+            {{-- @endif --}}
+            <button x-show="isComplete" type="submit" id="closeChangePinModal" class="mt-6 bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">                
+                <span wire:loading.remove wire:target="{{ !empty($user->pin) ? 'update' : 'submit' }}">Proceed</span>
+                <span wire:loading wire:target="{{ !empty($user->pin) ? 'update' : 'submit' }}">
+                    <i class="fa fa-circle-notch fa-spin text-sm"></i>
+                </span>
+            </button>
+        </div>
+    </form>
+
+    {{-- @if (!empty($user->pin))
             <div class="mb-4">
                 <div class="relative">
                     <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -58,6 +109,40 @@
         <button type="submit"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-full mb-6">
             Save Changes
-        </button>
-    </form>
+        </button> --}}
+
 </div>
+@push('scripts')
+<script>
+function pinForm() {
+    return {
+        pin: Array(4).fill(''),
+        pinConfirmation: Array(4).fill(''),
+        get isComplete() {
+            return this.pin.every(digit => digit.length === 1) && this.pinConfirmation.every(digit => digit.length === 1);
+        },
+        handleInput(event, index, type) {
+            const input = event.target;
+            if (input.value.length && this.$refs[`${type}${index + 1}`]) {
+                this.$refs[`${type}${index + 1}`].focus();
+            }
+            if (type === 'pin') {
+                this.pin[index - 1] = input.value;
+            } else {
+                this.pinConfirmation[index - 1] = input.value;
+            }
+        },
+        handleBackspace(event, index, type) {
+            if (!event.target.value.length && this.$refs[`${type}${index - 1}`]) {
+                this.$refs[`${type}${index - 1}`].focus();
+            }
+            if (type === 'pin') {
+                this.pin[index - 1] = event.target.value;
+            } else {
+                this.pinConfirmation[index - 1] = event.target.value;
+            }
+        }
+    }
+}
+</script>   
+@endpush
