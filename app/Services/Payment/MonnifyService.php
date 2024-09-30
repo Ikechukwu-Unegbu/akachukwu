@@ -270,9 +270,11 @@ class MonnifyService implements Payment
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
                 self::updateAccountKyc($response->responseBody->bvn);
 
-                $activeGateway = PaymentGateway::where('va_status', true)->first();
-                $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-                $virtualAccountFactory::createVirtualAccount(auth()->user());
+                if (!auth()->user()->virtualAccounts()->count()) {
+                    $activeGateway = PaymentGateway::where('va_status', true)->first();
+                    $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
+                    $virtualAccountFactory::createVirtualAccount(auth()->user());
+                }
 
                 return ApiHelper::sendResponse([], "Account generated & BVN linked to your account successfully.");
             }
@@ -314,9 +316,11 @@ class MonnifyService implements Payment
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
                 self::updateAccountKyc($response->responseBody->nin);
 
-                $activeGateway = PaymentGateway::where('va_status', true)->first();
-                $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-                $virtualAccountFactory::createVirtualAccount(auth()->user());
+                if (!auth()->user()->virtualAccounts()->count()) {
+                    $activeGateway = PaymentGateway::where('va_status', true)->first();
+                    $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
+                    $virtualAccountFactory::createVirtualAccount(auth()->user());
+                }
 
                 return ApiHelper::sendResponse([], "Account generated & NIN linked to your account successfully.");
             }

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Profile;
 
+use App\Models\Bank;
 use Livewire\Component;
 use App\Models\PaymentGateway;
 use Illuminate\Support\Facades\Storage;
@@ -75,7 +76,7 @@ class KycForm extends Component
     public function render()
     {
         return view('livewire.profile.kyc-form', [
-            'banks'  => json_decode(file_get_contents(storage_path("app/public/banks.json")))
+            'banks'  => Bank::orderBy('name')->get()
         ]);
     }
 }

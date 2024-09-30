@@ -54,6 +54,7 @@
                 <input type="text" id="nin" placeholder="Enter your NIN" wire:model="nin" class="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 @error('nin')<div class="text-red-500 font-bold">{{$message}}</div>@enderror
             </div>
+            @if (!$check_bvn_exists)
             <!-- Submit Button -->
             <div class="mt-6">
                 <button type="submit" class="w-[8rem] bg-vastel_blue text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
@@ -63,6 +64,7 @@
                     </span>
                 </button>
             </div>
+            @endif
         </form>
    </div>
 </div>
