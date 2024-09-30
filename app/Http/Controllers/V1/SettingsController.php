@@ -53,4 +53,9 @@ class SettingsController extends Controller
     {
         return view('pages.settings.credentials');
     }
+
+    public function kyc()
+    {
+        return view('pages.settings.kyc');
+    }
 }

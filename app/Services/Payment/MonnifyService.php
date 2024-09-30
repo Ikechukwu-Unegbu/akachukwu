@@ -18,14 +18,15 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Payment\MonnifyTransaction;
 use App\Services\Account\AccountBalanceService;
+use App\Services\Payment\VirtualAccountServiceFactory;
 
 class MonnifyService implements Payment
 {
 
     public static $accountBalance;
 
-    private CONST LIVE = "https://api.monnify.com/";
-    private CONST TEST = "https://sandbox.monnify.com/";
+    private const LIVE = "https://api.monnify.com/";
+    private const TEST = "https://sandbox.monnify.com/";
 
     public function isGatewayAvailable(): bool
     {
@@ -145,9 +146,8 @@ class MonnifyService implements Payment
             // }
 
             return $response->object();
-
         } catch (\Exception $e) {
-           // dd($e->getMessage());
+            // dd($e->getMessage());
         }
     }
 
@@ -213,7 +213,7 @@ class MonnifyService implements Payment
             if ($response->requestSuccessful) {
                 $data = [];
                 foreach ($response->responseBody->accounts as $account) {
-                    $data [] = [
+                    $data[] = [
                         "reference" => $response->responseBody->accountReference,
                         "bank_code" => $account->bankCode,
                         "bank_name" => $account->bankName,
@@ -233,19 +233,18 @@ class MonnifyService implements Payment
                     ];
                 }
 
-                VirtualAccount::insert($data);                
+                VirtualAccount::insert($data);
                 return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
             }
-    
+
 
             $errorResponse = [
                 'error'    =>    "Server Error",
                 'message'  =>    "Opps! Unable to create static account. Please check your network connection.",
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-
         } catch (\Throwable $th) {
-            Log::error($th->getMessage());          
+            Log::error($th->getMessage());
             $errorResponse = [
                 'error'    =>    "Server Error",
                 'message'  =>    "Opps! Unable to create static account. Please check your network connection.",
@@ -254,48 +253,98 @@ class MonnifyService implements Payment
         }
     }
 
-    public static function verifyKyc($kyc)
+    public static function verifyBvn($bvn, $code, $accountNumber)
     {
         try {
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . self::token(),
-            ])->put(self::getUrl() . "api/v1/bank-transfer/reserved-accounts/" . self::getAccountReference() . "/kyc-info", [
-                "bvn" => $kyc
+            ])->post(self::getUrl() . "api/v1/vas/bvn-account-match", [
+                "bvn"           => $bvn,
+                "accountNumber" => $accountNumber,
+                "bankCode"      => $code
             ]);
 
             $response = $response->object();
-            
-            if ($response->requestSuccessful) {
+            // dd($response);
+            if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
                 self::updateAccountKyc($response->responseBody->bvn);
-                return response()->json([
-                    'status'    =>    true,
-                    'error'     =>    NULL,
-                    'message'   =>    "BVN linked to your account successfully.",
-                ], 200)->getData();
+
+                $activeGateway = PaymentGateway::where('va_status', true)->first();
+                $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
+                $virtualAccountFactory::createVirtualAccount(auth()->user());
+
+                return ApiHelper::sendResponse([], "Account generated & BVN linked to your account successfully.");
             }
 
-
-            if (!$response->requestSuccessful) {
-                return response()->json([
-                    'status'  => false,
-                    'error'   => 'Invalid BVN.',
-                    'message' => "Invalid BVN provided."
-                ], 401)->getData();
+            if (isset($response->requestSuccessful) && !$response->requestSuccessful) {
+                $errorResponse = [
+                    'error'    =>    "Invalid BVN.",
+                    'message'  =>    "Service not available. Please try again later",
+                ];
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
-
+            $errorResponse = [
+                'error'    =>    "API Endpoint error.",
+                'message'  =>    "Service not available. Please try again later",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            return response()->json([
-                'status'   =>    false,
+            $errorResponse = [
                 'error'    =>    "Server Error",
-                'message'  =>    "Opps! Unable to update your static account. Please check your network connection.",
-            ], 401)->getData();
+                'message'  =>    "Opps! Unable to update or create your static account. Please check your network connection.",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
-
     }
 
-    private static function computeSHA512TransactionHash($stringifiedData, $clientSecret) {
+    public static function verifyNin($nin)
+    {
+        try {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . self::token(),
+            ])->post(self::getUrl() . "api/v1/vas/nin-details", [
+                "nin" => $nin
+            ]);
+
+            $response = $response->object();
+            // dd($response);
+            if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+                self::updateAccountKyc($response->responseBody->nin);
+
+                $activeGateway = PaymentGateway::where('va_status', true)->first();
+                $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
+                $virtualAccountFactory::createVirtualAccount(auth()->user());
+
+                return ApiHelper::sendResponse([], "Account generated & NIN linked to your account successfully.");
+            }
+
+            if (isset($response->requestSuccessful) && !$response->requestSuccessful) {
+                $errorResponse = [
+                    'error'    =>    "Invalid NIN.",
+                    'message'  =>    "Service not available. Please try again later",
+                ];
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+            }
+            $errorResponse = [
+                'error'    =>    "API Endpoint error.",
+                'message'  =>    "Service not available. Please try again later",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $errorResponse = [
+                'error'    =>    "Server Error",
+                'message'  =>    "Opps! Unable to update or create your static account. Please check your network connection.",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+        }
+    }
+
+    private static function computeSHA512TransactionHash($stringifiedData, $clientSecret)
+    {
         return hash_hmac('sha512', $stringifiedData, $clientSecret);
     }
 
@@ -382,7 +431,6 @@ class MonnifyService implements Payment
                     'response' =>    []
                 ], 200)->getData();
             }
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return response()->json([
@@ -398,13 +446,13 @@ class MonnifyService implements Payment
     {
         $filename = 'monnify_payloads.json';
         $payloadString = json_encode($payload, JSON_PRETTY_PRINT);
-    
+
         if (Storage::disk('webhooks')->exists($filename)) {
 
             $existingContent = Storage::disk('webhooks')->get($filename);
-    
+
             $existingContent = rtrim($existingContent, "\n]");
-    
+
             if (strlen($existingContent) > 1) {
                 $existingContent .= ",\n";
             }
@@ -426,7 +474,7 @@ class MonnifyService implements Payment
     {
         Auth::user()->update(['bvn' => $bvn]);
     }
-    
+
     private static function monnifyDetails($colunm)
     {
         return PaymentGateway::whereName('Monnify')->first()->$colunm ?? NULL;

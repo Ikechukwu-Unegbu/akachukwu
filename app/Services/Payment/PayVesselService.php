@@ -91,7 +91,7 @@ class PayVesselService
         }       
     }
 
-    public static function verifyKyc($bvn)
+    public static function verifyBvn($bvn)
     {
         try {
             
