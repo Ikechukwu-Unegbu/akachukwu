@@ -59,7 +59,7 @@ class User extends Authenticatable
         // Chain fluent methods for configuration options
     }
 
-    public function ugradeRequests()
+    public function upgradeRequests()
     {
         return $this->hasMany(UpgradeRequest::class);
     }
@@ -132,7 +132,7 @@ class User extends Authenticatable
     {
         return $this->referralsMade->map(function($ref) {
             return [
-                'user' => User::where('id', $ref->referred_user_id)->select('name', 'username')->first(),
+                'user' => User::where('id', $ref->referred_user_id)->select('name', 'username', 'phone', 'created_at')->first(),
                 'referrerEarning' => $this->referrerEarning($ref->id)
             ];
         });
@@ -163,12 +163,18 @@ class User extends Authenticatable
 
     public function getProfilePictureAttribute()
     {
-        if ($this->image && Storage::disk('avatars')->exists($this->image)) {
-            return Storage::disk('avatars')->url($this->image);
+        if ($this->image) {
+            return $this->image;
         }
 
-        $firstLetter = strtoupper(substr($this->username, 0, 1));
-        return "https://via.placeholder.com/50/3498db/FFFFFF/?text={$firstLetter}";
+        $nameParts = explode(' ', $this->name);
+        $alias = substr($nameParts[0], 0, 1);
+        if (isset($nameParts[1])) {
+            $alias .= substr($nameParts[1], 0, 1);
+        }
+        return "https://via.placeholder.com/90/FF0000/FFFFFF/?text={$alias}";
+        // $firstLetter = strtoupper(substr($this->username, 0, 1));
+        // return "https://via.placeholder.com/50/3498db/FFFFFF/?text={$firstLetter}";
     }
 
     public function scopeSearch($query, $search)
@@ -218,6 +224,20 @@ class User extends Authenticatable
     public function virtualAccounts() : HasMany
     {
         return $this->hasMany(VirtualAccount::class);
+    }
+
+    public function otp()
+    {
+        return $this->belongsTo(Otp::class);
+    }
+
+    public function otpVerified()
+    {
+        if ($this->otp && $this->otp->status !== 'unused') {
+            return false;
+        }
+
+        return true;
     }
 
     // public function walletHistories()
@@ -313,5 +333,37 @@ class User extends Authenticatable
     public function isImpersonating()
     {
         return Session::has('impersonate');
+    }
+
+    public function transactionHistories($perPage = 5, $utility = '', $date = null)
+    {
+        $query = DB::table(DB::raw('
+            (
+                SELECT id, transaction_id, user_id, amount, status, mobile_number as subscribed_to, plan_network as plan_name, "Phone No." as type, "data" as utility, "fa-wifi" as icon, "Data Purchased" as title, created_at FROM data_transactions
+                UNION ALL
+                SELECT id, transaction_id, user_id, amount, status, mobile_number as subscribed_to, network_name as plan_name, "Phone No." as type, "airtime" as utility, "fa-mobile-alt" as icon, "Airtime Purchased" as title, created_at FROM airtime_transactions
+                UNION ALL
+                SELECT id, transaction_id, user_id, amount, status, smart_card_number as subscribed_to, cable_name as plan_name, "IUC" as type, "cable" as utility, "fa-tv" as icon, "Cable TV Purchased" as title, created_at FROM cable_transactions
+                UNION ALL
+                SELECT id, transaction_id, user_id, amount, status, meter_number as subscribed_to, disco_name as plan_name, "Meter No." as type, "electricity" as utility, "fa-bolt" as icon, "Electricity Purchased" as title, created_at FROM electricity_transactions
+                UNION ALL
+                SELECT id, transaction_id, user_id, amount, status, quantity as subscribed_to, exam_name as plan_name, "QTY" as type, "education" as utility, "fa-credit-card" as icon, "E-PINS Purchased" as title, created_at FROM result_checker_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "flutterwave" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM flutterwave_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "paystack" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM paystack_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "monnify" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM monnify_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM pay_vessel_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM vastel_transactions
+            ) as transactions
+        '))->where('transactions.user_id', '=', $this->id)->orderBy('transactions.created_at', 'desc');
+        
+        if ($utility) $query->where('transactions.utility', $utility)->orWhere('transactions.type', $utility);
+        if ($date) $query->whereRaw("DATE_FORMAT(transactions.created_at, '%Y-%m') = ?", $date);
+
+        return $query->paginate($perPage);
     }
 }

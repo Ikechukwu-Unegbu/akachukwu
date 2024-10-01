@@ -9,8 +9,13 @@
             <a href="/blog" class="text-vastel_blue hover:text-vastel_blue">Blog</a>
         </div>
         <div class="hidden md:flex space-x-4">
+            @guest
             <a href="{{route('login')}}" class="text-vastel_blue hover:text-vastel_blue">Log In</a>
             <a href="{{route('register')}}" class="bg-vastel_blue text-white py-2 px-4 rounded-md hover:bg-vastel_blue">Register</a>
+            @endguest
+            @auth
+            <a href="{{ auth()->user()->dashboard() }}" class="text-vastel_blue hover:text-vastel_blue">Dashboard</a>
+            @endauth
         </div>
         <button type="button" class="md:hidden text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-600" data-drawer-target="new-nav" data-drawer-show="new-nav" aria-controls="new-nav">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"

@@ -26,13 +26,17 @@ class Create extends Component
     public $amount;
     public $plan;
     public $beneficiary_modal = false;
-    public $pin;
+    public $pin = [];
     public $form_action = false;
     public $validate_pin_action = false;
     public $calculatedDiscount = 0;
+    public $transaction_modal = false;
+    public $transaction_status = false;
+    public $transaction_link;
 
     public function mount()
     {
+        $this->pin = array_fill(1, 4, '');
         $this->vendor = $this->getVendorService('data');
         $this->network = DataNetwork::whereVendorId($this->vendor?->id)->whereStatus(true)->first()?->network_id;
     }
@@ -48,9 +52,8 @@ class Create extends Component
     public function updatedPlan()
     {
         $this->amount = DataPlan::whereVendorId($this->vendor?->id)->whereNetworkId($this->network)->whereDataId($this->plan)->first()?->amount;
-        $this->amount = number_format($this->amount, 1);
         $discount = DataNetwork::whereVendorId($this->vendor?->id)->whereNetworkId($this->network)->first()->data_discount;
-        $this->calculatedDiscount = CalculateDiscount::calculate((float) max(1, $this->amount), (float) $discount);
+        $this->calculatedDiscount = CalculateDiscount::calculate((float) $this->amount, (float) $discount);
     }
 
     public function updatedDataType()
@@ -62,7 +65,7 @@ class Create extends Component
     public function validateForm()
     {
         $this->validate([
-            'network'       =>  'required',
+            'network'       =>  'required|exists:data_networks,network_id',
             'dataType'      =>  'required',
             'plan'          =>  'required',
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
@@ -73,36 +76,40 @@ class Create extends Component
 
     public function closeModal()
     {
+        $this->transaction_modal = false;
         $this->validate_pin_action = false;
         $this->form_action = false;
-        $this->pin = "";
+        $this->pin = array_fill(1, 4, '');
         return;
     }
 
-    public function addDigit($digit)
+    public function updatePin($index, $value)
     {
-        if (strlen($this->pin) < 4) {
-            $this->pin .= $digit;
-        }
+        $this->pin[$index] = $value;
     }
 
-    public function clearPin()
+    public function selectedNetwork(DataNetwork $network)
     {
-        $this->pin = '';
+        $this->network = $network->network_id;
+        $this->updatedNetwork();
+        $this->updatedPlan();
     }
 
-    public function deletePin()
+    public function selectPlan(DataPlan $dataPlan)
     {
-        $this->pin = substr($this->pin, 0, -1);
+        $this->plan = $dataPlan->data_id;
+        $this->updatedPlan();
     }
 
     public function validatePin()
     {
-        $this->validate([
-            'pin' => 'required|numeric|digits:4'
-        ]);
+        if (!is_array($this->pin)) {
+            $pin = (array) $this->pin;
+        }
 
-        $userPinService = UserPinService::validatePin(Auth::user(), $this->pin);
+        $pin = implode('', $this->pin);
+
+        $userPinService = UserPinService::validatePin(Auth::user(), $pin);
 
         if (!$userPinService) {
             throw ValidationException::withMessages([
@@ -125,14 +132,20 @@ class Create extends Component
 
         if (!$dataTransaction->status) {
             $this->closeModal();
+            $this->transaction_modal = true;
+            $this->transaction_status = false;
+            $this->transaction_link = "";
             return $this->dispatch('error-toastr', ['message' => $dataTransaction->message]);
         }
 
         if ($dataTransaction->status) {
             $this->closeModal();
-            $this->dispatch('success-toastr', ['message' => $dataTransaction->message]);
-            session()->flash('success',  $dataTransaction->message);
-            return redirect()->route('user.transaction.data.receipt', $dataTransaction->response->transaction_id);
+            $this->transaction_status = true;
+            $this->transaction_modal = true;
+            $this->transaction_link = route('user.transaction.data.receipt', $dataTransaction->response->transaction_id);
+            $this->dataType = "";
+            $this->phone_number = "";
+            $this->plan = "";
         }
     }
 

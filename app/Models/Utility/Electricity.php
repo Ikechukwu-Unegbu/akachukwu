@@ -21,6 +21,7 @@ class Electricity extends Model
         }
         return "https://placehold.co/400";
     }
+
     public function deleteImage()
     {
         if ($this->image && Storage::disk('electricity')->exists($this->image)) {

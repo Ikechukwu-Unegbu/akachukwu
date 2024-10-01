@@ -10,9 +10,19 @@ use PhpParser\Node\Expr\FuncCall;
 
 class UpgradeRequest extends Model
 {
-    use HasFactory, SoftDeletes;
+    protected $guarded = [];
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function scopeSuccess($query)
+    {
+        return $query->where('status', 'success');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
     }
 }

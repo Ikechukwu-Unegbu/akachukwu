@@ -8,11 +8,10 @@ use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\Electricity;
-
 class Edit extends Component
 {
     use WithFileUploads;
-    
+
     public $vendor;
     public $electricity;
     #[Rule('required|string')]
@@ -52,7 +51,7 @@ class Edit extends Component
 
         $this->electricity->update([
             'disco_id'      =>  $this->disco_id,
-            'disco_name'    =>  $this->disco_name,
+            'disco_name'    =>  $this->disco_name, 
             'status'        =>  $this->status, 
             'discount'      =>  $this->discount,
             'image'         =>  $image
