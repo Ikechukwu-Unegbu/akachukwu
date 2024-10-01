@@ -50,6 +50,7 @@ class User extends Authenticatable
         'user_level',
         'pin',
         'bvn',
+        'nin',
     ];
 
     public function getActivitylogOptions(): LogOptions

@@ -63,7 +63,13 @@
                     @endforeach
                 </div>
             @else
-                @livewire('pages.virutal-account.create', [App\Models\User::find(auth()->user()->id)])
+            <div class="mt-5 pt-5">
+                <h5 class="mb-4 font-bold">Secure Your Transactions with a Static Account</h5>
+                
+                <a href="{{ route('settings.kyc') }}" class="w-full text-center bg-vastel_blue hover:bg-blue-700 focus:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block">            
+                    Create Static Account
+                </a>
+            </div>
             @endif
 
             {{-- @if (count($accounts))
