@@ -37,9 +37,9 @@
                                             <small>{{ $electricity_transaction->created_at->format('M d, Y. h:ia') }}</small>
                                         </td>
                                         <td>
-                                            <span class="badge bg-{{ $electricity_transaction->status ? 'success' : 'danger' }}">{{ $electricity_transaction->status ? 'Successful' : 'Failed' }}</span>
-                                            <br />
-                                            <small><span class="badge bg-success">{{ !$electricity_transaction->status ? 'Refunded' : '' }}</span></small>
+                                            <span class="badge bg-{{ $electricity_transaction->status === 1 ? 'success' : ($electricity_transaction->status === 0 ? 'danger' : 'warning') }}">
+                                                {{ $electricity_transaction->status === 1 ? 'Successful' : ($electricity_transaction->status === 0 ? 'Failed' : 'Refunded') }}
+                                            </span>
                                         </td>
                                         <td>
                                             <a href="{{ route('user.transaction.electricity.receipt', $electricity_transaction->transaction_id) }}" class="btn btn-sm"> View</a>
