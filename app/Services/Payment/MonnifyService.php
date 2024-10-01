@@ -268,7 +268,7 @@ class MonnifyService implements Payment
             $response = $response->object();
             // dd($response);
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
-                self::updateAccountKyc($response->responseBody->bvn);
+                self::updateAccountBvn($response->responseBody->bvn);
 
                 if (!auth()->user()->virtualAccounts()->count()) {
                     $activeGateway = PaymentGateway::where('va_status', true)->first();
@@ -276,7 +276,7 @@ class MonnifyService implements Payment
                     $virtualAccountFactory::createVirtualAccount(auth()->user());
                 }
 
-                return ApiHelper::sendResponse([], "Account generated & BVN linked to your account successfully.");
+                return ApiHelper::sendResponse([], "KYC updated & BVN linked to your account successfully.");
             }
 
             if (isset($response->requestSuccessful) && !$response->requestSuccessful) {
@@ -314,7 +314,7 @@ class MonnifyService implements Payment
             $response = $response->object();
             // dd($response);
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
-                self::updateAccountKyc($response->responseBody->nin);
+                self::updateAccountNin($response->responseBody->nin);
 
                 if (!auth()->user()->virtualAccounts()->count()) {
                     $activeGateway = PaymentGateway::where('va_status', true)->first();
@@ -322,7 +322,7 @@ class MonnifyService implements Payment
                     $virtualAccountFactory::createVirtualAccount(auth()->user());
                 }
 
-                return ApiHelper::sendResponse([], "Account generated & NIN linked to your account successfully.");
+                return ApiHelper::sendResponse([], "KYC updated & NIN linked to your account successfully.");
             }
 
             if (isset($response->requestSuccessful) && !$response->requestSuccessful) {
@@ -474,9 +474,14 @@ class MonnifyService implements Payment
         return Auth::user()->virtualAccounts->first()?->reference;
     }
 
-    public static function updateAccountKyc($bvn)
+    public static function updateAccountBvn($bvn)
     {
         Auth::user()->update(['bvn' => $bvn]);
+    }
+
+    public static function updateAccountNin($bvn)
+    {
+        Auth::user()->update(['nin' => $bvn]);
     }
 
     private static function monnifyDetails($colunm)

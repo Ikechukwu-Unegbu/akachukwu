@@ -108,7 +108,7 @@ class PayVesselService
                 if ($response->ok() === true) {
                     $response = $response->object();                
                     if (isset($response->status) && $response->status) {
-                        self::updateAccountKyc($response->bvn);
+                        self::updateAccountBvn($response->bvn);
                     }
                 }
 
@@ -136,7 +136,7 @@ class PayVesselService
 
     }
 
-    public static function updateAccountKyc($bvn)
+    public static function updateAccountBvn($bvn)
     {
         auth()->user()->update(['bvn' => $bvn]);
     }

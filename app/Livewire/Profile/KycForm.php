@@ -20,8 +20,8 @@ class KycForm extends Component
     public function mount()
     {
         $this->bvn = auth()->user()->bvn;
-        $this->nin = auth()->user()->bvn;
-        $this->check_bvn_exists = (auth()->user()->bvn) ? true : false;
+        $this->nin = auth()->user()->nin;
+        $this->check_bvn_exists = (auth()->user()->bvn || auth()->user()->nin) ? true : false;
     }
 
     protected $rules = [
