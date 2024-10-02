@@ -49,8 +49,8 @@ class KycForm extends Component
         if ($this->check_bvn_exists)
             return $this->dispatch('error-toastr', ['message' => "{$type} is already linked to your account."]);
 
-        if (!auth()->user()->virtualAccounts()->count()) 
-            return $this->dispatch('error-toastr', ['message' => "Unable to update {$type}. Virtual account not found!"]);
+        // if (!auth()->user()->virtualAccounts()->count()) 
+        //     return $this->dispatch('error-toastr', ['message' => "Unable to update {$type}. Virtual account not found!"]);
 
 
         $activeGateway = PaymentGateway::where('name', 'Monnify')->firstOrFail();
