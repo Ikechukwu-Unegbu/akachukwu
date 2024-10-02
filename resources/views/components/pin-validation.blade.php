@@ -16,15 +16,12 @@
                 </button>
             </div>
             @if (empty(auth()->user()->pin))
-<<<<<<< HEAD
                 <div class="p-6 space-y-6 dark:text-white">
                     <h6 class="mb-3 pb-2 dark:text-white">Unable to process transaction. Your PIN is required for this transaction.</h6>
                     <a class="hover:text-red-600 underline mt-3 dark:text-white" href="{{ route('settings.credentials') }}">Click here to create a PIN.</a>
-=======
                 <div class="p-6 space-y-6">
                     <h6 class="text-gray-900 mb-3 pb-2">Unable to process transaction. Your PIN is required for this transaction.</h6>
                     <a class="text-gray-900 hover:text-red-600 underline mt-3" href="{{ route('settings.credentials') }}">Click here to create a PIN.</a>
->>>>>>> cb2f32241bce7b9b82f6a8cb0b6d2b6b8a336e32
                 </div>
             @endif
         
@@ -70,20 +67,16 @@
             <form wire:submit="submit">
                 <div class="p-4 dark:text-white">
                     {{ $slot ?? '' }}
-                    
-<<<<<<< HEAD
                     <div class="mt-4 pb-4 mb-5 text-center dark:text-white">
                         <p class="mb-3 p-0 dark:text-white" wire:loading.remove wire:target='submit'>Do you want to continue?</p>
                         <div class="confirmation-content dark:text-white" wire:loading wire:target="submit">
                             <p class="m-0 text-xl p-0 dark:text-white"><i class="fa fa-circle-notch fa-spin"></i></p>
                             <p class="m-0 p-0 dark:text-white">Processing...</p>
-=======
                     <div class="mt-4 pb-4 mb-5 text-center">
                         <p class="mb-3 p-0 text-gray-900" wire:loading.remove wire:target='submit'>Do you want to continue?</p>
                         <div class="confirmation-content" wire:loading wire:target="submit">
                             <p class="m-0 text-xl p-0 text-gray-900"><i class="fa fa-circle-notch fa-spin"></i></p>
                             <p class="m-0 p-0 text-gray-600">Processing...</p>
->>>>>>> cb2f32241bce7b9b82f6a8cb0b6d2b6b8a336e32
                         </div>
 
                         <div class="flex justify-center">
