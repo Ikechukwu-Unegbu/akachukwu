@@ -6,30 +6,32 @@
                 Select Beneficiary
             </button>
             <!-- Modal -->
-            <div id="beneficiaryModal" tabindex="-1" class="fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-50 {{ $beneficiary_modal ? 'flex' : 'hidden' }}">
-                <div class="bg-white rounded-lg w-full max-w-sm p-4">
+      
+            <div id="beneficiaryModal" tabindex="1" class="fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-50 {{ $beneficiary_modal ? 'flex' : 'hidden' }}">
+                <div class="bg-white rounded-lg w-full max-w-sm p-4 opacity-100 z-100 shadow-lg">
                     <div class="flex justify-between items-center border-b pb-3">
                         <h3 class="text-lg font-medium text-gray-900">Select Beneficiary</h3>
-                        <button type="button" class="text-gray-400 hover:text-gray-500"
-                            data-modal-hide="beneficiaryModal">
+                        <button type="button" class="text-gray-400 hover:text-gray-500" data-modal-hide="beneficiaryModal">
                             <i class="fas fa-times"></i>
                         </button>
                     </div>
-                    <div class="py-4">
+                    <div class="py-4" style="z-index: 10;">
                         <!-- Beneficiary List -->
-                        <ul class="space-y-2">
+                        <ul class="space-y-2" style="z-index: 10;">
                             @foreach ($beneficiaries as $__beneficiary)
-                                <li wire:click="beneficiary({{ $__beneficiary->id }})"
-                                    class="bg-gray-100 py-2 px-4 rounded cursor-pointer hover:bg-gray-200">
-                                    {{ $__beneficiary->beneficiary }}</li>
+                                <li wire:click="beneficiary({{ $__beneficiary->id }})" class="bg-gray-100 py-2 px-4 rounded cursor-pointer hover:bg-gray-200">
+                                    {{ $__beneficiary->beneficiary }}
+                                </li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
             </div>
+
+
         @endif
 
-        <div class="relative z-50 mb-6 w-full group pt-6">
+        <div class="relative z-10 mb-6 w-full group pt-6">
             <!-- Button to toggle dropdown -->
             <button type="button" id="networkDropdownButton"
                 class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
@@ -67,7 +69,7 @@
             @enderror
         </div>        
         <div class="relative z-0 mb-6 w-full group">
-            <input type="number" name="amount" wire:model.live="amount" id="amount"
+            <input type="number" name="amount" wire:model.live="amount" id="amount" required
                 class="block py-2.5 px-2 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=""  />
             <label for="amount"
@@ -91,22 +93,22 @@
     </form>
 
     <x-pin-validation title="Airtime" :formAction="$form_action" :validatePinAction="$validate_pin_action">
-        <div class="flex justify-between">
+        <div class="flex text-gray-900 justify-between">
             <h6>Network</h6>
             @if (count($networks))
                 <h6>{{ $networks->where('network_id', $network)->first()?->name }}</h6>
             @endif
         </div>
-        <div class="flex justify-between">
+        <div class="flex text-gray-900 justify-between">
             <h6>Number</h6>
             <h6>{{ $phone_number }}</h6>
 
         </div>
-        <div class="flex justify-between">
+        <div class="flex text-gray-900 justify-between">
             <h6>Amount</h6>
             <h6>₦{{ number_format($amount, 2) }}</h6>
         </div>
-        <div class="flex justify-between">
+        <div class="flex text-gray-900 justify-between">
             <h6>Wallet</h6>
             <h6>₦{{ number_format(auth()->user()->account_balance, 2) }}</h6>
         </div>

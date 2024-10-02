@@ -1,7 +1,7 @@
 <div id="pinModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full items-center justify-center {{ $formAction ? 'flex' : 'hidden' }}">
     <div class="relative w-full max-w-md max-h-full">
         <!-- Modal content -->
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="relative bg-white text-black rounded-lg shadow dark:bg-gray-700">
             <!-- Modal header -->
             <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
@@ -16,9 +16,15 @@
                 </button>
             </div>
             @if (empty(auth()->user()->pin))
+<<<<<<< HEAD
                 <div class="p-6 space-y-6 dark:text-white">
                     <h6 class="mb-3 pb-2 dark:text-white">Unable to process transaction. Your PIN is required for this transaction.</h6>
                     <a class="hover:text-red-600 underline mt-3 dark:text-white" href="{{ route('settings.credentials') }}">Click here to create a PIN.</a>
+=======
+                <div class="p-6 space-y-6">
+                    <h6 class="text-gray-900 mb-3 pb-2">Unable to process transaction. Your PIN is required for this transaction.</h6>
+                    <a class="text-gray-900 hover:text-red-600 underline mt-3" href="{{ route('settings.credentials') }}">Click here to create a PIN.</a>
+>>>>>>> cb2f32241bce7b9b82f6a8cb0b6d2b6b8a336e32
                 </div>
             @endif
         
@@ -65,12 +71,21 @@
                 <div class="p-4 dark:text-white">
                     {{ $slot ?? '' }}
                     
+<<<<<<< HEAD
                     <div class="mt-4 pb-4 mb-5 text-center dark:text-white">
                         <p class="mb-3 p-0 dark:text-white" wire:loading.remove wire:target='submit'>Do you want to continue?</p>
                         <div class="confirmation-content dark:text-white" wire:loading wire:target="submit">
                             <p class="m-0 text-xl p-0 dark:text-white"><i class="fa fa-circle-notch fa-spin"></i></p>
                             <p class="m-0 p-0 dark:text-white">Processing...</p>
+=======
+                    <div class="mt-4 pb-4 mb-5 text-center">
+                        <p class="mb-3 p-0 text-gray-900" wire:loading.remove wire:target='submit'>Do you want to continue?</p>
+                        <div class="confirmation-content" wire:loading wire:target="submit">
+                            <p class="m-0 text-xl p-0 text-gray-900"><i class="fa fa-circle-notch fa-spin"></i></p>
+                            <p class="m-0 p-0 text-gray-600">Processing...</p>
+>>>>>>> cb2f32241bce7b9b82f6a8cb0b6d2b6b8a336e32
                         </div>
+
                         <div class="flex justify-center">
                             <button type="button" wire:loading.remove wire:target='submit' class="px-5 me-3 py-2.5 text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm" id="closeModal" wire:click="closeModal"><i class="fa-solid fa-times"></i> No</button>
                             <button type="submit" wire:loading.remove wire:target='submit' class="px-5 py-2.5 text-white bg-vastel_blue hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm" id="confirmYes"><i class="fa-solid fa-thumbs-up"></i> Yes</button>
@@ -82,6 +97,7 @@
         </div>
     </div>
 </div>
+
 
 @push('scripts')
 <script>

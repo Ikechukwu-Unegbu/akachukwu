@@ -1,7 +1,7 @@
 <nav class="flex justify-between items-center p-4 bg-white md:px-[3rem] shadow-md">
         <div class="text-2xl font-bold text-vastel_blue">
-            <!-- <span class="font-semibold">vastel</span> -->
-             <img class="h-[4rem] w-[4rem]" src="{{asset('images/vastel-logo.svg')}}" alt="">
+            
+             <a href="/"><img class="h-[4rem] w-[4rem]" src="{{asset('images/vastel-logo.svg')}}" alt=""></a>
         </div>
         <div class="hidden md:flex space-x-6">
             <a href="/" class="text-vastel_blue hover:text-vastel_blue">Home</a>
