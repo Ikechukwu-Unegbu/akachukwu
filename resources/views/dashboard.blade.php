@@ -130,6 +130,7 @@
                                 <p class="text-sm font-medium text-gray-800">{{ $account->account_name }}</p>
                                 {{-- <p class="text-xs text-gray-500">Account Name</p> --}}
                                 <p  class="text-sm font-medium text-gray-800 account-number" id="account-number-{{ $count }}">{{ $account->account_number }}</p>
+                                <p  class="text-sm font-medium text-gray-800">{{ $account->bank_name }}</p>
                             </div>
                             <button type="button" class="text-indigo-600 text-sm font-medium copy-button" data-target="account-number-{{ $count }}">Copy</button>
                         </div>
