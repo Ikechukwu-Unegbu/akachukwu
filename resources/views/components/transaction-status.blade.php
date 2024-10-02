@@ -1,3 +1,23 @@
+<<<<<<< HEAD
+<div id="transaction_modal" class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full items-center justify-center {{ $modal ? 'flex' : 'hidden' }}">
+    <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <button wire:click="closeModal" type="button" class="close-modal absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-500 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="failedModal">
+                <i class="fa-solid fa-times w-5 h-5"></i>
+            </button>
+            <div class="px-6 py-6 lg:px-8">
+                <div class="flex flex-col items-center dark:text-white">
+                    <div class="w-16 dark:text-white h-16 bg-{{ $status ? 'green' : 'red' }}-100 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-{{ $status ? 'thumbs-up' : 'times' }} text-{{ $status ? 'green' : 'red' }}-500 text-3xl"></i>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-1 dark:text-white">Transaction {{ $status ? 'Successful' : 'Failed' }}</h3>
+                    <p class="text-sm mb-4 dark:text-white">{{ $utility }} Purchased {{ $status ? 'Successfully' : 'Failed' }}</p>
+                    @if (!empty($link))
+                    <a href="{{ $link }}" class="bg-vastel_blue text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
+                       View Transaction
+                    </a>
+                    @endif
+=======
 
 
 <div id="transaction_modal" class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center bg-black bg-opacity-50 {{ $modal ? 'flex' : 'hidden' }}">
@@ -9,6 +29,7 @@
             <div class="flex flex-col items-center">
                 <div class="w-16 h-16 bg-{{ $status ? 'green' : 'red' }}-100 rounded-full flex items-center justify-center mb-4">
                     <i class="fas fa-{{ $status ? 'thumbs-up' : 'times' }} text-{{ $status ? 'green' : 'red' }}-500 text-3xl"></i>
+>>>>>>> cb2f32241bce7b9b82f6a8cb0b6d2b6b8a336e32
                 </div>
                 <h3 class="text-lg font-semibold mb-1 text-gray-900">Transaction {{ $status ? 'Successful' : 'Failed' }}</h3>
                 <p class="text-gray-900 text-sm mb-4">{{ $utility }} Purchased {{ $status ? 'Successfully' : 'Failed' }}</p>
