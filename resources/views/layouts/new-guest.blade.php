@@ -132,7 +132,7 @@
             <header
                 class="flex justify-between text-vastel_blue bg-white items-center mb-8 py-[5px] border-b border-b-2 h-[5rem] px-[2rem]">
                 <div class="">
-                    <h1 class="text-2xl hidden md:inline  font-bold">Hi, {{ auth()->user()->name }}</h1>
+                    <h1 class="text-2xl hidden md:inline  font-bold">Hi @if(Auth::check()) , {{ auth()->user()->name }} @endif</h1>
                     <div class="flex flex-row-reverse md:hidden">
                         <img src="{{asset('images/clear-log.svg')}}" class="w-[3rem] h-[3rem]" alt="">
                         <button data-drawer-target="drawer-example" data-drawer-show="drawer-example" aria-controls="drawer-example" type="button" class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" >
@@ -148,7 +148,12 @@
                     <i class="far fa-bell text-xl"></i>
                     <a href="{{route('settings.support')}}"><i class="far fa-question-circle text-xl"></i></a>
                     <button class=" bg-red-500 rounded-full" data-dropdown-toggle="dropdown" type="button">
-                        <img src="{{ auth()->user()->profilePicture }}" class="rounded-full w-12 h-12" alt="">
+                    <img 
+                            src="{{ auth()->check() ? auth()->user()->profilePicture : asset('path/to/placeholder-image.jpg') }}" 
+                            class="rounded-full w-12 h-12" 
+                            alt="User Profile Picture"
+                        />
+
                     </button>
                 </div>
                 <!-- dropdown -->

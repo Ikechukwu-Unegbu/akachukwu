@@ -36,6 +36,7 @@ Route::middleware(['testing'])->group(function () {
     Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
     Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
     Route::get('/gen', [TestController::class, 'gen']);
+    Route::get('settings/support', [SettingsController::class, 'support'])->name('settings.support');
 });
 
 
@@ -56,7 +57,7 @@ Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate'])
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::get('settings/referrals', [SettingsController::class, 'referral'])->name('settings.referral');
     Route::get('settings/credentials', [SettingsController::class, 'credentials'])->name('settings.credentials');
-    Route::get('settings/support', [SettingsController::class, 'support'])->name('settings.support');
+    
 
     Route::get('transactions', TransactionController::class)->name('transactions');
 
@@ -96,6 +97,11 @@ Route::middleware(['auth', 'impersonate'])->group(function () {
 });
 
 Route::post('update-password', [SettingsController::class, 'updatePassword'])->name('update.password');
+
+//Blogs
+Route::view('/about', 'pages.about');
+Route::view('/blog', 'pages.blog.index');
+Route::view('/blog/show', 'pages.blog.show');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
