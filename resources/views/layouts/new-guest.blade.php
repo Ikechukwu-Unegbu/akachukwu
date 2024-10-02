@@ -130,10 +130,10 @@
         <main class="flex-1 overflow-y-auto">
             <!-- Header -->
             <header
-                class="flex justify-between text-vastel_blue bg-white items-center mb-8 py-[5px] border-b border-b-2 h-[5rem] px-[2rem]">
+                class="flex justify-between text-vastel_blue bg-white items-center mb-8 py-[5px] border-b border-b-2 h-[5rem] px-[1rem] md:px-[2rem]">
                 <div class="">
                     <h1 class="text-2xl hidden md:inline  font-bold">Hi @if(Auth::check()) , {{ auth()->user()->name }} @endif</h1>
-                    <div class="flex flex-row-reverse md:hidden">
+                    <div class="flex flex-row-reverse items-center justify-center md:hidden">
                         <img src="{{asset('images/clear-log.svg')}}" class="w-[3rem] h-[3rem]" alt="">
                         <button data-drawer-target="drawer-example" data-drawer-show="drawer-example" aria-controls="drawer-example" type="button" class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" >
                             <span class="sr-only">Open main menu</span>
@@ -193,11 +193,11 @@
  
 
     <!-- off can vas -->
-    <div id="drawer-example" class="fixed top-0 left-0 z-40 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80 dark:bg-gray-800" tabindex="-1" aria-labelledby="drawer-label">
-        <h5 id="drawer-label" class="inline-flex items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400"><svg class="w-4 h-4 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-        </svg>Info</h5>
-        <button type="button" data-drawer-hide="drawer-example" aria-controls="drawer-example" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center dark:hover:bg-gray-600 dark:hover:text-white" >
+
+    <div id="drawer-example" class="fixed top-0 left-0 z-50 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80" tabindex="-1" aria-labelledby="drawer-label">
+        <img class="h-[4rem] w-[4rem]" src="{{ asset('images/vastel-logo.svg') }}" alt="Vastel Logo">
+        
+        <button type="button" data-drawer-hide="drawer-example" aria-controls="drawer-example" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center">
             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
             </svg>
@@ -205,49 +205,45 @@
         </button>
 
         <nav class="flex flex-col text-blue-800 space-y-2 p-4">
-            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="/" class="flex items-center space-x-2 hover:text-blue-500">
                 <i class="fas fa-home"></i>
                 <span>Home</span>   
             </a>
-            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
-                <i class="fas fa-phone-alt"></i>
-                <span>Airtime</span>
+        
+            <a href="{{route('services')}}" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fa-solid fa-cubes-stacked"></i>
+                <span>Services</span>
             </a>
-            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
-                <i class="fas fa-wifi"></i>
-                <span>Internet Data</span>
-            </a>
-            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
-                <i class="fas fa-check"></i>
-                <span>Result Checker</span>
-            </a>
-            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+        
+            <a href="{{route('dashboard')}}" class="flex items-center space-x-2 hover:text-blue-500">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
-            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
-                <i class="fas fa-user"></i>
-                <span>Profile</span>
-            </a>
-            <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
-                <i class="fas fa-wallet"></i>
-                <span>Fund Account</span>
-            </a>
-            <a href="#" class="flex items-center space-x-2 text-white bg-blue-700 rounded-md p-2">
-                <i class="fas fa-sign-out-alt"></i>
-                <span>Logout</span>
-            </a>
-        </nav>
 
-            
-        <!-- <p class="mb-6 text-sm text-gray-500 dark:text-gray-400">Supercharge your hiring by taking advantage of our <a href="#" class="text-blue-600 underline dark:text-blue-500 hover:no-underline">limited-time sale</a> for Flowbite Docs + Job Board. Unlimited access to over 190K top-ranked candidates and the #1 design job board.</p>
-        <div class="grid grid-cols-2 gap-4">
-            <a href="#" class="px-4 py-2 text-sm font-medium text-center text-gray-900 bg-white border border-gray-200 rounded-lg focus:outline-none hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Learn more</a>
-            <a href="#" class="inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Get access <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
-        </svg></a>
-        </div> -->
+            <a href="{{route('pages.about')}}" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fa-solid fa-address-card"></i>
+                <span>About</span>
+            </a>
+
+            @guest
+        
+                <ul class="flex flex-col gap-[1rem]">
+                    <li><a href="{{ route('register') }}" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">Register</a></li>
+                    <li><a href="{{ route('login') }}" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">Login</a></li>
+                </ul>
+
+            @else
+
+            <li>
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button class="bg-vastel_blue text-white py-2 rounded hover:bg-blue-600 w-full text-left">Logout</button>
+                </form>
+            </li>
+            @endguest
+        </nav>
     </div>
+
     <!-- end off can vas -->
    
     <x-toastr />

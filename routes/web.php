@@ -102,7 +102,7 @@ Route::middleware(['auth', 'impersonate'])->group(function () {
 Route::post('update-password', [SettingsController::class, 'updatePassword'])->name('update.password');
 
 //Blogs
-Route::view('/about', 'pages.about');
+Route::view('/about', 'pages.about')->name('pages.about');
 Route::view('/blog', 'pages.blog.index');
 Route::view('/blog/show', 'pages.blog.show');
 
