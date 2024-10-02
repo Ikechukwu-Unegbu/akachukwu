@@ -249,34 +249,35 @@
     </button>
 
     <nav class="flex flex-col text-blue-800 space-y-2 p-4">
-        <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+        <a href="/" class="flex items-center space-x-2 hover:text-blue-500">
             <i class="fas fa-home"></i>
             <span>Home</span>   
         </a>
       
-        <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+        <a href="{{route('services')}}" class="flex items-center space-x-2 hover:text-blue-500">
             <i class="fa-solid fa-cubes-stacked"></i>
             <span>Services</span>
         </a>
     
-        <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+        <a href="{{route('dashboard')}}" class="flex items-center space-x-2 hover:text-blue-500">
             <i class="fas fa-tachometer-alt"></i>
             <span>Dashboard</span>
         </a>
 
-        <a href="#" class="flex items-center space-x-2 hover:text-blue-500">
+        <a href="{{route('pages.about')}}" class="flex items-center space-x-2 hover:text-blue-500">
             <i class="fa-solid fa-address-card"></i>
             <span>About</span>
         </a>
 
         @guest
-        <li>
+      
             <ul class="flex flex-col gap-[1rem]">
                 <li><a href="{{ route('register') }}" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">Register</a></li>
                 <li><a href="{{ route('login') }}" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">Login</a></li>
             </ul>
-        </li>
+
         @else
+
         <li>
             <form action="{{ route('logout') }}" method="post">
                 @csrf
