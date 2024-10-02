@@ -43,10 +43,10 @@
           
             <!-- Social Icons -->
             <div class="flex space-x-4">
-                <a href="#" class="text-white hover:text-gray-400"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="text-white hover:text-gray-400"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="text-white hover:text-gray-400"><i class="fab fa-linkedin"></i></a>
-                <a href="#" class="text-white hover:text-gray-400"><i class="fab fa-instagram"></i></a>
+                <a href="http://x.com/vastelofficial" class="text-white hover:text-gray-400"><i class="fab fa-twitter"></i></a>
+                <a href="http://facebook.com/vastel.io" class="text-white hover:text-gray-400"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.linkedin.com/company/vastel-io/" class="text-white hover:text-gray-400"><i class="fab fa-linkedin"></i></a>
+                <a href="http://instagram.com/vastel.io" class="text-white hover:text-gray-400"><i class="fab fa-instagram"></i></a>
             </div>
         </div>
         <!-- <p>&copy; 2024 Vastel.io</p> -->
