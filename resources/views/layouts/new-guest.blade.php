@@ -130,7 +130,7 @@
         <main class="flex-1 overflow-y-auto">
             <!-- Header -->
             <header
-                class="flex justify-between text-vastel_blue bg-white items-center mb-8 py-[5px] border-b border-b-2 h-[5rem] px-[2rem]">
+                class="flex justify-between text-vastel_blue bg-white items-center mb-8 py-[5px] border-b border-b-2 h-[5rem] px-[1rem] md:px-[2rem]">
                 <div class="">
                     <h1 class="text-2xl hidden md:inline  font-bold">Hi @if(Auth::check()) , {{ auth()->user()->name }} @endif</h1>
                     <div class="flex flex-row-reverse md:hidden">
