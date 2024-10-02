@@ -43,16 +43,17 @@ class PayVesselService
         ]);
     }
 
-    public static function createVirtualAccount($user)
-    {        
+    public static function createVirtualAccount($user, $kyc, $kycType = 'bvn')
+    {
         try {
 
-            self::bankCodes()->each(function ($bankCode) use ($user) {
+            self::bankCodes()->each(function ($bankCode) use ($user, $kyc, $kycType) {
                 $data = [
                     "businessid"   => config('payment.payvessel.business_id'),
                     "email"        => $user->email,
                     "name"         => $user->name,
                     "phoneNumber"  => $user->phone,
+                    $kycType       => $kyc,
                     "bankcode"     => [$bankCode['code']],
                     "account_type" =>  "STATIC"
                 ];

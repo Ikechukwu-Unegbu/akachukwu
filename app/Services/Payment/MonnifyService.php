@@ -191,9 +191,9 @@ class MonnifyService implements Payment
         return false;
     }
 
-    public static function createVirtualAccount($user)
+    public static function createVirtualAccount($user, $kyc, $kycType = 'bvn')
     {
-        try {
+     try {
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . self::token(),
@@ -205,6 +205,7 @@ class MonnifyService implements Payment
                 "customerEmail"         =>  $user->email,
                 "customerName"          =>  $user->name,
                 "getAllAvailableBanks"  =>  false,
+                $kycType                =>  $kyc,
                 "preferredBanks"        =>  ["035", "058", "50515"]
             ]);
 
@@ -273,7 +274,7 @@ class MonnifyService implements Payment
                 if (!auth()->user()->virtualAccounts()->count()) {
                     $activeGateway = PaymentGateway::where('va_status', true)->first();
                     $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-                    $virtualAccountFactory::createVirtualAccount(auth()->user());
+                    $virtualAccountFactory::createVirtualAccount(auth()->user(), $response->responseBody->bvn, 'bvn');
                 }
 
                 return ApiHelper::sendResponse([], "KYC updated & BVN linked to your account successfully.");
@@ -319,7 +320,7 @@ class MonnifyService implements Payment
                 if (!auth()->user()->virtualAccounts()->count()) {
                     $activeGateway = PaymentGateway::where('va_status', true)->first();
                     $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-                    $virtualAccountFactory::createVirtualAccount(auth()->user());
+                    $virtualAccountFactory::createVirtualAccount(auth()->user(), $response->responseBody->nin, 'nin');
                 }
 
                 return ApiHelper::sendResponse([], "KYC updated & NIN linked to your account successfully.");
