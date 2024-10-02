@@ -10,6 +10,6 @@ class TransactionController extends Controller
 {
     public function __invoke()
     {
-        return view('pages.transaction.Index');
+        return view('pages.transaction.index');
     }
 }
