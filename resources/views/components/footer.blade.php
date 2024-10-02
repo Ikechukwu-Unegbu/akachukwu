@@ -1,64 +1,57 @@
- <!-- ============================================-->
-      <!-- <section> begin ============================-->
-      <section class="pb-2 pb-lg-5">
-
-        <div class="container">
-          <div class="row border-top border-top-secondary pt-7">
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-6 mb-lg-0 mb-sm-2 order-1 order-md-1 order-lg-1"><img class="mb-4" src="{{asset('images/scape_logo.png')}}" style="height: 2rem;width:6.94rem;" alt="" /></div>
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 order-3 order-md-3 order-lg-2">
-              <p class="fs-2 mb-lg-4">Quick Links</p>
-              <ul class="list-unstyled mb-0">
-                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">About us</a></li>
-                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Blog</a></li>
-                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Contact</a></li>
-                {{-- <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">FAQ</a></li> --}}
-              </ul>
+ 
+<footer class="bg-vastel_blue vastel_bg text-white py-10">
+    <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- Column 1 -->
+        <div>
+            <h4 class="font-semibold mb-4">Product</h4>
+            <ul>
+                <li><a href="#" class="hover:underline">Features</a></li>
+                <li><a href="#" class="hover:underline">Pricing</a></li>
+            </ul>
+        </div>
+        <!-- Column 2 -->
+        <div>
+            <h4 class="font-semibold mb-4">Resources</h4>
+            <ul>
+                <li><a href="#" class="hover:underline">Blog</a></li>
+                <li><a href="{{route('privacy')}}" class="hover:underline">Privacy Policy</a></li>
+                <li><a href="{{route('refund')}}" class="hover:underline">Refund Policy</a></li>
+            </ul>
+        </div>
+        <!-- Column 3 -->
+        <div>
+            <h4 class="font-semibold mb-4">Company</h4>
+            <ul>
+                <li><a href="#" class="hover:underline">About</a></li>
+                <li><a href="{{route('register')}}" class="hover:underline">Register</a></li>
+            </ul>
+        </div>
+        <!-- Column 4 -->
+        <div>
+            <h4 class="font-semibold mb-4">Subscribe to our newsletter</h4>
+            <p class="mb-4 text-sm">For product announcements and exclusive insights</p>
+            <div class="flex space-x-2">
+                <input type="email" placeholder="Enter text" class="w-full p-2 rounded bg-white text-gray-800 focus:outline-none">
+                <button class="bg-purple-500 hover:bg-purple-700 text-white py-2 px-4 rounded">Subscribe</button>
             </div>
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0 order-4 order-md-4 order-lg-3">
-              <p class="fs-2 mb-lg-4">Legal stuff</p>
-              <ul class="list-unstyled mb-0">
-                {{-- <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Disclaimer</a></li> --}}
-                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="{{route('refund')}}">Refund Policy</a></li>
-                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="{{route('privacy')}}">Privacy Policy</a></li>
-                <li class="mb-1"><a class="link-900 text-secondary text-decoration-none" href="#!">Terms of Service</a></li>
-              </ul>
+        </div>
+    </div>
+
+    <!-- Footer Bottom -->
+    <div class="border-t border-gray-700 mt-8 pt-8 text-center">
+        <div class="flex justify-center items-center space-x-4 mb-4">
+          
+            <!-- Social Icons -->
+            <div class="flex space-x-4">
+                <a href="#" class="text-white hover:text-gray-400"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white hover:text-gray-400"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-white hover:text-gray-400"><i class="fab fa-linkedin"></i></a>
+                <a href="#" class="text-white hover:text-gray-400"><i class="fab fa-instagram"></i></a>
             </div>
-            <div class="col-lg-3 col-md-6 col-6 mb-4 mb-lg-0 order-2 order-md-2 order-lg-4">
-              <p class="fs-2 mb-lg-4">
-                knowing you're always on the best energy deal.</p>
-              <form class="mb-3">
-                <input class="form-control" type="email" placeholder="Enter your phone Number" aria-label="phone" />
-              </form>
-              <button class="btn btn-warning fw-medium py-1">Sign up Now</button>
-            </div>
-          </div>
-        </div><!-- end of .container-->
+        </div>
+        <!-- <p>&copy; 2024 Vastel.io</p> -->
+        <p class="font-semibold">&copy; 2024 Vastel</p>
+<p class="font-semibold">Made with ❤️ by <a href="https://www.halcyonaegisinc.xyz" class="text-white font-semibold hover:underline" target="_blank">Halcyon Aegis Internet</a></p>
 
-      </section>
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
-
-
-
-
-      <!-- ============================================-->
-      <!-- <section> begin ============================-->
-      <section class="text-center py-0">
-
-        <div class="container">
-          <div class="container border-top py-3">
-            <div class="row justify-content-between">
-              <div class="col-12 col-md-auto mb-1 mb-md-0">
-                <p class="mb-0">&copy; 2023 Vastel Nig. </p>
-              </div>
-              <div class="col-12 col-md-auto">
-                <p class="mb-0">
-                  Developed with <span class="fas fa-heart mx-1 text-danger"> </span>by <a class="text-decoration-none ms-1" href="https://www.halcyonaegisinc.xyz" target="_blank">Halcyon Internet</a></p>
-              </div>
-            </div>
-          </div>
-        </div><!-- end of .container-->
-
-      </section>
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
+    </div>
+</footer>
