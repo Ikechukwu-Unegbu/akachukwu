@@ -31,11 +31,16 @@ class RoleSeeder extends Seeder
             'delete'
         ];
         
-
-        foreach ($roles as $role) { 
-            $role = Role::create(['name' => $role]);
-
-            foreach ($permissions as $permission) Permission::create(['name' => Str::lower($permission . ' ' . $role->name )]);
+        foreach ($roles as $role) {
+            // Create the role only if it doesn't exist
+            $role = Role::firstOrCreate(['name' => $role]);
+        
+            foreach ($permissions as $permission) {
+                // Create the permission only if it doesn't exist
+                Permission::firstOrCreate([
+                    'name' => Str::lower($permission . ' ' . $role->name)
+                ]);
+            }
         }
 
     }

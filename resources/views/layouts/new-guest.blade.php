@@ -41,16 +41,18 @@
         .vastel_text {
             color: #0018A8;
         }
-
         .vastel_bg {
             background-color: #0018A8;
         }
-
         .active {
             background-color: #ffffff;
             color: #0018A8 !important;
             border-top-right-radius: 0.5rem;
             border-bottom-right-radius: 0.5rem;
+        }
+        button:disabled {
+            cursor: not-allowed;
+            pointer-events: all !important;
         }
     </style>
 

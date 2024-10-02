@@ -15,7 +15,7 @@ use App\Http\Requests\V1\Api\ElectricityApiRequest;
 class ElectricityApiController extends Controller
 {
     use ResolvesVendorService;
-
+    
     protected $vendor;
     
     public function __construct()

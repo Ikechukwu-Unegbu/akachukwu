@@ -5,10 +5,9 @@ namespace App\Livewire\Admin\Utility\Electricity;
 use Livewire\Component;
 use Illuminate\Support\Str;
 use Livewire\Attributes\Rule;
+use Livewire\WithFileUploads;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\Electricity;
-use Livewire\WithFileUploads;
-
 class Edit extends Component
 {
     use WithFileUploads;
@@ -52,8 +51,8 @@ class Edit extends Component
 
         $this->electricity->update([
             'disco_id'      =>  $this->disco_id,
-            'disco_name'    =>  $this->disco_name,
-            'status'        =>  $this->status,
+            'disco_name'    =>  $this->disco_name, 
+            'status'        =>  $this->status, 
             'discount'      =>  $this->discount,
             'image'         =>  $image
         ]);

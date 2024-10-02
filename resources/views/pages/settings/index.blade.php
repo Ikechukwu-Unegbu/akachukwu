@@ -45,7 +45,7 @@
         </a>
 
         <!-- KYC -->
-        <a href="#" class="flex items-center p-4 bg-white shadow rounded-lg">
+        <a href="{{ route('settings.kyc') }}" class="flex items-center p-4 bg-white shadow rounded-lg">
             <div class="text-vastel_blue">
                 <i class="fas fa-id-card fa-lg"></i> <!-- Font Awesome KYC icon -->
             </div>

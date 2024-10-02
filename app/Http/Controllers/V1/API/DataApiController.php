@@ -18,7 +18,6 @@ use Illuminate\Validation\ValidationException;
 class DataApiController extends Controller
 {
     use ResolvesVendorService;
-    
     protected $vendor;
     
     public function __construct()

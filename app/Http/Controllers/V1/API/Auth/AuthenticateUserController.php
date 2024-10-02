@@ -15,26 +15,30 @@ class AuthenticateUserController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'email' => 'required|email',
+            'login' => 'required', 
             'password' => 'required',
+        ], [
+            'login.required' => 'Username or email field is empty', 
+            'password.required' => 'Password field is required',
         ]);
-
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            // $user = Auth::user()->with('virtualAccounts');
+    
+        $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+    
+        if (Auth::attempt([$loginType => $request->login, 'password' => $request->password])) {
             $user = User::find(Auth::user()->id);
             $user->load('virtualAccounts');
             $token = $request->user()->createToken('token-name')->plainTextToken;
-
+    
             return response()->json([
                 'token' => $token, 
-                'status'=>'success', 
-                'user'=>$user
+                'status' => 'success', 
+                'user' => $user
             ], 200);
         }
-
+    
         return response()->json(['message' => 'Unauthorized'], 401);
     }
-
+    
 
     public function verifyOtp(Request $request, OTPService $otpService)
     {

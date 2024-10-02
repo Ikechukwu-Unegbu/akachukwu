@@ -121,6 +121,14 @@ class GladTidingService
 
             self::storeApiResponse($transaction, $response);
 
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
+            }
+            
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
+
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
                 $errorResponse = [
@@ -131,16 +139,6 @@ class GladTidingService
             }
 
             if (isset($response->Status) && $response->Status == 'successful') {
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
-                }
-                
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
-
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
@@ -221,6 +219,16 @@ class GladTidingService
 
             self::storeApiResponse($transaction, $response);
 
+            $amount = $response->amount;
+
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
+            }
+
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
+
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
                 $errorResponse = [
@@ -231,17 +239,6 @@ class GladTidingService
             }
 
             if (isset($response->Status) && $response->Status == 'successful') {
-
-                $amount = $response->amount;
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
-                }
-
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'token'             =>    VendorHelper::removeTokenPrefix($response->token),
@@ -309,6 +306,16 @@ class GladTidingService
 
             self::storeApiResponse($transaction, $response);
 
+            $amount = $transaction->amount;;
+
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'cable');
+            }
+
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
+
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
                 $errorResponse = [
@@ -319,18 +326,6 @@ class GladTidingService
             }
 
             if (isset($response->Status) && $response->Status == 'successful') {
-
-                $amount = $transaction->amount;;
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'cable');
-                }
-
-                
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
@@ -401,6 +396,15 @@ class GladTidingService
             $response = self::url(self::DATA_URL, $data);
             
             self::storeApiResponse($transaction, $response);
+            $amount = $plan->amount;
+
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'data');
+            }
+
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
@@ -412,17 +416,6 @@ class GladTidingService
             }
 
             if (isset($response->Status) && $response->Status == 'successful') {
-
-                $amount = $plan->amount;
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'data');
-                }
-
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,

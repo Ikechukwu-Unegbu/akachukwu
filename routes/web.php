@@ -57,7 +57,10 @@ Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate'])
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::get('settings/referrals', [SettingsController::class, 'referral'])->name('settings.referral');
     Route::get('settings/credentials', [SettingsController::class, 'credentials'])->name('settings.credentials');
-    
+
+    Route::get('settings/support', [SettingsController::class, 'support'])->name('settings.support');
+    Route::get('settings/kyc', [SettingsController::class, 'kyc'])->name('settings.kyc');
+
 
     Route::get('transactions', TransactionController::class)->name('transactions');
 

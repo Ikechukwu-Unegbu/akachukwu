@@ -12,7 +12,7 @@ use App\Models\Utility\Electricity;
 class Create extends Component
 {
     use WithFileUploads;
-
+    
     public $vendor;
     #[Rule('required|string')]
     public $disco_id;

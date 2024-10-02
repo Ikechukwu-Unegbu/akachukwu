@@ -13,7 +13,7 @@ class Electricity extends Model
     protected $guarded = [];
 
     protected $appends = ['image_url'];
-
+    
     public function getImageUrlAttribute()
     {
         if ($this->image && Storage::disk('electricity')->exists($this->image)) {

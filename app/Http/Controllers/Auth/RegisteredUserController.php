@@ -90,9 +90,9 @@ class RegisteredUserController extends Controller
             Notification::sendNow($user, new WelcomeEmail($otp, $user));
 
             // MonnifyService::createVirtualAccount($user);
-            $activeGateway = PaymentGateway::where('va_status', true)->first();
-            $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-            $virtualAccountFactory::createVirtualAccount($user); 
+            // $activeGateway = PaymentGateway::where('va_status', true)->first();
+            // $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
+            // $virtualAccountFactory::createVirtualAccount($user); 
 
             event(new Registered($user));
 
