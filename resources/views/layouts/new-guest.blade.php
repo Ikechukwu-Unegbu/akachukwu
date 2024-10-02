@@ -194,55 +194,55 @@
 
     <!-- off can vas -->
 
-    <div id="drawer-example" class="fixed top-0 left-0 z-100 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80" tabindex="-1" aria-labelledby="drawer-label">
-    <img class="h-[4rem] w-[4rem]" src="{{ asset('images/vastel-logo.svg') }}" alt="Vastel Logo">
-    
-    <button type="button" data-drawer-hide="drawer-example" aria-controls="drawer-example" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center">
-        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-        </svg>
-        <span class="sr-only">Close menu</span>
-    </button>
+    <div id="drawer-example" class="fixed top-0 left-0 z-50 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80" tabindex="-1" aria-labelledby="drawer-label">
+        <img class="h-[4rem] w-[4rem]" src="{{ asset('images/vastel-logo.svg') }}" alt="Vastel Logo">
+        
+        <button type="button" data-drawer-hide="drawer-example" aria-controls="drawer-example" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+            </svg>
+            <span class="sr-only">Close menu</span>
+        </button>
 
-    <nav class="flex flex-col text-blue-800 space-y-2 p-4">
-        <a href="/" class="flex items-center space-x-2 hover:text-blue-500">
-            <i class="fas fa-home"></i>
-            <span>Home</span>   
-        </a>
-      
-        <a href="{{route('services')}}" class="flex items-center space-x-2 hover:text-blue-500">
-            <i class="fa-solid fa-cubes-stacked"></i>
-            <span>Services</span>
-        </a>
-    
-        <a href="{{route('dashboard')}}" class="flex items-center space-x-2 hover:text-blue-500">
-            <i class="fas fa-tachometer-alt"></i>
-            <span>Dashboard</span>
-        </a>
+        <nav class="flex flex-col text-blue-800 space-y-2 p-4">
+            <a href="/" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fas fa-home"></i>
+                <span>Home</span>   
+            </a>
+        
+            <a href="{{route('services')}}" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fa-solid fa-cubes-stacked"></i>
+                <span>Services</span>
+            </a>
+        
+            <a href="{{route('dashboard')}}" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
 
-        <a href="{{route('pages.about')}}" class="flex items-center space-x-2 hover:text-blue-500">
-            <i class="fa-solid fa-address-card"></i>
-            <span>About</span>
-        </a>
+            <a href="{{route('pages.about')}}" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fa-solid fa-address-card"></i>
+                <span>About</span>
+            </a>
 
-        @guest
-      
-            <ul class="flex flex-col gap-[1rem]">
-                <li><a href="{{ route('register') }}" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">Register</a></li>
-                <li><a href="{{ route('login') }}" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">Login</a></li>
-            </ul>
+            @guest
+        
+                <ul class="flex flex-col gap-[1rem]">
+                    <li><a href="{{ route('register') }}" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">Register</a></li>
+                    <li><a href="{{ route('login') }}" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">Login</a></li>
+                </ul>
 
-        @else
+            @else
 
-        <li>
-            <form action="{{ route('logout') }}" method="post">
-                @csrf
-                <button class="bg-vastel_blue text-white py-2 rounded hover:bg-blue-600 w-full text-left">Logout</button>
-            </form>
-        </li>
-        @endguest
-    </nav>
-</div>
+            <li>
+                <form action="{{ route('logout') }}" method="post">
+                    @csrf
+                    <button class="bg-vastel_blue text-white py-2 rounded hover:bg-blue-600 w-full text-left">Logout</button>
+                </form>
+            </li>
+            @endguest
+        </nav>
+    </div>
 
     <!-- end off can vas -->
    
