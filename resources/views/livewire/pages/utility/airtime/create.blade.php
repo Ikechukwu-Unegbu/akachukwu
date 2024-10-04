@@ -93,22 +93,22 @@
     </form>
 
     <x-pin-validation title="Airtime" :formAction="$form_action" :validatePinAction="$validate_pin_action">
-        <div class="flex text-gray-900 justify-between">
+        <div class="flex justify-between">
             <h6>Network</h6>
             @if (count($networks))
                 <h6>{{ $networks->where('network_id', $network)->first()?->name }}</h6>
             @endif
         </div>
-        <div class="flex text-gray-900 justify-between">
+        <div class="flex justify-between">
             <h6>Number</h6>
             <h6>{{ $phone_number }}</h6>
 
         </div>
-        <div class="flex text-gray-900 justify-between">
+        <div class="flex justify-between">
             <h6>Amount</h6>
             <h6>₦{{ number_format($amount, 2) }}</h6>
         </div>
-        <div class="flex text-gray-900 justify-between">
+        <div class="flex justify-between">
             <h6>Wallet</h6>
             <h6>₦{{ number_format(auth()->user()->account_balance, 2) }}</h6>
         </div>

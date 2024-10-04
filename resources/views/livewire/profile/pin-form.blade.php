@@ -32,7 +32,7 @@
             <p class="mt-2 text-sm text-gray-600">4-digit new transaction PIN</p>
             <div class="flex justify-center mt-4 space-x-2">
                 @foreach (range(1, 4) as $index)
-                    <input type="text" maxlength="1"
+                    <input type="password" maxlength="1"
                         class="w-12 h-12 text-center border rounded-md"
                         x-on:input="handleInput($event, {{ $index }}, 'pin')" 
                         x-ref="pin{{ $index }}"

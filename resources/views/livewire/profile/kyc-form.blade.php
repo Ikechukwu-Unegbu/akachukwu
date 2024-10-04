@@ -45,10 +45,15 @@
  
     </form>
     <div class="mt-5 "></div>
+    @if (
+        auth()->user()->virtualAccounts()->count() && 
+        auth()->user()->virtualAccounts()->first()->gateway->name !== 'Payvessel'
+    )
     <hr>
     <h4 class="font-extrabold text-center mt-4">
         OR
     </h4>
+    
    <div class="pb-6 mb-6">
         <form wire:submit.prevent="verifyNin">
 
@@ -69,5 +74,6 @@
             </div>
         </form>
    </div>
+   @endif
    @endif
 </div>

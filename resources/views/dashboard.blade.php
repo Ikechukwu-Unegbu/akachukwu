@@ -80,9 +80,9 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <p class="text-{{ $transaction->status ? 'green' : 'red' }}-500 font-semibold">
+                        <p class="text-{{ $transaction->status === 1 ? 'green' : ($transaction->status === 0 ? 'red' : 'yellow') }}-500 font-semibold">
                             ₦{{ number_format($transaction->amount, 2) }}</p>
-                        <p class="text-sm text-gray-500">{{ $transaction->status ? 'Success' : 'Failed' }}</p>
+                        <p class="text-sm text-gray-500">{{ $transaction->status === 1 ? 'Successful' : ($transaction->status === 0 ? 'Failed' : 'Refunded') }}</p>
                     </div>
                 </div>
                 @empty
@@ -130,6 +130,7 @@
                                 <p class="text-sm font-medium text-gray-800">{{ $account->account_name }}</p>
                                 {{-- <p class="text-xs text-gray-500">Account Name</p> --}}
                                 <p  class="text-sm font-medium text-gray-800 account-number" id="account-number-{{ $count }}">{{ $account->account_number }}</p>
+                                <p  class="text-sm font-medium text-gray-800">{{ $account->bank_name }}</p>
                             </div>
                             <button type="button" class="text-indigo-600 text-sm font-medium copy-button" data-target="account-number-{{ $count }}">Copy</button>
                         </div>
