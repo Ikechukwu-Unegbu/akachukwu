@@ -6,7 +6,7 @@
         <div class="hidden md:flex space-x-6">
             <a href="/" class="text-vastel_blue hover:text-vastel_blue">Home</a>
             <!-- <a href="#" class="text-vastel_blue hover:text-vastel_blue">Company</a> -->
-            <a href="/blog" class="text-vastel_blue hover:text-vastel_blue">Blog</a>
+            <a href="{{route('pages.about')}}" class="text-vastel_blue hover:text-vastel_blue">About</a>
         </div>
         <div class="hidden md:flex space-x-4">
             @guest

@@ -5,8 +5,8 @@
         <div>
             <h4 class="font-semibold mb-4">Product</h4>
             <ul>
-                <li><a href="#" class="hover:underline">Features</a></li>
-                <li><a href="#" class="hover:underline">Pricing</a></li>
+                <li><a class="hover:underline">Bill Payment</a></li>
+                <li><a class="hover:underline">Affordable Internet Data</a></li>
             </ul>
         </div>
         <!-- Column 2 -->
@@ -22,7 +22,7 @@
         <div>
             <h4 class="font-semibold mb-4">Company</h4>
             <ul>
-                <li><a href="#" class="hover:underline">About</a></li>
+                <li><a href="{{route('pages.about')}}" class="hover:underline">About</a></li>
                 <li><a href="{{route('register')}}" class="hover:underline">Register</a></li>
             </ul>
         </div>
