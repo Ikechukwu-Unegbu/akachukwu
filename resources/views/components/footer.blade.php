@@ -1,5 +1,5 @@
  
-<footer class="bg-vastel_blue vastel_bg text-white py-10">
+<footer class="bg-vastel_blue vastel_bg text-white mt-10 py-10">
     <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Column 1 -->
         <div>

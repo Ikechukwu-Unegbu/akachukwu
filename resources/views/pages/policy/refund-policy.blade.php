@@ -33,7 +33,7 @@
 
 
 @section('body')
-
+@include('components.menu-navigation')
 
 <section class="pt-5 container mx-auto" id="marketing">
   <h1 class="text-4xl font-bold text-center mb-8 text-gray-900">Welcome to VasTel Refund Policy Page</h1>
@@ -50,7 +50,7 @@
       </h2>
       <div id="collapseOne" class="hidden" data-body>
         <div class="py-4 px-5 text-gray-700">
-          Thank you for shopping at VasTel. This is the Return and Refund <a href="{{ route('privacy') }}" class="text-vastel_blue underline hover:text-vastel_blue">Policy of VasTel</a>.
+          Thank you for using VASTel. This is the Return and Refund <a href="{{ route('privacy') }}" class="text-vastel_blue underline hover:text-vastel_blue">Policy of VasTel</a>.
         </div>
       </div>
     </div>

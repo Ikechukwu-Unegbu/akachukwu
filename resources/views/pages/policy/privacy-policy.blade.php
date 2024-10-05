@@ -34,7 +34,8 @@
 
 @section('body')
 
-<!-- Marketing Section -->
+   
+@include('components.menu-navigation')
 <section class="pt-10 pb-16 bg-gray-50" id="marketing">
   <div class="container mx-auto px-4">
     <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Welcome to VasTel Privacy Policy Page</h1>
@@ -53,7 +54,7 @@
       <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
         <div class="p-5 bg-gray-50 text-gray-700 border-b border-gray-300">
           <p>
-            It is VasTel's policy to respect your privacy regarding any information we may collect while operating our website...
+          It is VasTel's policy to respect your privacy regarding any information we may collect while operating our website. This Privacy Policy applies to https://vastel.io (hereinafter, "us", "we", or "https://vastel.io"). We respect your privacy and are committed to protecting personally identifiable information you may provide us through the Website. We have adopted this privacy policy ("Privacy Policy") to explain what information may be collected on our Website, how we use this information, and under what circumstances we may disclose the information to third parties. This Privacy Policy applies only to information we collect through the Website and does not apply to our collection of information from other sources. This Privacy Policy, together with the Terms and conditions posted on our Website, set forth the general rules and policies governing your use of our Website. Depending on your activities when visiting our Website, you may be required to agree to additional terms and conditions.
           </p>
         </div>
       </div>
@@ -71,7 +72,7 @@
       <div id="accordion-collapse-body-2" class="hidden" aria-labelledby="accordion-collapse-heading-2">
         <div class="p-5 bg-gray-50 text-gray-700 border-b border-gray-300">
           <p>
-            Like most website operators, VasTel collects non-personally-identifying information of the sort that web browsers and servers typically make available...
+          Like most website operators, VasTel collects non-personally-identifying information of the sort that web browsers and servers typically make available, such as the browser type, language preference, referring site, and the date and time of each visitor request. VasTel's purpose in collecting non-personally identifying information is to better understand how VasTel's visitors use its website. From time to time, VasTel may release non-personally-identifying information in the aggregate, e.g., by publishing a report on trends in the usage of its website. VasTel also collects potentially personally-identifying information like Internet Protocol (IP) addresses for logged-in users and for users leaving comments on https://vastel.io or on its blog posts. VasTel only discloses logged-in user and commenter IP addresses under the same circumstances that it uses and discloses personally-identifying information as described below.
           </p>
         </div>
       </div>
@@ -89,7 +90,7 @@
       <div id="accordion-collapse-body-3" class="hidden" aria-labelledby="accordion-collapse-heading-3">
         <div class="p-5 bg-gray-50 text-gray-700 border-b border-gray-300">
           <p>
-            When users contact our customer support to delete their account, we promptly assist in the deletion process...
+          When users opt to delete their account, we promptly assist in the deletion process. We aim to delete personal data associated with the account securely and in compliance with relevant data protection laws. Non-personal data may be retained for statistical analysis and service improvement. We will communicate with users regarding the account deletion progress. Legal obligations and backup processes may affect deletion timelines. For more details, please contact our customer support.
           </p>
         </div>
       </div>
@@ -107,7 +108,7 @@
       <div id="accordion-collapse-body-4" class="hidden" aria-labelledby="accordion-collapse-heading-4">
         <div class="p-5 bg-gray-50 text-gray-700 border-gray-300">
           <p>
-            Our Service may contain links to external sites that are not operated by us...
+          Our Service may contain links to external sites that are not operated by us. If you click on a third-party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy and terms and conditions of every site you visit. We have no control over, and assume no responsibility for the content, privacy policies, or practices of any third-party sites, products, or services.
           </p>
         </div>
       </div>
