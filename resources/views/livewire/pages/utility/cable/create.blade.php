@@ -33,15 +33,23 @@
 
         <div class="relative space-x-0 z-50 mb-6 mt-10 w-full group">
             <button type="button" id="dropdownCable" class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer">
-                <span>{{ $cable_name ? $cables->where('cable_id', $cable_name)->first()?->cable_name : 'Select TV' }}</span>
+                {{-- <span>{{ $cable_name ? $cables->where('cable_id', $cable_name)->first()?->cable_name : 'Select TV' }}</span> --}}
+                @if ($cables->where('cable_id', $cable_name)->count())
+                    <div class="flex">
+                        <img src="{{ $cables->where('cable_id', $cable_name)->first()?->image_url }}" alt="Logo" class="mr-3 w-100 h-15"> 
+                        <h4>{{ $cables->where('cable_id', $cable_name)->first()?->cable_name  }}</h4>
+                    </div>
+                @else
+                    Select Cable
+                @endif
             </button>
 
             <!-- Dropdown menu -->
             <div id="cableDropdown" class="hidden absolute z-10 w-full bg-white rounded-lg shadow-lg">
                 <ul class="py-2 text-sm text-gray-700">
                     @foreach ($cables as $__cable)
-                        <li wire:click='selectedCable({{ $__cable->id }})' class="px-4 py-2 flex items-center justify-between cursor-pointer hover:bg-gray-100">
-                            {{ $__cable->cable_name }}
+                        <li wire:click='selectedCable({{ $__cable->id }})' class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100">
+                            <img src="{{ $__cable->image_url }}" alt="{{ $__cable->cable_name }} Logo" class="mr-3 w-12 h-15"> {{ $__cable->cable_name }}
                         </li>
                     @endforeach
                 </ul>

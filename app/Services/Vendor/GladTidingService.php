@@ -131,6 +131,7 @@ class GladTidingService
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during the Airtime request. Please try again later."
@@ -149,6 +150,15 @@ class GladTidingService
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Airtime purchase successful: ₦{$amount} {$network->name} airtime added to {$mobileNumber}.");
+            }
+
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'API response Error',
+                    'message'   => "Airtime purchase failed. Please try again later.",
+                ];    
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
             $errorResponse = [
@@ -231,6 +241,7 @@ class GladTidingService
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during bill payment request. Please try again later."
@@ -249,6 +260,15 @@ class GladTidingService
                 BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
+            }
+
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'API response Error',
+                    'message'   => "Bill purchase failed. Please try again later.",
+                ];    
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
             $errorResponse = [
@@ -318,6 +338,7 @@ class GladTidingService
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during cable payment request. Please try again later."
@@ -337,6 +358,14 @@ class GladTidingService
                 return ApiHelper::sendResponse($transaction, "Cable subscription successful: {$transaction->cable_plan_name} for ₦{$transaction->amount} on {$transaction->customer_name} ({$transaction->smart_card_number}).");
             }
 
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'Server Error',
+                    'message'   => "Cable purchased failed. Please try again later.",
+                ];    
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+            }
             $errorResponse = [
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
@@ -408,6 +437,7 @@ class GladTidingService
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during Data request. Please try again later."
@@ -429,6 +459,15 @@ class GladTidingService
                 BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobileNumber}.");
+            }
+
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'API response Error',
+                    'message'   => "Data purchase failed. Please try again later.",
+                ];    
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
             $errorResponse = [

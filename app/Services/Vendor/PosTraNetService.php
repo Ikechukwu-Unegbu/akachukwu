@@ -135,10 +135,12 @@ class PosTraNetService
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during the Airtime request. Please try again later."
                 ];
+                Log::error($errorResponse);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
@@ -152,6 +154,15 @@ class PosTraNetService
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Airtime purchase successful: ₦{$amount} {$network->name} airtime added to {$mobileNumber}.");
+            }
+
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'API response Error',
+                    'message'   => "Airtime purchase failed. Please try again later.",
+                ];    
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
             $errorResponse = [
@@ -231,10 +242,12 @@ class PosTraNetService
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during bill payment request. Please try again later."
                 ];
+                Log::error($errorResponse);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
                
@@ -250,6 +263,15 @@ class PosTraNetService
 
                 return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
                                 
+            }
+
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'API response Error',
+                    'message'   => "Bill purchase failed. Please try again later.",
+                ];    
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
             $errorResponse = [
@@ -320,10 +342,12 @@ class PosTraNetService
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during cable payment request. Please try again later."
                 ];
+                Log::error($errorResponse);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
@@ -337,6 +361,15 @@ class PosTraNetService
                 BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Cable subscription successful: {$transaction->cable_plan_name} for ₦{$transaction->amount} on {$transaction->customer_name} ({$transaction->smart_card_number}).");
+            }
+
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'API response Error',
+                    'message'   => "Cable purchase failed. Please try again later.",
+                ];    
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
             $errorResponse = [
@@ -412,10 +445,12 @@ class PosTraNetService
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during Data request. Please try again later."
                 ];
+                Log::error($errorResponse);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
@@ -434,15 +469,21 @@ class PosTraNetService
 
                 return ApiHelper::sendResponse($transaction, "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobileNumber}.");
             }
+
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'API response Error',
+                    'message'   => "Data purchase failed. Please try again later.",
+                ];    
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+            }
              
             $errorResponse = [
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
             ];
-
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-
-
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [

@@ -46,7 +46,7 @@
             </button>
 
             <!-- Dropdown menu -->
-            <div id="networkDropdown" class="hidden absolute z-10 w-full bg-white rounded-lg shadow-lg">
+            <div id="networkDropdown" class="hidden w-full bg-white rounded-lg shadow-lg">
                 <ul class="py-2 text-sm text-gray-700">
                     @foreach ($networks as $__network)
                         <li wire:click="selectedNetwork({{ $__network->id }})" class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100">
@@ -58,7 +58,24 @@
         </div>
 
         <!-- Data Type -->
-        <div class="relative z-0 mb-6 w-full group">
+        <div class="relative space-x-0 z-50 mb-6 mt-10 w-full group">
+            <button type="button" id="datatypeDropdown" class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer">
+                <span>{{ $dataType ? $dataTypes->where('id', $dataType)->first()?->name : 'Select Data Type' }}</span>
+            </button>
+
+            <!-- Dropdown menu -->
+            <div id="datatypePackages" class="hidden w-full bg-white rounded-lg shadow-lg">
+                <ul class="py-2 text-sm text-gray-700">
+                    @foreach ($dataTypes as $__dataType)
+                        <li wire:click='selectedDataType({{ $__dataType->id }})' class="px-4 py-2 flex items-center justify-between cursor-pointer hover:bg-gray-100">
+                            {{ $__dataType->name }}
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
+
+        {{-- <div class="relative z-0 mb-6 w-full group">
             <select id="dataType"
                 class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
                 wire:model.live="dataType" wire:target="network" wire:loading.attr="disabled">
@@ -72,7 +89,7 @@
             @error('dataType')
                 <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
             @enderror
-        </div>
+        </div> --}}
 
         <!-- Mobile Number -->
         <div class="relative z-0 mb-6 w-full group">
@@ -108,7 +125,7 @@
         @endif
         <!-- Plan -->
         <div class="relative z-0 mb-6 w-full group">
-            <button type="button" id="datatypeDropdown"
+            <button type="button" id="dataPlanDropdown"
                 class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
                 @if (count($plans) && $plans->where('data_id', $plan)->count())
                     <div class="flex justify-between items-center">
@@ -118,11 +135,11 @@
                         </div>
                     </div>
                 @else
-                    Select Data Type
+                    Select Data Plan
                 @endif
             </button>
 
-            <div id="selectDataTypeDropdown" class="w-full hidden absolute bg-white shadow-lg rounded-lg overflow-hidden z-0">
+            <div id="dataPlanPackages" class="w-full hidden absolute bg-white shadow-lg rounded-lg overflow-hidden z-0">
                 <ul class="divide-y divide-gray-200">
                     @foreach ($plans as $__plan)
                     <li wire:click="selectPlan({{ $__plan->id }})" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
@@ -222,7 +239,8 @@
      <script>
         document.addEventListener('DOMContentLoaded', function() {
             initializeDropdown('networkDropdownButton', 'networkDropdown', 'selectedPackage');
-            initializeDropdown('datatypeDropdown', 'selectDataTypeDropdown', 'selectedPackage');
+            initializeDropdown('datatypeDropdown', 'datatypePackages', 'selectedPackage');
+            initializeDropdown('dataPlanDropdown', 'dataPlanPackages', 'selectedPackage');
         });
     </script>
     <script>

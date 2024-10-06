@@ -95,6 +95,13 @@ class Create extends Component
         $this->updatedPlan();
     }
 
+    public function selectedDataType(DataType $dataType)
+    {
+        $this->dataType = $dataType->id;
+        $this->updatedDataType();
+        $this->updatedPlan();
+    }
+
     public function selectPlan(DataPlan $dataPlan)
     {
         $this->plan = $dataPlan->data_id;

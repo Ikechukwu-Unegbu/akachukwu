@@ -138,6 +138,7 @@ class VTPassService
 
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during the Airtime request. Please try again later."
@@ -240,6 +241,7 @@ class VTPassService
 
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during Data request. Please try again later."
@@ -347,6 +349,7 @@ class VTPassService
 
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'     =>  'Insufficient Account Balance.',
                     'message'   =>  "An error occurred during bill payment request. Please try again later."
@@ -478,6 +481,7 @@ class VTPassService
 
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'     =>  'Insufficient Account Balance.',
                     'message'   =>  "An error occurred during cable payment request. Please try again later."
@@ -556,6 +560,16 @@ class VTPassService
 
             self::storeApiResponse($transaction, $response);
             self::$authUser->transaction($amount);
+
+            if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
+                self::$authUser->initiateRefund($amount, $transaction);
+                $errorResponse = [
+                    'error'     =>  'Insufficient Account Balance.',
+                    'message'   =>  "An error occurred during e-pin request. Please try again later."
+                ];
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+            }
+
             if (isset($response->content->transactions) && $response->content->transactions->status === "delivered") {
                 foreach ($response->cards as $card) {
                     $transaction->result_checker_pins()->create([

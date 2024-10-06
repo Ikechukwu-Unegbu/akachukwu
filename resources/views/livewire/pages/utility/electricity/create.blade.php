@@ -46,7 +46,7 @@
 
         <div class="relative z-50 mb-6 w-full group pt-6">
             <!-- Button to toggle dropdown -->
-            <button type="button" id="dropdown"
+            <button type="button" id="electricityDropdown"
                 class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
                 @if ($electricity->where('disco_id', $disco_name)->count())
                     <div class="flex">
@@ -54,12 +54,12 @@
                         <h4>{{ $electricity->where('disco_id', $disco_name)->first()?->disco_name  }}</h4>
                     </div>
                 @else
-                    Select Disco
+                    Select DISCO
                 @endif
             </button>
 
             <!-- Dropdown menu -->
-            <div id="electricityDropdown" class="hidden absolute z-10 w-full bg-white rounded-lg shadow-lg">
+            <div id="electricityPackagesDropdown" class="hidden absolute z-10 w-full bg-white rounded-lg shadow-lg">
                 <ul class="py-2 text-sm text-gray-700">
                     @foreach ($electricity as $__electricity)
                         <li wire:click="selectedElectricity({{ $__electricity->id }})" class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100">
@@ -138,7 +138,7 @@
         @endif
     
         <button type="submit" class="w-[8rem] bg-vastel_blue text-white py-2 rounded text-sm font-semibold hover:bg-blue-800 transition"> 
-            <span wire:loading.remove wire:target='validateIUC'> {{ $validate_action ? 'Proceed' : 'Validate IUC' }}</span>
+            <span wire:loading.remove wire:target='validateIUC'> {{ $validate_action ? 'Proceed' : 'Validate Meter No.' }}</span>
             <span wire:loading wire:target="validateIUC">
                 <i class="fa fa-circle-notch fa-spin text-sm"></i> {{ $validate_action ? 'Please wait...' : 'Validating...' }}
             </span>
@@ -227,7 +227,7 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        initializeDropdown('dropdown', 'electricityDropdown', 'selectedPackage');
+        initializeDropdown('electricityDropdown', 'electricityPackagesDropdown', 'selectedPackage');
     });
 </script>
 <script>
