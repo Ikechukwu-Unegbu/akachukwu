@@ -13,4 +13,9 @@ class VirtualAccount extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function gateway()
+    {
+        return $this->belongsTo(PaymentGateway::class, 'payment_id');
+    }
 }

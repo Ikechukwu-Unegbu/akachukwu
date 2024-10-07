@@ -32,6 +32,7 @@ class UpdatePasswordForm extends Component
         // Validate current password against authenticated user
         if (!Hash::check($this->current_password, $hashedPassword)) {
             $this->addError('current_password', 'The provided current password is incorrect.');
+            $this->dispatch('error-toastr', ['message' => "The provided current password is incorrect."]);
             return;
         }
 
@@ -40,8 +41,10 @@ class UpdatePasswordForm extends Component
         $user->password = Hash::make($this->password);
         $user->save();
         $this->reset(); // Reset form fields after successful update
-        Session::flash('password_updated', 'Your profile has been updated.');
-        return redirect('/profile');
+        $this->dispatch('success-toastr', ['message' => "Your credentials has been updated."]);
+        Session::flash('password_updated', 'Your credentials has been updated.');
+        // return redirect('/profile');
+        return redirect()->to(url()->previous());
     }
 
     public function render()

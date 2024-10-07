@@ -31,4 +31,15 @@ class UserProfileService{
         $user->save();
         return $user;
     }
+
+    public function deleteUserProfile($data, $request)
+    {
+        $user = User::find(Auth::user()->id);
+        $user->soft_deleted_by = $user->id;
+        $user->save();
+        $user->delete();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+   
+    }
 }

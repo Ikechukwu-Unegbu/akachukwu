@@ -1,70 +1,8 @@
 @extends('layouts.new-guest')
-
-@section('head')
-<link rel="stylesheet" href="{{asset('css/dashboard_index.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/index.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/dashboard_sidebar.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/ut/airtime.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/ut/network_picker.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/ut/offcanvas.css?t=' . time() )}}"/>
-
-@endsection
-
 @section('body')
-<div class="dashboard_body">
-    <div class="sidebar_body">
-        @include('components.dasboard_sidebar')
-    </div>
-    <div class="dashboard_section">
-
-        <!-- card indicators -->
-        <div class="">
-            <div>
-                
-            </div>
-            @livewire('pages.utility.electricity.create')
-            
-            {{-- <form class="utility-form ">
-                <div>
-                    <h3 class="text-warning">Pay Electricity Bills</h3>
-                   
-                </div>
-               
-                <div class="airtime-group" style="margin-top:2rem;">
-                    <div class="mb-3 form-floating">
-                        <input type="number" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Amount</label>
-                    </div>
-                    <div class="mb-3 form-floating">
-                        <input type="text" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Phone Number</label>
-                    </div>
-                </div>
-                 <div class="airtime-group">
-                    <div class="mb-3 form-floating">
-                        <input type="number" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Amount</label>
-                    </div>
-                    <div class="mb-3 form-floating">
-                        <input type="text" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Phone Number</label>
-                    </div>
-                </div>
-                  <div class="airtime-group">
-                    <div class="mb-3 form-floating">
-                        <input type="number" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Amount</label>
-                    </div>
-                    <div class="mb-3 form-floating">
-                        <input type="text" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Phone Number</label>
-                    </div>
-                </div>
-                <button class="btn bg-basic text-light">Continue</button>
-            </form> --}}
-        </div>
-        <!-- end of card indicators -->    
-    </div>
-
-</div>
+<div class="w-full max-w-md p-6 bg-white ">
+    <a href="{{ route('services') }}" class="text-sm text-vastel_blue mb-4 inline-block"><i class="fas fa-arrow-left"></i> Back</a>
+    <h2 class="text-xl font-semibold mb-4">Electricity Purchase</h2>
+    @livewire('pages.utility.electricity.create')
+</div>            
 @endsection 

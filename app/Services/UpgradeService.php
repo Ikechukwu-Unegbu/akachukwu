@@ -12,7 +12,7 @@ class UpgradeService{
         
     }
 
-    public function requestUpgrate():void
+    public function requestUpgrade():void
     {
         $requestModel = new UpgradeRequest();
         $requestModel->uuid = GeneralHelpers::generateUniqueUuid('upgrade_requests');

@@ -41,13 +41,17 @@ class Create extends Component
     public $validate_action = false;
     public $beneficiary_modal = false;
 
-    public $pin;
+    public $pin = [];
     public $form_action = false;
     public $validate_pin_action = false;
     public $calculatedDiscount = 0;
+    public $transaction_modal = false;
+    public $transaction_status = false;
+    public $transaction_link;
 
     public function mount()
     {
+        $this->pin = array_fill(1, 4, '');
         $this->vendor = $this->getVendorService('electricity');
     }
 
@@ -55,6 +59,15 @@ class Create extends Component
     {
         $discount = Electricity::whereVendorId($this->vendor->id)->first()->discount;
         $this->calculatedDiscount = CalculateDiscount::calculate((float) max(1, $this->amount), (float) $discount);
+    }
+
+    public function selectedElectricity(Electricity $electricity)
+    {
+        $this->disco_name = $electricity->disco_id;
+        $this->updatedAmount();
+        $this->updatedMeterNumber();
+        $this->updatedDiscoName();
+        $this->updatedMeterType();
     }
 
     public function updatedMeterNumber()
@@ -83,36 +96,27 @@ class Create extends Component
 
     public function closeModal()
     {
+        $this->transaction_modal = false;
         $this->validate_pin_action = false;
         $this->form_action = false;
-        $this->pin = "";
+        $this->pin = array_fill(1, 4, '');
         return;
     }
 
-    public function addDigit($digit)
+    public function updatePin($index, $value)
     {
-        if (strlen($this->pin) < 4) {
-            $this->pin .= $digit;
-        }
-    }
-
-    public function clearPin()
-    {
-        $this->pin = '';
-    }
-
-    public function deletePin()
-    {
-        $this->pin = substr($this->pin, 0, -1);
+        $this->pin[$index] = $value;
     }
 
     public function validatePin()
     {
-        $this->validate([
-            'pin' => 'required|numeric|digits:4'
-        ]);
+        if (!is_array($this->pin)) {
+            $pin = (array) $this->pin;
+        }
 
-        $userPinService = UserPinService::validatePin(Auth::user(), $this->pin);
+        $pin = implode('', $this->pin);
+
+        $userPinService = UserPinService::validatePin(Auth::user(), $pin);
 
         if (!$userPinService) {
             throw ValidationException::withMessages([
@@ -149,21 +153,32 @@ class Create extends Component
     }
 
     public function submit()
-    {        
-
+    {
         if ($this->validate_action) {
             $electricityTransaction = ElectricityService::create($this->vendor->id, $this->disco_name, $this->meter_number, $this->meter_type, $this->amount, $this->customer_name, $this->customer_phone_number, $this->customer_address); 
             
             if (!$electricityTransaction->status) {
                 $this->closeModal();
+                $this->transaction_modal = true;
+                $this->transaction_status = false;
+                $this->transaction_link = "";
                 return $this->dispatch('error-toastr', ['message' => $electricityTransaction->message]);
             }
     
             if ($electricityTransaction->status) {
                 $this->closeModal();
-                $this->dispatch('success-toastr', ['message' => $electricityTransaction->message]);
-                session()->flash('success',  $electricityTransaction->message);
-                return redirect()->route('user.transaction.electricity.receipt', $electricityTransaction->response->transaction_id);
+                $this->validate_action = false;
+                $this->transaction_status = true;
+                $this->transaction_modal = true;
+                $this->transaction_link = route('user.transaction.electricity.receipt', $electricityTransaction->response->transaction_id);
+                $this->customer_name = "";
+                $this->customer_address = "";
+                $this->disco_name = "";
+                $this->meter_type = "";
+                $this->amount = "";
+                $this->meter_number = "";
+                $this->customer_phone_number = "";
+                return true;
             }
         
         }

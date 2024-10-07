@@ -63,7 +63,7 @@
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Status:</div>
                     <div class="text-right tm_list_desc">
-                        {{ $electricity->status ? 'Successful' : 'Failed (Refunded)' }}
+                        {{ $electricity->status === 1 ? 'Successful' : ($electricity->status === 0 ? 'Failed' : 'Refunded') }}
                     </div>
                 </li>
                 

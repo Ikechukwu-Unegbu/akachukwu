@@ -62,6 +62,13 @@ class AccountBalanceService
         return false;
     }
 
+    public function initiateRefund($amount, $transaction) : bool
+    {
+        $this->user->setAccountBalance($amount);
+        $transaction->refund();
+        return true;
+    }
+
     public function walletHistories()
     {
         $transactions = DB::table('flutterwave_transactions')

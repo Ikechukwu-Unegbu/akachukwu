@@ -37,9 +37,9 @@
                                             <small>{{ $exam_transaction->created_at->format('M d, Y. h:ia') }}</small>
                                         </td>
                                         <td>
-                                            <span class="badge bg-{{ $exam_transaction->status ? 'success' : 'danger' }}">{{ $exam_transaction->status ? 'Successful' : 'Failed' }}</span>
-                                            <br />
-                                            <small><span class="badge bg-success">{{ !$exam_transaction->status ? 'Refunded' : '' }}</span></small>
+                                            <span class="badge bg-{{ $exam_transaction->status === 1 ? 'success' : ($exam_transaction->status === 0 ? 'danger' : 'warning') }}">
+                                                {{ $exam_transaction->status === 1 ? 'Successful' : ($exam_transaction->status === 0 ? 'Failed' : 'Refunded') }}
+                                            </span>
                                         </td>
                                     
                                         <td>

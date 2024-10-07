@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AccountManagerController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
@@ -60,4 +61,6 @@ Route::middleware(['auth', 'testing'])->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+
+    Route::post('delete', [AccountManagerController::class, 'deleteMyAccount'])->name('delete');
 });
