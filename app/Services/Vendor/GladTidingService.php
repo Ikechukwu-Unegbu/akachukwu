@@ -62,19 +62,22 @@ class GladTidingService
 
     public static function getWalletBalance()
     {
-        $response = static::url(self::WALLET_URL);
+        try {
+            $response = static::url(self::WALLET_URL);
 
-        if ($response)
+            if ($response)
+                return response()->json([
+                    'status'    =>  true,
+                    'response'  => number_format($response->user->Account_Balance, 2)
+                ], 200)->getData();
+
+
             return response()->json([
-                'status'    =>  true,
-                'response'  => number_format($response->user->Account_Balance, 2)
-            ], 200)->getData();
-
-
-        return response()->json([
-            'status'    =>  false,
-            'response'  => []
-        ], 401)->getData();
+                'status'    =>  false,
+                'response'  => []
+            ], 401)->getData();
+        } catch (\Throwable $th) {
+        }
     }
 
     public static function airtime($networkId, $amount, $mobileNumber)
@@ -124,7 +127,7 @@ class GladTidingService
             if (auth()->user()->isReseller()) {
                 $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
             }
-            
+
             $amount = CalculateDiscount::calculate($amount, $discount);
 
             self::$authUser->transaction($amount);
@@ -156,7 +159,7 @@ class GladTidingService
                 $errorResponse = [
                     'error'     => 'API response Error',
                     'message'   => "Airtime purchase failed. Please try again later.",
-                ];    
+                ];
                 self::$authUser->initiateRefund($amount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
@@ -266,7 +269,7 @@ class GladTidingService
                 $errorResponse = [
                     'error'     => 'API response Error',
                     'message'   => "Bill purchase failed. Please try again later.",
-                ];    
+                ];
                 self::$authUser->initiateRefund($amount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
@@ -362,7 +365,7 @@ class GladTidingService
                 $errorResponse = [
                     'error'     => 'Server Error',
                     'message'   => "Cable purchased failed. Please try again later.",
-                ];    
+                ];
                 self::$authUser->initiateRefund($amount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
@@ -423,7 +426,7 @@ class GladTidingService
             ];
 
             $response = self::url(self::DATA_URL, $data);
-            
+
             self::storeApiResponse($transaction, $response);
             $amount = $plan->amount;
 
@@ -465,7 +468,7 @@ class GladTidingService
                 $errorResponse = [
                     'error'     => 'API response Error',
                     'message'   => "Data purchase failed. Please try again later.",
-                ];    
+                ];
                 self::$authUser->initiateRefund($amount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
@@ -674,7 +677,7 @@ class GladTidingService
 
                         foreach ($cablePlans as $cablePlan) {
 
-                            $plan = CablePlan::where(['vendor_id' => self::$vendor->id, 'cable_plan_id' => $cablePlan->cableplan_id])->first();  
+                            $plan = CablePlan::where(['vendor_id' => self::$vendor->id, 'cable_plan_id' => $cablePlan->cableplan_id])->first();
 
                             if ($plan) {
                                 $plan->update([
