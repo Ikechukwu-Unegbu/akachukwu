@@ -72,16 +72,21 @@ class VTPassService
     public static function getWalletBalance()
     {
         $url = Str::replace('/pay', '', self::getUrl()) . self::WALLET_BALANCE;
+        try {
 
-        $response = Http::withHeaders(self::headers())->get($url);
+            $response = Http::withHeaders(self::headers())->get($url);
+            $response = $response->object();
 
-        $response = $response->object();
+            if (isset($response->code) && $response->code) {
+                return ApiHelper::sendResponse(number_format($response->contents->balance, 2), 'Wallet Balance Fetched Successfully');
+            }
 
-        if (isset($response->code) && $response->code) {
-            return ApiHelper::sendResponse(number_format($response->contents->balance, 2), 'Wallet Balance Fetched Successfully');
+            return ApiHelper::sendError('', '');
+
+        } catch (\Throwable $th) {
+
         }
-
-        return ApiHelper::sendError('', '');
+       
     }
 
     public static function airtime($networkId, $amount, $mobileNumber)
