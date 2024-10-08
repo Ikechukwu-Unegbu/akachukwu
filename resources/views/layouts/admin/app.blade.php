@@ -50,6 +50,7 @@
 
     <main @auth id="main" class="main" @endauth>
       {{ $slot ?? '' }}
+      @yield('content')
     </main><!-- End #main -->
 
     @auth
