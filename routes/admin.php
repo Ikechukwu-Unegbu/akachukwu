@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\Blog\CategoryController;
+use App\Http\Controllers\Blog\MediaController;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SystemUser\DashboardController;
@@ -32,8 +34,10 @@ Route::group(['prefix' => 'admin'], function () {
     });
 
     Route::group(['as' => 'admin.'], function() {
-       Route::resource('blog', PostController::class);
-       Route::resource('/category', CategoryController::class);
+       Route::resource('post', PostController::class);
+       Route::resource('blog', BlogController::class);
+       Route::resource('category', CategoryController::class);
+       Route::resource('media', MediaController::class);
     });
 
     

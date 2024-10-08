@@ -6,28 +6,29 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="categoryForm">
+        <form id="categoryForm" method="POST" action="{{route(('admin.category.store'))}}">
+          @csrf 
           <!-- Name Input -->
           <div class="mb-3">
             <label for="categoryName" class="form-label">Category Name</label>
-            <input type="text" class="form-control" id="categoryName" placeholder="Enter category name" required>
+            <input type="text" class="form-control" name="name" id="categoryName" placeholder="Enter category name" required>
           </div>
 
           <!-- Type Select Input -->
           <div class="mb-3">
             <label for="categoryType" class="form-label">Category Type</label>
-            <select class="form-select" id="categoryType" required>
+            <select class="form-select" id="categoryType" name="type" required>
               <option selected disabled>Choose a type</option>
-              <option value="type1">Type 1</option>
-              <option value="type2">Type 2</option>
-              <option value="type3">Type 3</option>
+              <option value="category">Category</option>
+              <option value="blog">Blog</option>
+              <!-- <option value="type3">Type 3</option> -->
             </select>
           </div>
 
           <!-- Description Input -->
           <div class="mb-3">
             <label for="categoryDescription" class="form-label">Description</label>
-            <textarea class="form-control" id="categoryDescription" rows="3" placeholder="Enter description" required></textarea>
+            <textarea class="form-control" name="description" id="categoryDescription" rows="3" placeholder="Enter description" required></textarea>
           </div>
         </form>
       </div>

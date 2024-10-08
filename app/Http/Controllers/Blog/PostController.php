@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
+use App\Models\Blog\Category;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -16,6 +17,18 @@ class PostController extends Controller
     {
         // Return a list of posts
         return view('system-user.blog.index');
+    }
+
+    /**
+     * Display a listing of the posts.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        // Return a list of posts
+        $categories = Category::where('type', 'blog')->get();
+        return view('system-user.blog.create')->with('categories', $categories);
     }
 
     /**
