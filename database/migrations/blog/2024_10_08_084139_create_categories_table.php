@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->enum('type', ['blog', 'faq']);
+            $table->longText('description')->nullable();
             $table->timestamps();
         });
     }

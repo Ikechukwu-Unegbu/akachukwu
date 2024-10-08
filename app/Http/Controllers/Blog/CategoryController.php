@@ -36,7 +36,9 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        // Validate and store the newly created category
+       $request->validate([
+
+       ]);
     }
 
     /**
