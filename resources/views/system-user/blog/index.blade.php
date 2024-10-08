@@ -38,21 +38,6 @@
     <section class="section">
   
  
-<div class="container-fluid">
-
-    <!-- Main Content -->
-    <div class="col-md-10">
-      
-      <!-- Top Navigation -->
-      <nav class="navbar navbar-light bg-light shadow-sm">
-        <div class="container-fluid">
-          <span class="navbar-brand mb-0 h1">Admin Dashboard</span>
-          <div class="d-flex">
-            <button class="btn btn-outline-primary">Notifications</button>
-            <button class="btn btn-outline-secondary ms-2">Profile</button>
-          </div>
-        </div>
-      </nav>
 
       <!-- Main Content Area -->
       <div class="main-content mt-4">
@@ -200,17 +185,10 @@
 
       </div>
       
-      <!-- Footer -->
-      <footer class="footer mt-5">
-        <div class="text-center py-3">
-          &copy; 2024 Blog Admin Dashboard
-        </div>
-      </footer>
-      
+   
     </div>
     
-  </div>
-</div>
+
 
 <!-- Chart.js Scripts -->
 <script>

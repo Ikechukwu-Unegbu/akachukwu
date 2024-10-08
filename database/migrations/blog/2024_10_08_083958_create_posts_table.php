@@ -13,7 +13,20 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->text('content');
+            $table->text('excerpt')->nullable();
+            $table->string('slug')->unique();
+            $table->string('featured_image')->nullable();
+            $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('author_id');
+            $table->unsignedInteger('views')->default(0);
+            $table->boolean('is_featured')->default(false);
             $table->timestamps();
+
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->foreign('author_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
