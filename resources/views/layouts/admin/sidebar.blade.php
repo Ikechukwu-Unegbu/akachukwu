@@ -89,6 +89,14 @@
       @endcan
     </x-admin.dropdown>
     @endif
+    @if(auth()->user()->can('view logs'))
+    <li class="nav-heading">Blog</li>
+    <x-admin.dropdown title="Blog" icon="bi-clock-history">
+      @can('view logs')
+      <x-admin.dropdown-item title="Blog" link="{{ route('admin.blog.index') }}" />
+      @endcan
+    </x-admin.dropdown>
+    @endif
     @if(auth()->user()->can('view role'))
     <li class="nav-heading">Settings</li>
     <x-admin.dropdown title="App Settings" icon="bxs-cog">
