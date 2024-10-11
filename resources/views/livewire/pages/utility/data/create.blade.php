@@ -58,7 +58,7 @@
         </div>
 
         <!-- Data Type -->
-        <div class="relative space-x-0 z-50 mb-6 mt-10 w-full group">
+        <div class="relative space-x-0 z-50 mb-10 mt-10 w-full group">
             <button type="button" id="datatypeDropdown" class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer">
                 <span>{{ $dataType ? $dataTypes->where('id', $dataType)->first()?->name : 'Select Data Type' }}</span>
             </button>
@@ -75,21 +75,35 @@
             </div>
         </div>
 
-        {{-- <div class="relative z-0 mb-6 w-full group">
-            <select id="dataType"
-                class="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-vastel_blue peer"
-                wire:model.live="dataType" wire:target="network" wire:loading.attr="disabled">
-                <option></option>
-                @foreach ($dataTypes as $__dataType)
-                    <option value="{{ $__dataType->id }}">{{ $__dataType->name }}</option>
-                @endforeach
-            </select>
-            <p class="mt-1 text-xs text-gray-400">Select Plan Type
-                {{ implode(', ', $dataTypes->pluck('name', 'name')->toArray()) }}</p>
-            @error('dataType')
-                <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
-            @enderror
-        </div> --}}
+        <!-- Plan -->
+        <div class="relative space-x-0 z-50 mb-6 mt-4 w-full group">
+            <button type="button" id="dataPlanDropdown"
+                class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
+                @if (count($plans) && $plans->where('data_id', $plan)->count())
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">{{ $plans->where('data_id', $plan)->first()?->size }} for {{ $plans->where('data_id', $plan)->first()?->validity }}</span>
+                        <div class="flex flex-row gap-3">
+                            <span class="text-green-600 font-bold">₦{{ number_format($plans->where('data_id', $plan)->first()?->amount, 1) }}</span>
+                        </div>
+                    </div>
+                @else
+                    Select Data Plan
+                @endif
+            </button>
+
+            <div id="dataPlanPackages" class="w-full hidden absolute bg-white shadow-lg rounded-lg overflow-hidden z-0">
+                <ul class="divide-y divide-gray-200">
+                    @foreach ($plans as $__plan)
+                    <li wire:click="selectPlan({{ $__plan->id }})" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
+                        <span class="text-gray-700">{{ $__plan->size }} for {{ $__plan->validity }}</span>
+                        <div class="flex flex-row gap-3">
+                            <span class="text-green-600 font-bold">₦{{ number_format($__plan->amount, 1) }}</span>
+                        </div>
+                    </li>
+                    @endforeach
+                </ul>
+            </div>
+        </div>
 
         <!-- Mobile Number -->
         <div class="relative z-0 mb-6 w-full group">
@@ -123,35 +137,7 @@
             Amount to Pay (₦{{ number_format($calculatedDiscount, 2) }}) {{ $network ? $networks->where('network_id', $network)->first()?->data_discount . '% Discount' : '' }}
         </div>
         @endif
-        <!-- Plan -->
-        <div class="relative z-0 mb-6 w-full group">
-            <button type="button" id="dataPlanDropdown"
-                class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
-                @if (count($plans) && $plans->where('data_id', $plan)->count())
-                    <div class="flex justify-between items-center">
-                        <span class="text-gray-700">{{ $plans->where('data_id', $plan)->first()?->size }} for {{ $plans->where('data_id', $plan)->first()?->validity }}</span>
-                        <div class="flex flex-row gap-3">
-                            <span class="text-green-600 font-bold">₦{{ number_format($plans->where('data_id', $plan)->first()?->amount, 1) }}</span>
-                        </div>
-                    </div>
-                @else
-                    Select Data Plan
-                @endif
-            </button>
-
-            <div id="dataPlanPackages" class="w-full hidden absolute bg-white shadow-lg rounded-lg overflow-hidden z-0">
-                <ul class="divide-y divide-gray-200">
-                    @foreach ($plans as $__plan)
-                    <li wire:click="selectPlan({{ $__plan->id }})" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
-                        <span class="text-gray-700">{{ $__plan->size }} for {{ $__plan->validity }}</span>
-                        <div class="flex flex-row gap-3">
-                            <span class="text-green-600 font-bold">₦{{ number_format($__plan->amount, 1) }}</span>
-                        </div>
-                    </li>
-                    @endforeach
-                </ul>
-            </div>
-        </div>
+        
         <!-- Proceed Button -->
         <button type="submit" wire:loading.attr="disabled" wire:target='validateForm' wire:target='airtime'
             class="w-[8rem] bg-vastel_blue text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
