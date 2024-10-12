@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->string('featured_image')->nullable();
             $table->enum('status', ['draft', 'published', 'archived'])->default('draft');
-            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('author_id');
             $table->unsignedInteger('views')->default(0);
             $table->boolean('is_featured')->default(false);

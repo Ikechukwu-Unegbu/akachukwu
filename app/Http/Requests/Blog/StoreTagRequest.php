@@ -6,13 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTagRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
-    public function authorize(): bool
-    {
-        return false;
-    }
 
     /**
      * Get the validation rules that apply to the request.
@@ -22,7 +15,14 @@ class StoreTagRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'title' => 'required|string|max:255',
+            'excerpt' => 'nullable|string',
+            'content' => 'required|string',
+            'featured_image' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+            'status' => 'required|in:draft,published,archived',
+            'category_id' => 'required|array', 
+            'category_id.*' => 'exists:categories,id', 
+            'is_featured' => 'nullable|boolean',
         ];
     }
 }

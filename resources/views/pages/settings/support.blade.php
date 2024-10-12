@@ -20,7 +20,7 @@
                     <i class="fas fa-envelope text-blue-600 text-2xl"></i>
                     <div>
                         <h3 class="text-gray-900 font-semibold">Email</h3>
-                        <p class="text-sm text-gray-500">Info@vaste.com</p>
+                        <p class="text-sm text-gray-500">support@vaste.io</p>
                     </div>
                 </div>
                 <i class="fas fa-chevron-right text-gray-500"></i>

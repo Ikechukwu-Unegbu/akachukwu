@@ -117,7 +117,7 @@
                 <div class="card card-custom">
                     <div class="card-header">
                         <h5 class="card-title">Manage Posts</h5>
-                        <a href="#" class="btn btn-primary float-end">Add New Post</a>
+                        <a href="{{route('admin.post.create')}}" class="btn btn-primary float-end">Add New Post</a>
                     </div>
                     <div class="card-body">
                         <table class="table table-striped table-bordered">

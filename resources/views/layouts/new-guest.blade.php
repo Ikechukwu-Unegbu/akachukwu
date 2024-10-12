@@ -180,13 +180,7 @@
             {{ $slot ?? '' }}
         </main>
     </div>
-    <!-- ===============================================-->
-    <!--    End of Main Content-->
-    <!-- ===============================================-->
-
-
-
-
+ 
 
 
 
@@ -249,6 +243,25 @@
     <x-toastr />
 
     @stack('scripts')
+    <script>
+        function togglePassword(inputId, buttonId) {
+            const inputField = document.getElementById(inputId);
+            const toggleButton = document.getElementById(buttonId).children[0];
+
+            // Toggle between password and text input type
+            if (inputField.type === 'password') {
+                inputField.type = 'text';
+                toggleButton.classList.remove('fa-eye');
+                toggleButton.classList.add('fa-eye-slash');
+            } else {
+                inputField.type = 'password';
+                toggleButton.classList.remove('fa-eye-slash');
+                toggleButton.classList.add('fa-eye');
+            }
+        }
+
+    </script>
+
 </body>
 
 </html>

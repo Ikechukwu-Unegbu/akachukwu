@@ -29,7 +29,7 @@
                 <div class="col-md-8">
                     <div class="card card-custom p-4">
                         <h3 class="mb-4">Create New Post</h3>
-                        <form action="{{ route('admin.blog.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <!-- Title -->
                             <div class="mb-3">
@@ -37,11 +37,6 @@
                                 <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" required>
                             </div>
 
-                            <!-- Slug -->
-                            <div class="mb-3">
-                                <label for="slug" class="form-label">Slug</label>
-                                <input type="text" class="form-control" id="slug" name="slug" placeholder="Enter slug" required>
-                            </div>
 
                             <!-- Excerpt -->
                             <div class="mb-3">
@@ -52,13 +47,13 @@
                             <!-- Content -->
                             <div class="mb-3">
                                 <label for="content" class="form-label">Content</label>
-                                <textarea class="form-control" id="content" name="content" rows="5" placeholder="Enter post content" required></textarea>
+                                <textarea class="form-control"  name="content" rows="5" placeholder="Enter post content" required></textarea>
                             </div>
 
                             <!-- Featured Image -->
                             <div class="mb-3">
                                 <label for="featured_image" class="form-label">Featured Image</label>
-                                <input type="file" class="form-control" id="featured_image" name="featured_image">
+                                <input type="file" class="form-control" id="featured_image" name="image">
                             </div>
 
                             <!-- Status -->
@@ -72,15 +67,22 @@
                             </div>
 
                             <!-- Category -->
+                          
+
                             <div class="mb-3">
-                                <label for="category_id" class="form-label">Category</label>
-                                <select class="form-select" id="category_id" name="category_id" required>
-                                    <option selected disabled>Choose a category</option>
+                                <label class="form-label">Categories</label>
+                                <div>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="category_{{ $category->id }}" name="category_id[]" value="{{ $category->id }}">
+                                            <label class="form-check-label" for="category_{{ $category->id }}">
+                                                {{ $category->name }}
+                                            </label>
+                                        </div>
                                     @endforeach
-                                </select>
+                                </div>
                             </div>
+                            <hr>
 
                             <!-- Featured Post -->
                             <div class="form-check mb-3">
