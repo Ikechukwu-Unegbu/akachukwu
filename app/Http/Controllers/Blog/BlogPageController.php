@@ -15,8 +15,15 @@ class BlogPageController extends Controller
         return view('pages.blog.index')->with('blogPosts', $blogPosts)->with('featured', $featured);
     }
 
-    public function show()
+    public function show(string $slug)
     {
-        return view();
+        $post = Post::where('slug', $slug)->firstOrFail();
+    
+        $relatedPosts = Post::whereHas('categories', function ($query) use ($post) {
+            $query->whereIn('categories.id', $post->categories->pluck('id'));
+        })->where('id', '!=', $post->id)->get();
+    
+        return view('pages.blog.show', compact('post', 'relatedPosts'));
     }
+    
 }

@@ -10,7 +10,7 @@
         <div class="container mx-auto px-4">
             <!-- Featured Article -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-                <a href="" class="bg-white rounded-lg shadow-lg">
+                <a href="{{route('blog.show', [$featured->slug])}}" class="bg-white rounded-lg shadow-lg">
                 <img src="{{ $featured->featured_image ? asset($featured->featured_image) : asset('images/blog-logo.png') }}" 
      alt="Featured Article Image" 
      class="w-full h-64 object-cover rounded-t-lg">
@@ -30,7 +30,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Article 1 -->
                 @foreach($blogPosts as $post)
-                <a href="" class="bg-white rounded-lg shadow-lg">
+                <a href="{{route('blog.show', [$post->slug])}}" class="bg-white rounded-lg shadow-lg">
                 <img src="{{ $post->featured_image ? asset($post->featured_image) : asset('images/blog-logo.png') }}" 
                         alt="Article Image" 
                         class="w-full h-48 object-cover rounded-t-lg">
@@ -40,13 +40,17 @@
                         <h4 class="text-xl font-semibold mb-4">
                             {!!$post->title!!}
                         </h4>
-                        <p class="text-sm text-gray-400">12/03/2024</p>
+                        <p class="text-sm text-gray-400">{{$post->created_at->diffForHumans()}}</p>
                     </div>
                 </a>
                 @endforeach 
 
          
             </div>
+            <div class="flex justify-center items-center mt-[2rem]">
+            {{$blogPosts->links()}}
+            </div>
+          
         </div>
     </section>
 
