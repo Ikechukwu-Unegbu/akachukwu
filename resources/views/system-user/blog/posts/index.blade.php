@@ -54,7 +54,7 @@
                 <div class="card card-custom text-center">
                     <div class="card-body">
                         <h6>Total Posts</h6>
-                        <h3>120</h3>
+                        <h3>{{count($posts)}}</h3>
                     </div>
                 </div>
             </div>
@@ -63,16 +63,19 @@
                 <div class="card card-custom text-center">
                     <div class="card-body">
                         <h6>Total Categories</h6>
-                        <h3>8</h3>
+                        <h3>{{count($categories)}}</h3>
                     </div>
                 </div>
             </div>
             <!-- Total Views -->
+            @php
+    $totalClicks = $posts->sum('clicks');
+@endphp
             <div class="col-md-3">
                 <div class="card card-custom text-center">
                     <div class="card-body">
                         <h6>Total Views</h6>
-                        <h3>45,000</h3>
+                        <h3>{{$totalClicks}}</h3>
                     </div>
                 </div>
             </div>
@@ -131,16 +134,20 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($posts as $post)
                                 <tr>
                                     <td>1</td>
-                                    <td>Introduction to Bootstrap 5</td>
-                                    <td>Web Development</td>
-                                    <td>2024-10-05</td>
+                                    <td><a href="">{{$post->title}}</a></td>
+                                    <td>{{count($post->categories)}}</td>
+                                    <td></td>
                                     <td>
-                                        <button class="btn btn-success btn-sm">Edit</button>
+                                    <a href="{{ route('admin.post.show', [$post->id]) }}" class="btn btn-info btn-sm">Show</a>
+
+                                        <a href="{{route('admin.post.edit', [$post->id])}}" class="btn btn-success btn-sm">Edit</a>
                                         <button class="btn btn-danger btn-sm">Delete</button>
                                     </td>
                                 </tr>
+                                @endforeach 
                                 <!-- More rows as necessary -->
                             </tbody>
                         </table>

@@ -14,7 +14,11 @@
                 @csrf
                 <div class="mb-3">
                     <label for="mediaFile" class="form-label">Select Image or Video</label>
-                    <input class="form-control" type="file" id="mediaFile" name="media[]" multiple required>
+                    <input class="form-control" type="file" id="mediaFile" name="image" required>
+                </div>
+                <div class="mb-3">
+                    <label for="mediaFile" class="form-label">Name</label>
+                    <input class="form-control" type="text" id="mediaFile" name="name" required>
                 </div>
                 <div class="mb-3">
                     <label for="mediaType" class="form-label">Media Type</label>
@@ -47,10 +51,10 @@
                     <div class="col-md-3 media-item" data-type="{{ $media->type }}">
                         <div class="card shadow-sm">
                             @if($media->type == 'image')
-                                <img src="{{ asset('uploads/'.$media->path) }}" class="card-img-top" alt="Media Image">
+                                <img src="{{$media->path}}" class="card-img-top" alt="Media Image">
                             @else
                                 <video class="card-img-top" controls>
-                                    <source src="{{ asset('uploads/'.$media->path) }}" type="video/mp4">
+                                    <source src="{{ asset($media->path) }}" type="video/mp4">
                                     Your browser does not support the video tag.
                                 </video>
                             @endif
@@ -78,10 +82,10 @@
                                 </div>
                                 <div class="modal-body">
                                     @if($media->type == 'image')
-                                        <img src="{{ asset('uploads/'.$media->path) }}" class="img-fluid" alt="Media Image">
+                                        <img src="{{ $media->path}}" class="img-fluid" alt="Media Image">
                                     @else
                                         <video class="img-fluid" controls>
-                                            <source src="{{ asset('uploads/'.$media->path) }}" type="video/mp4">
+                                            <source src="{{ $media->path }}" type="video/mp4">
                                         </video>
                                     @endif
                                 </div>
@@ -101,7 +105,7 @@
                                     Are you sure you want to delete the media <strong>{{ $media->name }}</strong>?
                                 </div>
                                 <div class="modal-footer">
-                                    <form action="{{ route('admin.media.delete', $media->id) }}" method="POST">
+                                    <form action="{{ route('admin.media.destroy', $media->id) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

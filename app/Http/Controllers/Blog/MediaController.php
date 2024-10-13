@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog\Media;
+use App\Services\Uploads\ImageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
@@ -25,9 +28,15 @@ class MediaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, ImageService $imageService)
     {
-        // Handle the upload and storage of media files
+        $model = new Media();
+        $model->name = $request->name;
+        $model->type = $request->media_type;
+        $model->user_id = Auth::user()->id;
+        $model->save();
+        $imageService->fileUploader($request, '/media', $model, 'path');
+        return redirect()->back()->with('success', 'Blog post created successfully.');
     }
 
     /**
@@ -61,6 +70,11 @@ class MediaController extends Controller
      */
     public function destroy($id)
     {
-        // Delete the media file from storage and database
+        $mediaItem = Media::find($id);
+        if($mediaItem->path){
+            Storage::disk('do')->delete($mediaItem->path);
+        }
+        $mediaItem->delete();
+        return redirect()->back()->with('success', 'Successfully deleted.');
     }
 }

@@ -21,10 +21,23 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Return a list of posts
-        return view('system-user.blog.index');
+        $searchQuery = $request->input('query');
+        $categories = Category::all();
+
+        if ($searchQuery) {
+            $posts = Post::where('title', 'LIKE', '%' . $searchQuery . '%')
+                        ->latest()
+                        ->paginate(10);
+        } else {
+            $posts = Post::latest()->paginate(10);
+        }
+
+        return view('system-user.blog.posts.posts-index')
+            ->with('posts', $posts)
+            ->with('categories', $categories)
+            ->with('searchQuery', $searchQuery);
     }
 
     /**
