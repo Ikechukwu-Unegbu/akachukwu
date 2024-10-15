@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Blog;
 
 use App\Http\Controllers\Controller;
+use App\Models\Blog\Category;
 use App\Models\Blog\Post;
 use Illuminate\Http\Request;
 
@@ -19,6 +20,7 @@ class FaqController extends Controller
 
     public function create()
     {
-        return view('system-user.blog.faq.index');
+        $categories = Category::where('type', 'faq')->get();
+        return view('system-user.blog.faq.create')->with('categories', $categories);
     }
 }

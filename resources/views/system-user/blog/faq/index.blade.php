@@ -11,7 +11,7 @@
     <section class="section">
         <div class="d-flex justify-content-between mb-4">
             <h3>FAQs</h3>
-            <button data-bs-toggle="modal" data-bs-target="#newFaqModal" class="btn btn-primary">Add New FAQ</button>
+            <a href="{{route('admin.faq.create')}}" class="btn btn-primary">Add New FAQ</a>
         </div>
 
         @if($faqs->isEmpty())
@@ -92,34 +92,7 @@
             {{ $faqs->links() }}
         @endif
 
-        <!-- New FAQ Modal -->
-        <div class="modal fade" id="newFaqModal" tabindex="-1" aria-labelledby="newFaqModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="newFaqModalLabel">Add New FAQ</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="{{ route('admin.faq.store') }}" method="POST">
-                        @csrf
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="faqTitle" class="form-label">FAQ Title</label>
-                                <input type="text" class="form-control" id="faqTitle" name="title" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="faqContent" class="form-label">FAQ Content</label>
-                                <textarea class="form-control" name="content" id="faqContent" rows="3" required></textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Add FAQ</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+
     </section>
 </div>
 

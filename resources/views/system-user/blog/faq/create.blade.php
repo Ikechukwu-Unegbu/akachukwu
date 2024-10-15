@@ -28,24 +28,10 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card card-custom p-4">
-                        <h3 class="mb-4" id="form-heading">Create New Post</h3>
-                        <form action="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data">
+                        <h3 class="mb-4" id="form-heading">Create FAQ</h3>
+                        <form action="{{ route('admin.faq.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
-                            <!-- Model Type (Blog or FAQ) -->
-                            <div class="mb-3">
-                                <label for="model" class="form-label">Select Model Type</label>
-                                <select class="form-select" id="model" name="model" required>
-                                    <option value="post">Blog</option>
-                                    <option value="faq">FAQ</option>
-                                </select>
-                            </div>
-
-                            <!-- Title (Only for Blog) -->
-                            <div class="mb-3" id="title-field">
-                                <label for="title" class="form-label">Title</label>
-                                <input type="text" class="form-control" id="title" name="title" placeholder="Enter title">
-                            </div>
 
                             <!-- Excerpt/Question -->
                             <div class="mb-3">
@@ -57,12 +43,6 @@
                             <div class="mb-3">
                                 <label for="content" id="content-label" class="form-label">Content</label>
                                 <textarea class="form-control" id="" name="content" rows="5" placeholder="Enter post content"></textarea>
-                            </div>
-
-                            <!-- Featured Image (Only for Blog) -->
-                            <div class="mb-3" id="featured-image-field">
-                                <label for="featured_image" class="form-label">Featured Image</label>
-                                <input type="file" class="form-control" id="featured_image" name="image">
                             </div>
 
                             <!-- Category (Visible for both Blog and FAQ) -->
