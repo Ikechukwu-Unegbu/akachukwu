@@ -150,6 +150,9 @@
                                 @endforeach 
                                 <!-- More rows as necessary -->
                             </tbody>
+                            <tfoot class="">
+                                    <a href="">See All Posts</a>
+                            </tfoot>
                         </table>
                     </div>
                 </div>

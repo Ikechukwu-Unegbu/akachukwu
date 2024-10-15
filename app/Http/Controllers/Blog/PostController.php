@@ -26,12 +26,17 @@ class PostController extends Controller
         $searchQuery = $request->input('query');
         $categories = Category::all();
 
+        // Query to fetch posts with the related category type 'blog'
+        $postsQuery = Post::whereHas('categories', function ($query) {
+            $query->where('type', 'blog');
+        });
+
         if ($searchQuery) {
-            $posts = Post::where('title', 'LIKE', '%' . $searchQuery . '%')
-                        ->latest()
-                        ->paginate(10);
+            $posts = $postsQuery->where('title', 'LIKE', '%' . $searchQuery . '%')
+                                ->latest()
+                                ->paginate(10);
         } else {
-            $posts = Post::latest()->paginate(10);
+            $posts = $postsQuery->latest()->paginate(10);
         }
 
         return view('system-user.blog.posts.posts-index')
@@ -39,6 +44,7 @@ class PostController extends Controller
             ->with('categories', $categories)
             ->with('searchQuery', $searchQuery);
     }
+
 
     /**
      * Display a listing of the posts.
@@ -87,14 +93,16 @@ class PostController extends Controller
     public function store(StorePostRequest $request, PostService $postService, ImageService $imageService)
     {
         $blog = $postService->storePost($request);
-
-        $imageService->fileUploader($request, '/blog', $blog, 'featured_image');
-       
+    
+        if ($request->hasFile('featured_image')) {
+            $imageService->fileUploader($request, '/blog', $blog, 'featured_image');
+        }
+    
         $blog->categories()->sync($request->input('category_id'));
-
+    
         return redirect()->route('admin.blog.index')->with('success', 'Blog post created successfully.');
     }
-
+    
     /**
      * Update the specified post in storage.
      *

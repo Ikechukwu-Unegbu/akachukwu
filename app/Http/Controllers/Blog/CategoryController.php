@@ -15,11 +15,19 @@ class CategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Return a list of categories
+        $categoriesQuery = Category::query();
+    
+        if ($request->has('type') && in_array($request->query('type'), ['media', 'blog', 'faq'])) {
+            $categoriesQuery->where('type', $request->query('type'));
+        }
+    
+        $categories = $categoriesQuery->get();
+    
+        return view('system-user.blog.categories.index', compact('categories'));
     }
-
+    
     /**
      * Show the form for creating a new category.
      *

@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Http\Controllers\Blog;
+
+use App\Http\Controllers\Controller;
+use App\Models\Blog\Post;
+use Illuminate\Http\Request;
+
+class FaqController extends Controller
+{
+    public function index()
+    {
+        $faqs = Post::whereHas('categories', function ($query) {
+            $query->where('type', 'faq');
+        })->paginate(10);
+
+        return view('system-user.blog.faq.index', compact('faqs'));
+    }
+
+    public function create()
+    {
+        return view('system-user.blog.faq.index');
+    }
+}

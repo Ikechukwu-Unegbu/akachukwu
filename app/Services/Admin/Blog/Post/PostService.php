@@ -11,14 +11,16 @@ class PostService{
     public function storePost(Request $request)
     {
 
+        $title = $request->input('model') === 'faq' ? 'Faq ' . now()->format('Y-m-d H:i:s') : $request->input('title');
+
         $post = Post::create([
-            'title' => $request->input('title'),
+            'title' => $title,
             'excerpt' => $request->input('excerpt'),
             'content' => $request->input('content'),
             'status' => $request->input('status'),
             'is_featured' => $request->input('is_featured') ? 1 : 0,
-            'author_id'=>Auth::user()->id,
-            'slug' => Str::slug($request->input('title')),
+            'author_id' => Auth::user()->id,
+            'slug' => Str::slug($title),
         ]);
 
         return $post;

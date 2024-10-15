@@ -8,12 +8,27 @@ use Illuminate\Http\Request;
 
 class BlogPageController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $blogPosts = Post::paginate(20);
+        $blogPostsQuery = Post::whereHas('categories', function ($query) {
+            $query->where('type', 'blog');
+        });
+    
+        if ($request->has('category') && !empty($request->query('category'))) {
+            $blogPostsQuery->whereHas('categories', function ($query) use ($request) {
+                $query->where('slug', $request->query('category'));
+            });
+        }
+    
+        $blogPosts = $blogPostsQuery->paginate(20);
         $featured = Post::where('is_featured', true)->first();
-        return view('pages.blog.index')->with('blogPosts', $blogPosts)->with('featured', $featured);
+    
+        return view('pages.blog.index')
+            ->with('blogPosts', $blogPosts)
+            ->with('featured', $featured);
     }
+    
+    
 
     public function show(string $slug)
     {

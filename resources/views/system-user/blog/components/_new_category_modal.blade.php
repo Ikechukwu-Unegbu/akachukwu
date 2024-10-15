@@ -19,9 +19,9 @@
             <label for="categoryType" class="form-label">Category Type</label>
             <select class="form-select" id="categoryType" name="type" required>
               <option selected disabled>Choose a type</option>
-              <option value="category">Category</option>
+              <option value="faq">FAQ</option>
               <option value="blog">Blog</option>
-              <!-- <option value="type3">Type 3</option> -->
+              <option value="media">Media</option>
             </select>
           </div>
 

@@ -7,6 +7,7 @@
             <a href="/" class="text-vastel_blue hover:text-vastel_blue">Home</a>
             <!-- <a href="#" class="text-vastel_blue hover:text-vastel_blue">Company</a> -->
             <a href="{{route('pages.about')}}" class="text-vastel_blue hover:text-vastel_blue">About</a>
+            <a href="{{route('blog.index')}}" class="text-vastel_blue hover:text-vastel_blue">Blog</a>
         </div>
         <div class="hidden md:flex space-x-4">
             @guest

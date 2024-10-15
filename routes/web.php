@@ -104,7 +104,8 @@ Route::post('update-password', [SettingsController::class, 'updatePassword'])->n
 
 //Blogs
 Route::view('/about', 'pages.about')->name('pages.about');
-Route::resource('blog', BlogPageController::class);
+Route::resource('blog', BlogPageController::class)->parameters(['blog' => 'slug']);
+
 
 
 require __DIR__ . '/auth.php';

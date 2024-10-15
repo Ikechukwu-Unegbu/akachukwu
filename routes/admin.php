@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Blog\BlogController;
 use App\Http\Controllers\Blog\CategoryController;
+use App\Http\Controllers\Blog\FaqController;
 use App\Http\Controllers\Blog\MediaController;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\ProfileController;
@@ -33,11 +34,12 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('register', App\Livewire\Admin\Auth\Register::class)->name('admin.auth.register');
     });
 
-    Route::group(['as' => 'admin.'], function() {
+    Route::group(['as' => 'admin.', 'middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
        Route::resource('post', PostController::class);
        Route::resource('blog', BlogController::class);
        Route::resource('category', CategoryController::class);
        Route::resource('media', MediaController::class);
+       Route::resource('faq', FaqController::class);
     });
 
     

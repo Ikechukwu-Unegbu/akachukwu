@@ -90,10 +90,19 @@
     </x-admin.dropdown>
     @endif
     @if(auth()->user()->can('view logs'))
-    <li class="nav-heading">Blog</li>
-    <x-admin.dropdown title="Blog" icon="bi-clock-history">
+    <li class="nav-heading">Content</li>
+    <x-admin.dropdown title="Content" icon="bi-clock-history">
       @can('view logs')
       <x-admin.dropdown-item title="Blog" link="{{ route('admin.blog.index') }}" />
+      @endcan
+      @can('view logs')
+      <x-admin.dropdown-item title="FAQ" link="{{ route('admin.faq.index') }}" />
+      @endcan
+      @can('view logs')
+      <x-admin.dropdown-item title="Category" link="{{ route('admin.category.index') }}" />
+      @endcan
+      @can('view logs')
+      <x-admin.dropdown-item title="Media" link="{{ route('admin.media.index') }}" />
       @endcan
     </x-admin.dropdown>
     @endif
