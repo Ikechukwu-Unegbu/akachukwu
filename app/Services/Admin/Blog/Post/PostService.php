@@ -11,7 +11,7 @@ class PostService{
     public function storePost(Request $request)
     {
 
-        $title = $request->input('model') === 'faq' ? 'Faq ' . now()->format('Y-m-d H:i:s') : $request->input('title');
+        $title = $request->title === null ? 'Faq ' . now()->format('Y-m-d H:i:s') : $request->input('title');
 
         $post = Post::create([
             'title' => $title,

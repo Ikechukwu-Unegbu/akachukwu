@@ -1,9 +1,9 @@
 @extends('layouts.admin.app')
 @section('content')
 <div>
-    <x-admin.page-title title="Settings">
+    <x-admin.page-title title="Content Mgt.">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
-        <x-admin.page-title-item subtitle="Roles & Permissions" status="true" />
+        <x-admin.page-title-item subtitle="FAQ" status="true" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <style>
@@ -58,7 +58,7 @@
                                     </div>
                                     @endforeach
                                 </div>
-                                <button type="button" class="btn btn-link" id="new-category-btn" data-bs-toggle="modal" data-bs-target="#newCategoryModal">+ Add New Category</button>
+                               
                             </div>
 
                             <!-- Status (For both Blog and FAQ) -->
@@ -78,7 +78,7 @@
                             </div>
 
                             <!-- Submit Button -->
-                            <button type="submit" class="btn btn-primary">Create Post</button>
+                            <button type="submit" class="btn btn-primary">Create FAQ</button>
                         </form>
 
                     </div>
@@ -99,5 +99,5 @@
 @endpush
 
 @push('title')
-    Settings / Roles & Permissions
+    Content / FAQ
 @endpush

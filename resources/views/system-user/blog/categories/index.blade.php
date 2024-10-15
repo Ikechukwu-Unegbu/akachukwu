@@ -1,7 +1,7 @@
 @extends('layouts.admin.app')
 @section('content')
 <div>
-    <x-admin.page-title title="Settings">
+    <x-admin.page-title title="Content Mgt.">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
         <x-admin.page-title-item subtitle="Content Categories" status="true" />
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
