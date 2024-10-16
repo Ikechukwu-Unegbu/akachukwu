@@ -39,6 +39,12 @@
                             <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" value="{{ old('title', $post->title) }}" required>
                         </div>
 
+                        <div class="mb-3">
+                            <label for="seo" class="form-label">SEO Tags</label>
+                            <textarea class="form-control" id="seo" name="seo" rows="2" placeholder="Enter short description" required>{{ old('seo', $post->tags->pluck('name')->implode(', ')) }}</textarea>
+                            <small>This should be a comma-separated list of SEO tags.</small>
+                        </div>
+
                         <!-- Excerpt -->
                         <div class="mb-3">
                             <label for="excerpt" class="form-label">Excerpt</label>

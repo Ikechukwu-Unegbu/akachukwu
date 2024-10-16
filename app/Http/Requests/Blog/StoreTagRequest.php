@@ -23,6 +23,7 @@ class StoreTagRequest extends FormRequest
             'category_id' => 'required|array', 
             'category_id.*' => 'exists:categories,id', 
             'is_featured' => 'nullable|boolean',
+            'seo'=>'required'
         ];
     }
 }

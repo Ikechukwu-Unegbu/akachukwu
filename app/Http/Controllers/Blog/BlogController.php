@@ -20,14 +20,22 @@ class BlogController extends Controller
     {
         $searchQuery = $request->input('query');
         $categories = Category::all();
-
+        
         if ($searchQuery) {
             $posts = Post::where('title', 'LIKE', '%' . $searchQuery . '%')
+                        ->whereHas('categories', function($query) {
+                            $query->where('type', 'blog');
+                        })
                         ->latest()
                         ->paginate(10);
         } else {
-            $posts = Post::latest()->paginate(10);
+            $posts = Post::whereHas('categories', function($query) {
+                            $query->where('type', 'blog');
+                        })
+                        ->latest()
+                        ->paginate(10);
         }
+        
 
         return view('system-user.blog.posts.index')
             ->with('posts', $posts)

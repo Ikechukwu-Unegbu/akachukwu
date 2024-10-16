@@ -38,6 +38,12 @@
                                 <input type="text" class="form-control" id="title" name="title" placeholder="Enter title" required>
                             </div>
 
+                            <div class="mb-3">
+                                <label for="seo" class="form-label">SEO Tags</label>
+                                <textarea class="form-control" id="seo" name="seo" rows="2" placeholder="Enter short description" required></textarea>
+                                <small>This should be comma separated.</small>
+                            </div>
+
                             <!-- Excerpt/Question -->
                             <div class="mb-3">
                                 <label for="excerpt" class="form-label">Excerpt</label>

@@ -126,7 +126,7 @@
                         <table class="table table-striped table-bordered">
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <!-- <th>#</th> -->
                                     <th>Title</th>
                                     <th>Category</th>
                                     <th>Date</th>
@@ -136,7 +136,7 @@
                             <tbody>
                                 @foreach($posts as $post)
                                 <tr>
-                                    <td>1</td>
+                                    <!-- <td>1</td> -->
                                     <td><a href="">{{$post->title}}</a></td>
                                     <td>{{count($post->categories)}}</td>
                                     <td></td>
@@ -151,7 +151,7 @@
                                 <!-- More rows as necessary -->
                             </tbody>
                             <tfoot class="">
-                                    <a href="">See All Posts</a>
+                                    <a href="{{route('admin.post.index')}}">See All Posts</a>
                             </tfoot>
                         </table>
                     </div>

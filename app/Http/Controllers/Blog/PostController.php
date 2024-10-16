@@ -7,6 +7,7 @@ use App\Http\Requests\Blog\StorePostRequest;
 use App\Http\Requests\Blog\UpdatePostRequest;
 use App\Models\Blog\Category;
 use App\Models\Blog\Post;
+use App\Models\Blog\Tag;
 use App\Services\Admin\Blog\Post\PostService;
 use App\Services\Uploads\ImageService;
 use Illuminate\Http\Request;
@@ -98,9 +99,6 @@ class PostController extends Controller
             $imageService->fileUploader($request, '/blog', $blog, 'featured_image');
         }
         
-        if ($request->hasFile('image')) {
-            $imageService->fileUploader($request, '/blog', $blog, 'featured_image');
-        }
 
         if ($request->has('image_url')) {
             $blog->featured_image = $request->image_url;
@@ -108,6 +106,13 @@ class PostController extends Controller
         }
     
         $blog->categories()->sync($request->input('category_id'));
+
+        $tags = array_map('trim', explode(',', $request->input('seo')));
+
+        foreach ($tags as $tagName) {
+            $tag = Tag::create(['name' => $tagName, 'post_id'=>$blog->id]);
+        }
+        
     
         return redirect()->route('admin.blog.index')->with('success', 'Blog post created successfully.');
     }
@@ -119,8 +124,13 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePostRequest $request, Post $blog, PostService $postService, ImageService $imageService)
+    public function update(UpdatePostRequest $request, $id, PostService $postService, ImageService $imageService)
     {
+        $blog = Post::find($id);
+        if (is_null($blog->id)) {
+            return redirect()->back()->withErrors('Post ID is null.');
+        }
+    
         $postService->updatePost($request, $blog);
 
         if ($request->hasFile('image')) {
@@ -128,6 +138,14 @@ class PostController extends Controller
         }
 
         $blog->categories()->sync($request->input('category_id'));
+
+        Tag::where('post_id', $blog->id)->delete();
+        $tags = array_map('trim', explode(',', $request->input('seo')));
+
+        foreach ($tags as $tagName) {
+            $tag = Tag::create(['name' => $tagName, 'post_id'=>$blog->id]);
+        }
+        
 
         return redirect()->route('admin.blog.index')->with('success', 'Blog post updated successfully.');
     }
