@@ -21,11 +21,15 @@
         @else
             <div class="row">
                 @foreach($faqs as $faq)
-                    <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="col-lg-12 col-md-12 mb-4">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">{{ $faq->title }}</h5>
-                                <p class="card-text">{{ $faq->content }}</p>
+                                <hr>
+                                 
+                                <div class="card-text">{!! $faq->excerpt !!}</div>
+                                <hr>
+                                <div class="card-text">{!! $faq->content !!}</div>
                                 <div class="d-flex justify-content-between">
                                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editFaqModal{{ $faq->id }}">Edit</button>
                                     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFaqModal{{ $faq->id }}">Delete</button>
@@ -50,8 +54,35 @@
                                                 <input type="text" class="form-control" id="faqTitle{{ $faq->id }}" name="title" value="{{ $faq->title }}" required>
                                             </div>
                                             <div class="mb-3">
+                                                <label for="faqQuestion{{ $faq->id }}" class="form-label">FAQ Question</label>
+                                                <textarea class="form-control" name="excerpt" id="faqQuestion{{ $faq->id }}" rows="3" required>{{ $faq->excerpt }}</textarea>
+                                            </div>
+                                            <div class="mb-3">
                                                 <label for="faqContent{{ $faq->id }}" class="form-label">FAQ Content</label>
                                                 <textarea class="form-control" name="content" id="faqContent{{ $faq->id }}" rows="3" required>{{ $faq->content }}</textarea>
+                                            </div>
+
+                                            <!-- Status Selection -->
+                                            <div class="mb-3">
+                                                <label for="faqStatus{{ $faq->id }}" class="form-label">Status</label>
+                                                <select class="form-select" id="faqStatus{{ $faq->id }}" name="status" required>
+                                                    <option value="draft" {{ $faq->status == 'draft' ? 'selected' : '' }}>Draft</option>
+                                                    <option value="published" {{ $faq->status == 'published' ? 'selected' : '' }}>Published</option>
+                                                    <option value="archived" {{ $faq->status == 'archived' ? 'selected' : '' }}>Archived</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Category Selection -->
+                                            <div class="mb-3">
+                                                <label for="faqCategories{{ $faq->id }}" class="form-label">Categories</label>
+                                                <select class="form-select" id="faqCategories{{ $faq->id }}" name="categories[]" multiple required>
+                                                    @foreach($categories as $category)
+                                                        <option value="{{ $category->id }}" {{ in_array($category->id, $faq->categories->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                                            {{ $category->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                <small class="form-text text-muted">Hold down the Ctrl (Windows) or Command (Mac) button to select multiple categories.</small>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
@@ -59,6 +90,7 @@
                                             <button type="submit" class="btn btn-primary">Save Changes</button>
                                         </div>
                                     </form>
+
                                 </div>
                             </div>
                         </div>
@@ -91,7 +123,6 @@
 
             {{ $faqs->links() }}
         @endif
-
 
     </section>
 </div>

@@ -27,16 +27,7 @@ class CategoryController extends Controller
     
         return view('system-user.blog.categories.index', compact('categories'));
     }
-    
-    /**
-     * Show the form for creating a new category.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        // Show the form to create a new category
-    }
+
 
     /**
      * Store a newly created category in storage.
@@ -87,8 +78,19 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Validate and update the specified category
+        $request->validate([
+            'type' => 'required|string',
+            'name' => 'required|string',
+            'description' => 'nullable|string',
+        ]);
+    
+        $category = Category::findOrFail($id);
+        $category->update($request->all());
+    
+        Session::flash('success', 'Category successfully updated.');
+        return redirect()->back();
     }
+    
 
     /**
      * Remove the specified category from storage.
@@ -98,7 +100,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        // Delete the specified category
+        $category = Category::findOrFail($id);
+        $category->delete();
+
+        Session::flash('success', 'Category successfully deleted.');
+        return redirect()->back();
     }
-    
+
 }

@@ -39,6 +39,7 @@
                                     <th>#</th>
                                     <th>Name</th>
                                     <th>Type</th>
+                                    <th>Description</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -47,7 +48,8 @@
                                     <tr>
                                         <td>{{ $cate->id }}</td>
                                         <td>{{ $cate->name }}</td>
-                                        <td>{{ $cate->type }}</td> <!-- Displaying the type -->
+                                        <td>{{ ucfirst($cate->type) }}</td> <!-- Displaying the type -->
+                                        <td>{{ $cate->description }}</td> <!-- Displaying the description -->
                                         <td>
                                             <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $cate->id }}">
                                                 Edit
@@ -57,8 +59,66 @@
                                             </button>
                                         </td>
                                     </tr>
-                                    <!-- Modals for Edit and Delete (remain unchanged) -->
-                                    ...
+                                    <!-- Edit Modal -->
+                                    <div class="modal fade" id="editCategoryModal{{ $cate->id }}" tabindex="-1" aria-labelledby="editCategoryModalLabel{{ $cate->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <form action="{{ route('admin.category.update', $cate->id) }}" method="POST">
+                                                @csrf
+                                                @method('PUT')
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="editCategoryModalLabel{{ $cate->id }}">Edit Category</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="categoryName{{ $cate->id }}" class="form-label">Name</label>
+                                                            <input type="text" class="form-control" id="categoryName{{ $cate->id }}" name="name" value="{{ $cate->name }}" required>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="categoryType{{ $cate->id }}" class="form-label">Type</label>
+                                                            <select class="form-select" id="categoryType{{ $cate->id }}" name="type" required>
+                                                                <option value="faq" {{ $cate->type == 'faq' ? 'selected' : '' }}>FAQ</option>
+                                                                <option value="blog" {{ $cate->type == 'blog' ? 'selected' : '' }}>Blog</option>
+                                                                <option value="media" {{ $cate->type == 'media' ? 'selected' : '' }}>Media</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="categoryDescription{{ $cate->id }}" class="form-label">Description</label>
+                                                            <textarea class="form-control" id="categoryDescription{{ $cate->id }}" name="description" rows="3" required>{{ $cate->description }}</textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                    <!-- Delete Modal -->
+                                    <div class="modal fade" id="deleteCategoryModal{{ $cate->id }}" tabindex="-1" aria-labelledby="deleteCategoryModalLabel{{ $cate->id }}" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="deleteCategoryModalLabel{{ $cate->id }}">Delete Category</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Are you sure you want to delete the category "<strong>{{ $cate->name }}</strong>"?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <form action="{{ route('admin.category.destroy', $cate->id) }}" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 @endforeach
                             </tbody>
                         </table>

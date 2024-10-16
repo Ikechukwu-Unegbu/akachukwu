@@ -28,13 +28,14 @@ class PostService{
 
     public function updatePost(Request $request, Post $post)
     {
+        $title = $request->title === null ? 'Faq ' . now()->format('Y-m-d H:i:s') : $request->input('title');
         $post->update([
-            'title' => $request->input('title'),
+            'title' => $title,
             'excerpt' => $request->input('excerpt'),
             'content' => $request->input('content'),
             'status' => $request->input('status'),
             'is_featured' => $request->input('is_featured') ? 1 : 0,
-            'slug' => Str::slug($request->input('title')),
+            'slug' => Str::slug($title),
         ]);
 
         return $post;

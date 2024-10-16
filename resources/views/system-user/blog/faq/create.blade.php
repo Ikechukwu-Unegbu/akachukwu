@@ -71,12 +71,7 @@
                                 </select>
                             </div>
 
-                            <!-- Featured Post (Only for Blog) -->
-                            <div class="form-check mb-3" id="featured-post-field">
-                                <input class="form-check-input" type="checkbox" value="1" id="is_featured" name="is_featured">
-                                <label class="form-check-label" for="is_featured">Feature this post</label>
-                            </div>
-
+                         
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-primary">Create FAQ</button>
                         </form>

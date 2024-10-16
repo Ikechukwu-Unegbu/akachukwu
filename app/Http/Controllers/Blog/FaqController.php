@@ -15,8 +15,9 @@ class FaqController extends Controller
         $faqs = Post::whereHas('categories', function ($query) {
             $query->where('type', 'faq');
         })->paginate(10);
+        $categories = Category::where('type', 'faq')->get();
 
-        return view('system-user.blog.faq.index', compact('faqs'));
+        return view('system-user.blog.faq.index', compact('faqs'))->with('categories', $categories);
     }
 
     public function create()
@@ -32,6 +33,21 @@ class FaqController extends Controller
         $blog->categories()->sync($request->input('category_id'));
     
         return redirect()->route('admin.faq.index')->with('success', 'FAQ post created successfully.');
+    }
+
+    public function update(Request $request, $id, PostService $postService)
+    {
+
+        $faq = Post::find($id);
+        $postService->updatePost($request, $faq);
+        return redirect()->back()->with('success', 'FAQ post updated successfully.');
+    }
+
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+        $post->delete();
+        return redirect()->back()->with('success', 'FAQ post deleted successfully.');
     }
     
 }
