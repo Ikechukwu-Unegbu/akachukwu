@@ -29,7 +29,7 @@
                 <div class="col-md-8">
                     <div class="card card-custom p-4">
                         <h3 class="mb-4" id="form-heading">Create New Post</h3>
-                        <form action="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data" id="post-form">
+                        <form action="{{ route('admin.post.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <!-- Title (Only for Blog) -->
@@ -53,7 +53,7 @@
                             <!-- Content/Answer -->
                             <div class="mb-3">
                                 <label for="content" class="form-label">Content</label>
-                                <textarea class="form-control" id="content" name="content" rows="5" placeholder="Enter post content" required></textarea>
+                                <textarea class="form-control" id="content" name="content" rows="5" required>{{ old('content') }}</textarea>
                             </div>
 
                             <!-- Featured Image Upload / Image URL Tabs -->
@@ -125,9 +125,9 @@
 
 @push('scripts')
     <!-- TinyMCE -->
-    <script src="{{ asset('tinymce/tinymce.js') }}"></script>
+    <script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
 
-    <script>
+    {{-- <script>
         tinymce.init({
             selector: 'textarea#content',
             plugins: 'lists link',
@@ -139,6 +139,30 @@
 
         document.querySelector('#post-form').addEventListener('submit', function () {
             tinymce.triggerSave(); // Ensure content is synced with textarea before submission
+        });
+    </script> --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            tinymce.init({
+                selector: '#content',
+                height: 250,
+                menubar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | bold italic backcolor | \
+                                        alignleft aligncenter alignright alignjustify | \
+                                        bullist numlist outdent indent | removeformat | help',
+                setup: function (editor) {
+                    // Save content to textarea on change
+                    editor.on('change', function () {
+                        editor.save();
+                    });
+                }
+            });
         });
     </script>
 @endpush
