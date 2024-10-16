@@ -74,7 +74,7 @@
     <script src="{{ asset('admin-pages/vendor/echarts/echarts.min.js') }}"></script>
     <script src="{{ asset('admin-pages/vendor/quill/quill.min.js') }}"></script>
     <script src="{{ asset('admin-pages/vendor/simple-datatables/simple-datatables.js') }}"></script>
-    <script src="{{ asset('admin-pages/vendor/tinymce/tinymce.min.js') }}"></script>
+    {{-- <script src="{{ asset('admin-pages/vendor/tinymce/tinymce.min.js') }}"></script> --}}
     <script src="{{ asset('admin-pages/vendor/php-email-form/validate.js') }}"></script>
 
     <!-- Template Main JS File -->
