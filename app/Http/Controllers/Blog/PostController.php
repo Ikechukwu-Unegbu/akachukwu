@@ -94,8 +94,17 @@ class PostController extends Controller
     {
         $blog = $postService->storePost($request);
     
-        if ($request->hasFile('featured_image')) {
+        if ($request->hasFile('image')) {
             $imageService->fileUploader($request, '/blog', $blog, 'featured_image');
+        }
+        
+        if ($request->hasFile('image')) {
+            $imageService->fileUploader($request, '/blog', $blog, 'featured_image');
+        }
+
+        if ($request->has('image_url')) {
+            $blog->featured_image = $request->image_url;
+            $blog->save();
         }
     
         $blog->categories()->sync($request->input('category_id'));
