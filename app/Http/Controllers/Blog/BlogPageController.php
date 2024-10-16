@@ -33,8 +33,9 @@ class BlogPageController extends Controller
     public function show(string $slug)
     {
         $post = Post::where('slug', $slug)->firstOrFail();
-        $post->clicks = $post->clicks++;
+        $post->clicks += 1; // Increment the clicks count
         $post->save();
+        
     
         $relatedPosts = Post::whereHas('categories', function ($query) use ($post) {
             $query->whereIn('categories.id', $post->categories->pluck('id'));
