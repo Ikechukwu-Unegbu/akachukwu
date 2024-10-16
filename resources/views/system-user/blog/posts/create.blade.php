@@ -121,7 +121,7 @@
     <!-- TinyMCE -->
     <script src="{{ asset('tinymce/tinymce.js') }}"></script>
 
-    <script>
+    {{-- <script>
         tinymce.init({
             selector: 'textarea#content',
             plugins: 'lists link',
@@ -133,6 +133,24 @@
 
         document.querySelector('#post-form').addEventListener('submit', function () {
             tinymce.triggerSave(); // Ensure content is synced with textarea before submission
+        });
+    </script> --}}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            tinymce.init({
+                selector: '#content',
+                height: 250,
+                menubar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | bold italic backcolor | \
+                                        alignleft aligncenter alignright alignjustify | \
+                                        bullist numlist outdent indent | removeformat | help'
+            });
         });
     </script>
 @endpush
