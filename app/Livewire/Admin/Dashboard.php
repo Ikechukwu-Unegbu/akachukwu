@@ -57,8 +57,8 @@ class Dashboard extends Component
 
         $this->vtBalance = 0.00;
     
-        $this->postranetBlance = ($postranetBlance->status) ? $postranetBlance->response : 'N/A';
-        $this->gladBalance = ($gladBalance->status) ? $gladBalance->response : 'N/A';
+        $this->postranetBlance = ($postranetBlance?->status) ? $postranetBlance->response : 'N/A';
+        $this->gladBalance = ($gladBalance?->status) ? $gladBalance->response : 'N/A';
         $this->total_wallet = \App\Models\User::sum('account_balance');
 
     }

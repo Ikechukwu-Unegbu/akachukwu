@@ -1,7 +1,7 @@
 <link rel="stylesheet" href="{{ asset('pub-pages/vendors/toastr/toastr.min.css') }}">
+<script src="{{ asset('pub-pages/vendors/jquery/jquery.min.js') }}"></script>
 <script src="{{ asset('pub-pages/vendors/toastr/toastr.min.js') }}"></script>
 <script>
-
     toastr.options = {
         "closeButton": true,
         "debug": false,

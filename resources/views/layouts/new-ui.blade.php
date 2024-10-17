@@ -7,6 +7,8 @@
     <!-- <title>Vastel Landing Page</title> -->
     <script src="https://cdn.tailwindcss.com"></script>
     <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="icon" href="{{ asset('images/vastel-icon.png') }}" style="height: 2rem;width:6.94rem;" type="image/png">
+
 
     <script>window.$zoho=window.$zoho || {};$zoho.salesiq=$zoho.salesiq||{ready:function(){}}</script><script id="zsiqscript" src="https://salesiq.zohopublic.com/widget?wc=siq7e27ed946742b2ef7be4a02f6a2e0772" defer></script>
    

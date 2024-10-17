@@ -2,9 +2,11 @@
 
 namespace App\Models\Data;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DataNetwork extends Model
 {
@@ -20,6 +22,13 @@ class DataNetwork extends Model
         return $this->hasMany(DataPlan::class, 'network_id', 'network_id');
     }
 
-    
+    public function logo()
+    {
+        if (File::exists(public_path('images/' . Str::lower($this->name) . '.png'))) {
+            return secure_url('images/' . Str::lower($this->name) . '.png');
+        }
+
+        return "https://via.placeholder.com/24x24";
+    }
 
 }

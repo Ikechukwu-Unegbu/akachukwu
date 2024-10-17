@@ -38,9 +38,9 @@
                                             <small>{{ $data_transaction->created_at->format('M d, Y. h:ia') }}</small>
                                         </td>
                                         <td>
-                                            <span class="badge bg-{{ $data_transaction->status ? 'success' : 'danger' }}">{{ $data_transaction->status ? 'Successful' : 'Failed' }}</span>
-                                            <br />
-                                            <small><span class="badge bg-success">{{ !$data_transaction->status ? 'Refunded' : '' }}</span></small>
+                                            <span class="badge bg-{{ $data_transaction->status === 1 ? 'success' : ($data_transaction->status === 0 ? 'danger' : 'warning') }}">
+                                                {{ $data_transaction->status === 1 ? 'Successful' : ($data_transaction->status === 0 ? 'Failed' : 'Refunded') }}
+                                            </span>
                                         </td>
                                     
                                         <td>

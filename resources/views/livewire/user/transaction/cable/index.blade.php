@@ -37,9 +37,9 @@
                                             <small>{{ $cable_transaction->created_at->format('M d, Y. h:ia') }}</small>
                                         </td>
                                         <td>
-                                            <span class="badge bg-{{ $cable_transaction->status ? 'success' : 'danger' }}">{{ $cable_transaction->status ? 'Successful' : 'Failed' }}</span>
-                                            <br />
-                                            <small><span class="badge bg-success">{{ !$cable_transaction->status ? 'Refunded' : '' }}</span></small>
+                                            <span class="badge bg-{{ $cable_transaction->status === 1 ? 'success' : ($cable_transaction->status === 0 ? 'danger' : 'warning') }}">
+                                                {{ $cable_transaction->status === 1 ? 'Successful' : ($cable_transaction->status === 0 ? 'Failed' : 'Refunded') }}
+                                            </span>
                                         </td>
                                         <td>
                                             <a href="{{ route('user.transaction.cable.receipt', $cable_transaction->transaction_id) }}" class="btn btn-sm"> View</a>

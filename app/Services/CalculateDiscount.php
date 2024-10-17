@@ -18,10 +18,10 @@ class CalculateDiscount
         return $amount;
     }
 
-    public static function calculate(float $amount, float $discountRate): int
+    public static function calculate(float $amount, float $discountRate): float
     {
         if ($discountRate == 0) {
-            return (int) $amount;
+            return (float) $amount;
         }
     
         if ($discountRate < 0 || $discountRate > 100) {
@@ -30,6 +30,6 @@ class CalculateDiscount
     
         $discount = ($discountRate / 100) * $amount;
     
-        return (int) ($amount - $discount);
+        return (float) ($amount - $discount);
     }
 }

@@ -45,12 +45,8 @@
                                             </small>
                                         </td>
                                         <td>
-                                            <span
-                                                class="badge bg-{{ $airtime_transaction->status ? 'success' : 'danger' }}">
-                                                {{ $airtime_transaction->status ? 'Successful' : 'Failed' }}
-                                            </span>
-                                            <br />
-                                            <small><span class="badge bg-success">{{ !$airtime_transaction->status ? 'Refunded' : '' }}</span></small>
+                                            <span class="badge bg-{{ $airtime_transaction->status === 1 ? 'success' : ($airtime_transaction->status === 0 ? 'danger' : 'warning') }}">
+                                                {{ $airtime_transaction->status === 1 ? 'Successful' : ($airtime_transaction->status === 0 ? 'Failed' : 'Refunded') }}</span>
                                         </td>
                                         <td>
                                             <a href="{{ route('user.transaction.airtime.receipt', $airtime_transaction->transaction_id) }}" class="btn btn-sm"> View</a>
