@@ -13,10 +13,11 @@
 
     <div class="bg-white p-6  w-[70%]">
         <h2 class="text-xl font-semibold mb-4">Referral & Bonus</h2>
-        <div class="flex justify-between items-center mb-6">
+        <div class="flex flex-col gap-[2rem] md:flex-rows justify-between items-center mb-6 mt-6">
             <!-- Total Earned -->
             <div class="flex flex-col items-center space-x-2">
-                <i class="fas fa-money-bill-wave text-4xl text-vastel_blue"></i>
+                <!-- <i class="fas fa-money-bill-wave "></i> -->
+                <i class="fa-solid fa-sack-dollar text-4xl text-vastel_blue"></i>
                 <div class="flex flex-row gap-5 font-semibold text-vastel_blue">
                     <p class="text-sm text-vastel_blue">Total Earned:</p>
                     <p class="text-sm ">₦ {{ number_format(auth()->user()->getReferredUsersWithEarnings()->sum('referrerEarning'), 2) }}</p>
@@ -35,7 +36,9 @@
         <!-- Share Link and Earn Button -->
         <div class="flex flex-col items-start">
             <button class="bg-vastel_blue text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all duration-300"
-                data-modal-target="shareModal" data-modal-toggle="shareModal">
+            data-modal-target="shareModal"
+                data-modal-toggle="shareModal"
+                >
                 Share Link And Earn
             </button>
 
@@ -81,20 +84,73 @@
 
     <!-- sharing to social modal -->
     <!-- Modal -->
-    <div id="shareModal" tabindex="-1" aria-hidden="true"
-        class="hidden fixed z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-modal md:h-full">
-        <div class="relative w-full h-full max-w-md md:h-auto">
+  {{--  <div id="shareModal" tabindex="-1" class="hidden fixed z-50 w-full p-4 overflow-x-hidden overflow-y-auto h-modal h-full">
+    <div class="relative w-full h-full max-w-md md:h-auto mx-auto mt-24"> <!-- Centered vertically with margin -->
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow">
+            <!-- Modal header -->
+            <div class="flex items-start justify-between p-4 border-b rounded-t">
+                <h3 class="text-xl font-semibold">Share</h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="shareModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-6 space-y-4">
+                <div class="flex justify-around">
+                    <!-- Social buttons -->
+                    <div class="flex flex-col items-center">
+                        <i class="fab fa-facebook text-vastel_blue text-4xl"></i>
+                        <span class="text-sm mt-2">Facebook</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <i class="fab fa-instagram text-pink-600 text-4xl"></i>
+                        <span class="text-sm mt-2">Instagram</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <i class="fab fa-whatsapp text-green-600 text-4xl"></i>
+                        <span class="text-sm mt-2">WhatsApp</span>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <i class="fas fa-times text-gray-600 text-4xl"></i>
+                        <span class="text-sm mt-2">X</span>
+                    </div>
+                </div>
+                <!-- Or copy link section -->
+                <p class="text-center">Or copy link</p>
+                <div class="flex items-center justify-between bg-gray-100 p-2 rounded-lg">
+                    <input id="shareLink" type="text" value="https://www.vastel.io/register?ref={{Auth::user()->username}}" class="bg-gray-100 outline-none text-vastel_blue w-full border-none">
+                    <button class="ml-2 text-vastel_blue" onclick="copyToClipboard()">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>--}}
+
+
+<div id="shareModal" tabindex="-1"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full h-full bg-black bg-opacity-30 items-center justify-center">
+        <div class="relative p-4 w-full max-w-md h-full md:h-auto">
             <!-- Modal content -->
             <div class="relative bg-white rounded-lg shadow">
                 <!-- Modal header -->
-                <div class="flex items-start justify-between p-4 border-b rounded-t">
-                    <h3 class="text-xl font-semibold">Share</h3>
+                <div class="flex justify-between items-center p-5 rounded-t">
+                    <h3 class="text-xl font-medium text-gray-900">
+                        Confirm Transfer
+                    </h3>
                     <button type="button"
                         class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-                        data-modal-hide="shareModal">
-                        <i class="fas fa-times"></i>
+                        data-modal-toggle="shareModal">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M4.293 9.293a1 1 0 011.414 0L10 13.586l4.293-4.293a1 1 0 011.414 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
                     </button>
                 </div>
+
                 <!-- Modal body -->
                 <div class="p-6 space-y-4">
                     <div class="flex justify-around">
@@ -119,12 +175,22 @@
                     <!-- Or copy link section -->
                     <p class="text-center">Or copy link</p>
                     <div class="flex items-center justify-between bg-gray-100 p-2 rounded-lg">
-                        <input id="shareLink" type="text" value="https://www.vastel.io/register?ref={{Auth::user()->username}}"
-                            class="bg-gray-100 outline-none text-vastel_blue w-full border-none">
+                        <input id="shareLink" type="text" value="https://www.vastel.io/register?ref={{Auth::user()->username}}" class="bg-gray-100 outline-none text-vastel_blue w-full border-none">
                         <button class="ml-2 text-vastel_blue" onclick="copyToClipboard()">
                             <i class="fas fa-copy"></i>
                         </button>
                     </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="flex justify-between p-6">
+                    <button data-modal-toggle="shareModal"
+                        class="text-vastel_blue bg-white border border-vastel_blue focus:ring-4 focus:outline-none focus:ring-vastel_blue rounded-lg text-sm px-5 py-2.5 hover:text-gray-900 hover:bg-gray-100">
+                        Cancel
+                    </button>
+                    <button
+                        class="text-white bg-vastel_blue focus:ring-4 focus:outline-none focus:ring-blue-600 font-medium rounded-lg text-sm px-5 py-2.5">
+                        Continue
+                    </button>
                 </div>
             </div>
         </div>
@@ -185,4 +251,6 @@
             alert("Link copied to clipboard: " + copyText.value);
         }
     </script>
+
+
 @endsection

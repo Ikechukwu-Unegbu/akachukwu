@@ -70,6 +70,7 @@
                 @endif
             </div>
 
+   
             <!-- Old Password -->
             <div class="mb-4 relative">
                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
@@ -78,7 +79,7 @@
                 <input type="password" id="old-password" name="current_password"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
                     placeholder="Old Password" required>
-                <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <button type="button" id="toggle-old-password" class="absolute inset-y-0 right-0 flex items-center pr-3" onclick="togglePassword('old-password', 'toggle-old-password')">
                     <i class="fas fa-eye text-gray-400"></i>
                 </button>
             </div>
@@ -91,7 +92,7 @@
                 <input type="password" id="new-password" name="password"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
                     placeholder="New Password" required>
-                <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <button type="button" id="toggle-new-password" class="absolute inset-y-0 right-0 flex items-center pr-3" onclick="togglePassword('new-password', 'toggle-new-password')">
                     <i class="fas fa-eye text-gray-400"></i>
                 </button>
             </div>
@@ -104,10 +105,11 @@
                 <input type="password" id="confirm-new-password" name="password_confirmation"
                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
                     placeholder="Confirm New Password" required>
-                <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <button type="button" id="toggle-confirm-password" class="absolute inset-y-0 right-0 flex items-center pr-3" onclick="togglePassword('confirm-new-password', 'toggle-confirm-password')">
                     <i class="fas fa-eye text-gray-400"></i>
                 </button>
             </div>
+
 
             <!-- Save Changes Button -->
             <button type="submit"
@@ -275,10 +277,10 @@
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                     <i class="fas fa-lock text-gray-400"></i>
                                 </div>
-                                <input type="password" id="password" name="password"
+                                <input type="password" id="delete-input" name="password"
                                     class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5"
                                     placeholder="Enter Password to Continue" required>
-                                <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <button type="button" id="delete-button" onclick="togglePassword('delete-input', 'delete-button')" class="absolute inset-y-0 right-0 flex items-center pr-3">
                                     <i class="fas fa-eye text-gray-400"></i>
                                 </button>
                             </div>
@@ -368,4 +370,6 @@
         }
     });
 </script>
+
+
 @endpush

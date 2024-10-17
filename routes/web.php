@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Blog\BlogPageController;
 use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\TestController;
 use App\Http\Controllers\PagesController;
@@ -103,10 +104,10 @@ Route::post('update-password', [SettingsController::class, 'updatePassword'])->n
 
 //Blogs
 Route::view('/about', 'pages.about')->name('pages.about');
-Route::view('/blog', 'pages.blog.index');
-Route::view('/blog/show', 'pages.blog.show');
+Route::resource('blog', BlogPageController::class)->parameters(['blog' => 'slug']);
+
+
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/feature.php';
-require __DIR__ . '/new-web.php';

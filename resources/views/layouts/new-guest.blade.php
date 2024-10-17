@@ -17,7 +17,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#ffffff">
 
-    <link rel="icon" href="{{ asset('images/scape_logo.png') }}" style="height: 2rem;width:6.94rem;" type="image/png">
+    <link rel="icon" href="{{ asset('images/vastel-icon.png') }}" style="height: 2rem;width:6.94rem;" type="image/png">
 
     <!-- ===============================================-->
     <!--    Stylesheets-->
@@ -180,13 +180,7 @@
             {{ $slot ?? '' }}
         </main>
     </div>
-    <!-- ===============================================-->
-    <!--    End of Main Content-->
-    <!-- ===============================================-->
-
-
-
-
+ 
 
 
 
@@ -249,6 +243,25 @@
     <x-toastr />
 
     @stack('scripts')
+    <script>
+        function togglePassword(inputId, buttonId) {
+            const inputField = document.getElementById(inputId);
+            const toggleButton = document.getElementById(buttonId).children[0];
+
+            // Toggle between password and text input type
+            if (inputField.type === 'password') {
+                inputField.type = 'text';
+                toggleButton.classList.remove('fa-eye');
+                toggleButton.classList.add('fa-eye-slash');
+            } else {
+                inputField.type = 'password';
+                toggleButton.classList.remove('fa-eye-slash');
+                toggleButton.classList.add('fa-eye');
+            }
+        }
+
+    </script>
+
 </body>
 
 </html>
