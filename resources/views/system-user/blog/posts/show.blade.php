@@ -28,7 +28,8 @@
 
                         <!-- Content -->
                         <p><strong>Content:</strong></p>
-                        <p>{!! nl2br(e($post->content)) !!}</p>
+                        {{-- <p>{!! nl2br(e($post->content)) !!}</p> --}}
+                        <p>{!! $post->content !!}</p>
 
                         <!-- Categories -->
                         <p><strong>Categories:</strong></p>

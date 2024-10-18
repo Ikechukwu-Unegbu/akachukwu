@@ -43,5 +43,13 @@ class BlogController extends Controller
             ->with('searchQuery', $searchQuery);
     }
 
+    public function destroy($id)
+    {
+        $post = Post::findOrFail($id);
+        $post->deletePostImage();
+        $post->delete();
+
+        return redirect()->back()->with('success', 'Post Deleted Successfully');
+    }
 
 }

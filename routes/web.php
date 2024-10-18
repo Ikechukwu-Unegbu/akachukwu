@@ -9,9 +9,6 @@ use App\Http\Controllers\V1\AdminController;
 use App\Http\Controllers\V1\Utilities\TVController;
 use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\UpgradeToResellerController;
-
-;
-
 use App\Http\Controllers\V1\Utilities\DataController;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;

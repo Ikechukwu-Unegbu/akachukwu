@@ -144,7 +144,10 @@
                                     <a href="{{ route('admin.post.show', [$post->id]) }}" class="btn btn-info btn-sm">Show</a>
 
                                         <a href="{{route('admin.post.edit', [$post->id])}}" class="btn btn-success btn-sm">Edit</a>
-                                        <button class="btn btn-danger btn-sm">Delete</button>
+                                        <button class="btn btn-danger btn-sm" onclick="event.preventDefault(); if(confirm('Are you sure you want to delete this post?')) document.getElementById('delete-form-{{ $post->id }}').submit()">
+                                            <form id="delete-form-{{ $post->id }}" action="{{ route('admin.blog.destroy', [$post->id]) }}" class="d-none" method="POST">@csrf @method('DELETE')</form>
+                                            Delete
+                                        </button>
                                     </td>
                                 </tr>
                                 @endforeach 

@@ -20,8 +20,8 @@ class BlogPageController extends Controller
             });
         }
     
-        $blogPosts = $blogPostsQuery->paginate(20);
-        $featured = Post::where('is_featured', true)->first();
+        $blogPosts = $blogPostsQuery->where('status', 'published')->paginate(20);
+        $featured = Post::where('is_featured', true)->where('status', 'published')->first();
     
         return view('pages.blog.index')
             ->with('blogPosts', $blogPosts)
