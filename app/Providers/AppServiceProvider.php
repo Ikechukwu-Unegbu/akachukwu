@@ -21,6 +21,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::share('settings', SiteSetting::find(1));
+        // View::share('settings', SiteSetting::find(1));
     }
 }

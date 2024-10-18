@@ -8,7 +8,15 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Manage Resellers</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="card-title">Manage Resellers</h5>
+                    <div>
+                        <select class="form-select" id="filter" wire:model.live='filter'>
+                            <option value="request">Requests</option>
+                            <option value="reseller">Resellers</option>
+                        </select>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="card">

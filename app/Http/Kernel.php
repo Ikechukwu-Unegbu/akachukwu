@@ -71,5 +71,6 @@ class Kernel extends HttpKernel
         'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
         'testing' => \App\Http\Middleware\CheckEnvironmentIsTesting::class,
         'impersonate' => \App\Http\Middleware\Impersonate::class,
+        'otp' => \App\Http\Middleware\RedirectToOtpPage::class
     ];
 }

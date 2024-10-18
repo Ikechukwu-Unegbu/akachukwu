@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\Blog\BlogController;
+use App\Http\Controllers\Blog\CategoryController;
+use App\Http\Controllers\Blog\FaqController;
+use App\Http\Controllers\Blog\MediaController;
+use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SystemUser\DashboardController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
@@ -27,6 +32,14 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('/', App\Livewire\Admin\Auth\Login::class)->name('admin.auth.login');
         Route::get('login', App\Livewire\Admin\Auth\Login::class)->name('admin.auth.login');
         Route::get('register', App\Livewire\Admin\Auth\Register::class)->name('admin.auth.register');
+    });
+
+    Route::group(['as' => 'admin.', 'middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
+       Route::resource('post', PostController::class);
+       Route::resource('blog', BlogController::class);
+       Route::resource('category', CategoryController::class);
+       Route::resource('media', MediaController::class);
+       Route::resource('faq', FaqController::class);
     });
 
     

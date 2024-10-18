@@ -13,7 +13,7 @@
             <svg class="h-6 w-6 text-vastel_blue" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 12c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm1 2h-2c-3.31 0-6 2.69-6 6v2h14v-2c0-3.31-2.69-6-6-6z"/>
             </svg>
-            <a href="#" class="text-vastel_blue font-medium text-sm md:text-base">Contact Support</a>
+            <a href="{{route('settings.support')}}" class="text-vastel_blue font-medium text-sm md:text-base">Contact Support</a>
         </div>
     </div>
 </header>
@@ -104,7 +104,7 @@
                 </button>
             </form>
         <div class="mt-6 text-center">
-            <p>Have an account? <a href="#" class="text-vastel_blue">Click here to login</a></p>
+            <p>Have an account? <a href="{{ route('login') }}" class="text-vastel_blue">Click here to login</a></p>
         </div>
         <div class="mt-6 flex justify-center space-x-4">
             <a href="#"><img src="{{asset('images/playstore.svg')}}" alt="App Store" class="w-24"></a>
