@@ -23,7 +23,7 @@
 
             <!-- Featured Image -->
             <div class="my-6">
-                <img src="{{ $post->featured_image ? asset($post->featured_image) : asset('images/blog-logo.png') }}" alt="Article Image" class="w-full h-auto object-cover rounded-lg">
+                <img src="{{ $post->featured_image ? asset($post->featured_image) : asset('images/blog-logo.png') }}" alt="Article Image" class="w-full h-64 object-cover rounded-lg">
             </div>
 
             <!-- Article body -->
