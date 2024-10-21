@@ -1,44 +1,12 @@
 @extends('layouts.new-guest')
-
-@section('head')
-<link rel="stylesheet" href="{{asset('css/dashboard_index.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/index.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/dashboard_sidebar.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/ut/airtime.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/ut/network_picker.css')}}"/>
-<link rel="stylesheet" href="{{asset('css/ut/offcanvas.css?t=' . time() )}}"/>
-
-
-@endsection
-
 @section('body')
-<div class="dashboard_body">
-    <div class="sidebar_body">
-        @include('components.dasboard_sidebar')
+<div class="max-w-lg w-full bg-white p-8 ">
+    <div class="flex items-center mb-6">
+        <a href="{{ route('services') }}" class="text-blue-600">
+            <i class="fas fa-arrow-left"></i> Back
+        </a>
     </div>
-    <div class="dashboard_section">
-
-        <!-- card indicators -->
-        <div class="">
-          
-            @livewire('pages.utility.airtime.create')
-            {{-- <form class="utility-form">
-                @include('pages.utilities.components._network_selections')
-                <div class="airtime-group">
-                    <div class="mb-3 form-floating">
-                        <input type="number" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Amount</label>
-                    </div>
-                    <div class="mb-3 form-floating">
-                        <input type="text" name="phone" class="form-control" id="floatingInput" placeholder="">
-                        <label for="floatingInput">Phone Number</label>
-                    </div>
-                </div>
-                <button class="btn bg-basic text-light">Continue</button>
-            </form> --}}
-        </div>
-        <!-- end of card indicators -->    
-    </div>
-
+    <h2 class="text-2xl font-bold mb-4">Airtime Purchase</h2>
+    @livewire('pages.utility.airtime.create')
 </div>
 @endsection 

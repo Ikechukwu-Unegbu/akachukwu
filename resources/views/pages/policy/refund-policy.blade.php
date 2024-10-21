@@ -1,4 +1,4 @@
-@extends('layouts.new-guest')
+@extends('layouts.new-ui')
 
 
 @section('seo')
@@ -33,89 +33,89 @@
 
 
 @section('body')
+@include('components.menu-navigation')
 
-    <section class="pt-5 container" id="marketing">
-        <h1 class="container text-center">Welcome to VasTel Refund Policy Page</h1>
-        <div class="accordion accordion-flush" id="accordionFlushExample">
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                    Privacy Policy
-                </button>
-                </h2>
-                <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                        Thank you for shopping at VasTel.
-
-This is the Return and Refund <a href="{{route('privacy')}}">Policy of VasTel.</a>
-                </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                    Digital Products
-                </button>
-                </h2>
-                <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                    We do not issue refunds for digital products once the order is confirmed and the product is sent.
-
-We recommend contacting us for assistance if you experience any issues receiving or downloading our products.
-                </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                    Contact us
-                </button>
-                </h2>
-                <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
-                <div class="accordion-body">
-                    If you have any questions about our Returns and Refunds Policy, please contact us:
-
-By phone number - 08039451810
-
-By email -info@vastel.io
-                </div>
-                </div>
-            </div>
-
-        
+<section class="pt-5 container mx-auto" id="marketing">
+  <h1 class="text-4xl font-bold text-center mb-8 text-gray-900">Welcome to VasTel Refund Policy Page</h1>
+  
+  <div id="accordionFlushExample" class="max-w-3xl mx-auto">
+    <!-- Accordion item 1 -->
+    <div class="border-b border-gray-200">
+      <h2 id="flush-collapseOne">
+        <button class="w-full py-4 px-5 text-lg text-left flex justify-between items-center font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-vastel_blue" 
+          type="button" data-target="#collapseOne">
+          Privacy Policy
+          <svg class="w-5 h-5 transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </button>
+      </h2>
+      <div id="collapseOne" class="hidden" data-body>
+        <div class="py-4 px-5 text-gray-700">
+          Thank you for using VASTel. This is the Return and Refund <a href="{{ route('privacy') }}" class="text-vastel_blue underline hover:text-vastel_blue">Policy of VasTel</a>.
         </div>
-    </section>
+      </div>
+    </div>
 
-
-
-
-
-
-      <!-- ============================================-->
-      <!-- <section> begin ============================-->
-      <section class="py-md-11 py-8" id="superhero">
-
-        <div class="bg-holder z-index--1 bottom-0 d-none d-lg-block background-position-top" style="background-image:url(pub-pages/assets/img/superhero/oval.png);opacity:.5; background-position: top !important ;">
+    <!-- Accordion item 2 -->
+    <div class="border-b border-gray-200">
+      <h2 id="flush-collapseTwo">
+        <button class="w-full py-4 px-5 text-lg text-left flex justify-between items-center font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-vastel_blue" 
+          type="button" data-target="#collapseTwo">
+          Digital Products
+          <svg class="w-5 h-5 transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </button>
+      </h2>
+      <div id="collapseTwo" class="hidden" data-body>
+        <div class="py-4 px-5 text-gray-700">
+          We do not issue refunds for digital products once the order is confirmed and the product is sent. If you experience issues, contact us for assistance.
         </div>
-        <!--/.bg-holder-->
+      </div>
+    </div>
 
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-6 text-center">
-              <h1 class="fw-bold mb-4 fs-7">Do you need support? We are here to help</h1>
-              <p class="mb-5 text-info fw-medium">If you have any questions, concerns, or need support, don't hesitate to reach out to us. Click the 'Contact Us' button below, and our friendly customer support team will be happy to assist you. Your satisfaction is our priority</p>
-              <button type="button" data-bs-toggle="modal" data-bs-target="#contactModal" class="btn btn-warning btn-md">Contact our expert</button>
-            </div>
-           
-          </div>
-        </div><!-- end of .container-->
-              @livewire('component.global.contact-us')
-      </section>
-      <!-- <section> close ============================-->
-      <!-- ============================================-->
-    
+    <!-- Accordion item 3 -->
+    <div class="border-b border-gray-200">
+      <h2 id="flush-collapseThree">
+        <button class="w-full py-4 px-5 text-lg text-left flex justify-between items-center font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-vastel_blue" 
+          type="button" data-target="#collapseThree">
+          Contact us
+          <svg class="w-5 h-5 transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+        </button>
+      </h2>
+      <div id="collapseThree" class="hidden" data-body>
+        <div class="py-4 px-5 text-gray-700">
+          If you have any questions about our Refunds Policy, contact us by phone - <span class="font-medium text-gray-800">08039451810</span> or email - <span class="font-medium text-gray-800">info@vastel.io</span>.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Vanilla JS Accordion
+  document.querySelectorAll('[data-target]').forEach(button => {
+    button.addEventListener('click', function() {
+      const target = document.querySelector(this.getAttribute('data-target'));
+      target.classList.toggle('hidden'); // Show/Hide accordion content
+      
+      // Optional: Toggle arrow rotation
+      const icon = this.querySelector('svg');
+      icon.classList.toggle('rotate-180');
+    });
+  });
+</script>
+
+
+<!-- Hero Section -->
+<section class="py-20 bg-yellow-50 mt-10" id="superhero">
+  <div class="container mx-auto text-center">
+    <h1 class="text-4xl font-bold mb-6 text-gray-900">Do you need support? We are here to help</h1>
+    <p class="mb-8 text-lg text-gray-600">If you have any questions, concerns, or need support, don't hesitate to reach out to us. Click the 'Contact Us' button below, and our friendly customer support team will be happy to assist you. Your satisfaction is our priority.</p>
+    <a href="{{route('settings.support')}}"  class="px-6 py-3 bg-vastel_blue text-white font-medium text-lg rounded-lg shadow-lg hover:bg-vastel_blue transition duration-300">Contact our expert</a>
+  </div>
+
+
+</section>
 
 
 
-      @include('components.footer')
+ @include('components.footer')
 @endsection 

@@ -62,19 +62,22 @@ class GladTidingService
 
     public static function getWalletBalance()
     {
-        $response = static::url(self::WALLET_URL);
+        try {
+            $response = static::url(self::WALLET_URL);
 
-        if ($response)
+            if ($response)
+                return response()->json([
+                    'status'    =>  true,
+                    'response'  => number_format($response->user->Account_Balance, 2)
+                ], 200)->getData();
+
+
             return response()->json([
-                'status'    =>  true,
-                'response'  => number_format($response->user->Account_Balance, 2)
-            ], 200)->getData();
-
-
-        return response()->json([
-            'status'    =>  false,
-            'response'  => []
-        ], 401)->getData();
+                'status'    =>  false,
+                'response'  => []
+            ], 401)->getData();
+        } catch (\Throwable $th) {
+        }
     }
 
     public static function airtime($networkId, $amount, $mobileNumber)
@@ -121,8 +124,17 @@ class GladTidingService
 
             self::storeApiResponse($transaction, $response);
 
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
+            }
+
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
+
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during the Airtime request. Please try again later."
@@ -131,16 +143,6 @@ class GladTidingService
             }
 
             if (isset($response->Status) && $response->Status == 'successful') {
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
-                }
-                
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
-
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
@@ -151,6 +153,15 @@ class GladTidingService
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Airtime purchase successful: ₦{$amount} {$network->name} airtime added to {$mobileNumber}.");
+            }
+
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'API response Error',
+                    'message'   => "Airtime purchase failed. Please try again later.",
+                ];
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
             $errorResponse = [
@@ -221,8 +232,19 @@ class GladTidingService
 
             self::storeApiResponse($transaction, $response);
 
+            $amount = $response->amount;
+
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
+            }
+
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
+
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during bill payment request. Please try again later."
@@ -231,17 +253,6 @@ class GladTidingService
             }
 
             if (isset($response->Status) && $response->Status == 'successful') {
-
-                $amount = $response->amount;
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
-                }
-
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'token'             =>    VendorHelper::removeTokenPrefix($response->token),
@@ -252,6 +263,15 @@ class GladTidingService
                 BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
+            }
+
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'API response Error',
+                    'message'   => "Bill purchase failed. Please try again later.",
+                ];
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
             $errorResponse = [
@@ -309,8 +329,19 @@ class GladTidingService
 
             self::storeApiResponse($transaction, $response);
 
+            $amount = $transaction->amount;;
+
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'cable');
+            }
+
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
+
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during cable payment request. Please try again later."
@@ -319,18 +350,6 @@ class GladTidingService
             }
 
             if (isset($response->Status) && $response->Status == 'successful') {
-
-                $amount = $transaction->amount;;
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'cable');
-                }
-
-                
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
@@ -342,6 +361,14 @@ class GladTidingService
                 return ApiHelper::sendResponse($transaction, "Cable subscription successful: {$transaction->cable_plan_name} for ₦{$transaction->amount} on {$transaction->customer_name} ({$transaction->smart_card_number}).");
             }
 
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'Server Error',
+                    'message'   => "Cable purchased failed. Please try again later.",
+                ];
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+            }
             $errorResponse = [
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
@@ -399,11 +426,21 @@ class GladTidingService
             ];
 
             $response = self::url(self::DATA_URL, $data);
-            
+
             self::storeApiResponse($transaction, $response);
+            $amount = $plan->amount;
+
+            if (auth()->user()->isReseller()) {
+                $amount = CalculateDiscount::applyDiscount($amount, 'data');
+            }
+
+            $amount = CalculateDiscount::calculate($amount, $discount);
+
+            self::$authUser->transaction($amount);
 
             if (isset($response->error)) {
                 // Insufficient API Wallet Balance Error
+                self::$authUser->initiateRefund($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during Data request. Please try again later."
@@ -412,17 +449,6 @@ class GladTidingService
             }
 
             if (isset($response->Status) && $response->Status == 'successful') {
-
-                $amount = $plan->amount;
-
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'data');
-                }
-
-                $amount = CalculateDiscount::calculate($amount, $discount);
-
-                self::$authUser->transaction($amount);
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'status'            =>    true,
@@ -436,6 +462,15 @@ class GladTidingService
                 BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobileNumber}.");
+            }
+
+            if (isset($response->Status) && $response->Status == 'failed') {
+                $errorResponse = [
+                    'error'     => 'API response Error',
+                    'message'   => "Data purchase failed. Please try again later.",
+                ];
+                self::$authUser->initiateRefund($amount, $transaction);
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
             $errorResponse = [
@@ -642,7 +677,7 @@ class GladTidingService
 
                         foreach ($cablePlans as $cablePlan) {
 
-                            $plan = CablePlan::where(['vendor_id' => self::$vendor->id, 'cable_plan_id' => $cablePlan->cableplan_id])->first();  
+                            $plan = CablePlan::where(['vendor_id' => self::$vendor->id, 'cable_plan_id' => $cablePlan->cableplan_id])->first();
 
                             if ($plan) {
                                 $plan->update([

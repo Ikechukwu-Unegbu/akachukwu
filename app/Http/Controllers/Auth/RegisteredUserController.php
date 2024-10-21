@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Helpers\GeneralHelpers;
 use App\Models\User;
 use Illuminate\View\View;
+use App\Services\OTPService;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
+use App\Helpers\GeneralHelpers;
 use Illuminate\Validation\Rules;
 use Illuminate\Support\Facades\DB;
+use App\Notifications\WelcomeEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -16,10 +18,15 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use App\Services\Payment\MonnifyService;
+use Illuminate\Support\Facades\Notification;
 use App\Services\Payment\VirtualAccountServiceFactory;
-
 class RegisteredUserController extends Controller
 {
+
+    public function __construct(
+        protected OTPService $otpService
+    ) {}
+
     /**
      * Display the registration view.
      */
@@ -43,50 +50,56 @@ class RegisteredUserController extends Controller
         $request->validate([
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
-            'username' => ['required', 'string', 'min:3', 'max:255', 'alpha_dash', 'unique:'.User::class],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', Rules\Password::defaults(),         function ($attribute, $value, $fail) {
-                if (!preg_match('/[A-Z]/', $value)) {
-                    $fail('The '.$attribute.' must contain at least one uppercase letter.');
+            'username' => ['required', 'string', 'min:3', 'max:255', 'alpha_dash', 'unique:' . User::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
+            'password' => [
+                'required',
+                Rules\Password::defaults(),
+                function ($attribute, $value, $fail) {
+                    if (!preg_match('/[A-Z]/', $value)) {
+                        $fail('The ' . $attribute . ' must contain at least one uppercase letter.');
+                    }
+                    if (!preg_match('/[a-z]/', $value)) {
+                        $fail('The ' . $attribute . ' must contain at least one lowercase letter.');
+                    }
+                    if (!preg_match('/[0-9]/', $value)) {
+                        $fail('The ' . $attribute . ' must contain at least one number.');
+                    }
                 }
-                if (!preg_match('/[a-z]/', $value)) {
-                    $fail('The '.$attribute.' must contain at least one lowercase letter.');
-                }
-                if (!preg_match('/[0-9]/', $value)) {
-                    $fail('The '.$attribute.' must contain at least one number.');
-                }
-            }
-    ],
-            'terms_and_conditions'=>['required'],
+            ],
+            'terms_and_conditions' => ['required'],
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
-            'referral_code'=>['nullable', 'string']
+            'referral_code' => ['nullable', 'string']
         ]);
 
-    
-           return DB::transaction(function () use($request) {
-                $user = User::create([
-                    'name' => $request->first_name.' '.$request->last_name,
-                    'username' => $request->username,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'role'  =>  'user',
-                    'phone' => $request->phone_number
-                ]);
-                
-                GeneralHelpers::checkReferrer($request, $user);
-        
-                // MonnifyService::createVirtualAccount($user);
-                $activeGateway = PaymentGateway::where('va_status', true)->first();
-                $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-                $virtualAccountFactory::createVirtualAccount($user);
 
+        return DB::transaction(function () use ($request) {
+            $user = User::create([
+                'name' => $request->first_name . ' ' . $request->last_name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role'  =>  'user',
+                'phone' => $request->phone_number
+            ]);
 
-                event(new Registered($user));
+            $otp = $this->otpService->generateOTP($user);
 
-                session()->flash('success', 'Your account has been created successfully. Please proceed to login.');
-            return redirect(route('login'));
-            });
+            GeneralHelpers::checkReferrer($request, $user);
 
-        
+            Notification::sendNow($user, new WelcomeEmail($otp, $user));
+
+            // MonnifyService::createVirtualAccount($user);
+            // $activeGateway = PaymentGateway::where('va_status', true)->first();
+            // $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
+            // $virtualAccountFactory::createVirtualAccount($user); 
+
+            event(new Registered($user));
+
+            Auth::login($user);
+
+            session()->flash('success', 'Your account has been created successfully. Please proceed to login.');
+            return redirect($user->dashboard());
+        });
     }
 }

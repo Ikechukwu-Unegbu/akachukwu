@@ -94,4 +94,10 @@ class AirtimeTransaction extends Model
                 });
         });
     }
+
+    public function refund()
+    {
+        $this->status = 2;
+        $this->save();
+    }
 }

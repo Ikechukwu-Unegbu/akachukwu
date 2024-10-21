@@ -43,16 +43,17 @@ class PayVesselService
         ]);
     }
 
-    public static function createVirtualAccount($user)
-    {        
+    public static function createVirtualAccount($user, $kyc, $kycType = 'bvn')
+    {
         try {
 
-            self::bankCodes()->each(function ($bankCode) use ($user) {
+            self::bankCodes()->each(function ($bankCode) use ($user, $kyc, $kycType) {
                 $data = [
                     "businessid"   => config('payment.payvessel.business_id'),
                     "email"        => $user->email,
                     "name"         => $user->name,
                     "phoneNumber"  => $user->phone,
+                    $kycType       => $kyc,
                     "bankcode"     => [$bankCode['code']],
                     "account_type" =>  "STATIC"
                 ];
@@ -91,7 +92,7 @@ class PayVesselService
         }       
     }
 
-    public static function verifyKyc($bvn)
+    public static function verifyBvn($bvn)
     {
         try {
             
@@ -108,7 +109,7 @@ class PayVesselService
                 if ($response->ok() === true) {
                     $response = $response->object();                
                     if (isset($response->status) && $response->status) {
-                        self::updateAccountKyc($response->bvn);
+                        self::updateAccountBvn($response->bvn);
                     }
                 }
 
@@ -136,7 +137,7 @@ class PayVesselService
 
     }
 
-    public static function updateAccountKyc($bvn)
+    public static function updateAccountBvn($bvn)
     {
         auth()->user()->update(['bvn' => $bvn]);
     }

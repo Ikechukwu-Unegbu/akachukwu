@@ -2,49 +2,147 @@
 
 @section('body')
 
- <!-- Trigger button -->
- <button data-modal-target="pinModal" data-modal-toggle="pinModal" class="px-4 py-2 text-white bg-vastel_blue rounded-lg">
-        Open Transaction Pin Modal
-    </button>
+ 
+<!-- Trigger Buttons -->
+<div class="space-x-4 p-6">
+  <button id="openPinResetSuccessModal" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">
+    Show Pin Reset Success
+  </button>
 
-    <!-- Modal -->
-    <div id="pinModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full flex items-center justify-center">
-        <div class="relative w-full max-w-md max-h-full">
-            <!-- Modal content -->
-            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
-                <!-- Modal header -->
-                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                        Enter Transaction Pin
-                    </h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="pinModal">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-                        </svg>
-                    </button>
-                </div>
+  <button id="openOTPModal" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">
+    Show OTP Verification
+  </button>
 
-                <!-- Modal body (PIN input) -->
-                <div class="p-6 space-y-6">
-                    <div class="flex justify-center space-x-4">
-                        <input type="text" maxlength="1" class="w-12 h-12 text-2xl text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-vastel_blue" />
-                        <input type="text" maxlength="1" class="w-12 h-12 text-2xl text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-vastel_blue" />
-                        <input type="text" maxlength="1" class="w-12 h-12 text-2xl text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-vastel_blue" />
-                        <input type="text" maxlength="1" class="w-12 h-12 text-2xl text-center border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-vastel_blue" />
-                    </div>
-                    <div class="flex justify-center">
-                        <a href="#" class="text-sm text-vastel_blue hover:underline">Forgot Pin</a>
-                    </div>
-                </div>
+  <button id="openChangePinModal" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">
+    Show Change Transaction Pin
+  </button>
+</div>
 
-                <!-- Modal footer -->
-                <div class="flex items-center justify-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
-                    <button data-modal-hide="pinModal" type="button" class="w-full px-5 py-2.5 text-white bg-vastel_blue hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm">
-                        Pay
-                    </button>
-                </div>
-            </div>
-        </div>
+<!-- Pin Reset Success Modal -->
+<div id="pinResetSuccessModal" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm text-center">
+    <div class="text-green-500 text-6xl">
+      &#10004;
     </div>
+    <h2 class="text-lg font-semibold mt-4">You have successfully reset your transaction pin!</h2>
+    <button id="closePinResetSuccessModal" class="mt-6 bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">
+      Done
+    </button>
+  </div>
+</div>
+
+<!-- OTP Modal -->
+<div id="otpModal" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm text-center">
+    <h2 class="text-lg font-semibold">OTP Verification</h2>
+    <p class="mt-2 text-sm text-gray-600">A 6-digit code has been sent to your email address: <strong>jane@email.com</strong></p>
+    
+    <!-- OTP Inputs -->
+    <div class="flex justify-center mt-4 space-x-2">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <!-- <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1"> -->
+    </div>
+
+    <p class="mt-4 text-sm text-gray-500">
+      Didn't receive the OTP? <a href="#" class="text-vastel_blue hover:underline">Resend code</a>
+    </p>
+
+    <button id="closeOTPModal" class="mt-4 bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">
+      Continue
+    </button>
+  </div>
+</div>
+
+<!-- Change Transaction Pin Modal -->
+<div id="changePinModal" class="hidden fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-[80%] md:w-[40%] text-center">
+    <h2 class="text-lg font-semibold">Change Transaction Pin</h2>
+    <p class="mt-2 text-sm text-gray-600">4-digit new transaction pin</p>
+
+    <!-- New Pin Inputs -->
+    <div class="flex justify-center mt-4 space-x-2">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+    </div>
+
+    <p class="mt-4 text-sm text-gray-600">Confirm your transaction pin</p>
+
+    <!-- Confirm Pin Inputs -->
+    <div class="flex justify-center mt-4 space-x-2">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+      <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
+    </div>
+
+    <button id="closeChangePinModal" class="mt-6 bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">
+      Continue
+    </button>
+  </div>
+</div>
+
+
+<script>
+  // Get modal elements
+  const pinResetSuccessModal = document.getElementById('pinResetSuccessModal');
+  const otpModal = document.getElementById('otpModal');
+  const changePinModal = document.getElementById('changePinModal');
+
+  // Get open modal buttons
+  const openPinResetSuccessModalBtn = document.getElementById('openPinResetSuccessModal');
+  const openOTPModalBtn = document.getElementById('openOTPModal');
+  const openChangePinModalBtn = document.getElementById('openChangePinModal');
+
+  // Get close modal buttons
+  const closePinResetSuccessModalBtn = document.getElementById('closePinResetSuccessModal');
+  const closeOTPModalBtn = document.getElementById('closeOTPModal');
+  const closeChangePinModalBtn = document.getElementById('closeChangePinModal');
+
+  // Open Modals
+  openPinResetSuccessModalBtn.addEventListener('click', () => {
+    pinResetSuccessModal.classList.remove('hidden');
+  });
+
+  openOTPModalBtn.addEventListener('click', () => {
+    otpModal.classList.remove('hidden');
+  });
+
+  openChangePinModalBtn.addEventListener('click', () => {
+    changePinModal.classList.remove('hidden');
+  });
+
+  // Close Modals
+  closePinResetSuccessModalBtn.addEventListener('click', () => {
+    pinResetSuccessModal.classList.add('hidden');
+  });
+
+  closeOTPModalBtn.addEventListener('click', () => {
+    otpModal.classList.add('hidden');
+  });
+
+  closeChangePinModalBtn.addEventListener('click', () => {
+    changePinModal.classList.add('hidden');
+  });
+
+  // Optionally, close modal when clicking outside
+  window.addEventListener('click', (e) => {
+    if (e.target === pinResetSuccessModal) {
+      pinResetSuccessModal.classList.add('hidden');
+    }
+    if (e.target === otpModal) {
+      otpModal.classList.add('hidden');
+    }
+    if (e.target === changePinModal) {
+      changePinModal.classList.add('hidden');
+    }
+  });
+</script>
+
 
 @endsection 
