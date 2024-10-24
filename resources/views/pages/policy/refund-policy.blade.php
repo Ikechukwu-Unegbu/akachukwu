@@ -36,57 +36,53 @@
 @include('components.menu-navigation')
 
 <section class="pt-5 container mx-auto" id="marketing">
-  <h1 class="text-4xl font-bold text-center mb-8 text-gray-900">Welcome to VasTel Refund Policy Page</h1>
-  
-  <div id="accordionFlushExample" class="max-w-3xl mx-auto">
-    <!-- Accordion item 1 -->
-    <div class="border-b border-gray-200">
-      <h2 id="flush-collapseOne">
-        <button class="w-full py-4 px-5 text-lg text-left flex justify-between items-center font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-vastel_blue" 
-          type="button" data-target="#collapseOne">
-          Privacy Policy
-          <svg class="w-5 h-5 transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </button>
-      </h2>
-      <div id="collapseOne" class="hidden" data-body>
-        <div class="py-4 px-5 text-gray-700">
-          Thank you for using VASTel. This is the Return and Refund <a href="{{ route('privacy') }}" class="text-vastel_blue underline hover:text-vastel_blue">Policy of VasTel</a>.
-        </div>
-      </div>
-    </div>
+<div class="prose mx-auto p-4">
+    <h1 class="text-2xl font-bold">Vastel Refund Policy</h1>
+    <p class="text-gray-700">October 2024</p>
+    <p>At Vastel, we strive to ensure that all transactions made on our Platform are processed seamlessly. However, we understand that there may be circumstances where a refund is necessary. This Refund Policy outlines the conditions under which users can request refunds and how they will be handled.</p>
 
-    <!-- Accordion item 2 -->
-    <div class="border-b border-gray-200">
-      <h2 id="flush-collapseTwo">
-        <button class="w-full py-4 px-5 text-lg text-left flex justify-between items-center font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-vastel_blue" 
-          type="button" data-target="#collapseTwo">
-          Digital Products
-          <svg class="w-5 h-5 transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </button>
-      </h2>
-      <div id="collapseTwo" class="hidden" data-body>
-        <div class="py-4 px-5 text-gray-700">
-          We do not issue refunds for digital products once the order is confirmed and the product is sent. If you experience issues, contact us for assistance.
-        </div>
-      </div>
-    </div>
+    <h2 class="text-xl font-bold mb-3 mt-[3rem]">1. Eligibility for Refunds</h2>
+    <p>Refunds may be issued under the following circumstances:</p>
+    <ul class="list-disc list-inside">
+        <li><strong>Failed Transactions:</strong> If a transaction (e.g., airtime purchase, bill payment) is not successfully completed and the amount is deducted from your wallet, you may be eligible for a refund.</li>
+        <li><strong>Incomplete Transactions:</strong> If a service is partially fulfilled (e.g., a partial airtime recharge like processing or hanging transactions), we will process a refund for the unfulfilled amount.</li>
+        <li><strong>System Errors:</strong> Refunds may be processed if there are system errors that prevent successful completion of transactions.</li>
+    </ul>
 
-    <!-- Accordion item 3 -->
-    <div class="border-b border-gray-200">
-      <h2 id="flush-collapseThree">
-        <button class="w-full py-4 px-5 text-lg text-left flex justify-between items-center font-medium text-gray-800 bg-gray-50 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-vastel_blue" 
-          type="button" data-target="#collapseThree">
-          Contact us
-          <svg class="w-5 h-5 transform" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
-        </button>
-      </h2>
-      <div id="collapseThree" class="hidden" data-body>
-        <div class="py-4 px-5 text-gray-700">
-          If you have any questions about our Refunds Policy, contact us by phone - <span class="font-medium text-gray-800">08039451810</span> or email - <span class="font-medium text-gray-800">info@vastel.io</span>.
-        </div>
-      </div>
-    </div>
-  </div>
+    <h2 class="text-xl font-bold mb-3 mt-[3rem]">2. Non-Eligible Transactions</h2>
+    <p>Refunds are not available for:</p>
+    <ul class="list-disc list-inside">
+        <li><strong>User Errors:</strong> Mistakes made by the user (e.g., incorrect phone number or biller account information) are not eligible for refunds. Please double-check your inputs before confirming transactions.</li>
+        <li><strong>Wallet Withdrawals:</strong> Customers cannot withdraw funds from their Vastel wallet to a bank account, as Vastel is not licensed for direct cash-out services at this time.</li>
+    </ul>
+
+    <h2 class="text-xl font-bold mb-3 mt-[3rem]">3. Refund Request Process</h2>
+    <p>To request a refund:</p>
+    <ul class="list-disc list-inside">
+        <li>Contact our customer support team at <a href="mailto:support@vastel.io" class="text-blue-600 underline">support@vastel.io</a> or via the Live chat button on the app or website with the transaction details (e.g., username, transaction ID, date, and amount).</li>
+        <li>Our support team will review your request and provide a response within 48 hours.</li>
+        <li>If the refund request is approved, the refund will be processed within 72 hours and credited back to your Vastel wallet.</li>
+    </ul>
+
+    <h2 class="text-xl font-bold mb-3 mt-[3rem]">4. Refund Method</h2>
+    <p>All approved refunds will be credited back to your Vastel wallet for future use. Refunds cannot be transferred back to your bank account or any third-party platform.</p>
+
+    <h2 class="text-xl font-bold mb-3 mt-[3rem]">5. Dispute Resolution for Refunds</h2>
+    <p>If you are dissatisfied with the outcome of your refund request, you may escalate the matter to our support management team.</p>
+
+    <h2 class="text-xl font-bold mb-3 mt-[3rem]">6. Privacy References</h2>
+    <p>Any personal information collected as part of the refund process will be handled in accordance with our <a href="{{route('privacy')}}"> Privacy Policy</a>. For more information on how we protect your data, please review the <a href="{{route('privacy')}}"> Privacy Policy</a>.</p>
+
+    <h2 class="text-xl font-bold mb-3 mt-[3rem]">7. Changes to the Refund Policy</h2>
+    <p>We reserve the right to update or modify this Refund Policy at any time. Any changes will be communicated via the Platform or through your registered email.</p>
+
+    <h2 class="text-xl font-bold mb-3 mt-[3rem]">8. Contact Information</h2>
+    <p>For any questions or concerns regarding refunds, please contact us at:</p>
+    <ul class="list-disc list-inside">
+        <li>Email: <a href="mailto:support@vastel.io" class="text-blue-600 underline">support@vastel.io</a></li>
+    </ul>
+</div>
+
 </section>
 
 <script>

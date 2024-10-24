@@ -36,84 +36,85 @@
 
    
 @include('components.menu-navigation')
-<section class="pt-10 pb-16 bg-gray-50" id="marketing">
-  <div class="container mx-auto px-4">
-    <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Welcome to VasTel Privacy Policy Page</h1>
+<section class="pt-10 pb-16 container mx-auto " id="marketing">
+<div class="prose mx-auto p-4">
+    <h1 class="text-2xl font-bold">Vastel Privacy Policy</h1>
+    <p class="text-gray-700">2024</p>
+    <p>Welcome to Vastel! This privacy policy explains how we collect, use, disclose, and protect your personal information when you use our services. Vastel is committed to safeguarding the privacy and security of our users’ data, and we comply with the Nigeria Data Protection Regulation (NDPR).</p>
 
-    <div id="accordion-collapse" data-accordion="collapse" class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg">
-      <!-- Accordion item 1 -->
-      <h2 id="accordion-collapse-heading-1">
-        <button type="button" class="flex items-center justify-between w-full p-5 font-semibold text-lg text-left text-gray-900 bg-gray-100 border-b border-gray-300 rounded-t-lg focus:outline-none focus:ring-4 focus:ring-indigo-200 hover:bg-indigo-50 transition duration-300"
-          data-accordion-target="#accordion-collapse-body-1" aria-expanded="false" aria-controls="accordion-collapse-body-1">
-          <span>Our Privacy Policy</span>
-          <svg data-accordion-icon class="w-6 h-6 shrink-0 text-indigo-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-          </svg>
-        </button>
-      </h2>
-      <div id="accordion-collapse-body-1" class="hidden" aria-labelledby="accordion-collapse-heading-1">
-        <div class="p-5 bg-gray-50 text-gray-700 border-b border-gray-300">
-          <p>
-          It is VasTel's policy to respect your privacy regarding any information we may collect while operating our website. This Privacy Policy applies to https://vastel.io (hereinafter, "us", "we", or "https://vastel.io"). We respect your privacy and are committed to protecting personally identifiable information you may provide us through the Website. We have adopted this privacy policy ("Privacy Policy") to explain what information may be collected on our Website, how we use this information, and under what circumstances we may disclose the information to third parties. This Privacy Policy applies only to information we collect through the Website and does not apply to our collection of information from other sources. This Privacy Policy, together with the Terms and conditions posted on our Website, set forth the general rules and policies governing your use of our Website. Depending on your activities when visiting our Website, you may be required to agree to additional terms and conditions.
-          </p>
-        </div>
-      </div>
+    <h2 class="text-xl mt-[3rem] font-bold">1. Introduction</h2>
+    <p>Vastel ("we," "our," or "us") provides a diverse range of digital services, including but not limited to airtime and data purchases, utility bill payments, education pin sales, and wallet funding through our mobile application and website (the "Platform"). Our goal is to offer convenient and reliable services that meet your needs. This policy outlines how we collect, use, and share information and how we protect your privacy when you interact with our platform. We are committed to handling your personal information responsibly and transparently. By using our platform, you consent to the collection, use, and disclosure of your information in accordance with this policy. If you do not agree with this policy, please discontinue the use of our services.</p>
 
-      <!-- Accordion item 2 -->
-      <h2 id="accordion-collapse-heading-2">
-        <button type="button" class="flex items-center justify-between w-full p-5 font-semibold text-lg text-left text-gray-900 bg-gray-100 border-b border-gray-300 focus:outline-none focus:ring-4 focus:ring-indigo-200 hover:bg-indigo-50 transition duration-300"
-          data-accordion-target="#accordion-collapse-body-2" aria-expanded="false" aria-controls="accordion-collapse-body-2">
-          <span>Site Visitors</span>
-          <svg data-accordion-icon class="w-6 h-6 shrink-0 text-indigo-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-          </svg>
-        </button>
-      </h2>
-      <div id="accordion-collapse-body-2" class="hidden" aria-labelledby="accordion-collapse-heading-2">
-        <div class="p-5 bg-gray-50 text-gray-700 border-b border-gray-300">
-          <p>
-          Like most website operators, VasTel collects non-personally-identifying information of the sort that web browsers and servers typically make available, such as the browser type, language preference, referring site, and the date and time of each visitor request. VasTel's purpose in collecting non-personally identifying information is to better understand how VasTel's visitors use its website. From time to time, VasTel may release non-personally-identifying information in the aggregate, e.g., by publishing a report on trends in the usage of its website. VasTel also collects potentially personally-identifying information like Internet Protocol (IP) addresses for logged-in users and for users leaving comments on https://vastel.io or on its blog posts. VasTel only discloses logged-in user and commenter IP addresses under the same circumstances that it uses and discloses personally-identifying information as described below.
-          </p>
-        </div>
-      </div>
+    <h2 class="text-xl mt-[3rem] font-bold">2. Information We Collect</h2>
+    <p>We collect the following types of information:</p>
+    <ul class="list-disc list-inside">
+        <li><strong>Personal Information:</strong> When you register on our platform, make a transaction, or communicate with us, we may collect personal details such as your name, phone number, email address, and account information.</li>
+        <li><strong>Financial Information:</strong> For transactions involving wallet funding, we collect financial details such as bank account information or payment card details.</li>
+        <li><strong>Technical Information:</strong> We automatically collect information such as your IP address, device type, operating system, and browsing activity when you access our platform.</li>
+        <li><strong>Transaction Data:</strong> This includes records of your purchases, transaction history, and preferences on the platform.</li>
+        <li><strong>Usage Data:</strong> Information on how you interact with our Platform, including time spent on various pages, features used, and other analytical data.</li>
+        <li><strong>Location Data:</strong> We may collect your location information, subject to your device permissions, to improve our service offerings and for fraud prevention.</li>
+        <li><strong>Third-Party Data:</strong> If you register using social media accounts or interact with third-party service providers, we may collect relevant information from these sources.</li>
+    </ul>
 
-      <!-- Accordion item 3 -->
-      <h2 id="accordion-collapse-heading-3">
-        <button type="button" class="flex items-center justify-between w-full p-5 font-semibold text-lg text-left text-gray-900 bg-gray-100 border-b border-gray-300 focus:outline-none focus:ring-4 focus:ring-indigo-200 hover:bg-indigo-50 transition duration-300"
-          data-accordion-target="#accordion-collapse-body-3" aria-expanded="false" aria-controls="accordion-collapse-body-3">
-          <span>Account and Data Deletion</span>
-          <svg data-accordion-icon class="w-6 h-6 shrink-0 text-indigo-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-          </svg>
-        </button>
-      </h2>
-      <div id="accordion-collapse-body-3" class="hidden" aria-labelledby="accordion-collapse-heading-3">
-        <div class="p-5 bg-gray-50 text-gray-700 border-b border-gray-300">
-          <p>
-          When users opt to delete their account, we promptly assist in the deletion process. We aim to delete personal data associated with the account securely and in compliance with relevant data protection laws. Non-personal data may be retained for statistical analysis and service improvement. We will communicate with users regarding the account deletion progress. Legal obligations and backup processes may affect deletion timelines. For more details, please contact our customer support.
-          </p>
-        </div>
-      </div>
+    <h2 class="text-xl mt-[3rem] font-bold">3. How We Use Your Information</h2>
+    <p>We collect and use your information for various purposes to provide a seamless experience on our platform. Specifically, we use your information to:</p>
+    <ul class="list-disc list-inside">
+        <li>Provide, operate, and maintain our services, including processing transactions and verifying your identity to prevent unauthorized access.</li>
+        <li>Facilitate wallet funding, education pin purchases, and other transactions made through the platform.</li>
+        <li>Improve our platform by analyzing usage trends and user behavior to develop new features, refine existing services, and enhance the overall user experience.</li>
+        <li>Communicate with you through various channels, such as email or in-app notifications, to inform you of service updates, promotional offers, or changes to your account.</li>
+        <li>Monitor and analyze activity on the platform to detect and prevent fraud, abuse, or security breaches, thereby ensuring a safe and secure environment for our users.</li>
+        <li>Fulfill legal obligations, respond to lawful requests from public authorities, and comply with applicable laws and regulations.</li>
+        <li>Offer tailored services and recommendations based on your preferences and usage patterns, subject to your consent where applicable.</li>
+        <li>Conduct surveys, contests, or market research to understand our users better and improve our offerings.</li>
+    </ul>
+    <p>We may also anonymize or aggregate your data to produce non-identifiable information that helps us understand trends or usage patterns. This aggregated information cannot be traced back to you personally and may be used for analytical or business purposes.</p>
 
-      <!-- Accordion item 4 -->
-      <h2 id="accordion-collapse-heading-4">
-        <button type="button" class="flex items-center justify-between w-full p-5 font-semibold text-lg text-left text-gray-900 bg-gray-100 border-gray-300 rounded-b-lg focus:outline-none focus:ring-4 focus:ring-indigo-200 hover:bg-indigo-50 transition duration-300"
-          data-accordion-target="#accordion-collapse-body-4" aria-expanded="false" aria-controls="accordion-collapse-body-4">
-          <span>External Links</span>
-          <svg data-accordion-icon class="w-6 h-6 shrink-0 text-indigo-600" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
-          </svg>
-        </button>
-      </h2>
-      <div id="accordion-collapse-body-4" class="hidden" aria-labelledby="accordion-collapse-heading-4">
-        <div class="p-5 bg-gray-50 text-gray-700 border-gray-300">
-          <p>
-          Our Service may contain links to external sites that are not operated by us. If you click on a third-party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy and terms and conditions of every site you visit. We have no control over, and assume no responsibility for the content, privacy policies, or practices of any third-party sites, products, or services.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+    <h2 class="text-xl mt-[3rem] font-bold">4. Sharing Your Information</h2>
+    <p>We value your privacy and only share your information in specific circumstances, such as:</p>
+    <ul class="list-disc list-inside">
+        <li><strong>With Service Providers:</strong> We work with trusted third-party companies to provide essential services like payment processing, customer support, and technical operations. These service providers are contractually obligated to keep your information confidential and to use it only for the purposes of delivering services to Vastel.</li>
+        <li><strong>With Regulatory Authorities:</strong> We may share your information with government agencies, law enforcement bodies, or regulatory authorities if required by law, court order, or to safeguard our legal rights. This may include sharing information to comply with legal processes or to protect against fraudulent activities.</li>
+        <li><strong>With Business Partners:</strong> With your consent, we may share your data with business partners for joint service offerings, marketing collaborations, or to enable a more integrated service experience. These partners are bound by confidentiality agreements and are prohibited from using your information for purposes outside the agreed scope.</li>
+        <li><strong>In Corporate Transactions:</strong> If Vastel is involved in a merger, acquisition, or sale of assets, your information may be transferred as part of the transaction. We will notify you in advance and ensure that your information remains protected according to this privacy policy.</li>
+        <li><strong>For Legal Compliance and Protection:</strong> We may disclose your information to protect the rights, property, or safety of our users, employees, or the public. This includes sharing data with third parties to prevent, investigate, or take action against suspected illegal activities or breaches of our <a href="{{route('terms')}}">terms</a> and policies.</li>
+    </ul>
+    <p>We do not sell your personal information to any third party for monetary gain or any other purpose. All data sharing activities are conducted in a manner that ensures your privacy and complies with applicable laws and regulations.</p>
+
+    <h2 class="text-xl mt-[3rem] font-bold">5. Data Security</h2>
+    <p>We implement a variety of security measures to protect your information from unauthorized access, misuse, or disclosure. These measures include:</p>
+    <ul class="list-disc list-inside">
+        <li><strong>Encryption:</strong> We use industry-standard encryption protocols to protect sensitive data both in transit and at rest, ensuring that your information is safeguarded from interception or unauthorized access.</li>
+        <li><strong>Secure Servers:</strong> All data is stored on secure servers located in controlled facilities, and we regularly review and update our security practices to address emerging threats.</li>
+        <li><strong>Access Controls:</strong> Access to personal information is restricted to authorized personnel only, and we employ multi-factor authentication, role-based access, and activity monitoring to prevent unauthorized access.</li>
+        <li><strong>Regular Security Audits:</strong> We conduct periodic security assessments, vulnerability scans, and penetration tests to identify and address potential weaknesses in our systems.</li>
+        <li><strong>Data Minimization:</strong> We collect only the information necessary for the specified purposes and ensure that it is kept no longer than needed.</li>
+    </ul>
+    <p>Despite our efforts to protect your information, no method of transmission or storage is completely secure. Therefore, we cannot guarantee absolute security. If you suspect a security breach or have any concerns about the safety of your data, please contact us immediately at <a href="mailto:support@vastel.io" class="text-blue-600 underline">support@vastel.io</a>. We will take prompt action to investigate and address any issues that may arise.</p>
+
+    <h2 class="text-xl mt-[3rem] font-bold">6. Your Rights</h2>
+    <p>Under the NDPR, you have the right to:</p>
+    <ul class="list-disc list-inside">
+        <li><strong>Access Your Information:</strong> Request a copy of your personal data held by us.</li>
+        <li><strong>Update or Correct Your Information:</strong> Correct inaccurate or incomplete data.</li>
+        <li><strong>Delete Your Information:</strong> Request the deletion of your data if it is no longer needed for the purposes it was collected.</li>
+        <li><strong>Object to Data Processing:</strong> Restrict or object to the processing of your personal data in certain circumstances.</li>
+        <li><strong>Withdraw Consent:</strong> Withdraw your consent at any time, where applicable.</li>
+    </ul>
+    <p>To exercise any of these rights, please contact us at <a href="mailto:support@vastel.io" class="text-blue-600 underline">support@vastel.io</a> or through the customer support feature on our platform. We will respond to your request within 30 days.</p>
+
+    <h2 class="text-xl mt-[3rem] font-bold">7. Data Retention</h2>
+    <p>We will retain your personal information only as long as necessary to provide the services, comply with legal obligations, or resolve disputes. Once your data is no longer needed, it will be securely deleted or anonymized in accordance with our data retention policies.</p>
+
+    <h2 class="text-xl mt-[3rem] font-bold">8. Changes to This Policy</h2>
+    <p>We may update this privacy policy periodically to reflect changes in our practices or for legal reasons. We will notify you of any significant changes through email or via the platform. Please review this policy regularly to stay informed about how we protect your information.</p>
+
+    <h2 class="text-xl mt-[3rem] font-bold">9. Contact Us</h2>
+    <p>If you have any questions or concerns about this privacy policy or how we handle your personal data, please feel free to contact us at <a href="mailto:support@vastel.io" class="text-blue-600 underline">support@vastel.io</a>.</p>
+</div>
+
+
 </section>
 
 
