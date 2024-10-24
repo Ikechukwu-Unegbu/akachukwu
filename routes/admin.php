@@ -104,6 +104,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('transaction/resellers/{reseller:id}/edit', App\Livewire\Admin\Transaction\Reseller\Edit::class)->name('admin.transaction.reseller.edit');
         Route::get('transaction/resellers/{reseller:id}/delete', App\Livewire\Admin\Transaction\Reseller\Delete::class)->name('admin.transaction.reseller.delete');
 
+        Route::get('transaction/query-vendors', App\Livewire\Admin\Transaction\QueryTransaction::class)->name('admin.transaction.query-vendor');
 
         ## API Routes
         ## API - Vendor
