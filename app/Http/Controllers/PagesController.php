@@ -17,5 +17,10 @@ class PagesController extends Controller
         return view('pages.policy.refund-policy');
     }
 
+    public function terms()
+    {
+        return view('pages.policy.terms');
+    }
+
     
 }
