@@ -17,8 +17,8 @@
             </div>
             @if (empty(auth()->user()->pin))
                 <div class="p-6 space-y-6">
-                    <h6 class="text-white mb-3 pb-2">Unable to process transaction. Your PIN is required for this transaction.</h6>
-                    <a class="text-white hover:text-red-600 underline mt-3" href="{{ route('settings.credentials') }}">Click here to create a PIN.</a>
+                    <h6 class="text-red-800 mb-3 pb-2">Unable to process transaction. Your PIN is required for this transaction.</h6>
+                    <a class="text-red-800 hover:text-red-600 underline mt-3" href="{{ route('settings.credentials') }}">Click here to create a PIN.</a>
                 </div>
             @endif
         
