@@ -20,10 +20,9 @@
                                 <label for="type">Type</label>
                                 <select class="form-control" wire:model="type" name="type" id="type">
                                     <option value="">All</option>
-                                    <option value="data">Data</option>
-                                    <option value="airtime">Airtime</option>
-                                    <option value="cable">Cable</option>
-                                    <option value="electricity">Electricity</option>
+                                    @foreach ($types as $__type)
+                                    <option value="{{ $__type }}">{{ Str::title($__type) }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -76,7 +75,7 @@
                                 <th scope="row">
                                     @if ($status == 0)
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" wire:model="selectedUser.{{ $transaction->type }}.{{ $transaction->transaction_id }}">
+                                            <input class="form-check-input" type="checkbox" wire:model="selectedUser.{{ $transaction->utility }}.{{ $transaction->transaction_id }}">
                                         </div>
                                     @else
                                         {{ $loop->index + $transactions->firstItem() }}
@@ -84,7 +83,7 @@
                                 </th>
                                 <td>{{ $transaction->user_name }}</td>
                                 <td>₦{{ $transaction->amount }}</td>
-                                <td>{{ Str::title($transaction->type) }}</td>
+                                <td>{{ Str::title($transaction->utility) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $transaction->status === 1 ? 'success' : ($transaction->status === 0 ? 'danger' : 'warning') }}">
