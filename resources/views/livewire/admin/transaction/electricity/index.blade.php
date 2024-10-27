@@ -27,7 +27,11 @@
                                 <td>{{ $electricity_transaction->disco_name }}</td>
                                 <td>₦{{ $electricity_transaction->amount }}</td>
                                 <td>{{ $electricity_transaction->created_at->format('M d, Y. h:ia') }}</td>
-                                <td><span class="badge bg-{{ $electricity_transaction->status ? 'success' : 'danger' }}">{{ $electricity_transaction->status ? 'Successful' : 'Failed' }}</span></td>
+                                <td>
+                                    <span class="badge bg-{{ $electricity_transaction->status === 1 ? 'success' : ($electricity_transaction->status === 0 ? 'danger' : 'warning') }}">
+                                        {{ $electricity_transaction->status === 1 ? 'Successful' : ($electricity_transaction->status === 0 ? 'Failed' : 'Refunded') }}
+                                    </span>
+                                </td>
                                 <td>
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>

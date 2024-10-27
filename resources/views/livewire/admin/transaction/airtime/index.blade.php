@@ -27,8 +27,10 @@
                                 <td>{{ $airtime_transaction->network_name ?? '' }}</td>
                                 <td>₦{{ $airtime_transaction->amount }}</td>
                                 <td>{{ $airtime_transaction->created_at->format('M d, Y. h:ia') }}</td>
-
-                                <td><span class="badge bg-{{ $airtime_transaction->status ? 'success' : 'danger' }}">{{ $airtime_transaction->status ? 'Successful' : 'Failed' }}</span></td>
+                                <td>
+                                    <span class="badge bg-{{ $airtime_transaction->status === 1 ? 'success' : ($airtime_transaction->status === 0 ? 'danger' : 'warning') }}">
+                                        {{ $airtime_transaction->status === 1 ? 'Successful' : ($airtime_transaction->status === 0 ? 'Failed' : 'Refunded') }}</span>
+                                </td>
                                 <td>
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>

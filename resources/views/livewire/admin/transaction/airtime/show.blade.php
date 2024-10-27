@@ -50,7 +50,10 @@
             </div>
             <div class="row">
               <div class="col-lg-3 col-md-4 label ">Status</div>
-              <div class="col-lg-9 col-md-8"><span class="badge bg-{{ $airtime->status ? 'success' : 'danger' }}">{{ $airtime->status ? 'Successful' : 'Failed' }}</span></div>
+              <div class="col-lg-9 col-md-8">
+                <span class="badge bg-{{ $airtime->status === 1 ? 'success' : ($airtime->status === 0 ? 'danger' : 'warning') }}">
+                  {{ $airtime->status === 1 ? 'Successful' : ($airtime->status === 0 ? 'Failed' : 'Refunded') }}</span>              
+              </div>
             </div>
             <div class="row">
               <div class="col-lg-3 col-md-4 label ">Balance Before</div>

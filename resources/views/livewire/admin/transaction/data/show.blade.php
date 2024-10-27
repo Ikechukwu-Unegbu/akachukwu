@@ -54,9 +54,10 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Status</div>
-                            <div class="col-lg-9 col-md-8"><span
-                                    class="badge bg-{{ $data->status ? 'success' : 'danger' }}">{{ $data->status ?
-                                    'Successful' : 'Failed' }}</span></div>
+                            <div class="col-lg-9 col-md-8">
+                                <span class="badge bg-{{ $data->status === 1 ? 'success' : ($data->status === 0 ? 'danger' : 'warning') }}">
+                                {{ $data->status === 1 ? 'Successful' : ($data->status === 0 ? 'Failed' : 'Refunded') }}</span>                                    
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Balance Before</div>
