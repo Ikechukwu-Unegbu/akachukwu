@@ -58,9 +58,11 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Status</div>
-                            <div class="col-lg-9 col-md-8"><span
-                                    class="badge bg-{{ $cable->status ? 'success' : 'danger' }}">{{ $cable->status ?
-                                    'Successful' : 'Failed' }}</span></div>
+                            <div class="col-lg-9 col-md-8">
+                                <span class="badge bg-{{ $cable->status === 1 ? 'success' : ($cable->status === 0 ? 'danger' : 'warning') }}">
+                                    {{ $cable->status === 1 ? 'Successful' : ($cable->status === 0 ? 'Failed' : 'Refunded') }}
+                                </span>                                    
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Balance Before</div>

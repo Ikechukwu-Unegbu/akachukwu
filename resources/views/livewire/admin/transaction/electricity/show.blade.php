@@ -62,9 +62,11 @@
                         </div>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Status</div>
-                            <div class="col-lg-9 col-md-8"><span
-                                    class="badge bg-{{ $electricity->status ? 'success' : 'danger' }}">{{ $electricity->status ?
-                                    'Successful' : 'Failed' }}</span></div>
+                            <div class="col-lg-9 col-md-8">
+                                <span class="badge bg-{{ $electricity->status === 1 ? 'success' : ($electricity->status === 0 ? 'danger' : 'warning') }}">
+                                    {{ $electricity->status === 1 ? 'Successful' : ($electricity->status === 0 ? 'Failed' : 'Refunded') }}
+                                </span>                                    
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Balance Before</div>

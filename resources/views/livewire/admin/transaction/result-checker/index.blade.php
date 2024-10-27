@@ -27,7 +27,11 @@
                                 <td>{{ $result_checker->quantity }}</td>
                                 <td>₦{{ $result_checker->amount }}</td>
                                 <td>{{ $result_checker->created_at->format('M d, Y. h:ia') }}</td>
-                                <td><span class="badge bg-{{ $result_checker->status ? 'success' : 'danger' }}">{{ $result_checker->status ? 'Successful' : 'Failed' }}</span></td>
+                                <td>
+                                    <span class="badge bg-{{ $result_checker->status === 1 ? 'success' : ($result_checker->status === 0 ? 'danger' : 'warning') }}">
+                                        {{ $result_checker->status === 1 ? 'Successful' : ($result_checker->status === 0 ? 'Failed' : 'Refunded') }}
+                                    </span>                                
+                                </td>
                                 <td>
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
