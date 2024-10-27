@@ -1,6 +1,6 @@
 @extends('layouts.new-guest')
 @section('body')
-    <div class="w-full pl-[1.5rem] max-w-md space-y-4">
+    <div class="w-full px-[1rem] md:pl-[1.5rem] max-w-md space-y-4">
         <!-- Settings -->
         <a href="{{ route('settings.credentials') }}" class="flex items-center p-4 bg-white shadow rounded-lg">
             <div class="text-vastel_blue">
