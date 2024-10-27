@@ -86,23 +86,22 @@
             </div>
             <div class="card-body">
                 <x-table>
-                    <x-table-header :headers="['#', 'Reference', 'Gateway', 'Amount', 'Date', 'Status']" />
+                    <x-table-header :headers="['#', 'Reference', 'Type', 'Amount', 'Date', 'Status']" />
                     <x-table-body>
-                        @forelse ($walletHistories as $wallet_transaction)
+                        @forelse ($user->transactionHistories(10) as $transaction)
                             <tr>
                                 <th scope="row">{{ $loop->index + 1 }}</th>
                                 <td>
-                                    <small>{{ $wallet_transaction->reference_id }}</small>
+                                    <small>{{ $transaction->transaction_id }}</small>
                                 </td>
-                                <td>{{ Str::title($wallet_transaction->gateway_type) }}</td>
-                                <td>₦ {{ number_format($wallet_transaction->amount, 2) }}</td>
+                                <td>{{ Str::title($transaction->utility) }}</td>
+                                <td>₦ {{ number_format($transaction->amount, 2) }}</td>
                                 <td>
-                                    @php $createdAt = \Carbon\Carbon::parse($wallet_transaction->created_at); @endphp
-                                    <small>{{ $createdAt->format('M d, Y. h:ia') }}</small>
+                                    <small>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</small>
                                 </td>
                                 <td>
-                                    <span class="badge bg-{{ $wallet_transaction->status ? 'success' : 'danger' }}">
-                                        {{ $wallet_transaction->status ? 'Successful' : 'Failed' }}
+                                    <span class="badge bg-{{ $transaction->status === 1 ? 'success' : ($transaction->status === 0 ? 'danger' : 'warning') }}">
+                                        {{ $transaction->status === 1 ? 'Successful' : ($transaction->status === 0 ? 'Failed' : 'Refunded') }}
                                     </span>
                                 </td>
                             </tr>

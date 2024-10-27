@@ -29,26 +29,25 @@
             </div>
             <div class="card-body">                        
                 <x-table>
-                    <x-table-header :headers="['#', 'Reference', 'Gateway', 'Amount', 'Date', 'Status']" />
+                    <x-table-header :headers="['#', 'Reference', 'Type', 'Amount', 'Date', 'Status']" />
                     <x-table-body>
                         @forelse ($walletHistories as $wallet_transaction)
                         <tr>
                             <th scope="row">{{ $loop->index + $walletHistories->firstItem() }}</th>
                             <td>
-                                <small>{{ $wallet_transaction->reference_id }}</small>    
+                                <small>{{ $wallet_transaction->transaction_id }}</small>    
                             </td>
-                            <td>{{ Str::title($wallet_transaction->gateway_type) }}</td>
+                            <td>{{ Str::title($wallet_transaction->utility) }}</td>
                             <td>₦ {{ number_format($wallet_transaction->amount, 2) }}</td>
                             <td>
-                                @php $createdAt = \Carbon\Carbon::parse($wallet_transaction->created_at); @endphp
-                                <small>{{ $createdAt->format('M d, Y. h:ia') }}</small>
+                                {{ \Carbon\Carbon::parse($wallet_transaction->created_at)->format('M d, Y. h:ia') }}
                             </td>
                             <td>
-                                <span class="badge bg-{{ $wallet_transaction->status ? 'success' : 'danger' }}">
-                                    {{ $wallet_transaction->status ? 'Successful' : 'Failed' }}
-                                    @if($wallet_transaction->gateway_type==='Vastel' && $wallet_transaction->type == false)
+                                <span class="badge bg-{{ $wallet_transaction->status === 1 ? 'success' : ($wallet_transaction->status === 0 ? 'danger' : 'warning') }}">
+                                    {{ $wallet_transaction->status === 1 ? 'Successful' : ($wallet_transaction->status === 0 ? 'Failed' : 'Refunded') }}
+                                    {{-- @if($wallet_transaction->type==='vastel' && $wallet_transaction->type == false)
                                         <small class="text-xs">Debit</small>
-                                    @endif 
+                                    @endif  --}}
                                 </span>
                             </td>
                         </tr>
