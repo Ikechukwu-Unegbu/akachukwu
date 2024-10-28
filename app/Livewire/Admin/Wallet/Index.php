@@ -23,7 +23,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.wallet.index', [
-            'walletHistories' => $this->user->walletHistories()->paginate($this->perPage)
+            'walletHistories' => $this->user->transactionHistories($this->perPage)
         ]);
     }
 }

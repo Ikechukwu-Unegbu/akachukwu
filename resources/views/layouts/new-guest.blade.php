@@ -165,12 +165,7 @@
                     <li>
                         <a href="{{route('profile.edit')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                     </li>
-                    <!-- <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Earnings</a>
-                    </li>
-                    <li>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Sign out</a>
-                    </li> -->
+                 
                     </ul>
                 </div>
                 <!-- end of dropdown -->
@@ -213,6 +208,12 @@
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
+
+            <a href="{{route('settings.index')}}" class="flex items-center space-x-2 hover:text-blue-500">
+                <i class="fa-solid fa-gear"></i>
+                <span>Settings</span>
+            </a>
+
 
             <a href="{{route('pages.about')}}" class="flex items-center space-x-2 hover:text-blue-500">
                 <i class="fa-solid fa-address-card"></i>
