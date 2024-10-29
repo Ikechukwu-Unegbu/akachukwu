@@ -2,7 +2,6 @@
 
 namespace App\Services\Vendor;
 
-use App\Helpers\Admin\VendorHelper;
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
@@ -11,6 +10,8 @@ use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataNetwork;
 use App\Models\Utility\CablePlan;
+use Illuminate\Support\Facades\DB;
+use App\Helpers\Admin\VendorHelper;
 use App\Models\Utility\Electricity;
 use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
@@ -715,4 +716,26 @@ class PosTraNetService
 
         return true;
     }
+
+    public static function queryTransactionFromVendor($data, $type)
+    {
+        try {
+            $url = [
+                'airtime'        => self::AIRTIME_URL,
+                'cable'          => self::CABLE_URL,
+                'data'           => self::DATA_URL,
+                'electricity'    => self::ELECTRICITY_URL,
+                'result_checker' => self::RESULT_CHECKER_URL
+            ];
+            $data = json_decode($data->api_response);
+            $dataId = $data->id;
+            $url = self::$vendor->api . $url[$type];
+            $response = Http::withHeaders(static::headers())->get($url . $dataId, []);
+            return ($response->object()) ? response()->json(['status' => true, 'result' => $response->object(), 'msg' => 'Query was successful'])->getData() : NULL;
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            return response()->json(['status' => false, 'result' => [], 'msg' => 'Unable to query transaction. Please try again later.'])->getData();
+        }
+    }
+    
 }
