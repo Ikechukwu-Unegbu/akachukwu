@@ -22,7 +22,7 @@
                         @forelse ($data_transactions as $data_transaction)
                             <tr>
                                 <th scope="row">{{ $loop->index+1 }}</th>
-                                <td>{{ $data_transaction->user->name }}</td>
+                                <td> <a  href="{{route('admin.hr.user.show', [$data_transaction->user->username])}}">{{ $data_transaction->user->username }}</a> </td>
                                 <td>{{ $data_transaction->mobile_number }}</td>
                                 <td>{{ $data_transaction->plan_network }}</td>
                                 <td>{{ $data_transaction->size }}</td>
