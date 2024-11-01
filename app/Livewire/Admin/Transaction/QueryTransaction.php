@@ -3,12 +3,20 @@
 namespace App\Livewire\Admin\Transaction;
 
 use App\Models\Vendor;
-use App\Services\Vendor\QueryVendorTransaction;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Livewire\WithPagination;
+use App\Models\Utility\Cable;
 use Illuminate\Support\Facades\DB;
+use App\Services\CalculateDiscount;
+use Illuminate\Support\Facades\Log;
+use App\Models\Data\DataTransaction;
+use App\Models\Utility\CableTransaction;
+use App\Models\Utility\AirtimeTransaction;
 use App\Services\Vendor\VendorServiceFactory;
+use App\Models\Utility\ElectricityTransaction;
+use App\Services\Vendor\QueryVendorTransaction;
+use App\Models\Education\ResultCheckerTransaction;
 
 class QueryTransaction extends Component
 {
@@ -26,6 +34,8 @@ class QueryTransaction extends Component
     public $vendorResponse;
     public $loader = true;
     public $error_msg;
+    public $transaction_type;
+    public $transaction_id;
 
     public function  mount(Request $request)
     {
@@ -38,6 +48,11 @@ class QueryTransaction extends Component
 
     public function queryTransaction($id, $type)
     {
+        $this->error_msg = "";
+        $this->vendorResponse = "";
+        $this->transaction_id = $id;
+        $this->transaction_type = $type;
+        
         $query =  QueryVendorTransaction::initializeQuery($id, $type);
         
         if (!$query->status) {
@@ -58,6 +73,64 @@ class QueryTransaction extends Component
         $this->error_msg = "";
         $this->vendorResponse = "";
         $this->loader = true;
+    }
+    
+    public function handleRefund()
+    {
+        try {
+            $transaction = self::getTransactionTableByType($this->transaction_type, $this->transaction_id);
+            $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
+            $transaction->user->setAccountBalance($amount);
+            $transaction->refund();
+            $this->dispatch('success-toastr', ['message' => 'Transaction Refunded Successfully']);
+            session()->flash('success', 'Transaction Refunded Successfully');
+            $this->redirect(url()->previous());
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $this->dispatch('success-toastr', ['message' => 'Unable to Refund User, Please try again later.']);
+            session()->flash('success', 'Unable to Refund User, Please try again later.');
+            $this->redirect(url()->previous());
+        }
+    }
+
+    public function handleDebit()
+    {
+       try {
+            $transaction = self::getTransactionTableByType($this->transaction_type, $this->transaction_id);
+            $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
+            $transaction->user->setTransaction($amount);
+            $transaction->debit();
+            $this->dispatch('success-toastr', ['message' => 'Transaction Debited Successfully']);
+            session()->flash('success', 'Transaction Debited Successfully');
+            $this->redirect(url()->previous());
+       } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $this->dispatch('success-toastr', ['message' => 'Unable to Debited User, Please try again later.']);
+            session()->flash('success', 'Unable to Debited User, Please try again later.');
+            $this->redirect(url()->previous());
+       }
+    }
+
+    public static function getTransactionTableByType($type, $id)
+    {
+        $transactionTables = [
+            'airtime'        =>  AirtimeTransaction::class,
+            'cable'          =>  CableTransaction::class,
+            'data'           =>  DataTransaction::class,
+            'electricity'    =>  ElectricityTransaction::class,
+            'result_checker' =>  ResultCheckerTransaction::class
+        ];
+
+        // Check if the provided type exists in the mapping
+        if (!isset($transactionTables[$type])) {
+            // If type is invalid, return an error message
+            throw new \InvalidArgumentException("Invalid transaction type: {$type}");
+        }
+
+        // Get the corresponding table name for the provided type
+        $tableName = $transactionTables[$type];
+
+        return  (new $tableName)->findOrFail($id);
     }
     
     public function render()
