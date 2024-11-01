@@ -60,6 +60,23 @@
                     <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-12">
                         <x-admin.dashboard-card title="Resellers" :data=$resellers_count icon="bi-people" />
                     </div>
+
+                    {{-- @foreach ($vendors as $vendor)
+                        @foreach ($vendor->balances as $balance)
+                        <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-12">
+                            <div class="card info-card sales-card" style="padding-bottom: 0px !important;">
+                                <div class="card-body" style="display: inline !important">
+                                    <h5 class="card-title" style="margin-top: 10px !important; padding: 0px !important;">{{ $vendor->name }}<span>| Yesterday</span></h5>
+                                    
+                                    <div style="margin: 0 !important; padding: 0px !important;">
+                                        <p class="m-0 p-0">Starting Date: {{ number_format($balance->starting_balance), 2 }}</p>
+                                        <p class="m-0 p-0">Closing Date: {{ number_format($balance->closing_balance), 2 }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    @endforeach --}}
                 </div>
             </div>
         </div>
@@ -80,30 +97,76 @@
             <!-- Card 1 -->
             <div class="col-md-6 mb-4">
                 <div class="card card-custom">
-                    <div class="card-header">Postranet</div>
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            <div>Postranet</div>
+                            <div><a class="" href="{{ route('admin.api.vendor.account') }}">More</a></div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <span class="vendor-name">Balance</span>
                         <span class="balance">NGN {{$postranetBlance}}</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <h6>Starting:</h6>
+                            <h6>₦{{ number_format(optional($vendors->firstWhere('name', 'POSTRANET')?->balances()->whereDate('date', \Carbon\Carbon::yesterday())->first())->starting_balance, 2) ?? 'N/A' }}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6>Closing:</h6>
+                            <h6>₦{{ number_format(optional($vendors->firstWhere('name', 'POSTRANET')?->balances()->whereDate('date', \Carbon\Carbon::yesterday())->first())->closing_balance, 2 ) ?? 'N/A' }}</h6>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- Card 2 -->
             <div class="col-md-6 mb-4">
                 <div class="card card-custom">
-                    <div class="card-header">Gladtidings</div>
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            <div>Gladtidings</div>
+                            <div><a class="" href="{{ route('admin.api.vendor.account') }}">More</a></div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <span class="vendor-name">Balance</span>
                         <span class="balance">NGN {{$gladBalance}}</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <h6>Starting:</h6>
+                            <h6>₦{{ number_format(optional($vendors->firstWhere('name', 'GLADTIDINGSDATA')?->balances()->whereDate('date', \Carbon\Carbon::yesterday())->first())->starting_balance, 2) ?? 'N/A' }}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6>Closing:</h6>
+                            <h6>₦{{ number_format(optional($vendors->firstWhere('name', 'GLADTIDINGSDATA')?->balances()->whereDate('date', \Carbon\Carbon::yesterday())->first())->closing_balance, 2 ) ?? 'N/A' }}</h6>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- Card 3 -->
             <div class="col-md-6 mb-4">
                 <div class="card card-custom">
-                    <div class="card-header">VTPass</div>
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between">
+                            <div>VTPass</div>
+                            <div><a class="" href="{{ route('admin.api.vendor.account') }}">More</a></div>
+                        </div>
+                    </div>
                     <div class="card-body">
                         <span class="vendor-name">Balance</span>
                         <span class="balance">NGN {{$vtBalance}}</span>
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <h6>Starting:</h6>
+                            <h6>₦{{ number_format(optional($vendors->firstWhere('name', 'VTPASS')?->balances()->whereDate('date', \Carbon\Carbon::yesterday())->first())->starting_balance, 2) ?? 'N/A' }}</h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6>Closing:</h6>
+                            <h6>₦{{ number_format(optional($vendors->firstWhere('name', 'VTPASS')?->balances()->whereDate('date', \Carbon\Carbon::yesterday())->first())->closing_balance, 2) ?? 'N/A' }}</h6>
+                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -149,6 +212,10 @@
             <li class="list-group-item">
               <a href="{{route('admin.api.vendor')}}" class="text-decoration-none text-primary">Manage Vendor APIs</a>
               <p class="mb-0 small text-muted">Manage API of our vendors.</p>
+            </li>
+            <li class="list-group-item">
+              <a href="{{route('admin.api.vendor.account')}}" class="text-decoration-none text-primary">Manage Vendor Account APIs</a>
+              <p class="mb-0 small text-muted">Manage Vendors Account.</p>
             </li>
             <li class="list-group-item">
               <a href="{{route('admin.api.payment')}}" class="text-decoration-none text-primary">Payment Gateway APIs</a>

@@ -76,6 +76,7 @@
     <x-admin.dropdown title="APIs" icon="bx-code-curly">
       @can('view vendor api')
       <x-admin.dropdown-item title="Vendors" link="{{ route('admin.api.vendor') }}" />
+      <x-admin.dropdown-item title="Vendors Account" link="{{ route('admin.api.vendor.account') }}" />
       @endcan
       @can('view payment api')
       <x-admin.dropdown-item title="Payment Gateway" link="{{ route('admin.api.payment') }}" />

@@ -73,6 +73,7 @@ class Dashboard extends Component
             'electricity_sale'      =>    ElectricityTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
             'resellers_count'       =>    User::whereUserLevel('reseller')->count(),
             'result_checker_count'  =>    ResultCheckerTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
+            'vendors'               =>    Vendor::with('balances')->get()
         ]);
     }
 }
