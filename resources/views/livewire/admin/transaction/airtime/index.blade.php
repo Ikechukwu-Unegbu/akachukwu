@@ -22,7 +22,7 @@
                         @forelse ($airtime_transactions as $airtime_transaction)
                             <tr>
                                 <th scope="row">{{ $loop->index+1 }}</th>
-                                <td>{{ $airtime_transaction->user->name }}</td>
+                                <td> <a  href="{{route('admin.hr.user.show', [$airtime_transaction->user->username])}}">{{ $airtime_transaction->user->username }}</a> </td>
                                 <td>{{ $airtime_transaction->mobile_number }}</td>
                                 <td>{{ $airtime_transaction->network_name ?? '' }}</td>
                                 <td>₦{{ $airtime_transaction->amount }}</td>

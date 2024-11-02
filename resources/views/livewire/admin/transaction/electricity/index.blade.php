@@ -22,7 +22,7 @@
                         @forelse ($electricity_transactions as $electricity_transaction)
                             <tr>
                                 <th scope="row">{{ $loop->index+1 }}</th>
-                                <td>{{ $electricity_transaction->user->name }}</td>
+                                <td> <a  href="{{route('admin.hr.user.show', [$electricity_transaction->user->username])}}">{{ $electricity_transaction->user->username }}</a> </td>
                                 <td>{{ $electricity_transaction->meter_number }} - (<small>{{ $electricity_transaction->meter_type_name }}</small>)</td>
                                 <td>{{ $electricity_transaction->disco_name }}</td>
                                 <td>₦{{ $electricity_transaction->amount }}</td>

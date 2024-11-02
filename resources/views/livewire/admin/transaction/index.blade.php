@@ -81,7 +81,7 @@
                                         {{ $loop->index + $transactions->firstItem() }}
                                     @endif
                                 </th>
-                                <td>{{ $transaction->user_name }}</td>
+                                <td> <a href="{{route('admin.hr.user.show', [$transaction->user_name])}}">{{ $transaction->user_name }}</a> </td>
                                 <td>₦{{ $transaction->amount }}</td>
                                 <td>{{ Str::title($transaction->utility) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</td>
