@@ -2,17 +2,18 @@
 
 namespace App\Models\Data;
 
-use Illuminate\Support\Str;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
+use App\Traits\TransactionStatusTrait;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DataTransaction extends Model
 {
-    use LogsActivity; 
+    use LogsActivity, TransactionStatusTrait; 
     protected $guarded = [];
 
     protected $fillable = [
@@ -118,19 +119,5 @@ class DataTransaction extends Model
                             ->orWhere('email', 'LIKE', "%{$search}%");
                 });
         });
-    }
-
-    public function refund()
-    {
-        $this->status = 2;
-        $this->vendor_response = 'pending';
-        $this->save();
-    }
-
-    public function debit()
-    {
-        $this->status = 0;
-        $this->vendor_response = 'failed';
-        $this->save();
     }
 }

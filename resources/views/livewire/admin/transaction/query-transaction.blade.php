@@ -70,7 +70,7 @@
                                                     </ul>
                                                 </div>
                                                 <div class="modal-footer d-flex justify-content-between">
-                                                    @if (is_array($decodedResponse))
+                                                    @if (!$loader)
                                                     <button 
                                                         type="button"
                                                         class="btn btn-warning"
