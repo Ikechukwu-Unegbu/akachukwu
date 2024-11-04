@@ -38,52 +38,97 @@ class RecordVendorBalances extends Command
     public function handle() 
     {
         try {
-            foreach (Vendor::get() as $vendor) 
-                $this->handleVendorBalance($vendor);
+            foreach (Vendor::get() as $vendor) {
+                $this->info("Handling balance for vendor: {$vendor->name}");
+
+                $this->authenticateSuperAdmin();
+                $balance = $this->getVendorBalance($vendor);
+
+                if ($balance !== null) {
+                    $this->recordStartingBalance($vendor, $balance);
+                    $this->recordClosingBalance($vendor, $balance);
+                    $this->info("Vendor balance recorded successfully for: {$vendor->name}");
+                    $this->info("------------------------------------------------------"  . PHP_EOL);
+                } else {
+                    $this->info("Failed to retrieve balance for vendor: {$vendor->name}" . PHP_EOL);
+                }
+            }
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
+            $this->info("An error occurred: {$th->getMessage()}");
+        } finally {
+            $this->logoutSuperAdmin();
         }
     }
 
-    protected function handleVendorBalance($vendor)
+    protected function authenticateSuperAdmin()
     {
-        $today = Carbon::today();
         $userId = User::where('role', 'superadmin')->first()->id;
         auth()->loginUsingId($userId);
+        $this->info("Super Admin authenticated successfully.");
+    }
 
-        $venderServiceFactory = $this->venderServiceFactory::make($vendor);
-        $getBalance = $venderServiceFactory::getWalletBalance();
+    protected function logoutSuperAdmin()
+    {
+        auth()->logout();
+        $this->info("Super Admin logged out successfully.");
+    }
 
-        if (isset($getBalance->status)) {
-            if ($getBalance->status) {
-                // Record starting balance
-                $vendor_wallet_balance = $fixedValue = str_replace(',', '', $getBalance->response);
-                $startingBalance = VendorBalance::where('vendor_id', $vendor->id)->where('date', $today)->first();
+    protected function getVendorBalance($vendor)
+    {
+        $vendorServiceFactory = $this->venderServiceFactory::make($vendor);
+        $balanceResponse = $vendorServiceFactory::getWalletBalance();
 
-                if (!$startingBalance) {
-                    VendorBalance::create([
-                        'vendor_id' => $vendor->id,
-                        'date' => $today,
-                        'starting_balance' => $vendor_wallet_balance,
-                        'closing_balance' => 0.00,
-                    ]);
-                }
-                // Record closing balance
-                $vendor->refresh();
-                $closingBalance = VendorBalance::where('vendor_id', $vendor->id)->where('date', $today)->first();
-                if ($closingBalance) {
-                    $closingBalance->update([
-                        'closing_balance' => $vendor_wallet_balance,
-                    ]);
-                } else {
-                    VendorBalance::create([
-                        'vendor_id' => $vendor->id,
-                        'date' => $today,
-                        'closing_balance' => $vendor_wallet_balance,
-                    ]);
-                }
-            }
+        if (isset($balanceResponse->status) && $balanceResponse->status) {
+            $this->info("Retrieved balance for vendor: {$vendor->name}");
+            return str_replace(',', '', $balanceResponse->response);
         }
-        $this->info('Vendor balance recorded successfully.');
+
+        $this->info("Balance status is not successful for vendor: {$vendor->name}");
+        return null;
+    }
+
+    protected function recordStartingBalance($vendor, $vendorWalletBalance)
+    {
+        $today = Carbon::today();
+        $existingBalance = VendorBalance::where('vendor_id', $vendor->id)
+            ->where('date', $today)
+            ->first();
+
+        if (!$existingBalance) {
+            VendorBalance::create([
+                'vendor_id' => $vendor->id,
+                'date' => $today,
+                'starting_balance' => $vendorWalletBalance,
+                'closing_balance' => 0.00,
+            ]);
+            $this->info("Starting balance recorded for vendor: {$vendor->name}");
+        } else {
+            $this->info("Starting balance already exists for vendor: {$vendor->name}");
+        }
+    }
+
+    protected function recordClosingBalance($vendor, $vendorWalletBalance)
+    {
+        $today = Carbon::today();
+        $vendor->refresh();
+        
+        $existingBalance = VendorBalance::where('vendor_id', $vendor->id)
+            ->where('date', $today)
+            ->first();
+
+        if ($existingBalance) {
+            $existingBalance->update([
+                'closing_balance' => $vendorWalletBalance,
+            ]);
+            $this->info("Closing balance updated for vendor: {$vendor->name}");
+        } else {
+            VendorBalance::create([
+                'vendor_id' => $vendor->id,
+                'date' => $today,
+                'closing_balance' => $vendorWalletBalance,
+            ]);
+            $this->info("Closing balance recorded for vendor: {$vendor->name}");
+        }
     }
 }
