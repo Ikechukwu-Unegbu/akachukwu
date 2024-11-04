@@ -40,7 +40,7 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Query Vendor</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" x-on:click="$wire.handleModal" aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body"> 
                                                     @if ($loader)
@@ -48,6 +48,8 @@
                                                             <i class="bx bx-loader-circle bx-spin" style="font-size: 40px"></i>
                                                             <p>
                                                                 Quering Transaction...
+                                                                <br />
+                                                                <small>Please Wait</small>
                                                             </p>
                                                         </div>
                                                     @endif
@@ -67,7 +69,25 @@
                                                         @endif
                                                     </ul>
                                                 </div>
-                                                <div class="modal-footer">
+                                                <div class="modal-footer d-flex justify-content-between">
+                                                    @if (!$loader)
+                                                    <button 
+                                                        type="button"
+                                                        class="btn btn-warning"
+                                                        x-data
+                                                        x-on:click='if (confirm("Are you sure you want to refund this user?")) { $wire.handleRefund(); }'
+                                                    >
+                                                        Refund
+                                                    </button>
+                                                    <button 
+                                                        type="button"
+                                                        x-data
+                                                        x-on:click='if (confirm("Are you sure you want to debit this user?")) { $wire.handleDebit(); }'
+                                                        class="btn btn-danger" 
+                                                    >
+                                                        Debit
+                                                    </button>
+                                                    @endif
                                                     <button type="button"  x-on:click="$wire.handleModal"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                                 </div>
                                             </div>

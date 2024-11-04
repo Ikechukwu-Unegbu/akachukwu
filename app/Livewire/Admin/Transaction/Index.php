@@ -131,7 +131,7 @@ class Index extends Component
                 SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM vastel_transactions
             ) as transactions
         '))->join('users', 'transactions.user_id', '=', 'users.id')
-            ->select('transactions.*', 'users.name as user_name')
+            ->select('transactions.*', 'users.username as user_name')
             ->when($this->search, function ($query, $search) {
                 $query->where('transaction_id', 'LIKE', "%$search%")
                     ->orWhere('users.name', 'LIKE', "%$search%")

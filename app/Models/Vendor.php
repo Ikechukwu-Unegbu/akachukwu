@@ -49,4 +49,9 @@ class Vendor extends DataVendor
     {
         return $this->hasMany(Electricity::class, 'vendor_id');
     }
+
+    public function balances()
+    {
+        return $this->hasMany(VendorBalance::class, 'vendor_id');
+    }
 }

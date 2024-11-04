@@ -6,15 +6,16 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
+use Spatie\Activitylog\LogOptions;
+use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
 
 class AirtimeTransaction extends Model
 {
-    use LogsActivity; 
+    use LogsActivity, TransactionStatusTrait; 
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',
@@ -93,11 +94,5 @@ class AirtimeTransaction extends Model
                             ->orWhere('email', 'LIKE', "%{$search}%");
                 });
         });
-    }
-
-    public function refund()
-    {
-        $this->status = 2;
-        $this->save();
     }
 }

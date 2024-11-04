@@ -22,7 +22,7 @@
                         @forelse ($result_checker_transactions as $result_checker)
                             <tr>
                                 <th scope="row">{{ $loop->index+1 }}</th>
-                                <td>{{ $result_checker->user->name }}</td>
+                                <td> <a  href="{{route('admin.hr.user.show', [$result_checker->user->username])}}">{{ $result_checker->user->username }}</a> </td>
                                 <td>{{ $result_checker->exam_name }}</td>
                                 <td>{{ $result_checker->quantity }}</td>
                                 <td>₦{{ $result_checker->amount }}</td>
