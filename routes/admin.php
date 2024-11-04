@@ -109,6 +109,7 @@ Route::group(['prefix' => 'admin'], function () {
         ## API Routes
         ## API - Vendor
         Route::get('api/vendors', App\Livewire\Admin\Api\Vendor\Index::class)->name('admin.api.vendor');
+        Route::get('api/vendors/account', App\Livewire\Admin\Api\Vendor\Account::class)->name('admin.api.vendor.account');
         Route::get('api/vendor/{vendor:id}/show', App\Livewire\Admin\Api\Vendor\Show::class)->name('admin.api.vendor.show');
         Route::get('api/vendor/{vendor:id}/edit', App\Livewire\Admin\Api\Vendor\Edit::class)->name('admin.api.vendor.edit');
 
