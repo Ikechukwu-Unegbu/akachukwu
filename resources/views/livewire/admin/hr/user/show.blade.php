@@ -28,7 +28,45 @@
                     @endif 
                 </div>
                 <div class="card">
-                    <h1>Another one</h1>
+                    <ol class="list-group list-group-numbered">
+                    @foreach ($user->virtualAccounts as $accounts)
+                        <li class="list-group-item d-flex justify-content-between align-items-start">
+                            <div class="ms-2 me-auto">
+                                <div class="fw-bold">{{$accounts->account_number}}</div>
+                                {{$accounts->account_name}} - {{$accounts->bank_name}}
+                                <small style="font-style: bold;" class="fw-bold">{{$accounts->gateway->name}}</small>
+                            </div>
+                            <!-- Modal Trigger with unique ID per account -->
+                            <span class="badge text-xs text-bg-primary rounded-pill"
+                                data-bs-toggle="modal" 
+                                data-bs-target="#confirmChangeModal{{$accounts->id}}">
+                                Change
+                            </span>
+                        </li>
+
+                        <!-- Unique Modal for each account -->
+                        <div class="modal fade" id="confirmChangeModal{{$accounts->id}}" tabindex="-1" aria-labelledby="confirmChangeModalLabel{{$accounts->id}}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="confirmChangeModalLabel{{$accounts->id}}">Confirm Account Change</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Are you sure you want to change the account <strong>{{$accounts->account_name}} | {{$accounts->account_number}}</strong> from {{$accounts->gateway->name}}?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-primary">Yes, Change</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+
+                    
+                     
+                    </ol>
                 </div>
             </div>
 
