@@ -27,6 +27,9 @@
                     </button>
                     @endif 
                 </div>
+                <div class="card">
+                    <h1>Another one</h1>
+                </div>
             </div>
 
             <div class="col-xl-8">

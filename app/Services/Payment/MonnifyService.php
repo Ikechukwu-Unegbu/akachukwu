@@ -20,6 +20,8 @@ use App\Models\Payment\MonnifyTransaction;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Payment\VirtualAccountServiceFactory;
 
+use function Laravel\Prompts\warning;
+
 class MonnifyService implements Payment
 {
 
@@ -331,6 +333,7 @@ class MonnifyService implements Payment
                     'error'    =>    "Invalid NIN.",
                     'message'  =>    "Service not available. Please try again later",
                 ];
+                Log::warning($response->body());
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
             $errorResponse = [
