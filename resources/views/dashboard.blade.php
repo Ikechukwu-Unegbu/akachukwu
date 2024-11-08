@@ -120,10 +120,12 @@
                 </div>
                 <!-- Modal body -->
                 <div class="p-6">
-                    <h5 class="text-sm font-medium text-gray-600">Virtual accounts</h5>
-                    <p class="mb-4 text-xs text-gray-500">Make a transfer to any of the accounts</p>
                     @php $count = 0 @endphp
-                    @foreach (auth()->user()->virtualAccounts()->get() as $key => $account)
+                    @forelse (auth()->user()->virtualAccounts()->get() as $key => $account)
+                        @if ($loop->first) 
+                        <h5 class="text-sm font-medium text-gray-600">Virtual accounts</h5>
+                        <p class="mb-4 text-xs text-gray-500">Make a transfer to any of the accounts</p> 
+                        @endif
                         <!-- Account {{ ++$count }} -->
                         <div class="flex items-center justify-between p-4 mb-3 bg-gray-100 rounded-lg">
                             <div>
@@ -134,7 +136,11 @@
                             </div>
                             <button type="button" class="text-indigo-600 text-sm font-medium copy-button" data-target="account-number-{{ $count }}">Copy</button>
                         </div>
-                    @endforeach
+                        @empty
+                            <h5 class="text-sm font-medium text-gray-600">Get Started with Virtual Accounts</h5>
+                            <p class="mb-4 text-xs text-gray-500">Complete your KYC to access virtual accounts for quick and easy transfers.</p> 
+                            <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
+                    @endforelse
 
                     <div class="flex items-center justify-center py-4">
                         <span class="text-sm text-gray-500">OR</span>
