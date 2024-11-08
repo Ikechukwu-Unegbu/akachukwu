@@ -62,15 +62,20 @@
                             <button type="button" class="text-indigo-600 text-sm font-medium copy-button" data-target="account-number-{{ $count }}">Copy</button>
                         </div>
                     @endforeach
+                </div>                
+                @else
+                <div class="mt-5 pt-5">
+                    <h5 class="font-medium">Get Started with Virtual Accounts</h5>
+                    <p class="mb-4">Complete your KYC to access virtual accounts for quick and easy transfers.</p> 
+                    <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
                 </div>
-            @else
-            <div class="mt-5 pt-5">
-                <h5 class="mb-4 font-bold">Secure Your Transactions with a Static Account</h5>
-                
-                <a href="{{ route('settings.kyc') }}" class="w-full text-center bg-vastel_blue hover:bg-blue-700 focus:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block">            
-                    Create Static Account
-                </a>
-            </div>
+                {{-- <div class="mt-5 pt-5">
+                    <h5 class="mb-4 font-bold">Secure Your Transactions with a Static Account</h5>
+                    
+                    <a href="{{ route('settings.kyc') }}" class="w-full text-center bg-vastel_blue hover:bg-blue-700 focus:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-block">            
+                        Create Static Account
+                    </a>
+                </div> --}}
             @endif
 
             {{-- @if (count($accounts))
