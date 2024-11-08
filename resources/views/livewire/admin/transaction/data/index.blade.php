@@ -30,7 +30,7 @@
                                 <td>{{ $data_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $data_transaction->status === 1 ? 'success' : ($data_transaction->status === 0 ? 'danger' : 'warning') }}">
-                                        {{ $data_transaction->status === 1 ? 'Successful' : ($data_transaction->status === 0 ? 'Failed' : 'Refunded') }}</span>
+                                        {{ Str::title($data_transaction->vendor_status) }}</span>
                                 </td>
                                 <td>
                                     <div class="filter">

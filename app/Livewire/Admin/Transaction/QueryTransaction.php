@@ -137,15 +137,15 @@ class QueryTransaction extends Component
     {
         $query = DB::table(DB::raw('
             (
-                SELECT id, transaction_id, user_id, amount, status, "data" as type, created_at FROM data_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, "data" as type, created_at FROM data_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, "airtime" as type, created_at FROM airtime_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, "airtime" as type, created_at FROM airtime_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, "cable" as type, created_at FROM cable_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, "cable" as type, created_at FROM cable_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, "electricity" as type, created_at FROM electricity_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, "electricity" as type, created_at FROM electricity_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, "education" as type, created_at FROM result_checker_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, "education" as type, created_at FROM result_checker_transactions
             ) as transactions
         '))->join('users', 'transactions.user_id', '=', 'users.id')
             ->select('transactions.*', 'users.name as user_name')

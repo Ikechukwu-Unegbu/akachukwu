@@ -48,7 +48,9 @@
                 </div>
                 <div class="text-right">
                     <p class="font-bold text-{{ $transaction->status === 1 ? 'green' : ($transaction->status === 0 ? 'red' : 'yellow') }}-600">₦{{ number_format($transaction->amount, 2) }}</p>
-                    <span class="text-xs text-{{ $transaction->status === 1 ? 'green' : ($transaction->status === 0 ? 'red' : 'yellow') }}-600 bg-{{ $transaction->status === 1 ? 'green' : ($transaction->status === 0 ? 'red' : 'yellow') }}-100 px-2 py-1 rounded-full">{{ $transaction->status === 1 ? 'Successful' : ($transaction->status === 0 ? 'Failed' : 'Refunded') }}</span>
+                    <span class="text-xs text-{{ $transaction->status === 1 ? 'green' : ($transaction->status === 0 ? 'red' : 'yellow') }}-600 bg-{{ $transaction->status === 1 ? 'green' : ($transaction->status === 0 ? 'red' : 'yellow') }}-100 px-2 py-1 rounded-full">
+                    {{ Str::title($transaction->vendor_status) }}    
+                    </span>
                 </div>
             </div>
 

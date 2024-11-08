@@ -240,61 +240,30 @@ class User extends Authenticatable
 
         return true;
     }
-
-    // public function walletHistories()
-    // {
-    //     $transactions = DB::table('flutterwave_transactions')
-    //         ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'flutter' as gateway_type"))
-    //         ->where('user_id', $this->id)
-    //         ->latest();
-
-    //     $transactions->union(DB::table('paystack_transactions')
-    //         ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'paystack' as gateway_type"))
-    //         ->where('user_id', $this->id))
-    //         ->latest();
-
-    //     $transactions->union(DB::table('monnify_transactions')
-    //         ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'monnify' as gateway_type"))
-    //         ->where('user_id', $this->id))
-    //         ->latest();
-
-    //     $transactions->union(DB::table('pay_vessel_transactions')
-    //         ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'pay vessel' as gateway_type"))
-    //         ->where('user_id', $this->id))
-    //         ->latest();
-        
-    //     $transactions->union(DB::table('vastel_transactions')
-    //     ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'Vastel' as gateway_type"))
-    //     ->where('user_id', $this->id))
-    //     ->latest();
-
-    //     return $transactions;
-    // }
-
     public function walletHistories()
     {
         $transactions = DB::table('flutterwave_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'flutter' as gateway_type"), DB::raw("NULL as type"))
+            ->select('id', 'reference_id', 'amount', 'status', 'api_status', 'created_at', DB::raw("'flutter' as gateway_type"), DB::raw("NULL as type"))
             ->where('user_id', $this->id)
             ->latest();
 
         $transactions->union(DB::table('paystack_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'paystack' as gateway_type"), DB::raw("NULL as type"))
+            ->select('id', 'reference_id', 'amount', 'status', 'api_status', 'created_at', DB::raw("'paystack' as gateway_type"), DB::raw("NULL as type"))
             ->where('user_id', $this->id))
             ->latest();
 
         $transactions->union(DB::table('monnify_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'monnify' as gateway_type"), DB::raw("NULL as type"))
+            ->select('id', 'reference_id', 'amount', 'status', 'api_status', 'created_at', DB::raw("'monnify' as gateway_type"), DB::raw("NULL as type"))
             ->where('user_id', $this->id))
             ->latest();
 
         $transactions->union(DB::table('pay_vessel_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'pay vessel' as gateway_type"), DB::raw("NULL as type"))
+            ->select('id', 'reference_id', 'amount', 'status', 'api_status', 'created_at', DB::raw("'pay vessel' as gateway_type"), DB::raw("NULL as type"))
             ->where('user_id', $this->id))
             ->latest();
         
         $transactions->union(DB::table('vastel_transactions')
-            ->select('id', 'reference_id', 'amount', 'status', 'created_at', DB::raw("'Vastel' as gateway_type"), 'type')
+            ->select('id', 'reference_id', 'amount', 'status', 'api_status', 'created_at', DB::raw("'Vastel' as gateway_type"), 'type')
             ->where('user_id', $this->id))
             ->latest();
 
@@ -340,25 +309,25 @@ class User extends Authenticatable
     {
         $query = DB::table(DB::raw('
             (
-                SELECT id, transaction_id, user_id, amount, status, mobile_number as subscribed_to, plan_network as plan_name, "Phone No." as type, "data" as utility, "fa-wifi" as icon, "Data Purchased" as title, created_at FROM data_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, mobile_number as subscribed_to, plan_network as plan_name, "Phone No." as type, "data" as utility, "fa-wifi" as icon, "Data Purchased" as title, created_at FROM data_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, mobile_number as subscribed_to, network_name as plan_name, "Phone No." as type, "airtime" as utility, "fa-mobile-alt" as icon, "Airtime Purchased" as title, created_at FROM airtime_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, mobile_number as subscribed_to, network_name as plan_name, "Phone No." as type, "airtime" as utility, "fa-mobile-alt" as icon, "Airtime Purchased" as title, created_at FROM airtime_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, smart_card_number as subscribed_to, cable_name as plan_name, "IUC" as type, "cable" as utility, "fa-tv" as icon, "Cable TV Purchased" as title, created_at FROM cable_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, smart_card_number as subscribed_to, cable_name as plan_name, "IUC" as type, "cable" as utility, "fa-tv" as icon, "Cable TV Purchased" as title, created_at FROM cable_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, meter_number as subscribed_to, disco_name as plan_name, "Meter No." as type, "electricity" as utility, "fa-bolt" as icon, "Electricity Purchased" as title, created_at FROM electricity_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, meter_number as subscribed_to, disco_name as plan_name, "Meter No." as type, "electricity" as utility, "fa-bolt" as icon, "Electricity Purchased" as title, created_at FROM electricity_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, quantity as subscribed_to, exam_name as plan_name, "QTY" as type, "education" as utility, "fa-credit-card" as icon, "E-PINS Purchased" as title, created_at FROM result_checker_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, quantity as subscribed_to, exam_name as plan_name, "QTY" as type, "education" as utility, "fa-credit-card" as icon, "E-PINS Purchased" as title, created_at FROM result_checker_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "flutterwave" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM flutterwave_transactions
+                SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "flutterwave" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM flutterwave_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "paystack" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM paystack_transactions
+                SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "paystack" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM paystack_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "monnify" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM monnify_transactions
+                SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "monnify" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM monnify_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM pay_vessel_transactions
+                SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM pay_vessel_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM vastel_transactions
+                SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM vastel_transactions
             ) as transactions
         '))->where('transactions.user_id', '=', $this->id)->orderBy('transactions.created_at', 'desc');
         

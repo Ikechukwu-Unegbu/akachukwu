@@ -143,7 +143,7 @@ class VTPassService
 
             if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
                 // Insufficient API Wallet Balance Error
-                self::$authUser->initiateRefund($amount, $transaction);
+                self::$authUser->initiatePending($amount, $transaction);
                 $errorResponse = [
                     'error'   => 'Insufficient Balance From API.',
                     'message' => "An error occurred during the Airtime request. Please try again later."
@@ -151,14 +151,18 @@ class VTPassService
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
-            if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "delivered") {
-
+            if (
+                isset($response->code) && 
+                isset($response->content->transactions->status) && 
+                $response->content->transactions->status === "delivered"
+            ) {
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
-                    'status'            =>    true,
                     'api_data_id'       =>    $response->content->transactions->transactionId,
                     'amount'            =>    $amount,
                 ]);
+
+                self::$authUser->initiateSuccess($amount, $transaction);
 
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
 
@@ -169,6 +173,7 @@ class VTPassService
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later.",
             ];
+            self::$authUser->initiatePending($amount, $transaction);
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
 
@@ -259,14 +264,13 @@ class VTPassService
                 isset($response->content->transactions->status) &&
                 $response->content->transactions->status === "delivered"
             ) {
-
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
-                    'status'            =>    true,
                     'plan_amount'       =>    $response->amount,
-                    'api_data_id'       =>    $response->content->transactions->transactionId,
-                    // 'api_response'      =>    $response->response_description ?? NULL
+                    'api_data_id'       =>    $response->content->transactions->transactionId
                 ]);
+
+                self::$authUser->initiateSuccess($amount, $transaction);
 
                 BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
 
@@ -277,7 +281,7 @@ class VTPassService
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
             ];
-
+            self::$authUser->initiatePending($amount, $transaction);
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
@@ -370,7 +374,7 @@ class VTPassService
                     'api_data_id'       =>    $response->content->transactions->transactionId
                     // 'api_response'      =>    $response->response_description ?? NULL
                 ]);
-
+                self::$authUser->initiateSuccess($amount, $transaction);
                 BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
@@ -380,10 +384,10 @@ class VTPassService
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
             ];
+            self::$authUser->initiatePending($amount, $transaction);
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
-            dd($th->getMessage());
             $errorResponse = [
                 'error'     =>  'network connection error',
                 'message'   =>  'Opps! Unable to make payment. Please check your network connection.'
@@ -502,6 +506,8 @@ class VTPassService
                     // 'api_response'      =>    $response->response_description ?? NULL
                 ]);
 
+                self::$authUser->initiateSuccess($amount, $transaction);
+
                 BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Cable subscription successful: {$transaction->cable_plan_name} for ₦{$transaction->amount} on {$transaction->customer_name} ({$transaction->smart_card_number}).");
@@ -510,6 +516,7 @@ class VTPassService
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
             ];
+            self::$authUser->initiatePending($amount, $transaction);
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
@@ -566,8 +573,12 @@ class VTPassService
             self::storeApiResponse($transaction, $response);
             self::$authUser->transaction($amount);
 
-            if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
-                self::$authUser->initiateRefund($amount, $transaction);
+            if (
+                isset($response->code) && 
+                isset($response->content->transactions->status) && 
+                $response->content->transactions->status === "failed"
+            ) {
+                self::$authUser->initiatePending($amount, $transaction);
                 $errorResponse = [
                     'error'     =>  'Insufficient Account Balance.',
                     'message'   =>  "An error occurred during e-pin request. Please try again later."
@@ -575,7 +586,11 @@ class VTPassService
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
-            if (isset($response->content->transactions) && $response->content->transactions->status === "delivered") {
+            if (
+                isset($response->content->transactions) && 
+                $response->content->transactions->status === "delivered"
+            ) {
+                
                 foreach ($response->cards as $card) {
                     $transaction->result_checker_pins()->create([
                         'serial' => $card->Serial,
@@ -583,11 +598,11 @@ class VTPassService
                     ]);
                 }                
                 $transaction->update([
-                    'balance_after'     =>    self::$authUser->getAccountBalance(),
-                    'api_data_id'       =>    $response->content->transactions->transactionId,
-                    // 'api_response'      =>    $response->purchased_code,
-                    'status'            =>    true,
+                    'balance_after' =>  self::$authUser->getAccountBalance(),
+                    'api_data_id'   =>  $response->content->transactions->transactionId
                 ]);
+
+                self::$authUser->initiateSuccess($amount, $transaction);
                 return ApiHelper::sendResponse($transaction, "Result Checker PIN purchase successful: {$transaction->exam_name} ($transaction->quantity QTY) ₦{$amount}.");
             }
 
@@ -595,6 +610,7 @@ class VTPassService
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform result checker PIN. Please try again later."
             ];
+            self::$authUser->initiatePending($amount, $transaction);
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             
         } catch (\Throwable $th) {

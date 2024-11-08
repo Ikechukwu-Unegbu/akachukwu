@@ -29,7 +29,7 @@
                                 <td>{{ $result_checker->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $result_checker->status === 1 ? 'success' : ($result_checker->status === 0 ? 'danger' : 'warning') }}">
-                                        {{ $result_checker->status === 1 ? 'Successful' : ($result_checker->status === 0 ? 'Failed' : 'Refunded') }}
+                                        {{ Str::title($result_checker->vendor_status) }}
                                     </span>                                
                                 </td>
                                 <td>

@@ -165,7 +165,12 @@
                     <li>
                         <a href="{{route('profile.edit')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                     </li>
-                 
+                    @if (Auth::user()->isImpersonating())
+                    <li>
+                        <a href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('stop-impersonate').submit()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Stop Impersonating</a>
+                        <form action="{{ route('impersonate.stop') }}" id="stop-impersonate" method="POST" class="hidden">@csrf</form>
+                    </li>
+                    @endif
                     </ul>
                 </div>
                 <!-- end of dropdown -->

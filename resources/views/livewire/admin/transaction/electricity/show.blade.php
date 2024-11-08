@@ -64,7 +64,7 @@
                             <div class="col-lg-3 col-md-4 label ">Status</div>
                             <div class="col-lg-9 col-md-8">
                                 <span class="badge bg-{{ $electricity->status === 1 ? 'success' : ($electricity->status === 0 ? 'danger' : 'warning') }}">
-                                    {{ $electricity->status === 1 ? 'Successful' : ($electricity->status === 0 ? 'Failed' : 'Refunded') }}
+                                    {{ Str::title($electricity->vendor_status) }}
                                 </span>                                    
                             </div>
                         </div>

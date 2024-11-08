@@ -29,7 +29,7 @@
                                 <td>{{ $airtime_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $airtime_transaction->status === 1 ? 'success' : ($airtime_transaction->status === 0 ? 'danger' : 'warning') }}">
-                                        {{ $airtime_transaction->status === 1 ? 'Successful' : ($airtime_transaction->status === 0 ? 'Failed' : 'Refunded') }}</span>
+                                        {{ Str::title($airtime_transaction->vendor_status) }}</span>
                                 </td>
                                 <td>
                                     <div class="filter">

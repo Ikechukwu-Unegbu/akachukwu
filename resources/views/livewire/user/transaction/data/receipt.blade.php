@@ -41,7 +41,7 @@
                 <li class="d-flex justify-content-between">
                     <div class="tm_list_title">Status:</div>
                     <div class="text-right tm_list_desc">
-                        {{ $data->status === 1 ? 'Successful' : ($data->status === 0 ? 'Failed' : 'Refunded') }}
+                        {{ Str::title($data->vendor_status) }}
                     </div>
                 </li>
                 

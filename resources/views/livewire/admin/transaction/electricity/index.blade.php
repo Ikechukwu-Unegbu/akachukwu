@@ -29,7 +29,7 @@
                                 <td>{{ $electricity_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $electricity_transaction->status === 1 ? 'success' : ($electricity_transaction->status === 0 ? 'danger' : 'warning') }}">
-                                        {{ $electricity_transaction->status === 1 ? 'Successful' : ($electricity_transaction->status === 0 ? 'Failed' : 'Refunded') }}
+                                        {{ Str::title($electricity_transaction->vendor_status) }}
                                     </span>
                                 </td>
                                 <td>
