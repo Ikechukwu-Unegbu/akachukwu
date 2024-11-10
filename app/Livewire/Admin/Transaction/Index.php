@@ -95,40 +95,27 @@ class Index extends Component
 
     public function render(Request $request)
     {
-        $query = DB::table(DB::raw(
-            // '(
-            //     SELECT id, transaction_id, user_id, amount, status, "data" as type, created_at FROM data_transactions
-            //     UNION ALL
-            //     SELECT id, transaction_id, user_id, amount, status, "airtime" as type, created_at FROM airtime_transactions
-            //     UNION ALL
-            //     SELECT id, transaction_id, user_id, amount, status, "cable" as type, created_at FROM cable_transactions
-            //     UNION ALL
-            //     SELECT id, transaction_id, user_id, amount, status, "electricity" as type, created_at FROM electricity_transactions
-            //     UNION ALL
-            //     SELECT id, transaction_id, user_id, amount, status, "education" as type, created_at FROM result_checker_transactions
-            // ) as transactions'
-
-            '
+        $query = DB::table(DB::raw('
             (
-                SELECT id, transaction_id, user_id, amount, status, mobile_number as subscribed_to, plan_network as plan_name, "Phone No." as type, "data" as utility, "fa-wifi" as icon, "Data Purchased" as title, created_at FROM data_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, mobile_number as subscribed_to, plan_network as plan_name, "Phone No." as type, "data" as utility, "fa-wifi" as icon, "Data Purchased" as title, created_at FROM data_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, mobile_number as subscribed_to, network_name as plan_name, "Phone No." as type, "airtime" as utility, "fa-mobile-alt" as icon, "Airtime Purchased" as title, created_at FROM airtime_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, mobile_number as subscribed_to, network_name as plan_name, "Phone No." as type, "airtime" as utility, "fa-mobile-alt" as icon, "Airtime Purchased" as title, created_at FROM airtime_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, smart_card_number as subscribed_to, cable_name as plan_name, "IUC" as type, "cable" as utility, "fa-tv" as icon, "Cable TV Purchased" as title, created_at FROM cable_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, smart_card_number as subscribed_to, cable_name as plan_name, "IUC" as type, "cable" as utility, "fa-tv" as icon, "Cable TV Purchased" as title, created_at FROM cable_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, meter_number as subscribed_to, disco_name as plan_name, "Meter No." as type, "electricity" as utility, "fa-bolt" as icon, "Electricity Purchased" as title, created_at FROM electricity_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, meter_number as subscribed_to, disco_name as plan_name, "Meter No." as type, "electricity" as utility, "fa-bolt" as icon, "Electricity Purchased" as title, created_at FROM electricity_transactions
                 UNION ALL
-                SELECT id, transaction_id, user_id, amount, status, quantity as subscribed_to, exam_name as plan_name, "QTY" as type, "education" as utility, "fa-credit-card" as icon, "E-PINS Purchased" as title, created_at FROM result_checker_transactions
+                SELECT id, transaction_id, user_id, amount, status, vendor_status, quantity as subscribed_to, exam_name as plan_name, "QTY" as type, "education" as utility, "fa-credit-card" as icon, "E-PINS Purchased" as title, created_at FROM result_checker_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "flutterwave" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM flutterwave_transactions
+                SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "flutterwave" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM flutterwave_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "paystack" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM paystack_transactions
+                SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "paystack" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM paystack_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "monnify" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM monnify_transactions
+                SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "monnify" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM monnify_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM pay_vessel_transactions
+                SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM pay_vessel_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM vastel_transactions
+                SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM vastel_transactions
             ) as transactions
         '))->join('users', 'transactions.user_id', '=', 'users.id')
             ->select('transactions.*', 'users.username as user_name')

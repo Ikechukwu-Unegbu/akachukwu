@@ -42,20 +42,14 @@
                 <x-admin.table>
                     <x-admin.table-header :headers="['#', 'Vendor', 'Date', 'Starting Balance', 'Closing Balance']" />
                     <x-admin.table-body>
-                        @forelse ($vendors as $key => $vendor)
-                            @forelse ($vendor->balances as $balance)
-                                <tr>
-                                    <td>{{ ++$key }}</td>
-                                    <td>{{ $vendor->name }}</td>
-                                    <td>{{ date('d M, Y', strtotime($balance->date)) }}</td>
-                                    <td>₦{{ number_format($balance->starting_balance, 2) }}</td>
-                                    <td>₦{{ number_format($balance->closing_balance, 2) }}</td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="5" class="text-center">No Records Found!</td>
-                                </tr>
-                            @endforelse
+                        @forelse ($vendor_balance as $balance)
+                            <tr>
+                                <td>{{ $loop->index+$vendor_balance->firstItem() }}</td>
+                                <td>{{ $balance->vendor->name }}</td>
+                                <td>{{ date('d M, Y', strtotime($balance->date)) }}</td>
+                                <td>₦{{ number_format($balance->starting_balance, 2) }}</td>
+                                <td>₦{{ number_format($balance->closing_balance, 2) }}</td>
+                            </tr>
                             @empty
                             <tr>
                                 <td colspan="5" class="text-center">No Records Found!</td>
@@ -63,6 +57,7 @@
                         @endforelse
                     </x-admin.table-body>
                 </x-admin.table>
+                <x-admin.paginate :paginate=$vendor_balance /> 
             </div>
         </div>
     </section>

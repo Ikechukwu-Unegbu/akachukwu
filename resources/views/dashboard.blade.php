@@ -82,7 +82,7 @@
                     <div class="text-right">
                         <p class="text-{{ $transaction->status === 1 ? 'green' : ($transaction->status === 0 ? 'red' : 'yellow') }}-500 font-semibold">
                             ₦{{ number_format($transaction->amount, 2) }}</p>
-                        <p class="text-sm text-gray-500">{{ $transaction->status === 1 ? 'Successful' : ($transaction->status === 0 ? 'Failed' : 'Refunded') }}</p>
+                        <p class="text-sm text-gray-500">{{ Str::title($transaction->vendor_status) }}</p>
                     </div>
                 </div>
                 @empty

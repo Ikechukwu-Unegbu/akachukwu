@@ -31,7 +31,8 @@
                                 <td>{{ $cable_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $cable_transaction->status === 1 ? 'success' : ($cable_transaction->status === 0 ? 'danger' : 'warning') }}">
-                                        {{ $cable_transaction->status === 1 ? 'Successful' : ($cable_transaction->status === 0 ? 'Failed' : 'Refunded') }}</span>
+                                        {{ Str::title($cable_transaction->vendor_status) }}
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="filter">
