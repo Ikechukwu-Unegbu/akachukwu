@@ -27,7 +27,7 @@ class ApiReferralService{
         $vastelTransaction->status = true;
         $vastelTransaction->description = 'referral withdrawal';
         $vastelTransaction->save();
-       
+        $vastelTransaction->success();
 
         $user = User::find(Auth::user()->id);
         $user->setAccountBalance($user->bonus_balance);

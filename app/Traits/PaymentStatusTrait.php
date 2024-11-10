@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Auth;
 
 trait PaymentStatusTrait
 {
-    protected const STATUS_SUCCESS = 'success';
+    protected const STATUS_SUCCESS = 'successful';
     protected const STATUS_PROCESSING = 'processing';
     protected const STATUS_FAILED = 'failed';
 
@@ -14,23 +14,22 @@ trait PaymentStatusTrait
     {
         parent::boot();
         static::creating(function ($model) {
-            $model->user_id = Auth::id();
             $model->status = 0;
-            $model->api_status = self::STATUS_PROCESSING;            
+            $model->api_status = self::STATUS_FAILED;            
         });
     }
 
-    public function processing()
+    public function failed()
     {
         $this->status = 0;
-        $this->api_status = 'processing';
+        $this->api_status = self::STATUS_FAILED;
         $this->save();
     }
 
     public function success()
     {
         $this->status = 1;
-        $this->api_status = 'successful';
+        $this->api_status = self::STATUS_SUCCESS;
         $this->save();
     }
 }

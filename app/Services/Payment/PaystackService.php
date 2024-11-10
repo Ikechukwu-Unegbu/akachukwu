@@ -30,8 +30,7 @@ class PaystackService implements Payment
             'amount'        => $amount,
             'currency'      => config('app.currency', 'NGN'),
             'redirect_url'  => $redirectURL,
-            'meta'          => json_encode($meta),
-            'api_status'    => 'processing'
+            'meta'          => json_encode($meta)
         ]);
 
         try {
@@ -71,6 +70,7 @@ class PaystackService implements Payment
     public function processPayment($request): bool
     {
         if (! $this->verifyTransaction($request->reference)) {
+            $transaction->failed();
             return false;
         }
 
@@ -86,7 +86,8 @@ class PaystackService implements Payment
             $updateAccountBalance = new AccountBalanceService(Auth::user());
             $updateAccountBalance->updateAccountBalance($transaction->amount);
 
-            $transaction->setStatus(true);
+            // $transaction->setStatus(true);
+            $transaction->success();
             return true;
         }
 

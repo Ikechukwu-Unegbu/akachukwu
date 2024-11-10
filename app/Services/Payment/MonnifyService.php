@@ -59,6 +59,7 @@ class MonnifyService implements Payment
         try {
 
             $transaction = MonnifyTransaction::create([
+                'user_id'       => $user->id,
                 'reference_id'  => $this->generateUniqueId(),
                 'amount'        => $amount,
                 'currency'      => config('app.currency', 'NGN'),
@@ -159,13 +160,15 @@ class MonnifyService implements Payment
         }
 
         if (!$this->verifyTransaction($transaction->trx_ref)) {
+            $transaction->failed();
             return false;
         }
 
         if (!$transaction->status) {
-            $transaction->setStatus(true);
+            // $transaction->setStatus(true);
             $accountBalance = new AccountBalanceService(Auth::user());
             $accountBalance->updateAccountBalance($transaction->amount);
+            $transaction->success();
             return true;
         }
 
@@ -414,9 +417,10 @@ class MonnifyService implements Payment
                         'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
                         'redirect_url'  => config('app.url'),
-                        'meta'          => json_encode($payload),
-                        'status'        => $paymentStatus == 'PAID' ? true : false
+                        'meta'          => json_encode($payload)
                     ]);
+                    
+                    $transaction->success();
 
                     $user->setAccountBalance($amountPaid);
 

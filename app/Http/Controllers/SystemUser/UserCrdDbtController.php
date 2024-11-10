@@ -42,6 +42,7 @@ class UserCrdDbtController extends Controller
             $vastelTransaction->currency = 'NGN';
             $vastelTransaction->status = true;
             $vastelTransaction->save();
+            $vastelTransaction->success();
 
             $user->setAccountBalance($validatedData['amount']);
             $user->notify(new AdminTopupNotification($validatedData));
@@ -63,6 +64,7 @@ class UserCrdDbtController extends Controller
             $vastelTransaction->currency = 'NGN';
             $vastelTransaction->status = true;
             $vastelTransaction->save();
+            $vastelTransaction->success();
             $user->notify(new FundDeductionNotification($validatedData));
 
         }

@@ -199,9 +199,10 @@ class PayVesselService
                         'user_id'       => $user->id,
                         'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
-                        'meta'          => json_encode($payload),
-                        'status'        => $paymentStatus == 'Success' ? true : false
+                        'meta'          => json_encode($payload)
                     ]);
+
+                    $transaction->success();
     
                     $user->setAccountBalance($amountPaid);
     

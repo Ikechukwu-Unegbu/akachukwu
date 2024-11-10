@@ -24,13 +24,12 @@ class FlutterwaveService implements Payment
     public function createPaymentIntent($amount, $redirectURL, $user, array $meta = null)
     {
         $transaction = Flutterwave::create([
-            'user_id'       =>  $user->id,
+            'user_id'       => $user->id,
             'reference_id'  => $this->generateUniqueId(),
             'amount'        => $amount,
             'currency'      => config('app.currency', 'NGN'),
             'redirect_url'  => $redirectURL,
-            'meta'          => json_encode($meta),
-            'api_status'    => 'processing'
+            'meta'          => json_encode($meta)
         ]);
 
         try {
@@ -111,6 +110,7 @@ class FlutterwaveService implements Payment
         }
 
         if (! $this->verifyTransaction($request->transaction_id)) {
+            $transaction->failed();
             return false;
         }
 
@@ -121,11 +121,12 @@ class FlutterwaveService implements Payment
         }
 
         if ($transaction->status != true) {
-            $transaction->setStatus(true);
+            // $transaction->setStatus(true);
             // auth()->user()->setAccountBalance($transaction->amount);
             $updateAccountBalance = new AccountBalanceService(Auth::user());
             $updateAccountBalance->updateAccountBalance($transaction->amount);
             $transaction->setTransactionId($request->transaction_id);
+            $transaction->success();
             return true;
         }
 
