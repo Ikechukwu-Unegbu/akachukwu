@@ -38,7 +38,7 @@
                                         </td>
                                         <td>
                                             <span class="badge bg-{{ $wallet_transaction->status ? 'success' : 'danger' }}">
-                                                {{ $wallet_transaction->status ? 'Successful' : 'Failed' }}
+                                                {{ Str::title($wallet_transaction->api_status) }}
                                                 @if($wallet_transaction->gateway_type==='Vastel' && $wallet_transaction->type == false)
                                                     <small class="text-xs">Debit</small>
                                                 @endif 

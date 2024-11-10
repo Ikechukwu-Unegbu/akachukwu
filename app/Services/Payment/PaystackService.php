@@ -70,6 +70,7 @@ class PaystackService implements Payment
     public function processPayment($request): bool
     {
         if (! $this->verifyTransaction($request->reference)) {
+            $transaction->failed();
             return false;
         }
 
@@ -85,7 +86,8 @@ class PaystackService implements Payment
             $updateAccountBalance = new AccountBalanceService(Auth::user());
             $updateAccountBalance->updateAccountBalance($transaction->amount);
 
-            $transaction->setStatus(true);
+            // $transaction->setStatus(true);
+            $transaction->success();
             return true;
         }
 

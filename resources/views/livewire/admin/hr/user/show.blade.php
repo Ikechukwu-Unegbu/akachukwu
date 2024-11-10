@@ -101,7 +101,7 @@
                                 </td>
                                 <td>
                                     <span class="badge bg-{{ $transaction->status === 1 ? 'success' : ($transaction->status === 0 ? 'danger' : 'warning') }}">
-                                        {{ $transaction->status === 1 ? 'Successful' : ($transaction->status === 0 ? 'Failed' : 'Refunded') }}
+                                        {{ Str::title($transaction->vendor_status) }}
                                     </span>
                                 </td>
                             </tr>
