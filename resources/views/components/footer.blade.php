@@ -24,6 +24,7 @@
             <h4 class="font-semibold mb-4">Company</h4>
             <ul>
                 <li><a href="{{route('pages.about')}}" class="hover:underline">About</a></li>
+                <li><a href="{{route('faq')}}" class="hover:underline">FAQ</a></li>
                 <li><a href="{{route('register')}}" class="hover:underline">Register</a></li>
             </ul>
         </div>

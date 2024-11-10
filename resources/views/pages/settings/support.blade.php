@@ -20,7 +20,7 @@
                     <i class="fas fa-envelope text-blue-600 text-2xl"></i>
                     <div>
                         <h3 class="text-gray-900 font-semibold">Email</h3>
-                        <p class="text-sm text-gray-500">support@vaste.io</p>
+                        <p class="text-sm text-gray-500">support@vastel.io</p>
                     </div>
                 </div>
                 <i class="fas fa-chevron-right text-gray-500"></i>
@@ -32,15 +32,19 @@
                     <i class="fas fa-phone-alt text-blue-600 text-2xl"></i>
                     <div>
                         <h3 class="text-gray-900 font-semibold">Phone</h3>
-                        <p class="text-sm text-gray-500">08123456789</p>
+                        <p class="text-sm text-gray-500">
+                            {{$settings->phone1}}{{ $settings->phone1 && $settings->phone2 ? ', ' : '' }}{{$settings->phone2}}
+                        </p>
+
                     </div>
                 </div>
                 <i class="fas fa-chevron-right text-gray-500"></i>
             </li>
 
+
             <!-- Live Chat Option -->
             <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div class="flex items-center space-x-4">
+                <div  id="triggerZohoChat"  class="flex items-center space-x-4">
                     <i class="fas fa-comments text-blue-600 text-2xl"></i>
                     <div>
                         <h3 class="text-gray-900 font-semibold">Live Chat</h3>
@@ -50,4 +54,15 @@
             </li>
         </ul>
     </div>
+
+    <script>
+        document.getElementById("triggerZohoChat").addEventListener("click", function() {
+    if (typeof $zoho !== "undefined" && $zoho.salesiq) {
+        $zoho.salesiq.chat.start();  // Opens the chat window
+    } else {
+        console.error("Zoho SalesIQ is not loaded");
+    }
+});
+
+    </script>
 @endsection

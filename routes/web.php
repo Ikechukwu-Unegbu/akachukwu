@@ -34,7 +34,7 @@ Route::middleware(['testing'])->group(function () {
     Route::get('/privacy-policy', [PagesController::class, 'privacy_policy'])->name('privacy');
     Route::get('/refund-policy', [PagesController::class, 'refund_policy'])->name('refund');
     Route::get('/terms', [PagesController::class, 'terms'])->name('terms');
-    Route::get('/faq', [PagesController::class, 'faq'])->name('terms');
+    Route::get('/faq', [PagesController::class, 'faq'])->name('faq');
     Route::get('/gen', [TestController::class, 'gen']);
     Route::get('settings/support', [SettingsController::class, 'support'])->name('settings.support');
     Route::view('/about', 'pages.about')->name('pages.about');
