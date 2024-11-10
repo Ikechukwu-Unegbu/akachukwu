@@ -123,6 +123,15 @@
                     <i class="fas fa-sign-out-alt text-xl"></i>
                     <span class=" hidden lg:inline">Logout</span>
                 </a>
+                @if (Auth::user()->isImpersonating())
+                <a href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('impersonating').submit();" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                    <form id="impersonating" action="{{ route('impersonate.stop') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                    <i class="fas fa-stop-circle text-xl"></i>
+                    <span class="ml-2 hidden lg:inline">Stop Impersonating</span>
+                </a>
+                @endif
             </div>
         </nav>
 

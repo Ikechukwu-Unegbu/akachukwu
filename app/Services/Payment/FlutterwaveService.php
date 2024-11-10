@@ -29,7 +29,8 @@ class FlutterwaveService implements Payment
             'amount'        => $amount,
             'currency'      => config('app.currency', 'NGN'),
             'redirect_url'  => $redirectURL,
-            'meta'          => json_encode($meta)
+            'meta'          => json_encode($meta),
+            'api_status'    => 'processing'
         ]);
 
         try {

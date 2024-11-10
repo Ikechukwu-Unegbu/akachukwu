@@ -6,9 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
+use App\Traits\PaymentStatusTrait;
 
 class Flutterwave extends Model
 {
+    use PaymentStatusTrait;
+    
     protected $table = 'flutterwave_transactions';
     protected $guarded = [];
 

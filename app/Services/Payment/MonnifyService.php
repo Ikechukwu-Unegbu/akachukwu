@@ -59,7 +59,6 @@ class MonnifyService implements Payment
         try {
 
             $transaction = MonnifyTransaction::create([
-                'user_id'       =>  $user->id,
                 'reference_id'  => $this->generateUniqueId(),
                 'amount'        => $amount,
                 'currency'      => config('app.currency', 'NGN'),
