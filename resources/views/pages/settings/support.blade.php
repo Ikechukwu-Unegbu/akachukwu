@@ -2,7 +2,7 @@
 @section('body')
     <!-- Back Button -->
     <div class="max-w-7xl mx-auto py-6 px-4">
-        <a href="{{ route('settings.index') }}" class="text-blue-600 text-sm font-medium flex items-center">
+        <a href="{{ route('settings.index') }}" class="text-vastel_blue text-sm font-medium flex items-center">
             <i class="fas fa-arrow-left mr-2"></i> Back
         </a>
     </div>
@@ -17,7 +17,7 @@
             <!-- Email Option -->
             <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div class="flex items-center space-x-4">
-                    <i class="fas fa-envelope text-blue-600 text-2xl"></i>
+                    <i class="fas fa-envelope text-vastel_blue text-2xl"></i>
                     <div>
                         <h3 class="text-gray-900 font-semibold">Email</h3>
                         <p class="text-sm text-gray-500">support@vastel.io</p>
@@ -29,7 +29,7 @@
             <!-- Phone Option -->
             <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div class="flex items-center space-x-4">
-                    <i class="fas fa-phone-alt text-blue-600 text-2xl"></i>
+                    <i class="fas fa-phone-alt text-vastel_blue text-2xl"></i>
                     <div>
                         <h3 class="text-gray-900 font-semibold">Phone</h3>
                         <p class="text-sm text-gray-500">
@@ -45,7 +45,7 @@
             <!-- Live Chat Option -->
             <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                 <div  id="triggerZohoChat"  class="flex items-center space-x-4">
-                    <i class="fas fa-comments text-blue-600 text-2xl"></i>
+                    <i class="fas fa-comments text-vastel_blue text-2xl"></i>
                     <div>
                         <h3 class="text-gray-900 font-semibold">Live Chat</h3>
                     </div>
