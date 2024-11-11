@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Blog\Category;
 use Illuminate\Http\Request;
 
 class PagesController extends Controller
@@ -22,5 +23,13 @@ class PagesController extends Controller
         return view('pages.policy.terms');
     }
 
+    public function faq()
+    {
+        $faqCategories = Category::where('type', 'faq')
+                ->with('posts')
+                ->get();
+                // dd($faqCategories);
+        return view('pages.faq')->with('categories', $faqCategories);
+    }
     
 }

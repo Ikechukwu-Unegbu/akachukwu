@@ -208,28 +208,32 @@
         </button>
 
         <nav class="flex flex-col text-blue-800 space-y-2 p-4">
-            <a href="/" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="/" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fas fa-home"></i>
                 <span>Home</span>   
             </a>
         
-            <a href="{{route('services')}}" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="{{route('services')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fa-solid fa-cubes-stacked"></i>
                 <span>Services</span>
             </a>
         
-            <a href="{{route('dashboard')}}" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="{{route('dashboard')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
 
-            <a href="{{route('settings.index')}}" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="{{route('settings.index')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </a>
 
+            <a href="{{route('faq')}}" class="flex items-center space-x-2 hover:vastel_blue">
+            <i class="fa-solid fa-circle-question"></i>
+                <span>FAQ</span>
+            </a>
 
-            <a href="{{route('pages.about')}}" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="{{route('pages.about')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fa-solid fa-address-card"></i>
                 <span>About</span>
             </a>
@@ -246,7 +250,7 @@
             <li>
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
-                    <button class="bg-vastel_blue text-white py-2 rounded hover:bg-blue-600 w-full text-left">Logout</button>
+                    <button class="bg-vastel_blue text-white pl-4 py-2 rounded hover:bg-blue-600 w-full text-left">Logout</button>
                 </form>
             </li>
             @endguest

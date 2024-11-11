@@ -47,19 +47,19 @@
 
                             <!-- Category (Visible for both Blog and FAQ) -->
                             <div class="mb-3" id="categories-field">
-                                <label class="form-label">Categories</label>
-                                <div>
-                                    @foreach($categories as $category)
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="category_{{ $category->id }}" name="category_id[]" value="{{ $category->id }}">
-                                        <label class="form-check-label" for="category_{{ $category->id }}">
-                                            {{ $category->name }}
-                                        </label>
-                                    </div>
-                                    @endforeach
-                                </div>
-                               
-                            </div>
+    <label class="form-label">Categories</label>
+    <div>
+        @foreach($categories as $category)
+        <div class="form-check">
+            <input class="form-check-input" type="radio" id="category_{{ $category->id }}" name="category_id" value="{{ $category->id }}">
+            <label class="form-check-label" for="category_{{ $category->id }}">
+                {{ $category->name }}
+            </label>
+        </div>
+        @endforeach
+    </div>
+</div>
+
 
                             <!-- Status (For both Blog and FAQ) -->
                             <div class="mb-3">
