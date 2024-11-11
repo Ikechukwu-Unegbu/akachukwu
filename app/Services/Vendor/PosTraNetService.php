@@ -150,11 +150,12 @@ class PosTraNetService
 
             if (isset($response->Status) && $response->Status == 'successful') {
                 $transaction->update([
-                    'balance_after'     =>    self::$authUser->getAccountBalance(),
-                    'status'            =>    true,
-                    'api_data_id'       =>    $response->ident,
-                    // 'api_response'      =>    $response->api_response ?? NULL
+                    'balance_after' =>  self::$authUser->getAccountBalance(),
+                    'api_data_id'   =>  $response->id ?? $response->ident
                 ]);
+
+                self::$authUser->initiateSuccess($amount, $transaction);
+
                 BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Airtime purchase successful: ₦{$amount} {$network->name} airtime added to {$mobileNumber}.");
@@ -165,7 +166,7 @@ class PosTraNetService
                     'error'     => 'API response Error',
                     'message'   => "Airtime purchase failed. Please try again later.",
                 ];
-                self::$authUser->initiateRefund($amount, $transaction);
+                self::$authUser->initiatePending($amount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
@@ -173,6 +174,7 @@ class PosTraNetService
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later.",
             ];
+            self::$authUser->initiatePending($amount, $transaction);
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
@@ -258,10 +260,9 @@ class PosTraNetService
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
                     'token'             =>    VendorHelper::removeTokenPrefix($response->token),
-                    'status'            =>    true,
-                    'api_data_id'       =>    $response->ident ?? NULL,
+                    'api_data_id'       =>    $response->id ?? $response->ident
                 ]);
-
+                self::$authUser->initiateSuccess($amount, $transaction);
                 BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
 
                 return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
@@ -272,7 +273,7 @@ class PosTraNetService
                     'error'     => 'API response Error',
                     'message'   => "Bill purchase failed. Please try again later.",
                 ];
-                self::$authUser->initiateRefund($amount, $transaction);
+                self::$authUser->initiatePending($amount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
@@ -280,7 +281,11 @@ class PosTraNetService
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
             ];
+
+            self::$authUser->initiatePending($amount, $transaction);
+
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
@@ -294,7 +299,6 @@ class PosTraNetService
     public static function cable($cableId, $cablePlan, $iucNumber, $customer)
     {
         try {
-
             $vendor = self::$vendor;
             $cable = Cable::whereVendorId($vendor->id)->whereCableId($cableId)->first();
             $cable_plan = CablePlan::whereVendorId($vendor->id)->whereCablePlanId($cablePlan)->first();
@@ -354,10 +358,11 @@ class PosTraNetService
 
             if (isset($response->Status) && $response->Status == 'successful') {
                 $transaction->update([
-                    'balance_after'     =>    self::$authUser->getAccountBalance(),
-                    'status'            =>    true,
-                    'api_data_id'       =>    $response->response->ident ?? NULL,
+                    'balance_after' => self::$authUser->getAccountBalance(),
+                    'api_data_id'   => $response->id ?? $response->ident
                 ]);
+
+                self::$authUser->initiateSuccess($amount, $transaction);
 
                 BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
 
@@ -369,7 +374,9 @@ class PosTraNetService
                     'error'     => 'API response Error',
                     'message'   => "Cable purchase failed. Please try again later.",
                 ];
-                self::$authUser->initiateRefund($amount, $transaction);
+
+                self::$authUser->initiatePending($amount, $transaction);
+
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
@@ -377,7 +384,11 @@ class PosTraNetService
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
             ];
+
+            self::$authUser->initiatePending($amount, $transaction);
+
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
@@ -391,7 +402,6 @@ class PosTraNetService
     public static function data($networkId, $typeId, $dataId, $mobileNumber)
     {
         try {
-
             $vendor = self::$vendor;
             $network = DataNetwork::whereVendorId($vendor->id)->whereNetworkId($networkId)->first();
             $plan = DataPlan::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereDataId($dataId)->first();
@@ -457,13 +467,13 @@ class PosTraNetService
             if (isset($response->Status) && $response->Status == 'successful') {
                 $transaction->update([
                     'balance_after'     =>    self::$authUser->getAccountBalance(),
-                    'status'            =>    true,
                     'plan_network'      =>    $response->plan_network,
                     'plan_name'         =>    $response->plan_name,
                     'plan_amount'       =>    $response->plan_amount,
-                    'api_data_id'       =>    $response->ident,
-                    // 'api_response'      =>    $response->api_response,
+                    'api_data_id'       =>    $response->id ?? $response->ident
                 ]);
+
+                self::$authUser->initiateSuccess($amount, $transaction);
 
                 BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
 
@@ -475,7 +485,7 @@ class PosTraNetService
                     'error'     => 'API response Error',
                     'message'   => "Data purchase failed. Please try again later.",
                 ];
-                self::$authUser->initiateRefund($amount, $transaction);
+                self::$authUser->initiatePending($amount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
 
@@ -483,6 +493,7 @@ class PosTraNetService
                 'error'     => 'Server Error',
                 'message'   => "Opps! Unable to Perform transaction. Please try again later."
             ];
+            self::$authUser->initiatePending($amount, $transaction);
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());

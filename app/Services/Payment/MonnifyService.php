@@ -59,7 +59,7 @@ class MonnifyService implements Payment
         try {
 
             $transaction = MonnifyTransaction::create([
-                'user_id'       =>  $user->id,
+                'user_id'       => $user->id,
                 'reference_id'  => $this->generateUniqueId(),
                 'amount'        => $amount,
                 'currency'      => config('app.currency', 'NGN'),
@@ -160,13 +160,15 @@ class MonnifyService implements Payment
         }
 
         if (!$this->verifyTransaction($transaction->trx_ref)) {
+            $transaction->failed();
             return false;
         }
 
         if (!$transaction->status) {
-            $transaction->setStatus(true);
+            // $transaction->setStatus(true);
             $accountBalance = new AccountBalanceService(Auth::user());
             $accountBalance->updateAccountBalance($transaction->amount);
+            $transaction->success();
             return true;
         }
 
@@ -272,9 +274,11 @@ class MonnifyService implements Payment
                 self::updateAccountBvn($response->responseBody->bvn);
 
                 if (!auth()->user()->virtualAccounts()->count()) {
-                    $activeGateway = PaymentGateway::where('va_status', true)->first();
-                    $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-                    $virtualAccountFactory::createVirtualAccount(auth()->user(), $response->responseBody->bvn, 'bvn');
+                    // $activeGateway = PaymentGateway::where('va_status', true)->first();
+                    // $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
+                    // $virtualAccountFactory::createVirtualAccount(auth()->user(), $response->responseBody->bvn, 'bvn');
+                    self::createVirtualAccount(Auth::id(), $response->responseBody->bvn, 'bvn');
+                    PayVesselService::createVirtualAccount(Auth::id(), $response->responseBody->bvn, 'bvn');
                 }
 
                 return ApiHelper::sendResponse([], "KYC updated & BVN linked to your account successfully.");
@@ -318,9 +322,12 @@ class MonnifyService implements Payment
                 self::updateAccountNin($response->responseBody->nin);
 
                 if (!auth()->user()->virtualAccounts()->count()) {
-                    $activeGateway = PaymentGateway::where('va_status', true)->first();
-                    $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-                    $virtualAccountFactory::createVirtualAccount(auth()->user(), $response->responseBody->nin, 'nin');
+                    // $activeGateway = PaymentGateway::where('va_status', true)->first();
+                    // $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
+                    // $virtualAccountFactory::createVirtualAccount(auth()->user(), $response->responseBody->nin, 'nin');
+
+                    self::createVirtualAccount(Auth::id(), $response->responseBody->nin, 'nin');
+                    PayVesselService::createVirtualAccount(Auth::id(), $response->responseBody->nin, 'nin');
                 }
 
                 return ApiHelper::sendResponse([], "KYC updated & NIN linked to your account successfully.");
@@ -415,9 +422,10 @@ class MonnifyService implements Payment
                         'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
                         'redirect_url'  => config('app.url'),
-                        'meta'          => json_encode($payload),
-                        'status'        => $paymentStatus == 'PAID' ? true : false
+                        'meta'          => json_encode($payload)
                     ]);
+                    
+                    $transaction->success();
 
                     $user->setAccountBalance($amountPaid);
 

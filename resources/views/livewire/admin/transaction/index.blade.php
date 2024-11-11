@@ -87,7 +87,7 @@
                                 <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $transaction->status === 1 ? 'success' : ($transaction->status === 0 ? 'danger' : 'warning') }}">
-                                        {{ $transaction->status === 1 ? 'Successful' : ($transaction->status === 0 ? 'Failed' : 'Refunded') }}</span>
+                                        {{ Str::title($transaction->vendor_status) }}</span>
                                 </td>
                                 </td>
                             </tr>

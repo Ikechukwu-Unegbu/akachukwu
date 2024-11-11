@@ -69,6 +69,27 @@ class AccountBalanceService
         return true;
     }
 
+    public function initiateDebit($amount, $transaction) : bool
+    {
+        $this->user->setAccountBalance($amount);
+        $transaction->debit();
+        return true;
+    }
+
+    public function initiatePending($amount, $transaction) : bool
+    {
+        // $this->user->setAccountBalance($amount);
+        $transaction->pending();
+        return true;
+    }
+
+    public function initiateSuccess($amount, $transaction) : bool
+    {
+        // $this->user->setAccountBalance($amount);
+        $transaction->success();
+        return true;
+    }
+
     public function walletHistories()
     {
         $transactions = DB::table('flutterwave_transactions')

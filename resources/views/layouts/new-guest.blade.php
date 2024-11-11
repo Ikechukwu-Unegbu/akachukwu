@@ -123,6 +123,15 @@
                     <i class="fas fa-sign-out-alt text-xl"></i>
                     <span class=" hidden lg:inline">Logout</span>
                 </a>
+                @if (Auth::user()->isImpersonating())
+                <a href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('impersonating').submit();" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
+                    <form id="impersonating" action="{{ route('impersonate.stop') }}" method="POST" style="display: none;">
+                        @csrf
+                    </form>
+                    <i class="fas fa-stop-circle text-xl"></i>
+                    <span class="ml-2 hidden lg:inline">Stop Impersonating</span>
+                </a>
+                @endif
             </div>
         </nav>
 
@@ -165,7 +174,12 @@
                     <li>
                         <a href="{{route('profile.edit')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                     </li>
-                 
+                    @if (Auth::user()->isImpersonating())
+                    <li>
+                        <a href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('stop-impersonate').submit()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Stop Impersonating</a>
+                        <form action="{{ route('impersonate.stop') }}" id="stop-impersonate" method="POST" class="hidden">@csrf</form>
+                    </li>
+                    @endif
                     </ul>
                 </div>
                 <!-- end of dropdown -->
@@ -194,28 +208,32 @@
         </button>
 
         <nav class="flex flex-col text-blue-800 space-y-2 p-4">
-            <a href="/" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="/" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fas fa-home"></i>
                 <span>Home</span>   
             </a>
         
-            <a href="{{route('services')}}" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="{{route('services')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fa-solid fa-cubes-stacked"></i>
                 <span>Services</span>
             </a>
         
-            <a href="{{route('dashboard')}}" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="{{route('dashboard')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fas fa-tachometer-alt"></i>
                 <span>Dashboard</span>
             </a>
 
-            <a href="{{route('settings.index')}}" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="{{route('settings.index')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </a>
 
+            <a href="{{route('faq')}}" class="flex items-center space-x-2 hover:vastel_blue">
+            <i class="fa-solid fa-circle-question"></i>
+                <span>FAQ</span>
+            </a>
 
-            <a href="{{route('pages.about')}}" class="flex items-center space-x-2 hover:text-blue-500">
+            <a href="{{route('pages.about')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fa-solid fa-address-card"></i>
                 <span>About</span>
             </a>
@@ -232,7 +250,7 @@
             <li>
                 <form action="{{ route('logout') }}" method="post">
                     @csrf
-                    <button class="bg-vastel_blue text-white py-2 rounded hover:bg-blue-600 w-full text-left">Logout</button>
+                    <button class="bg-vastel_blue text-white pl-4 py-2 rounded hover:bg-blue-600 w-full text-left">Logout</button>
                 </form>
             </li>
             @endguest

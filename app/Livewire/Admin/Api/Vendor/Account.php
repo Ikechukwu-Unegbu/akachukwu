@@ -2,13 +2,19 @@
 
 namespace App\Livewire\Admin\Api\Vendor;
 
-use App\Models\Vendor;
 use Carbon\Carbon;
+use App\Models\Vendor;
 use Livewire\Component;
 use Illuminate\Http\Request;
+use Livewire\WithPagination;
+use App\Models\VendorBalance;
 
 class Account extends Component
 {
+    use WithPagination;
+    
+    public $perPage = 50;
+    public $perPages = [50, 100, 200];
     public $startDate;
     public $endDate;
 
@@ -21,30 +27,24 @@ class Account extends Component
 
     public function render()
     {
-        $query = Vendor::with('balances');
+        $query = VendorBalance::with('vendor');
 
         if ($this->startDate) {
-            $query->whereHas('balances', function ($q) {
-                $q->where('date', '>=', $this->startDate);
-            });
+            $query->where('date', '>=', $this->startDate);
         }
         
         if ($this->endDate) {
-            $query->whereHas('balances', function ($q) {
-                $q->where('date', '<=', $this->endDate);
-            });
+            $query->where('date', '<=', $this->endDate);
         }
 
-        if (!$this->startDate && !$this->endDate) {
-            $query->whereHas('balances', function ($q) {
-                $q->whereDate('date', Carbon::today());
-            });
-        }
+        // if (!$this->startDate && !$this->endDate) {
+        //     $query->whereDate('date', Carbon::today());
+        // }
         
-        $vendors = $query->get();
+        $vendor_balance = $query->latest()->paginate($this->perPage);
 
         return view('livewire.admin.api.vendor.account', [
-            'vendors' => $vendors
+            'vendor_balance' => $vendor_balance
         ]);
     }
 }

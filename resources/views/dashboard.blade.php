@@ -2,9 +2,9 @@
 @section('body')
     <!-- Wallet Balance -->
     <div class="px-[2rem] bg-white  shadow-xl p-6 mb-8">
-        <p class="text-sm mb-2 text-vastel_blue ml-3 md:ml-0">Wallet Balance</p>
+        <p class="text-sm mb-2 text-vastel_blue ml-5 md:ml-0">Wallet Balance</p>
         <div class="flex items-center justify-start md:justify-between flex-col md:flex-row">
-            <div class="text-vastel_blue w-[100%] pl-1 md:pl-0  md:w-[50%] flex flex-col justify-end">
+            <div class="text-vastel_blue w-[100%] pl-5 md:pl-0  md:w-[50%] flex flex-col justify-end">
                 <h2 class="text-3xl font-bold">₦ {{ number_format(auth()->user()->account_balance, 2) }}</h2>
                 <p class="text-sm text-blue-600 mt-1">Referral Bonus: ₦0 <i class="fas fa-chevron-right"></i></p>
             </div>
@@ -82,7 +82,7 @@
                     <div class="text-right">
                         <p class="text-{{ $transaction->status === 1 ? 'green' : ($transaction->status === 0 ? 'red' : 'yellow') }}-500 font-semibold">
                             ₦{{ number_format($transaction->amount, 2) }}</p>
-                        <p class="text-sm text-gray-500">{{ $transaction->status === 1 ? 'Successful' : ($transaction->status === 0 ? 'Failed' : 'Refunded') }}</p>
+                        <p class="text-sm text-gray-500">{{ Str::title($transaction->vendor_status) }}</p>
                     </div>
                 </div>
                 @empty

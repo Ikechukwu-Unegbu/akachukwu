@@ -113,7 +113,7 @@
                             </td>
                             <td>
                                 <span class="badge bg-{{ $wallet_transaction->status ? 'success' : 'danger' }}">
-                                    {{ $wallet_transaction->status ? 'Successful' : 'Failed' }}
+                                    {{ Str::title($wallet_transaction->api_status) }}
                                 </span>
                             </td>
                         </tr>
