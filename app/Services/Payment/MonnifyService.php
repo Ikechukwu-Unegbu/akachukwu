@@ -256,6 +256,91 @@ class MonnifyService implements Payment
         }
     }
 
+    public static function createSpecificVirtualAccount($user, $accountId, $bankCode)
+    {
+       
+        try {
+
+            if (!empty($user->nin)) {
+                $kycType = 'nin';
+                $kyc = $user->nin;
+            } elseif (!empty($user->bvn)) {
+                $kycType = 'bvn';
+                $kyc = $user->bvn;
+            }
+
+                $response = Http::withHeaders([
+                    'Accept' => 'application/json',
+                    'Authorization' => 'Bearer ' . self::token(),
+                ])->post(self::getUrl() . "api/v2/bank-transfer/reserved-accounts", [
+                    "accountReference"      =>  self::generateVirtualAccountReference(),
+                    "accountName"           =>  Str::title($user->username),
+                    "currencyCode"          =>  "NGN",
+                    "contractCode"          =>  static::monnifyDetails('contract_code'),
+                    "customerEmail"         =>  $user->email,
+                    "customerName"          =>  $user->name,
+                    "getAllAvailableBanks"  =>  false,
+                    $kycType                =>  $kyc,
+                    "preferredBanks"        =>  [$bankCode]
+            ]);
+
+                $response = $response->object();
+
+                //delete bank account
+                // dd($response);
+             
+
+                if ($response->requestSuccessful) {
+
+                    $oldAccount = VirtualAccount::find($accountId);
+                    if($oldAccount){
+
+                        $oldAccount->delete();
+                    }
+    
+                    $data = [];
+                    foreach ($response->responseBody->accounts as $account) {
+                        $data[] = [
+                            "reference" => $response->responseBody->accountReference,
+                            "bank_code" => $account->bankCode,
+                            "bank_name" => $account->bankName,
+                            "account_name" => $account->accountName,
+                            "account_number" => $account->accountNumber,
+                            "reservation_reference" => $response->responseBody->reservationReference,
+                            "reserved_account_type" => $response->responseBody->reservedAccountType,
+                            "restrict_payment_source" => $response->responseBody->restrictPaymentSource,
+                            "collection_channel" => $response->responseBody->collectionChannel,
+                            "status" => $response->responseBody->status,
+                            "created_on" => $response->responseBody->createdOn,
+                            "status" => $response->responseBody->status,
+                            "created_at" => now(),
+                            "updated_at" => now(),
+                            "user_id" => $user->id,
+                            "payment_id" => self::monnifyDetails('id')
+                        ];
+                    }
+
+                    VirtualAccount::insert($data);
+                    return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
+                }
+
+
+                $errorResponse = [
+                    'error'    =>    "Server Error",
+                    'message'  =>    "Opps! Unable to create static account. Please check your network connection.",
+                ];
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+            } catch (\Throwable $th) {
+                Log::error($th->getMessage());
+                $errorResponse = [
+                    'error'    =>    "Server Error",
+                    'message'  =>    "Opps! Unable to create static account. Please check your network connection.",
+                ];
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+            }
+    
+    }
+
     public static function verifyBvn($bvn, $code, $accountNumber)
     {
         try {
