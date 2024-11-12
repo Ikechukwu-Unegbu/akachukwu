@@ -4,6 +4,7 @@ namespace App\Livewire\Component;
 
 use App\Models\PaymentGateway;
 use App\Models\User;
+use App\Models\VirtualAccount;
 use App\Services\Payment\VirtualAccountServiceFactory;
 use Livewire\Component;
 
@@ -17,7 +18,8 @@ class UserAccountNumbersCard extends Component
     public function changeAccount($virtualAccountID, $bankCode, $user)
     {
         $user = User::find($user);
-        $activeGateway = PaymentGateway::where('va_status', true)->first();
+        $currentVirtualAccount = VirtualAccount::find($virtualAccountID);
+        $activeGateway = PaymentGateway::where('id', $currentVirtualAccount->payment_id)->first();
         $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
         $response = $virtualAccountFactory::createSpecificVirtualAccount($user, $virtualAccountID, $bankCode);
 

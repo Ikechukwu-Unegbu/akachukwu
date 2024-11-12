@@ -258,7 +258,7 @@ class MonnifyService implements Payment
 
     public static function createSpecificVirtualAccount($user, $accountId, $bankCode)
     {
-       
+        // dd($user->id, $accountId, $bankCode);
         try {
 
             if (!empty($user->nin)) {
