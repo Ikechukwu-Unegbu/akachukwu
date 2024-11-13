@@ -57,8 +57,10 @@
             position: relative;
             text-transform: uppercase;
             font-size: 12px;
-            font-weight: 500;
+            font-weight: bold !important;
             margin: 10px 0;
+            color:#0018A8 !important;
+
         }
 
         .tm_pos_invoice_heading:before {
@@ -200,6 +202,7 @@
         .tm_pos_invoice_footer {
             text-align: center;
             margin-top: 20px;
+            color: #0018A8;
         }
 
         .tm_pos_sample_text {
@@ -211,11 +214,14 @@
         }
 
         .tm_pos_company_name {
-            font-weight: 500;
+            font-weight: bold;
             color: #111;
-            font-size: 13px;
+            font-size: 20px;
             line-height: 1.4em;
+            color: #0018A8;
+
         }
+    
 
         /* Start Receipt Section */
         .tm_container {

@@ -4,7 +4,7 @@
         <div class="flex space-x-4">
             <!-- Categories Dropdown -->
             <div class="relative">
-                <select wire:model.live="service" class="appearance-none border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <select wire:model.live="service" class="appearance-none border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-vastel_blue">
                     <option value="">All Categories</option>
                     @foreach ($services as $__service)
                         <option value="{{ $__service }}">{{ Str::title($__service) }}</option>
@@ -15,7 +15,7 @@
 
             <!-- Date Selector -->
             <div class="relative">
-                <select wire:model.live="selectedDate" class="appearance-none border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-600">
+                <select wire:model.live="selectedDate" class="appearance-none border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:ring-vastel_blue">
                     @foreach ($months as $month)
                     <option value="{{ $year }}-{{ \Carbon\Carbon::parse($month)->format('m') }}">{{ $month }} {{ $year }}</option>
                     @endforeach
@@ -38,11 +38,13 @@
                         <p class="text-sm text-gray-500">{{ Str::title($transaction->type) }}: {{ $transaction->subscribed_to }}</p>
                         @endif
                         @if ($transaction->type === 'funding')
-                            <a class="text-blue-600 text-sm">{{ $transaction->transaction_id }}</a>
+                            <a class="text-vastel_blue text-sm">{{ $transaction->transaction_id }}</a>
                         @endif
                         <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:iA') }}</p>
                         @if ($transaction->type !== 'funding')
-                            <a href="{{ route("user.transaction.{$transaction->utility}.receipt", $transaction->transaction_id) }}" class="text-blue-600 text-sm">View Receipt</a>
+                            <a href="{{ route("user.transaction.{$transaction->utility}.receipt", $transaction->transaction_id) }}" class="text-vastel_blue text-sm">View Receipt</a>
+                            <i class="fa-solid fa-grip-lines-vertical text-vastel_blue"></i>
+                            <a href="{{ route("api.response", [$transaction->utility, $transaction->transaction_id]) }}" class="text-vastel_blue text-sm">Api Response</a>
                         @endif
                     </div>
                 </div>
