@@ -16,7 +16,9 @@
                         <a href="{{ $link }}" class="bg-vastel_blue text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
                         View Transaction
                         </a>
-                        <a href="{{ $link }}" class="bg-vastel_blue text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
+                        @php $apiLink = str_replace('transactions', 'api-response', $link); @endphp
+
+                        <a href="{{$apiLink}}" class="bg-vastel_blue text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
                         View API Response
                         </a>
                     </div>
