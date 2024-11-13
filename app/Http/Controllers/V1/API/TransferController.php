@@ -24,7 +24,7 @@ class TransferController extends Controller
 
     public function __invoke(Request $request)
     {
-        // var_dump(User::find(Auth::user()->id));die;
+      
         $validator = Validator::make($request->all(), [
             'recipient'=>'required|string', 
             'amount'=>'required', 

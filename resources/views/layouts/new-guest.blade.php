@@ -123,7 +123,7 @@
                     <i class="fas fa-sign-out-alt text-xl"></i>
                     <span class=" hidden lg:inline">Logout</span>
                 </a>
-                @if (Auth::user()->isImpersonating())
+                @if (Auth::check() && Auth::user()->isImpersonating())
                 <a href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('impersonating').submit();" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs('settings.*') ? 'active' : '' }}">
                     <form id="impersonating" action="{{ route('impersonate.stop') }}" method="POST" style="display: none;">
                         @csrf
@@ -174,7 +174,7 @@
                     <li>
                         <a href="{{route('profile.edit')}}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
                     </li>
-                    @if (Auth::user()->isImpersonating())
+                    @if (Auth::check() && Auth::user()->isImpersonating())
                     <li>
                         <a href="javascript:void(0)" onclick="event.preventDefault();document.getElementById('stop-impersonate').submit()" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Stop Impersonating</a>
                         <form action="{{ route('impersonate.stop') }}" id="stop-impersonate" method="POST" class="hidden">@csrf</form>

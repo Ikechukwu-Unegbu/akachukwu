@@ -45,10 +45,7 @@
  
     </form>
     <div class="mt-5 "></div>
-    @if (
-        auth()->user()->virtualAccounts()->count() && 
-        auth()->user()->virtualAccounts()->first()->gateway->name !== 'Payvessel'
-    )
+   
     <hr>
     <h4 class="font-extrabold text-center mt-4">
         OR
@@ -74,6 +71,6 @@
             </div>
         </form>
    </div>
-   @endif
+
    @endif
 </div>

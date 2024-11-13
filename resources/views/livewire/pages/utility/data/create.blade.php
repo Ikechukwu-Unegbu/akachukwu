@@ -8,7 +8,7 @@
             </button>
             <!-- Modal -->
             <div id="beneficiaryModal" tabindex="-1"
-                class="fixed inset-0 z-50 justify-center items-center bg-black bg-opacity-50 {{ $beneficiary_modal ? 'flex' : 'hidden' }}">
+                class="fixed inset-0 z-[9999] justify-center items-center bg-black bg-opacity-50 {{ $beneficiary_modal ? 'flex' : 'hidden' }}">
                 <div class="bg-white rounded-lg w-full max-w-sm p-4">
                     <div class="flex justify-between items-center border-b pb-3">
                         <h3 class="text-lg font-medium text-gray-900">Select Beneficiary</h3>
@@ -22,6 +22,7 @@
                         <ul class="space-y-2">
                             @foreach ($beneficiaries as $__beneficiary)
                                 <li wire:click="beneficiary({{ $__beneficiary->id }})"
+                                    onclick="toggleModal()"
                                     class="bg-gray-100 py-2 px-4 rounded cursor-pointer hover:bg-gray-200">
                                     {{ $__beneficiary->beneficiary }}</li>
                             @endforeach
@@ -180,19 +181,53 @@
     <script>
         var modal = document.getElementById("beneficiaryModal");
 
+        // document.addEventListener('click', function(event) {
+        //     const modal = document.getElementById('beneficiaryModal');
+        //     if (event.target === modal) {
+        //         modal.classList.add('hidden');
+        //     }
+        // });
         document.addEventListener('click', function(event) {
-            const modal = document.getElementById('beneficiaryModal');
-            if (event.target === modal) {
-                modal.classList.add('hidden');
-            }
-        });
+        const modal = document.getElementById('beneficiaryModal');
+        const body = document.body;
+
+        if (event.target === modal) {
+            modal.classList.add('hidden');
+            body.classList.remove('overflow-hidden'); // Re-enable scrolling
+        }
+    });
+
+
+        // document.querySelectorAll('.close-modal').forEach(button => {
+        //     button.addEventListener('click', function() {
+        //         const modal = document.getElementById('beneficiaryModal');
+        //         modal.classList.add('hidden');
+        //     });
+        // });
 
         document.querySelectorAll('.close-modal').forEach(button => {
-            button.addEventListener('click', function() {
-                const modal = document.getElementById('beneficiaryModal');
-                modal.classList.add('hidden');
-            });
+        button.addEventListener('click', function() {
+            const modal = document.getElementById('beneficiaryModal');
+            modal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden'); // Re-enable scrolling
         });
+    });
+
+    function toggleModal() {
+        const modal = document.getElementById('beneficiaryModal');
+        const body = document.body;
+
+        // Toggle modal and body overflow
+        if (modal.classList.contains('hidden')) {
+            modal.classList.remove('hidden');
+            body.classList.add('overflow-hidden'); // Disable scrolling
+        } else {
+            modal.classList.add('hidden');
+            body.classList.remove('overflow-hidden'); // Enable scrolling
+        }
+    }
+
+
 
         const observer = new MutationObserver((mutationsList) => {
             for (let mutation of mutationsList) {

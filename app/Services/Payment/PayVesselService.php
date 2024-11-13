@@ -92,6 +92,71 @@ class PayVesselService
         }       
     }
 
+    public static function createSpecificVirtualAccount($user, $accountId, $bankCode)
+    {
+        try {
+
+            if (!empty($user->nin)) {
+                $kycType = 'nin';
+                $kyc = $user->nin;
+            } elseif (!empty($user->bvn)) {
+                $kycType = 'bvn';
+                $kyc = $user->bvn;
+            }
+
+            self::bankCodes()->each(function () use ($user, $accountId, $bankCode, $kycType, $kyc) {
+                $data = [
+                    "businessid"   => config('payment.payvessel.business_id'),
+                    "email"        => $user->email,
+                    "name"         => $user->name,
+                    "phoneNumber"  => $user->phone,
+                    $kycType       => $kyc,
+                    "bankcode"     => [$bankCode],
+                    "account_type" =>  "STATIC"
+                ];
+    
+                $response = self::url(self::CREATE_VIRTUAL_ACCOUNT_URL, $data);
+
+                if ($response->ok() === true) {
+                    $response = $response->object();
+                    if (isset($response->status) && $response->status) {
+                        //delete virtual account
+                        $oldAccount = VirtualAccount::find($accountId);
+                        if($oldAccount){
+    
+                            $oldAccount->delete();
+                        }
+                        
+                        collect($response->banks)->each(function($bank) use ($user) {
+                            VirtualAccount::create([
+                                "reference" => $bank->trackingReference,
+                                "bank_code" => $bank->bankCode,
+                                "bank_name" => $bank->bankName,
+                                "account_name"   => $bank->accountName,
+                                "account_number" => $bank->accountNumber,
+                                "account_type" => $bank->account_type,
+                                "status"       => 'ACTIVE',
+                                "user_id"      => $user->id,
+                                "payment_id"   => self::PayVesselModal('id')
+                            ]);
+                        });
+                    }
+                }
+            });
+
+            return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $errorResponse = [
+                'error'    =>    "Server Error",
+                'message'  =>    "Opps! Unable to create static account. Please check your network connection.",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+        }       
+    }
+
+
     public static function verifyBvn($bvn)
     {
         try {
