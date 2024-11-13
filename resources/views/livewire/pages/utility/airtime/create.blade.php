@@ -1,4 +1,7 @@
 <div>
+    <style>
+
+    </style>
     <form wire:submit="validateForm">
         @if (count($beneficiaries))
             <button type="button" data-modal-target="beneficiaryModal" data-modal-toggle="beneficiaryModal"
@@ -19,7 +22,7 @@
                         <!-- Beneficiary List -->
                         <ul class="space-y-2" style="z-index: 10;">
                             @foreach ($beneficiaries as $__beneficiary)
-                                <li wire:click="beneficiary({{ $__beneficiary->id }})" class="bg-gray-100 py-2 px-4 rounded cursor-pointer hover:bg-gray-200">
+                                <li onClick="toggleBodyScroll()" wire:click="beneficiary({{ $__beneficiary->id }})" class="bg-gray-100 py-2 px-4 rounded cursor-pointer hover:bg-gray-200">
                                     {{ $__beneficiary->beneficiary }}
                                 </li>
                             @endforeach
@@ -125,45 +128,97 @@
        
         var modal = document.getElementById("beneficiaryModal");
 
-        document.addEventListener('click', function(event) {
-            const modal = document.getElementById('beneficiaryModal');
-            if (event.target === modal) {
-                modal.classList.add('hidden');
-            }
-        });
 
-        document.querySelectorAll('.close-modal').forEach(button => {
-            button.addEventListener('click', function() {
-                const modal = document.getElementById('beneficiaryModal');
-                modal.classList.add('hidden');
-            });
-        });
+//         document.addEventListener('DOMContentLoaded', () => {
+//     const beneficiaryModal = document.getElementById('beneficiaryModal');
+//     const body = document.body;
 
-        const observer = new MutationObserver((mutationsList) => {
-            for (let mutation of mutationsList) {
-                if (mutation.type === 'childList') {
-                    hideModalBackdrop(); 
-                }
-            }
-        });
+//     // Create an observer instance to monitor modal visibility changes
+//     const observer = new MutationObserver(() => {
+//         if (beneficiaryModal.classList.contains('hidden')) {
+//             // Modal is hidden, allow page scroll
+//             body.classList.remove('overflow-hidden');
+//         } else {
+//             // Modal is visible, disable page scroll
+//             body.classList.add('overflow-hidden');
+//         }
+//     });
 
-        function hideModalBackdrop() {
-            const modalBackdrop = document.querySelector('div[modal-backdrop]');
+//     // Start observing modal visibility changes
+//     observer.observe(beneficiaryModal, { attributes: true, attributeFilter: ['class'] });
+
+//     // Add event listeners to close modal on background click
+//     beneficiaryModal.addEventListener('click', (event) => {
+//         if (event.target === beneficiaryModal) {
+//             beneficiaryModal.classList.add('hidden');
+//         }
+//     });
+
+//     document.querySelectorAll('.close-modal').forEach(button => {
+//         button.addEventListener('click', () => {
+//             beneficiaryModal.classList.add('hidden');
+//         });
+//     });
+// });
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const beneficiaryModal = document.getElementById('beneficiaryModal');
+    const body = document.body;
+
+    function removeBackdrop() {
+        const modalBackdrop = document.querySelector('div[modal-backdrop]');
             
-            if (modalBackdrop && modalBackdrop.classList.contains('fixed')) {
-                modalBackdrop.classList.replace('fixed', 'hidden');
-            }
-        }
+                if (modalBackdrop && modalBackdrop.classList.contains('fixed')) {
+                    modalBackdrop.classList.replace('fixed', 'hidden');
+                }
+    }
 
-        observer.observe(document.body, { childList: true, subtree: true });
-
-        window.onclick = function(event) {
-            // console.log(event.target);
-            if (event.target == modal) {
-                hideModalBackdrop();
-                @this.call('beneficiary_action')
-            }
+    function toggleBodyScroll(isModalVisible) {
+        if (isModalVisible) {
+            body.classList.add('overflow-hidden'); // Disable scroll
+        } else {
+            body.classList.remove('overflow-hidden'); // Enable scroll
+            removeBackdrop();
         }
+    }
+
+    // Observer to detect changes in the modal's visibility
+    const observer = new MutationObserver(() => {
+        toggleBodyScroll(!beneficiaryModal.classList.contains('hidden'));
+    });
+
+    observer.observe(beneficiaryModal, { attributes: true, attributeFilter: ['class'] });
+
+    // Close modal and remove backdrop immediately on beneficiary selection
+    document.querySelectorAll('.beneficiary-option').forEach(item => {
+        item.addEventListener('click', () => {
+            beneficiaryModal.classList.add('hidden');
+            removeBackdrop();
+            toggleBodyScroll(false);
+        });
+    });
+
+    // Close modal and remove backdrop on outside click
+    beneficiaryModal.addEventListener('click', (event) => {
+        if (event.target === beneficiaryModal) {
+            beneficiaryModal.classList.add('hidden');
+            removeBackdrop();
+        }
+    });
+
+    document.querySelectorAll('.close-modal').forEach(button => {
+        button.addEventListener('click', () => {
+            beneficiaryModal.classList.add('hidden');
+            removeBackdrop();
+        });
+    });
+});
+
+
+
+
     </script>
          <script>
             document.addEventListener('DOMContentLoaded', function() {
