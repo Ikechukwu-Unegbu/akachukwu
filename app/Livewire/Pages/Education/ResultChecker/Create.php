@@ -72,7 +72,7 @@ class Create extends Component
 
     public function updatePin($index, $value)
     {
-        $this->otp[$index] = $value;
+        $this->pin[$index] = $value;
     }
 
     public function validatePin()
