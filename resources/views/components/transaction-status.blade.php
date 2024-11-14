@@ -21,7 +21,9 @@
         </div>
     </div>
 </div>
-
+@if ($modal)
+<div class="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40"></div>
+@endif
 @push('scripts')
     <script>
         document.querySelectorAll('.close-modal').forEach(button => {
