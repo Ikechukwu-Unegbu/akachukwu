@@ -1,4 +1,4 @@
-{{dd($data)}}
+
 @php 
     $modelName = strtolower(str_replace('Transaction', '', class_basename($data)));
  
