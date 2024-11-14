@@ -6,7 +6,7 @@
           
             <div class="flex  p-4 border-b rounded-t dark:border-gray-600">
                 <h3 class="text-lg font-semibold text-center text-gray-900 dark:text-white">
-                    Transfer To Bank
+                    Credit Recipient's Account
                 </h3>
                 <button wire:click='handleCloseTransferMoneyModal' style="float: left;" type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="transfer-modal">
                     <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -37,7 +37,7 @@
                         </div>
                     @else
                     <div>
-                        <label for="" class="dark:text-white mb-3">Enter Receiver Username or Email</label>
+                        <label for="" class="dark:text-white mb-3">Enter Recipient Username or Email</label>
                         <input type="text" placeholder="Enter Username or Email" wire:model="username" class="w-full p-2 border-none rounded-lg shadow focus:ring-vastel_blue focus:border-vastel_blue dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
                         @if ($error_msg)
                             <span class="text-red-500 text-sm font-bold flex justify-center">{{ $error_msg }}</span>
