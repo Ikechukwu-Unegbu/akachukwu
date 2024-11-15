@@ -1,4 +1,4 @@
-<div id="transaction_modal" class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center {{ $modal ? 'flex' : 'hidden' }}">
+<div id="transaction_modal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full justify-center items-center {{ $modal ? 'flex' : 'hidden' }}">
     <div class="relative w-full max-w-md max-h-full">
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
             <button wire:click="closeModal" type="button" class="close-modal absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-500 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center" data-modal-hide="failedModal">
@@ -12,16 +12,25 @@
                     <h3 class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">Transaction {{ $status ? 'Successful' : 'Failed' }}</h3>
                     <p class="text-gray-900 dark:text-white text-sm mb-4">{{ $utility }} Purchased {{ $status ? 'Successfully' : 'Failed' }}</p>
                     @if (!empty($link))
-                    <a href="{{ $link }}" class="bg-vastel_blue text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
-                       View Transaction
-                    </a>
+                    <div class="flex justify-center items-center gap-5">
+                        <a href="{{ $link }}" class="bg-vastel_blue text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
+                        View Transaction
+                        </a>
+                        @php $apiLink = str_replace('transactions', 'api-response', $link); @endphp
+
+                        <a href="{{$apiLink}}" class="bg-vastel_blue text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
+                        View API Response
+                        </a>
+                    </div>
                     @endif
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+@if ($modal)
+<div class="bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40"></div>
+@endif
 @push('scripts')
     <script>
         document.querySelectorAll('.close-modal').forEach(button => {
