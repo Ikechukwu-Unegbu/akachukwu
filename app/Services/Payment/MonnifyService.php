@@ -258,7 +258,11 @@ class MonnifyService implements Payment
 
     public static function verifyBvn($bvn, $code, $accountNumber)
     {
-        try {
+        try {return [
+            "bvn"           => $bvn,
+            "accountNumber" => $accountNumber,
+            "bankCode"      => $code
+        ];
             $response = Http::withHeaders([
                 'Accept' => 'application/json',
                 'Authorization' => 'Bearer ' . self::token(),
