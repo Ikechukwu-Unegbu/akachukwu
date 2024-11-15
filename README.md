@@ -494,3 +494,45 @@ meter_type: *Prepaid* = 1 & *Postpaid* = 2
         },
         "message": "Result Checker PIN purchase successful: WAEC (1 QTY) ₦3900."
     }
+## Virtual Account Endpoint
+
+    GET /api/banks HTTP/1.1
+    Content-Type: application/json
+    Example Response : {
+        "status": true,
+        "response": [
+            {
+            "id": 1,
+            "name": "Access bank",
+            "code": "044",
+            "ussd_template": "*901*Amount*AccountNumber#",
+            "base_ussd_code": "*901#",
+            "transfer_ussd_template": "*901*AccountNumber#"
+            }
+        ],
+        "message": "Result Checker PIN purchase successful: WAEC (1 QTY) ₦3900."
+    }
+
+    GET /api/virtual-accounts HTTP/1.1
+    Content-Type: application/json
+    Authorization: Bearer 2|0q2K7QUbnT3TcQUMsyyRh4UASupLJl9XuKjotUqqe5b1832c
+    Example Response : {
+        "status": true,
+        "response": []
+        "message": "Virtual Account fetched successfully."
+    }
+
+    BVN or NIN is needed
+    POST /api/virtual-accounts/create HTTP/1.1
+    Content-Type: application/json
+    Authorization: Bearer 2|0q2K7QUbnT3TcQUMsyyRh4UASupLJl9XuKjotUqqe5b1832c
+    Body : {
+        "bvn || nin": 22222222222,
+        "account_number": 2222222222,
+        "bank_code": "044"
+    }
+    Example Response : {
+        "status": true,
+        "response": []
+        "message": "KYC updated & BVN linked to your account successfully."
+    }
