@@ -25,6 +25,7 @@ use App\Http\Controllers\V1\API\ReferralController;
 use App\Http\Controllers\V1\API\TransactionsApiController;
 use App\Http\Controllers\V1\API\TransferController;
 use App\Http\Controllers\V1\API\UpgradeController;
+use App\Http\Controllers\V1\API\VirtualAccountController;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -96,6 +97,11 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     Route::get('/notifications', [NotificationsController::class, 'index']);
     Route::get('/referrer', [ReferralController::class, 'index']);
     Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_wallet']);
+    
+    Route::prefix('virtual-accounts')->group(function () {
+        Route::get('/', [VirtualAccountController::class, 'index']);
+        Route::post('/create', [VirtualAccountController::class, 'store']);
+    });
 });
 
 
@@ -110,3 +116,4 @@ Route::post('electricity/discos', [ElectricityApiController::class, 'index']);
 Route::post('webhook/monnify', WebhookController::class);
 Route::post('webhook/payvessel', PayVesselWebhookController::class);
 Route::post('exams', [EducationController::class, 'index']);
+Route::get('banks', [VirtualAccountController::class, 'banks']);
