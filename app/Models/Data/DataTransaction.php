@@ -116,6 +116,7 @@ class DataTransaction extends Model
                 ->orWhereHas('user', function ($userQuery) use ($search) {
                     $userQuery->where('name', 'LIKE', "%{$search}%")
                             ->orWhere('username', 'LIKE', "%{$search}%")
+                            ->orWhere('phone', 'LIKE', "%{$search}%")
                             ->orWhere('email', 'LIKE', "%{$search}%");
                 });
         });
