@@ -270,6 +270,13 @@ class User extends Authenticatable
         return $transactions; // Don't forget to actually execute the query
     }
 
+
+    public function isKycDone()
+    {
+        $user = auth()->user(); 
+        return !is_null($user->nin) || !is_null($user->bvn);
+    }
+
     // Impersonate a user
     public function impersonate(User $user)
     {

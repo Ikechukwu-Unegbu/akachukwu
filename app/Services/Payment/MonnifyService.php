@@ -258,7 +258,7 @@ class MonnifyService implements Payment
         }
     }
 
-    public static function createSpecificVirtualAccount($user, $accountId, $bankCode)
+    public static function createSpecificVirtualAccount($user, $accountId=null, $bankCode)
     {
         // dd($user->id, $accountId, $bankCode);
         try {
@@ -294,10 +294,12 @@ class MonnifyService implements Payment
 
                 if ($response->requestSuccessful) {
 
-                    $oldAccount = VirtualAccount::find($accountId);
-                    if($oldAccount){
-
-                        $oldAccount->delete();
+                    if($accountId != null){
+                        $oldAccount = VirtualAccount::find($accountId);
+                        if($oldAccount){
+    
+                            $oldAccount->delete();
+                        }
                     }
     
                     $data = [];
