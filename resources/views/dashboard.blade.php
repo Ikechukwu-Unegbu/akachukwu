@@ -13,7 +13,8 @@
                     class="bg-vastel_blue shadow-lg text-white px-4 py-[0.7rem] rounded-[5px] flex items-center justify-center w-[8.8rem] ">
                     <i class="fas fa-plus mr-2"></i> Add Money
                 </button>
-                <button
+                <button 
+                     data-modal-target="transfer-modal" data-modal-toggle="transfer-modal"
                     class="bg-vastel_blue shadow-lg text-white px-4 py-[0.7rem] rounded-[5px] flex items-center justify-center w-[8.8rem] ">
                     <i class="fas fa-exchange-alt mr-2"></i> Transfer
                 </button>
@@ -61,6 +62,10 @@
             </div>
         </a>
     </div>
+
+    <!-- money transfer -->
+    <livewire:component.money-transfer-component/>
+    <!-- end money transfer -->
 
     <!-- Recent Transactions -->
     <div class="px-[2rem] bg-white rounded-lg shadow p-6">
