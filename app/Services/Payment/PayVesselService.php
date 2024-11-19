@@ -120,7 +120,7 @@ class PayVesselService
 
                 if ($response->ok() === true) {
                     $response = $response->object();
-                    dd($response);
+                    // dd($response);
                     if (isset($response->status) && $response->status) {
                         //delete virtual account
                         if($accountId != null){
