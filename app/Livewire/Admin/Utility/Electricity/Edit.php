@@ -27,7 +27,7 @@ class Edit extends Component
     public $status;
     #[Rule('required|numeric')]
     public $discount;
-    #[Rule('nullable|image|mimes:png,jpg,jpeg|max:2048')]
+    #[Rule('nullable|image|mimes:png,jpg,jpeg|max:5048')]
     public $image;
 
     public function mount(Electricity $electricity, DataVendor $vendor) 
@@ -58,6 +58,7 @@ class Edit extends Component
             $checkIfDiscoIdExist = Electricity::whereVendorId($vendor->id)->whereDiscoId($request->disco_id)->where('id', '!=', $electricity->id)->count();
             if ($checkIfDiscoIdExist > 0) return $this->dispatch('error-toastr', ['message' => "API ID already exists on vendor({$this->vendor->name}). Please verify the API ID"]);
         }
+
 
         if ($request->has('image') && $electricity->image) {
             $oldImagePath = str_replace(env('DO_CDN').'/', '', $electricity->image);
