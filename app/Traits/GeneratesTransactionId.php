@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 trait GeneratesTransactionId
@@ -24,8 +25,8 @@ trait GeneratesTransactionId
 
     private static function generateUniqueTransactionId(): string
     {
-        $vendorCode = 'MNFY';
-        $transactionNumber = '85';
+        $vendorCode = 'VST';
+        $transactionNumber = Auth::id();
         $timestamp = date('YmdHis');
         $randomDigits = Str::random(6);
 
