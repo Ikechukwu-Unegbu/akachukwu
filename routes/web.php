@@ -28,6 +28,35 @@ use App\Http\Controllers\V1\TransactionController;
 |
 */
 
+Route::get('/debug-config', function () {
+    if (file_exists(base_path('.env'))) {
+        echo '.env file exists';
+    } else {
+        echo '.env file does not exist';
+    }
+    
+    return response()->json([
+        'env'=> env('APP_ENV'),
+        'env_key' => env('DO_ACCESS_KEY_ID'),
+        'do_ur'=>env('DO_URL'),
+        'config'  => config('services.digitalocean'),
+    ]);
+    // $envPath = base_path('.env');
+    // if (file_exists($envPath)) {
+    //     return response()->json([
+    //         'status' => 'success',
+    //         'content' => file_get_contents($envPath),
+    //     ]);
+    // } else {
+    //     return response()->json([
+    //         'status' => 'error',
+    //         'message' => '.env file does not exist',
+    //     ]);
+    // }
+
+});
+
+
 Route::middleware(['testing'])->group(function () {
     Route::get('/', function () {
         return view('pages.home.home');
