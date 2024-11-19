@@ -26,7 +26,7 @@ class Edit extends Component
     public $status;
     #[Rule('required|numeric')]
     public $discount;
-    #[Rule('nullable|image|mimes:png,jpg,jpeg|max:2048')]
+    #[Rule('nullable|image|mimes:png,jpg,jpeg|max:5048')]
     public $image;
 
     public function mount(Electricity $electricity, DataVendor $vendor) 
@@ -52,13 +52,15 @@ class Edit extends Component
             if ($checkIfDiscoIdExist > 0) return $this->dispatch('error-toastr', ['message' => "API ID already exists on vendor({$this->vendor->name}). Please verify the API ID"]);
         }
 
-        if ($this->electricity->image) {
-            $oldImagePath = str_replace(env('DO_CDN').'/', '', $this->electricity->image);
-            Storage::disk('do')->delete($oldImagePath);
+        if($this->image){
+            if ($this->electricity->image) {
+                $oldImagePath = str_replace(env('DO_CDN').'/', '', $this->electricity->image);
+                Storage::disk('do')->delete($oldImagePath);
+            }
+            $imageUrl = Storage::disk('do')->put('production/admin', $this->image, 'public');
+            $this->electricity->image = env('DO_CDN').'/'.$imageUrl;
+            $this->electricity->save();
         }
-        $imageUrl = Storage::disk('do')->put('production/admin', $this->image, 'public');
-        $this->electricity->image = env('DO_CDN').'/'.$imageUrl;
-        $this->electricity->save();
 
         $this->electricity->update([
             'disco_id'      =>  $this->disco_id,
