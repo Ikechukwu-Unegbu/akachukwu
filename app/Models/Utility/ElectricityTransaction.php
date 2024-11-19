@@ -5,6 +5,7 @@ namespace App\Models\Utility;
 use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
+use App\Traits\GeneratesTransactionId;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,7 +16,7 @@ use Spatie\Activitylog\LogOptions;
 
 class ElectricityTransaction extends Model
 {
-    use LogsActivity, HasFactory, TransactionStatusTrait; 
+    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId; 
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',
@@ -68,14 +69,6 @@ class ElectricityTransaction extends Model
         // Chain fluent methods for configuration options
     }
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            $model->transaction_id = static::generateUniqueId();
-        });
-    }
-
     public function user() : BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -84,11 +77,6 @@ class ElectricityTransaction extends Model
     public function vendor() : BelongsTo
     {
         return $this->belongsTo(DataVendor::class);
-    }
-    
-    public static function generateUniqueId(): string
-    {
-        return Str::slug(date('YmdHi').'-electricity-'.Str::random(10).microtime().Str::random(4));
     }
 
     public function scopeSearch($query, $search)

@@ -92,7 +92,7 @@ class PayVesselService
         }       
     }
 
-    public static function createSpecificVirtualAccount($user, $accountId, $bankCode)
+    public static function createSpecificVirtualAccount($user, $accountId=null, $bankCode)
     {
         try {
 
@@ -116,17 +116,21 @@ class PayVesselService
                 ];
     
                 $response = self::url(self::CREATE_VIRTUAL_ACCOUNT_URL, $data);
+                // dd($response->object());
 
                 if ($response->ok() === true) {
                     $response = $response->object();
+                    dd($response);
                     if (isset($response->status) && $response->status) {
                         //delete virtual account
-                        $oldAccount = VirtualAccount::find($accountId);
-                        if($oldAccount){
-    
-                            $oldAccount->delete();
+                        if($accountId != null){
+                            $oldAccount = VirtualAccount::find($accountId);
+                            if($oldAccount){
+        
+                                $oldAccount->delete();
+                            }
                         }
-                        
+                        // dd($response);
                         collect($response->banks)->each(function($bank) use ($user) {
                             VirtualAccount::create([
                                 "reference" => $bank->trackingReference,

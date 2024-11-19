@@ -3,6 +3,7 @@
 namespace App\Models\Data;
 
 use App\Models\User;
+use App\Traits\GeneratesTransactionId;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
 use App\Traits\TransactionStatusTrait;
@@ -13,7 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DataTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait; 
+    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId; 
     protected $guarded = [];
 
     protected $fillable = [
@@ -62,15 +63,6 @@ class DataTransaction extends Model
         'status',
         'discount']);
         // Chain fluent methods for configuration options
-    }
-
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            $model->transaction_id = static::generateUniqueId();
-        });
     }
 
     public function network() : BelongsTo
