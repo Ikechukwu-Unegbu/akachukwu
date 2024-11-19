@@ -29,8 +29,7 @@ class ResultCheckerTransaction extends Model
         parent::boot();
         static::creating(function ($model) {
             $model->user_id = auth()->user()->id;
-            $model->transaction_id = static::generateUniqueId();
-            $model->reference_id = static::generateReferenceId();
+            $model->reference_id = $model->transaction_id;
         });
     }
 

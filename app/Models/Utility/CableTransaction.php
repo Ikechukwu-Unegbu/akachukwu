@@ -5,6 +5,7 @@ namespace App\Models\Utility;
 use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
+use App\Traits\GeneratesTransactionId;
 use Spatie\Activitylog\LogOptions;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CableTransaction extends Model
 {
-    use LogsActivity, HasFactory, TransactionStatusTrait; 
+    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId; 
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',
@@ -59,13 +60,6 @@ class CableTransaction extends Model
         // Chain fluent methods for configuration options
     }
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            $model->transaction_id = static::generateUniqueId();
-        });
-    }
 
     public function user() : BelongsTo
     {
@@ -75,11 +69,6 @@ class CableTransaction extends Model
     public function vendor() : BelongsTo
     {
         return $this->belongsTo(DataVendor::class);
-    }
-
-    public static function generateUniqueId(): string
-    {
-        return Str::slug(date('YmdHi').'-cable-'.Str::random(10).microtime().Str::random(4));
     }
 
     public function scopeSearch($query, $search)

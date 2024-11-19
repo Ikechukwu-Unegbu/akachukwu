@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
+use App\Traits\GeneratesTransactionId;
 use Spatie\Activitylog\LogOptions;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AirtimeTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait; 
+    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId; 
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',
@@ -58,7 +59,6 @@ class AirtimeTransaction extends Model
         parent::boot();
         static::creating(function ($model) {
             $model->user_id = auth()->user()->id;
-            $model->transaction_id = static::generateUniqueId();
         });
     }
 
@@ -75,11 +75,6 @@ class AirtimeTransaction extends Model
     public function network() : BelongsTo
     {
         return $this->belongsTo(DataNetwork::class, 'network_id', 'network_id');
-    }
-
-    public static function generateUniqueId(): string
-    {
-        return Str::slug(date('YmdHi').'-airtime-'.Str::random(10).microtime().Str::random(4));
     }
 
     public function scopeSearch($query, $search)
