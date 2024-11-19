@@ -37,6 +37,7 @@ Route::get('/debug-config', function () {
     
     return response()->json([
         'env'=> env('APP_ENV'),
+        'bucket'=>env('DO_BUCKET'),
         'env_key' => env('DO_ACCESS_KEY_ID'),
         'do_ur'=>env('DO_URL'),
         'config'  => config('services.digitalocean'),

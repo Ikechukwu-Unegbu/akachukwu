@@ -33,7 +33,7 @@ return [
     'digitalocean' => [
         'key'                 => env('DO_ACCESS_KEY_ID', 'DO00ENHCQJ4RYJF6Q48T'),
         'secret'              => env('DO_SECRET_ACCESS_KEY', 'YpPeWuLtha7svFKXdYujELbEDfnWut2sTdphxR0GDvQ'),
-        'region'              => env('DO_DEFAULT_REGION', ),
+        'region'              => env('DO_DEFAULT_REGION', 'fra1'),
         'bucket'              => env('DO_BUCKET', 'vastel-uploads'),
         'url'                 => env('DO_URL', 'https://fra1.digitaloceanspaces.com'),
         'endpoint'            => env('DO_ENDPOINT', 'https://fra1.digitaloceanspaces.com'),

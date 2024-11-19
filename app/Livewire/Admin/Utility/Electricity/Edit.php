@@ -45,13 +45,17 @@ class Edit extends Component
     {
         $this->validate();
         // dd($request);
-        dd(config('services.digitalocean.endpoint'));
+        // dd(config('services.digitalocean.endpoint'));
 
         if ($this->disco_id !== $this->electricity->disco_id) {
             $checkIfDiscoIdExist = Electricity::whereVendorId($this->vendor->id)->whereDiscoId($this->disco_id)->where('id', '!=', $this->electricity->id)->count();
             if ($checkIfDiscoIdExist > 0) return $this->dispatch('error-toastr', ['message' => "API ID already exists on vendor({$this->vendor->name}). Please verify the API ID"]);
         }
 
+        if ($this->electricity->image) {
+            $oldImagePath = str_replace(env('DO_CDN').'/', '', $this->electricity->image);
+            Storage::disk('do')->delete($oldImagePath);
+        }
         $imageUrl = Storage::disk('do')->put('production/admin', $this->image, 'public');
         $this->electricity->image = env('DO_CDN').'/'.$imageUrl;
         $this->electricity->save();
