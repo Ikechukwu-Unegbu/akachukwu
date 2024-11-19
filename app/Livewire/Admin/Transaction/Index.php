@@ -122,6 +122,7 @@ class Index extends Component
             ->when($this->search, function ($query, $search) {
                 $query->where('transaction_id', 'LIKE', "%$search%")
                     ->orWhere('users.name', 'LIKE', "%$search%")
+                    ->orWhere('users.phone', 'LIKE', "%$search%")
                     ->orWhere('type', 'LIKE', "%$search%");
             })
             ->orderBy('transactions.created_at', 'desc');

@@ -16,8 +16,8 @@ class Electricity extends Model
     
     public function getImageUrlAttribute()
     {
-        if ($this->image && Storage::disk('electricity')->exists($this->image)) {
-            return Storage::disk('electricity')->url($this->image);
+        if ($this->image) {
+            return env('DO_CDN').'/'.$this->image;
         }
         return "https://placehold.co/400";
     }

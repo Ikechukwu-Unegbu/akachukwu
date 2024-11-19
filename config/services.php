@@ -30,5 +30,16 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+    'digitalocean' => [
+        'key'                 => env('DO_ACCESS_KEY_ID', 'DO00ENHCQJ4RYJF6Q48T'),
+        'secret'              => env('DO_SECRET_ACCESS_KEY', 'YpPeWuLtha7svFKXdYujELbEDfnWut2sTdphxR0GDvQ'),
+        'region'              => env('DO_DEFAULT_REGION', 'fra1'),
+        'bucket'              => env('DO_BUCKET', 'vastel-uploads'),
+        'url'                 => env('DO_URL', 'https://fra1.digitaloceanspaces.com'),
+        'endpoint'            => env('DO_ENDPOINT', 'https://fra1.digitaloceanspaces.com'),
+        'use_path_style'      => env('DO_USE_PATH_STYLE_ENDPOINT', true),
+        'cdn'                 => env('DO_CDN', 'https://vastel-uploads.fra1.digitaloceanspaces.com'),
+        'folder'              => env('DO_FOLDER', 'production'),
+    ],
 
 ];

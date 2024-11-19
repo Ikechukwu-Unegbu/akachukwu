@@ -8,6 +8,10 @@ use Livewire\Attributes\Rule;
 use Livewire\WithFileUploads;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\Electricity;
+use App\Services\Uploads\ImageService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+
 class Edit extends Component
 {
     use WithFileUploads;
@@ -37,24 +41,31 @@ class Edit extends Component
         $this->authorize('edit electricity utility');
     }
 
-    public function update()
+    public function update(Request $request)
     {
         $this->validate();
+        // dd($request);
+        // dd(config('services.digitalocean.endpoint'));
 
         if ($this->disco_id !== $this->electricity->disco_id) {
             $checkIfDiscoIdExist = Electricity::whereVendorId($this->vendor->id)->whereDiscoId($this->disco_id)->where('id', '!=', $this->electricity->id)->count();
             if ($checkIfDiscoIdExist > 0) return $this->dispatch('error-toastr', ['message' => "API ID already exists on vendor({$this->vendor->name}). Please verify the API ID"]);
         }
 
-        if ($this->image) $this->electricity->deleteImage();
-        $image = $this->image ? $this->image->storeAs('', Str::slug($this->disco_name) . '_' . time() . '.' . $this->image->getClientOriginalExtension(), 'electricity') : $this->electricity->image;
+        if ($this->electricity->image) {
+            $oldImagePath = str_replace(env('DO_CDN').'/', '', $this->electricity->image);
+            Storage::disk('do')->delete($oldImagePath);
+        }
+        $imageUrl = Storage::disk('do')->put('production/admin', $this->image, 'public');
+        $this->electricity->image = env('DO_CDN').'/'.$imageUrl;
+        $this->electricity->save();
 
         $this->electricity->update([
             'disco_id'      =>  $this->disco_id,
             'disco_name'    =>  $this->disco_name, 
             'status'        =>  $this->status, 
             'discount'      =>  $this->discount,
-            'image'         =>  $image
+            'image'         =>  $imageUrl
         ]);
 
         $this->dispatch('success-toastr', ['message' => 'Electricity Updated Successfully']);

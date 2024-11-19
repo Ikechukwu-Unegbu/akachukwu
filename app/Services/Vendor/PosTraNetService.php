@@ -25,6 +25,7 @@ use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
 use App\Models\Education\ResultCheckerTransaction;
+use App\Models\User;
 
 class PosTraNetService
 {
@@ -87,104 +88,143 @@ class PosTraNetService
         }
     }
 
+ 
+
     public static function airtime($networkId, $amount, $mobileNumber)
     {
         try {
+            // Start a database transaction to ensure atomicity
+            return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
 
-            if ($amount < 50) {
-                $errorResponse = [
-                    'error' => 'Insufficient Account Balance.',
-                    'message' => "The minimum airtime topup is ₦50"
-                ];
-                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            }
+                // Ensure the amount is above the minimum required
+                if ($amount < 50) {
+                    $errorResponse = [
+                        'error' => 'Insufficient Account Balance.',
+                        'message' => "The minimum airtime topup is ₦50"
+                    ];
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
 
-            $verifyAccountBalance = self::verifyAccountBalance($amount);
-            if (! $verifyAccountBalance->status) {
-                return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-            }
+                // Verify if the user has enough balance for the transaction
+                $verifyAccountBalance = self::verifyAccountBalance($amount);
+                if (!$verifyAccountBalance->status) {
+                    return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
+                }
 
-            $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
-            $discount = $network->airtime_discount;
-            // Initiate Airtime Transaction
-            $transaction = AirtimeTransaction::create([
-                'user_id'           =>  Auth::id(),
-                'vendor_id'         =>  self::$vendor->id,
-                'network_id'        =>  $network->network_id,
-                'network_name'      =>  $network->name,
-                'amount'            =>  $amount,
-                'mobile_number'     =>  $mobileNumber,
-                'balance_before'    =>  Auth::user()->account_balance,
-                'balance_after'     =>  Auth::user()->account_balance,
-                'discount'          =>  $discount
-            ]);
+                // Retrieve the network and discount information
+                $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
+                $discount = $network->airtime_discount;
 
-            $data = [
-                'network'       => $network->network_id,
-                'amount'        => $amount,
-                'mobile_number' => $mobileNumber,
-                'airtime_type'  => "VTU",
-                'Ported_number' =>  true
-            ];
+                // Lock the user's account balance to prevent double spending
+                $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
-            $response = static::url(self::AIRTIME_URL, $data);
-
-            self::storeApiResponse($transaction, $response);
-
-            if (auth()->user()->isReseller()) {
-                $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
-            }
-            $amount = CalculateDiscount::calculate($amount, $discount);
-            self::$authUser->transaction($amount);
-
-            if (isset($response->error)) {
-                // Insufficient API Wallet Balance Error
-                self::$authUser->initiateRefund($amount, $transaction);
-                $errorResponse = [
-                    'error'   => 'Insufficient Balance From API.',
-                    'message' => "An error occurred during the Airtime request. Please try again later."
-                ];
-                Log::error($errorResponse);
-                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            }
-
-            if (isset($response->Status) && $response->Status == 'successful') {
-                $transaction->update([
-                    'balance_after' =>  self::$authUser->getAccountBalance(),
-                    'api_data_id'   =>  $response->id ?? $response->ident
+                // Create an airtime transaction record
+                $transaction = AirtimeTransaction::create([
+                    'user_id' => Auth::id(),
+                    'vendor_id' => self::$vendor->id,
+                    'network_id' => $network->network_id,
+                    'network_name' => $network->name,
+                    'amount' => $amount,
+                    'mobile_number' => $mobileNumber,
+                    'balance_before' => $user->account_balance,
+                    'balance_after' => $user->account_balance,
+                    'discount' => $discount
                 ]);
 
-                self::$authUser->initiateSuccess($amount, $transaction);
+                // Deduct the amount from the user's balance if they have enough funds
+                if ($user->account_balance >= $amount) {
+                    $user->account_balance -= $amount;  // Deduct the amount
+                    $user->save();  // Save the updated balance
+                } else {
+                    // Insufficient funds
+                    $errorResponse = [
+                        'error' => 'Insufficient Balance.',
+                        'message' => 'Your account balance is insufficient to complete this transaction.'
+                    ];
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
 
-                BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
+                // Send the request to the API for airtime purchase
+                $data = [
+                    'network' => $network->network_id,
+                    'amount' => $amount,
+                    'mobile_number' => $mobileNumber,
+                    'airtime_type' => "VTU",
+                    'Ported_number' => true
+                ];
 
-                return ApiHelper::sendResponse($transaction, "Airtime purchase successful: ₦{$amount} {$network->name} airtime added to {$mobileNumber}.");
-            }
+                // Make the external API call
+                $response = static::url(self::AIRTIME_URL, $data);
 
-            if (isset($response->Status) && $response->Status == 'failed') {
+                // Store the API response in the transaction
+                self::storeApiResponse($transaction, $response);
+
+                // If the user is a reseller, apply any discounts
+                if (auth()->user()->isReseller()) {
+                    $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
+                }
+
+                // Apply any other discounts (if applicable)
+                $amount = CalculateDiscount::calculate($amount, $discount);
+                self::$authUser->transaction($amount);
+
+                // Handle the response from the API
+                if (isset($response->error)) {
+                    // Handle API wallet balance issues
+                    self::$authUser->initiateRefund($amount, $transaction);
+                    $errorResponse = [
+                        'error' => 'Insufficient Balance From API.',
+                        'message' => "An error occurred during the Airtime request. Please try again later."
+                    ];
+                    Log::error($errorResponse);
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+
+                // If the response indicates success
+                if (isset($response->Status) && $response->Status == 'successful') {
+                    // Update the transaction after successful API response
+                    $transaction->update([
+                        'balance_after' => self::$authUser->getAccountBalance(),
+                        'api_data_id' => $response->id ?? $response->ident
+                    ]);
+
+                    self::$authUser->initiateSuccess($amount, $transaction);
+
+                    // Record the beneficiary for this transaction
+                    BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
+
+                    return ApiHelper::sendResponse($transaction, "Airtime purchase successful: ₦{$amount} {$network->name} airtime added to {$mobileNumber}.");
+                }
+
+                // If the API response indicates failure
+                if (isset($response->Status) && $response->Status == 'failed') {
+                    $errorResponse = [
+                        'error' => 'API response Error',
+                        'message' => "Airtime purchase failed. Please try again later.",
+                    ];
+                    self::$authUser->initiatePending($amount, $transaction);
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+
+                // Handle unexpected errors
                 $errorResponse = [
-                    'error'     => 'API response Error',
-                    'message'   => "Airtime purchase failed. Please try again later.",
+                    'error' => 'Server Error',
+                    'message' => "Opps! Unable to Perform transaction. Please try again later.",
                 ];
                 self::$authUser->initiatePending($amount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            }
-
-            $errorResponse = [
-                'error'     => 'Server Error',
-                'message'   => "Opps! Unable to Perform transaction. Please try again later.",
-            ];
-            self::$authUser->initiatePending($amount, $transaction);
-            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+            });  // End of DB transaction
         } catch (\Throwable $th) {
+            // Log any errors and send the response
             Log::error($th->getMessage());
             $errorResponse = [
-                'error'     => $th->getMessage(),
-                'message'   => "Opps! Unable to perform airtime payment. Please check your network connection."
+                'error' => $th->getMessage(),
+                'message' => "Opps! Unable to perform airtime payment. Please check your network connection."
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
     }
+
 
     public static function electricity($discoId, $meterNumber, $meterType, $amount, $customerName, $customerMobile, $customerAddress)
     {
@@ -399,111 +439,106 @@ class PosTraNetService
         }
     }
 
+   
     public static function data($networkId, $typeId, $dataId, $mobileNumber)
     {
         try {
-            $vendor = self::$vendor;
-            $network = DataNetwork::whereVendorId($vendor->id)->whereNetworkId($networkId)->first();
-            $plan = DataPlan::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereDataId($dataId)->first();
-            $type = DataType::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereId($typeId)->first();
+            // Start a database transaction to ensure atomicity
+            return DB::transaction(function () use ($networkId, $typeId, $dataId, $mobileNumber) {
+                
+                // Retrieve vendor, network, plan, and type (same logic as before)
+                $vendor = self::$vendor;
+                $network = DataNetwork::whereVendorId($vendor->id)->whereNetworkId($networkId)->first();
+                $plan = DataPlan::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereDataId($dataId)->first();
+                $type = DataType::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereId($typeId)->first();
 
-            $verifyAccountBalance = self::verifyAccountBalance($plan->amount);
-            if (! $verifyAccountBalance->status) {
-                return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-            }
+                // Lock the user record to prevent double spending
+                $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
-            $discount = $network->data_discount;
+                // Verify if the user has sufficient balance before proceeding
+                $verifyAccountBalance = self::verifyAccountBalance($plan->amount);
+                if (!$verifyAccountBalance->status) {
+                    return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
+                }
 
-            $transaction = DataTransaction::create([
-                'user_id'            =>  Auth::id(),
-                'vendor_id'          =>  $vendor->id,
-                'network_id'         =>  $network->network_id,
-                'type_id'            =>  $type->id,
-                'data_id'            =>  $plan->data_id,
-                'amount'             =>  $plan->amount,
-                'size'               =>  $plan->size,
-                'validity'           =>  $plan->validity,
-                'mobile_number'      =>  $mobileNumber,
-                'balance_before'     =>  Auth::user()->account_balance,
-                'balance_after'      =>  Auth::user()->account_balance,
-                'plan_network'       =>  $network->name,
-                'plan_name'          =>  $plan->size,
-                'plan_amount'        =>  $plan->amount,
-                'discount'           =>    $discount
-            ]);
-
-            $data = [
-                'network'       => $transaction->network_id,
-                'mobile_number' => $transaction->mobile_number,
-                'plan'          => $transaction->data_id,
-                'Ported_number' =>  true
-            ];
-
-            $response = self::url(self::DATA_URL, $data);
-
-            self::storeApiResponse($transaction, $response);
-
-            $amount = $plan->amount;
-
-            if (auth()->user()->isReseller()) {
-                $amount = CalculateDiscount::applyDiscount($amount, 'data');
-            }
-
-            $amount = CalculateDiscount::calculate($amount, $discount);
-
-            self::$authUser->transaction($amount);
-
-            if (isset($response->error)) {
-                // Insufficient API Wallet Balance Error
-                self::$authUser->initiateRefund($amount, $transaction);
-                $errorResponse = [
-                    'error'   => 'Insufficient Balance From API.',
-                    'message' => "An error occurred during Data request. Please try again later."
-                ];
-                Log::error($errorResponse);
-                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            }
-
-            if (isset($response->Status) && $response->Status == 'successful') {
-                $transaction->update([
-                    'balance_after'     =>    self::$authUser->getAccountBalance(),
-                    'plan_network'      =>    $response->plan_network,
-                    'plan_name'         =>    $response->plan_name,
-                    'plan_amount'       =>    $response->plan_amount,
-                    'api_data_id'       =>    $response->id ?? $response->ident
+                // Proceed with transaction logic
+                $transaction = DataTransaction::create([
+                    'user_id' => Auth::id(),
+                    'vendor_id' => $vendor->id,
+                    'network_id' => $network->network_id,
+                    'type_id' => $type->id,
+                    'data_id' => $plan->data_id,
+                    'amount' => $plan->amount,
+                    'size' => $plan->size,
+                    'validity' => $plan->validity,
+                    'mobile_number' => $mobileNumber,
+                    'balance_before' => $user->account_balance,
+                    'balance_after' => $user->account_balance,
+                    'plan_network' => $network->name,
+                    'plan_name' => $plan->size,
+                    'plan_amount' => $plan->amount,
+                    'discount' => $network->data_discount,
                 ]);
 
-                self::$authUser->initiateSuccess($amount, $transaction);
+                // Deduct the amount from the user's account balance
+                if ($user->account_balance >= $plan->amount) {
+                    $user->account_balance -= $plan->amount;  // Deduct balance
+                    $user->save();  // Save updated balance
+                } else {
+                    // Handle insufficient balance
+                    $errorResponse = [
+                        'error' => 'Insufficient balance',
+                        'message' => 'Your account balance is insufficient to complete this purchase.',
+                    ];
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
 
-                BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
-
-                return ApiHelper::sendResponse($transaction, "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobileNumber}.");
-            }
-
-            if (isset($response->Status) && $response->Status == 'failed') {
-                $errorResponse = [
-                    'error'     => 'API response Error',
-                    'message'   => "Data purchase failed. Please try again later.",
+                // External API request and response processing (same as in your code)
+                $data = [
+                    'network' => $transaction->network_id,
+                    'mobile_number' => $transaction->mobile_number,
+                    'plan' => $transaction->data_id,
+                    'Ported_number' => true
                 ];
-                self::$authUser->initiatePending($amount, $transaction);
-                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            }
 
-            $errorResponse = [
-                'error'     => 'Server Error',
-                'message'   => "Opps! Unable to Perform transaction. Please try again later."
-            ];
-            self::$authUser->initiatePending($amount, $transaction);
-            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                $response = self::url(self::DATA_URL, $data);
+                self::storeApiResponse($transaction, $response);
+
+                if (isset($response->Status) && $response->Status == 'successful') {
+                    // Update transaction after successful API response
+                    $transaction->update([
+                        'balance_after' => $user->account_balance,
+                        'plan_network' => $response->plan_network,
+                        'plan_name' => $response->plan_name,
+                        'plan_amount' => $response->plan_amount,
+                        'api_data_id' => $response->id ?? $response->ident
+                    ]);
+
+                    // Complete success processing
+                    self::$authUser->initiateSuccess($plan->amount, $transaction);
+
+                    return ApiHelper::sendResponse($transaction, "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobileNumber}.");
+                } else {
+                    // Handle API failure response
+                    $errorResponse = [
+                        'error' => 'API Error',
+                        'message' => 'Data purchase failed. Please try again later.',
+                    ];
+                    self::$authUser->initiatePending($plan->amount, $transaction);
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+            });  // End of DB transaction
         } catch (\Throwable $th) {
+            // Log and handle errors
             Log::error($th->getMessage());
             $errorResponse = [
-                'error'     =>  'network connection error',
-                'message'   =>  'Opps! Unable to make payment. Please check your network connection.',
+                'error' => 'Network Connection Error',
+                'message' => 'Unable to make payment. Please check your network connection.',
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
     }
+
 
     public static function validateMeterNumber($meterNumber, $discoId, $meterType)
     {
