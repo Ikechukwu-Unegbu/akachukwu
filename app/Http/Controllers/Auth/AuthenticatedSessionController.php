@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
@@ -32,7 +33,7 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request, UserProfileService $service): RedirectResponse
+    public function store(LoginRequest $request, UserProfileService $service, GenerateRemainingAccounts $accountsGenerator): RedirectResponse
     {
         $user = $service->getUser($request->username);
         if($user){
@@ -47,6 +48,8 @@ class AuthenticatedSessionController extends Controller
        
         
         $request->session()->regenerate();
+
+        $accountsGenerator->generateRemaingingAccounts();
 
         return redirect()->to(Auth::user()->dashboard());
     }

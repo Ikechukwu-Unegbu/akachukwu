@@ -3,7 +3,9 @@ namespace App\Actions\Automatic\Accounts;
 
 use App\Models\PaymentGateway;
 use App\Models\VirtualAccount;
+use App\Services\Payment\VirtualAccountServiceFactory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class GenerateRemainingAccounts{
 
@@ -11,17 +13,21 @@ class GenerateRemainingAccounts{
 
     public function generateRemaingingAccounts():void
     {
-        if(!$this->isUserAccountLessThanThree()){
+        if ($this->isUserAccountLessThanThree() && auth()->user()->isKycDone()) {
             $bankCodes = $this->getBankCodesOfMissingAccounts();
+            // dd($bankCodes);
 
             foreach($bankCodes as $code){
                 if($code == "120001"){
                     $payVessleGateway = PaymentGateway::where('name', 'Payvessel')->first();
-
+                    $virtualAccountFactory = VirtualAccountServiceFactory::make($payVessleGateway);
+                    $response = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $code);
                 }
-                if($code == '035' || $code == '50515'){
-                    $monifyGateway = PaymentGateway::where('name', 'monnify')->first();
-
+                dd('wasnt ok');
+                if($code == "035" || $code == "50515"){
+                    $monifyGateway = PaymentGateway::where('name', 'Monnify')->first();
+                    $virtualAccountFactory = VirtualAccountServiceFactory::make($monifyGateway);
+                    $response = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $code);
                 }
             }
         }
@@ -34,6 +40,8 @@ class GenerateRemainingAccounts{
     
         return $virtualAccountCount < 3;
     }
+
+  
 
     public function getBankCodesOfMissingAccounts():array 
     {
