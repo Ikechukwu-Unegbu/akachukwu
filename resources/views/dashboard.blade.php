@@ -2,7 +2,7 @@
 @section('body')
     <!-- Wallet Balance -->
     <div class="px-[2rem] bg-white  shadow-xl p-6 mb-8">
-        <p class="text-sm mb-2 text-vastel_blue ml-5 md:ml-0">Wallet Balance</p>
+       <p class="text-sm mb-2 text-vastel_blue ml-5 md:ml-0">Wallet Balance</p>
         <div class="flex items-center justify-start md:justify-between flex-col md:flex-row">
             <div class="text-vastel_blue w-[100%] pl-5 md:pl-0  md:w-[50%] flex flex-col justify-end">
                 <h2 class="text-3xl font-bold">₦ {{ number_format(auth()->user()->account_balance, 2) }}</h2>
@@ -159,7 +159,11 @@
                 </div>
             </div>
         </div>
+       
     </div>
+
+    <livewire:component.global.announcement-modal/>
+
 @endsection
 @push('scripts')
     <script>

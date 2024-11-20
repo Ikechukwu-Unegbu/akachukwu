@@ -29,6 +29,9 @@ use App\Http\Controllers\V1\TransactionController;
 */
 
 
+Route::get('modal', function(){
+    view('new.hello');
+});
 
 
 Route::middleware(['testing'])->group(function () {
