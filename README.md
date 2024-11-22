@@ -510,7 +510,7 @@ meter_type: *Prepaid* = 1 & *Postpaid* = 2
             "transfer_ussd_template": "*901*AccountNumber#"
             }
         ],
-        "message": "Result Checker PIN purchase successful: WAEC (1 QTY) ₦3900."
+        "message": "Bank Codes fetched successfully"
     }
 
     GET /api/virtual-accounts HTTP/1.1

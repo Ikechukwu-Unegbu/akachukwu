@@ -42,6 +42,6 @@ class VirtualAccountController extends Controller
     public function banks()
     {
         $banks = $this->virtualAccountService->getBanks();
-        return ApiHelper::sendResponse($banks, 'Virtual Account fetched successfully');
+        return ApiHelper::sendResponse($banks, 'Bank Codes fetched successfully');
     }
 }
