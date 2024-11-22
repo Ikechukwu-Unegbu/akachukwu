@@ -522,7 +522,10 @@ meter_type: *Prepaid* = 1 & *Postpaid* = 2
         "message": "Virtual Account fetched successfully."
     }
 
-    BVN or NIN is needed
+    Either a BVN or NIN is required.
+    If a BVN is provided, then both the account number and bank code must be supplied.
+    If a NIN is provided, the account number and bank code are not required.
+    
     POST /api/virtual-accounts/create HTTP/1.1
     Content-Type: application/json
     Authorization: Bearer 2|0q2K7QUbnT3TcQUMsyyRh4UASupLJl9XuKjotUqqe5b1832c
