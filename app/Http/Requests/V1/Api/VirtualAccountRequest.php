@@ -24,8 +24,8 @@ class VirtualAccountRequest extends FormRequest
         return [
             'bvn' => 'nullable|numeric|digits:11|required_without:nin',
             'nin' => 'nullable|numeric|digits:11|required_without:bvn',
-            'account_number' => 'required|numeric|digits:10',
-            'bank_code'      => 'required'
+            'account_number' => 'required_with:bvn|numeric|digits:10',
+            'bank_code' => 'required_with:bvn'
         ];
     }
 }
