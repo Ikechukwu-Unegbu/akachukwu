@@ -23,7 +23,7 @@ class GenerateRemainingAccounts{
                     $virtualAccountFactory = VirtualAccountServiceFactory::make($payVessleGateway);
                     $response = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $code);
                 }
-                dd('wasnt ok');
+                // dd('wasnt ok');
                 if($code == "035" || $code == "50515"){
                     $monifyGateway = PaymentGateway::where('name', 'Monnify')->first();
                     $virtualAccountFactory = VirtualAccountServiceFactory::make($monifyGateway);
