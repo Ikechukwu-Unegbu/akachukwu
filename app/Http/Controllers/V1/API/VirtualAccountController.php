@@ -34,7 +34,7 @@ class VirtualAccountController extends Controller
             if (isset($createVirtualAccount->status) && $createVirtualAccount->status) 
                 ApiHelper::sendResponse($createVirtualAccount, $createVirtualAccount->message);
 
-            return ApiHelper::sendError([], "Unable to create Virtual Account. Please try again later");
+            return ApiHelper::sendError([], "Unable to create Virtual Account. " . $createVirtualAccount->message);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             return ApiHelper::sendError($th->getMessage(), 'Unable to create Virtual Account. Please try again later');
