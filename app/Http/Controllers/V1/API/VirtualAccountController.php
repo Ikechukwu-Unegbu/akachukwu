@@ -29,7 +29,6 @@ class VirtualAccountController extends Controller
     {
         try {
             $createVirtualAccount = $this->virtualAccountService->createVirtualAccount($request->validated());
-            Log::info($createVirtualAccount);
             return $createVirtualAccount;
             // if (isset($createVirtualAccount->status) && !$createVirtualAccount->status) 
             //     ApiHelper::sendError([], $createVirtualAccount->message);
