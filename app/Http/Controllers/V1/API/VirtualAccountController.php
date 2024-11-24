@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers\V1\API;
 
-use App\Helpers\ApiHelper;
 use App\Models\Bank;
+use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\V1\Api\VirtualAccountRequest;
 use App\Services\VirtualAccountService;
+use App\Http\Requests\V1\Api\VirtualAccountRequest;
 
 class VirtualAccountController extends Controller
 {
@@ -35,6 +36,7 @@ class VirtualAccountController extends Controller
 
             return ApiHelper::sendError([], "Unable to create Virtual Account. Please try again later");
         } catch (\Throwable $th) {
+            Log::error($th->getMessage());
             return ApiHelper::sendError($th->getMessage(), 'Unable to create Virtual Account. Please try again later');
         }
     }
