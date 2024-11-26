@@ -52,6 +52,7 @@
         </div>
     </div>
     <input type="hidden" id="has-announcements" value="{{ $hasAnnouncements ? 'true' : 'false' }}">
+    <input type="hidden" id="has-kyc" value="{{ Auth::check() && (Auth::user()->bvn || Auth::user()->nin) ? 'true' : 'false' }}">
 
     </div>
 
@@ -59,6 +60,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         const modalElement = document.getElementById('feature-modal');
         const hasAnnouncements = document.getElementById('has-announcements').value === 'true';
+        const hasKyc = document.getElementById('has-kyc').value === 'true';
         const closeButton = modalElement.querySelector('[data-modal-hide="feature-modal"]');
 
         
@@ -69,6 +71,9 @@
 
         // Show the modal on page load
         if (hasAnnouncements) {
+            modal.show();
+        }
+        if (!hasKyc) {
             modal.show();
         }
 
