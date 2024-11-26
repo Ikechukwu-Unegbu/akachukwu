@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\V1\API\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Notifications\WelcomeEmail;
 use App\Services\OTPService;
 use Illuminate\Http\Request;
+use App\Notifications\WelcomeEmail;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Notification;
+use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
 
 class AuthenticateUserController extends Controller
 {
@@ -28,7 +29,9 @@ class AuthenticateUserController extends Controller
             $user = User::find(Auth::user()->id);
             $user->load('virtualAccounts');
             $token = $request->user()->createToken('token-name')->plainTextToken;
-    
+
+            (new GenerateRemainingAccounts)->generateRemaingingAccounts();
+            
             return response()->json([
                 'token' => $token, 
                 'status' => 'success', 
