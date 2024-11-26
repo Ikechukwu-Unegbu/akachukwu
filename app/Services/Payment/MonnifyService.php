@@ -15,12 +15,13 @@ use App\Interfaces\Payment\Payment;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use function Laravel\Prompts\warning;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Payment\MonnifyTransaction;
 use App\Services\Account\AccountBalanceService;
-use App\Services\Payment\VirtualAccountServiceFactory;
 
-use function Laravel\Prompts\warning;
+use App\Services\Payment\VirtualAccountServiceFactory;
+use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
 
 class MonnifyService implements Payment
 {
@@ -358,18 +359,10 @@ class MonnifyService implements Payment
             ]);
 
             $response = $response->object();
-            // dd($response);
+            
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
                 self::updateAccountBvn($response->responseBody->bvn);
-
-                if (!auth()->user()->virtualAccounts()->count()) {
-                    // $activeGateway = PaymentGateway::where('va_status', true)->first();
-                    // $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-                    // $virtualAccountFactory::createVirtualAccount(auth()->user(), $response->responseBody->bvn, 'bvn');
-                    self::createVirtualAccount(Auth::id(), $response->responseBody->bvn, 'bvn');
-                    PayVesselService::createVirtualAccount(Auth::id(), $response->responseBody->bvn, 'bvn');
-                }
-
+                (new GenerateRemainingAccounts)->generateRemaingingAccounts();
                 return ApiHelper::sendResponse([], "KYC updated & BVN linked to your account successfully.");
             }
 
@@ -406,19 +399,10 @@ class MonnifyService implements Payment
             ]);
 
             $response = $response->object();
-            // dd($response);
+
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
                 self::updateAccountNin($response->responseBody->nin);
-
-                if (!auth()->user()->virtualAccounts()->count()) {
-                    // $activeGateway = PaymentGateway::where('va_status', true)->first();
-                    // $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-                    // $virtualAccountFactory::createVirtualAccount(auth()->user(), $response->responseBody->nin, 'nin');
-
-                    self::createVirtualAccount(Auth::id(), $response->responseBody->nin, 'nin');
-                    PayVesselService::createVirtualAccount(Auth::id(), $response->responseBody->nin, 'nin');
-                }
-
+                (new GenerateRemainingAccounts)->generateRemaingingAccounts();
                 return ApiHelper::sendResponse([], "KYC updated & NIN linked to your account successfully.");
             }
 
