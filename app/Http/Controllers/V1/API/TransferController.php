@@ -14,17 +14,16 @@ use Illuminate\Support\Facades\Validator;
 
 class TransferController extends Controller
 {
-    private $user;
-    private $accountBalanceService;
+    public $helpers;
+    public $vastelTransfer;
 
-    public function __construct(public VastelMoneyTransfer $vastelTransfer, public GeneralHelpers $helpers)
+    public function __construct(GeneralHelpers $helpers)
     {
-      
+       $this->helpers = $helpers;
     }
 
     public function __invoke(Request $request)
-    {
-      
+    {      
         $validator = Validator::make($request->all(), [
             'recipient'=>'required|string', 
             'amount'=>'required', 
@@ -37,15 +36,24 @@ class TransferController extends Controller
 
     
         if($request->type=='vastel'){
-            $accountBalanceService = new AccountBalanceService(Auth::user());
-            if($accountBalanceService->verifyAccountBalance($request->amount) ==false){
-                return ApiHelper::sendError(['Insufficient balance'], 'Insufficient balance');
+            $vastelTransfer = new VastelMoneyTransfer(Auth::user());
+            $recipient = $vastelTransfer->getRecipient($request->recipient);
+            $verifyRecipient =  $vastelTransfer->verifyRecipient($recipient);
+            if (isset($verifyRecipient->status) && !$verifyRecipient->status) {
+                return $verifyRecipient;
             }
-            if(!$this->vastelTransfer->getRecipient($request->recipient)){
-                return ApiHelper::sendError(['No such user'], 'Unknown user');
-            }
-            $this->vastelTransfer->transfer($request->all(), $accountBalanceService);    
-            return  ApiHelper::sendResponse([], 'Transaction successful');
+            return $vastelTransfer->transfer($request->all());
+
+            // $accountBalanceService = new AccountBalanceService(Auth::user());
+            // return $accountBalanceService->getAccountBalance();
+            // if($accountBalanceService->verifyAccountBalance($request->amount) ==false){
+            //     return ApiHelper::sendError(['Insufficient balance'], 'Insufficient balance');
+            // }
+            // if(!$this->vastelTransfer->getRecipient($request->recipient)){
+            //     return ApiHelper::sendError(['No such user'], 'Unknown user');
+            // }
+            // $this->vastelTransfer->transfer($request->all(), $accountBalanceService);    
+            // return  ApiHelper::sendResponse([], 'Transaction successful');
         }
           
     }

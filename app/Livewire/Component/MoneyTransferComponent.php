@@ -29,13 +29,13 @@ class MoneyTransferComponent extends Component
         $this->validate();
         $this->error_msg = "";
         $recipient = $this->vastelMoneyTransfer->getRecipient($this->username);
-
-        if ($recipient && $recipient?->id !== Auth::id()) {
-            $this->recipient = $recipient;
-            return true;
+        $verifyRecipient = $this->vastelMoneyTransfer->verifyRecipient($recipient);
+        if ($verifyRecipient?->status) {
+            $this->dispatch('success-toastr', ['message' => $verifyRecipient?->message]);
+            $this->recipient = User::find($verifyRecipient->response->id);
+            return;
         }
-        
-        $this->error_msg = "Recipient not Founds!";
+        $this->dispatch('error-toastr', ['message' => $verifyRecipient?->message]);
         return;
     }
 
@@ -47,7 +47,7 @@ class MoneyTransferComponent extends Component
 
         $data = [
             'amount' => $this->amount,
-            'recipient' => $this->recipient->id
+            'recipient' => $this->recipient->email
         ];
 
         $handleMoneyTransfer = $this->vastelMoneyTransfer->transfer($data);

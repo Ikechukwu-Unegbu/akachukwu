@@ -51,18 +51,33 @@ class VastelMoneyTransfer{
             $this->accountBalanceService->transaction($data['amount']);
 
             // Lock the recipient's account for update
-            $recipient = User::where('id', $data['recipient'])->lockForUpdate()->firstOrFail();
+            $queryRecipient = $this->getRecipient($data['recipient']);
+            $recipient = User::where('id', $queryRecipient->id)->lockForUpdate()->firstOrFail();
             $recipientAccount = new AccountBalanceService($this->getRecipient($recipient->email));
             $recipientAccount->updateAccountBalance($data['amount']);
             
             DB::commit();
 
-            return ApiHelper::sendResponse($recipient, 'Transaction was successfully.');
+            return ApiHelper::sendResponse($recipient, "The amount of {$data['amount']} has been successfully transferred to {$recipient->name}.");
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
             return ApiHelper::sendError([], 'Oops! Unable to complete the operation. Please try again later.');
         }
+    }
+
+    public function verifyRecipient($recipient)
+    {
+        if ($recipient && $recipient?->id === Auth::id()) {
+            return ApiHelper::sendError([], 'You cannot transfer funds to your own account.');
+            return;
+        }
+
+        if ($recipient && $recipient?->id !== Auth::id()) {
+            return ApiHelper::sendResponse($recipient, 'Recipient found successfully. You can proceed with the transfer.');
+        }
+
+        return ApiHelper::sendError([], 'The recipient could not be found.');
     }
 }
 
