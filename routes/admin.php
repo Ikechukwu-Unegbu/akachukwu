@@ -154,6 +154,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('site-setting', [SiteSettingsController::class, 'update'])->name('admin.site.update');
         Route::get('/announcement', App\Livewire\Admin\Announcement\Create::class)->name('admin.announcement');
         Route::get('/announcement/index', App\Livewire\Admin\Announcement\Index::class)->name('admin.announcement.index');
+        Route::get('/announcement/{announcement:id}/edit', App\Livewire\Admin\Announcement\Edit::class)->name('admin.announcement.edit');
         Route::get('/app-logos', AppLogos::class)->name('admin.app-logos');
 
 

@@ -106,6 +106,9 @@
       @can('view logs')
       <x-admin.dropdown-item title="Media" link="{{ route('admin.media.index') }}" />
       @endcan
+      @can('view logs')
+      <x-admin.dropdown-item title="Announcement" link="{{ route('admin.announcement.index') }}" />
+      @endcan
     </x-admin.dropdown>
     @endif
     @if(auth()->user()->can('view role'))

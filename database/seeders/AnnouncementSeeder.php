@@ -18,7 +18,7 @@ class AnnouncementSeeder extends Seeder
     {
         $announcements = [];
 
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $announcements[] = [
                 'uuid' => Str::uuid(),
                 'title' => fake()->sentence,

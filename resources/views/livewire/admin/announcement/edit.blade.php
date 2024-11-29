@@ -1,11 +1,11 @@
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
-            <h4>Create New Announcement</h4>
+            <h4>Update Announcement</h4>
             <a href="{{route('admin.announcement.index')}}">View All</a>
         </div>
         <div class="card-body">
-            <form wire:submit="save">
+            <form wire:submit="update">
                 <!-- CSRF Token (if using Laravel) -->
                 <input type="hidden"  name="_token" value="{{ csrf_token() }}">
                 <!-- Check if there is a status message in the session -->
@@ -62,16 +62,16 @@
 
                 <!-- Active Status -->
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="is_active" name="is_active" wire:model="is_active" checked>
+                    <input type="checkbox" class="form-check-input" id="is_active" name="is_active" wire:model="is_active">
                     <label class="form-check-label" for="is_active">Is Active</label>
                 </div>
 
                 <!-- Submit Button -->
-                <button type="submit" wire:loading.attr='disabled' class="btn btn-primary">Create Announcement</button>
+                <button type="submit" wire:loading.attr='disabled' class="btn btn-primary">Update Announcement</button>
             </form>
         </div>
     </div>
 </div>
 @push('title')
-Content :: Announcement :: Create
+Content :: Announcement :: Edit
 @endpush

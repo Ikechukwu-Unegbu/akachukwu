@@ -11,8 +11,14 @@ class Index extends Component
     use WithPagination;
 
     public $perPage = 10; // Number of items per page
-
-
+   
+    public function delete(Announcement $announcement)
+    {
+        $announcement->delete();
+        $this->dispatch('success-toastr', ['message' => 'Announcement deleted successfully']);
+        session()->flash('status', 'Announcement deleted successfully.');
+        return $this->redirectRoute('admin.announcement.index');
+    }
 
     public function render()
     {
