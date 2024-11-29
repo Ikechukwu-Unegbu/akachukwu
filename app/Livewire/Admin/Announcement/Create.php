@@ -11,7 +11,7 @@ class Create extends Component
 {
     #[Validate('required|string')]
     public $title;
-    #[Validate('required|string')]
+    #[Validate('required|string|max:1500')]
     public $message;
     #[Validate('required|string')]
     public $type = 'info';
