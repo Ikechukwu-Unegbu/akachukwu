@@ -77,7 +77,7 @@
                 </div>
             </div>
         </div>
-        <input type="hidden" id="has-announcements" value="{{ !$hasAnnouncements ? 'true' : 'false' }}">
+        <input type="hidden" id="has-announcements" value="{{ $hasAnnouncements ? 'true' : 'false' }}">
         <input type="hidden" id="has-kyc" value="{{ $hasCompletedKyc ? 'true' : 'false' }}">
 
     </div>
