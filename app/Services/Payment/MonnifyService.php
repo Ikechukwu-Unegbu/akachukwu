@@ -211,7 +211,7 @@ class MonnifyService implements Payment
                 "customerName"          =>  $user->name,
                 "getAllAvailableBanks"  =>  false,
                 $kycType                =>  $kyc,
-                "preferredBanks"        =>  ["035", "058", "50515"]
+                "preferredBanks"        =>  ["035", "50515"]
             ]);
 
             $response = $response->object();

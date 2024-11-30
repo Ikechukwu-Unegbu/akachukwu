@@ -91,7 +91,6 @@
 
 
 
-
             // Initialize Flowbite modal instance
             const modal = new Modal(modalElement);
 
@@ -105,7 +104,14 @@
 
             // Set an interval to show the modal every 10 minutes
             setInterval(() => {
-                modal.show();
+                // modal.show();
+                 // Show the modal on page load
+                if (hasAnnouncements) {
+                    modal.show();
+                }
+                if (!hasKyc) {
+                    modal.show();
+                }
             }, 30000); // 10 minutes  600000
 
             closeButton.addEventListener('click', () => {
