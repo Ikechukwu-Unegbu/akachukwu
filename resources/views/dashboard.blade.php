@@ -134,10 +134,24 @@
                         <!-- Account {{ ++$count }} -->
                         <div class="flex items-center justify-between p-4 mb-3 bg-gray-100 rounded-lg">
                             <div>
-                                <p class="text-sm font-medium text-gray-800">{{ $account->account_name }}</p>
-                                {{-- <p class="text-xs text-gray-500">Account Name</p> --}}
+                               {{-- <p class="text-sm font-medium text-gray-800">{{ $account->account_name }}</p>
                                 <p  class="text-sm font-medium text-gray-800 account-number" id="account-number-{{ $count }}">{{ $account->account_number }}</p>
                                 <p  class="text-sm font-medium text-gray-800">{{ $account->bank_name }}</p>
+                                <dl class="text-sm font-small text-gray-800">--}}
+    <div class="flex justify-left gap-4 py-1">
+        <dt class="font-bold">Account Name:</dt>
+        <dd>{{ $account->account_name }}</dd>
+    </div>
+    <div class="flex justify-left gap-4 py-1">
+        <dt class="font-bold">Account Number:</dt>
+        <dd id="account-number-{{ $count }}" class="account-number">{{ $account->account_number }}</dd>
+    </div>
+    <div class="flex justify-left gap-4 py-1">
+        <dt class="font-bold">Bank Name:</dt>
+        <dd>{{ $account->bank_name }}</dd>
+    </div>
+</dl>
+
                             </div>
                             <button type="button" class="text-indigo-600 text-sm font-medium copy-button" data-target="account-number-{{ $count }}">Copy</button>
                         </div>
