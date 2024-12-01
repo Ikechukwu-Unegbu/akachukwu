@@ -57,7 +57,7 @@ class Create extends Component
     {
         $this->validate([
             'network'       =>  'required|exists:data_networks,network_id',
-            'amount'        =>  'required|numeric|min:0',
+            'amount'        =>  'required|numeric|min:50',
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ]);
         

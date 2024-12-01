@@ -96,15 +96,6 @@ class PosTraNetService
             // Start a database transaction to ensure atomicity
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
 
-                // Ensure the amount is above the minimum required
-                if ($amount < 50) {
-                    $errorResponse = [
-                        'error' => 'Insufficient Account Balance.',
-                        'message' => "The minimum airtime topup is ₦50"
-                    ];
-                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-                }
-
                 // Verify if the user has enough balance for the transaction
                 $verifyAccountBalance = self::verifyAccountBalance($amount);
                 if (!$verifyAccountBalance->status) {
