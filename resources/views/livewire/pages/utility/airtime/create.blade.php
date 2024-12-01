@@ -109,7 +109,7 @@
         </div>
         <div class="flex justify-between">
             <h6>Amount</h6>
-            <h6>₦{{ number_format($amount, 2) }}</h6>
+            <h6>₦{{ number_format(floatval(auth()->user()->account_balance), 2) }}</h6>
         </div>
         <div class="flex justify-between">
             <h6>Wallet</h6>

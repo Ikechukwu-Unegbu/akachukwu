@@ -96,12 +96,6 @@ class PosTraNetService
             // Start a database transaction to ensure atomicity
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
 
-                // Verify if the user has enough balance for the transaction
-                $verifyAccountBalance = self::verifyAccountBalance($amount);
-                if (!$verifyAccountBalance->status) {
-                    return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-                }
-
                 // Retrieve the network and discount information
                 $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
                 $discount = $network->airtime_discount;

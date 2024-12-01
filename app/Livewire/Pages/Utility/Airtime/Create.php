@@ -60,6 +60,12 @@ class Create extends Component
             'amount'        =>  'required|numeric|min:50',
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ]);
+
+        $userBalance = auth()->user()->account_balance;
+        if ($userBalance < $this->amount) {
+            $this->addError('amount', 'Your account balance is insufficient for this transaction.');
+            return false;
+        }
         
         return $this->form_action = true;
     }

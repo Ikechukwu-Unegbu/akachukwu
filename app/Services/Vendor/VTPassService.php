@@ -194,25 +194,10 @@ class VTPassService
         try {
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
                 // Validate the minimum airtime amount
-                if ($amount < 50) {
-                    $errorResponse = [
-                        'error'   => 'Minimum Amount Error',
-                        'message' => 'The minimum airtime topup is ₦50.',
-                    ];
-                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-                }
+             
 
                 // Lock user's account balance to prevent concurrent modifications
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
-
-                // Ensure the user's account balance is sufficient
-                if ($user->account_balance < $amount) {
-                    $errorResponse = [
-                        'error'   => 'Insufficient Balance',
-                        'message' => 'Your account balance is insufficient to complete this transaction.',
-                    ];
-                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-                }
 
                 // Retrieve network details
                 $network = DataNetwork::whereVendorId(self::$vendor->id)

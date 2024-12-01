@@ -86,26 +86,9 @@ class GladTidingService
     {
         try {
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
-                // Validate minimum amount
-                if ($amount < 50) {
-                    $errorResponse = [
-                        'error'   => 'Minimum Amount Error',
-                        'message' => 'The minimum airtime topup is ₦50.',
-                    ];
-                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-                }
-
+            
                 // Lock user's account balance to prevent race conditions
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
-
-                if ($user->account_balance < $amount) {
-                    $errorResponse = [
-                        'error'   => 'Insufficient Balance',
-                        'message' => 'Your account balance is insufficient to complete this transaction.',
-                    ];
-                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-                }
-
                 // Retrieve network details
                 $network = DataNetwork::whereVendorId(self::$vendor->id)
                     ->whereNetworkId($networkId)
