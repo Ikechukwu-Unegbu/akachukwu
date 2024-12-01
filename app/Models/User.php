@@ -306,6 +306,8 @@ class User extends Authenticatable
         }
     }
 
+
+
     // Check if the current user is impersonating another user
     public function isImpersonating()
     {

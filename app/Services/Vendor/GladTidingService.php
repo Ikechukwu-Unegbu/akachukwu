@@ -452,15 +452,6 @@ class GladTidingService
                 // Lock the user's balance
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
-                // Verify sufficient account balance
-                if ($user->account_balance < $plan->amount) {
-                    $errorResponse = [
-                        'error'   => 'Insufficient Balance',
-                        'message' => 'Your account balance is insufficient to complete this transaction.',
-                    ];
-                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-                }
-
                 $discount = $network->data_discount;
 
                 // Create a data transaction record

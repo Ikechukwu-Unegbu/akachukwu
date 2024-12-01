@@ -193,11 +193,12 @@ class VTPassService
     {
         try {
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
-                // Validate the minimum airtime amount
-             
+            
 
                 // Lock user's account balance to prevent concurrent modifications
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
+
+             
 
                 // Retrieve network details
                 $network = DataNetwork::whereVendorId(self::$vendor->id)
@@ -414,15 +415,7 @@ class VTPassService
                 $plan = DataPlan::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereDataId($dataId)->firstOrFail();
                 $type = DataType::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereId($typeId)->firstOrFail();
 
-                // Ensure the user's account balance is sufficient
-                if ($user->account_balance < $plan->amount) {
-                    $errorResponse = [
-                        'error'   => 'Insufficient Balance',
-                        'message' => 'Your account balance is insufficient to complete this transaction.',
-                    ];
-                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-                }
-
+             
                 $discount = $network->data_discount;
 
                 // Create the data transaction record

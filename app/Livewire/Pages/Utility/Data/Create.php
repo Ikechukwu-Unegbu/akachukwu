@@ -8,6 +8,7 @@ use App\Models\Data\DataPlan;
 use App\Models\Data\DataType;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
+use App\Services\Account\AccountBalanceService;
 use App\Services\Data\DataService;
 use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Auth;
@@ -33,12 +34,17 @@ class Create extends Component
     public $transaction_modal = false;
     public $transaction_status = false;
     public $transaction_link;
+    public $accountBalance;
 
     public function mount()
     {
         $this->pin = array_fill(1, 4, '');
         $this->vendor = $this->getVendorService('data');
         $this->network = DataNetwork::whereVendorId($this->vendor?->id)->whereStatus(true)->first()?->network_id;
+
+        $accountBalanceService = new AccountBalanceService(Auth::user());
+        $this->accountBalance = $accountBalanceService->getAccountBalance();
+
     }
 
     public function updatedNetwork()
@@ -70,6 +76,12 @@ class Create extends Component
             'plan'          =>  'required',
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ]);
+
+        if(!$this->accountBalance < $this->amount){
+            $this->addError('amount', 'Your account balance is insufficient for this transaction.');
+            return false;
+        }
+        
 
         return $this->form_action = true;
     }
