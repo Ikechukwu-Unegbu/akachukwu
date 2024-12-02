@@ -65,7 +65,7 @@ class Create extends Component
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ]);
 
-        if(!$this->accountBalance < $this->amount){
+        if($this->accountBalance < $this->amount){
             $this->addError('amount', 'Your account balance is insufficient for this transaction.');
             return false;
         }
