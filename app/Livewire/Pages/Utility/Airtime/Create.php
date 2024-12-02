@@ -33,12 +33,16 @@ class Create extends Component
     public $transaction_modal = false;
     public $transaction_status = false;
     public $transaction_link;
+    public $accountBalance;
 
     public function mount()
     {
         $this->pin = array_fill(1, 4, '');
         $this->vendor = $this->getVendorService('airtime');
         $this->network = DataNetwork::whereVendorId($this->vendor?->id)->whereStatus(true)->first()?->network_id;
+        $accountBalanceService = new AccountBalanceService(Auth::user());
+        $this->accountBalance = $accountBalanceService->getAccountBalance();
+
     }
 
     public function updatedAmount()
@@ -57,9 +61,14 @@ class Create extends Component
     {
         $this->validate([
             'network'       =>  'required|exists:data_networks,network_id',
-            'amount'        =>  'required|numeric|min:0',
+            'amount'        =>  'required|numeric|min:50',
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ]);
+
+        if($this->accountBalance < $this->amount){
+            $this->addError('amount', 'Your account balance is insufficient for this transaction.');
+            return false;
+        }
         
         return $this->form_action = true;
     }

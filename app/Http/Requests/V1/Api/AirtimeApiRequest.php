@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\V1\Api;
 
+use App\Services\Account\AccountBalanceService;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 
 class AirtimeApiRequest extends FormRequest
 {
@@ -23,8 +25,25 @@ class AirtimeApiRequest extends FormRequest
     {
         return [
             'network_id'    =>  'required|integer',
-            'amount'        =>  'required|numeric',
+            'amount'        =>  'required|numeric|min:50|check_balance',
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ];
+    }
+
+     /**
+     * Custom validation logic for checking account balance.
+     */
+    public function withValidator($validator)
+    {
+        $validator->addExtension('check_balance', function($attribute, $value, $parameters, $validator) {
+            $user = Auth::user(); 
+            $accountBalanceService = new AccountBalanceService($user); 
+
+            return $accountBalanceService->verifyAccountBalance($value);
+        });
+
+        $validator->addReplacer('check_balance', function($message, $attribute, $rule, $parameters) {
+            return "Insufficient balance for this transaction.";  // Custom error message
+        });
     }
 }
