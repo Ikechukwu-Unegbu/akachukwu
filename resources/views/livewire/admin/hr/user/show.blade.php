@@ -97,8 +97,8 @@
                                 </td>
                                 <td>{{ Str::title($transaction->utility) }}</td>
                                 <td>₦ {{ number_format($transaction->amount, 2) }}</td>
-                                <td>₦ {{ isset($transaction->balance_before) ? $transaction->balance_before : 'NA' }}</td>
-                                <td>₦ {{ isset($transaction->balance_after) ? $transaction->balance_after : 'NA' }}</td>
+                                <td>₦ {{ isset($transaction->balance_before) ? number_format($transaction->balance_before, 2) : 'NA' }}</td>
+                                <td>₦ {{ isset($transaction->balance_after) ? number_format($transaction->balance_after, 2) : 'NA' }}</td>
 
                               
                                 <td>
