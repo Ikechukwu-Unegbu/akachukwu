@@ -96,20 +96,7 @@ class PosTraNetService
             // Start a database transaction to ensure atomicity
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
 
-                // Ensure the amount is above the minimum required
-                if ($amount < 50) {
-                    $errorResponse = [
-                        'error' => 'Insufficient Account Balance.',
-                        'message' => "The minimum airtime topup is ₦50"
-                    ];
-                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-                }
-
-                // Verify if the user has enough balance for the transaction
-                $verifyAccountBalance = self::verifyAccountBalance($amount);
-                if (!$verifyAccountBalance->status) {
-                    return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-                }
+              
 
                 // Retrieve the network and discount information
                 $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
@@ -229,215 +216,236 @@ class PosTraNetService
     public static function electricity($discoId, $meterNumber, $meterType, $amount, $customerName, $customerMobile, $customerAddress)
     {
         try {
-
-            if ($amount < 500) {
-                $errorResponse = [
-                    'error'     => 'Minimum account error',
-                    'message'   => "The minimum amount is ₦500"
-                ];
-                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            }
-
-            $verifyAccountBalance = self::verifyAccountBalance($amount);
-            if (! $verifyAccountBalance->status) {
-                return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-            }
-
-            $vendor = self::$vendor;
-
-            $electricity = Electricity::whereVendorId($vendor->id)->whereDiscoId($discoId)->first();
-            $discount = $electricity->discount;
-
-            $transaction = ElectricityTransaction::create([
-                'user_id'                   =>  Auth::id(),
-                'vendor_id'                 =>  $vendor->id,
-                'disco_id'                  =>  $electricity->disco_id,
-                'disco_name'                =>  $electricity->disco_name,
-                'meter_number'              =>  $meterNumber,
-                'meter_type_id'             =>  $meterType,
-                'meter_type_name'           =>  $meterType == 1 ? 'Prepaid' : 'Postpaid',
-                'amount'                    =>  $amount,
-                'customer_mobile_number'    =>  $customerMobile,
-                'customer_name'             =>  $customerName,
-                'customer_address'          =>  $customerAddress,
-                'balance_before'            =>  Auth::user()->account_balance,
-                'balance_after'             =>  Auth::user()->account_balance,
-                'discount'                  =>  $discount
-            ]);
-
-            $data = [
-                'disco_name'        => $transaction->disco_id,
-                'meter_number'      => $transaction->meter_number,
-                'amount'            => $amount,
-                'MeterType'         => $transaction->meter_type_name,
-                'Customer_Phone'    => $transaction->customer_mobile_number,
-                'customer_name'     => $transaction->customer_name,
-                'customer_address'  => $transaction->customer_address
-            ];
-
-            $response = self::url(self::ELECTRICITY_URL, $data);
-
-            self::storeApiResponse($transaction, $response);
-
-            if (auth()->user()->isReseller()) {
-                $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
-            }
-            $amount = CalculateDiscount::calculate($amount, $discount);
-            self::$authUser->transaction($amount);
-
-            if (isset($response->error)) {
-                // Insufficient API Wallet Balance Error
-                self::$authUser->initiateRefund($amount, $transaction);
-                $errorResponse = [
-                    'error'   => 'Insufficient Balance From API.',
-                    'message' => "An error occurred during bill payment request. Please try again later."
-                ];
-                Log::error($errorResponse);
-                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            }
-
-            if (isset($response->Status) && $response->Status == 'successful') {
-                $transaction->update([
-                    'balance_after'     =>    self::$authUser->getAccountBalance(),
-                    'token'             =>    VendorHelper::removeTokenPrefix($response->token),
-                    'api_data_id'       =>    $response->id ?? $response->ident
+            return DB::transaction(function () use ($discoId, $meterNumber, $meterType, $amount, $customerName, $customerMobile, $customerAddress) {
+    
+                if ($amount < 500) {
+                    $errorResponse = [
+                        'error' => 'Minimum account error',
+                        'message' => "The minimum amount is ₦500"
+                    ];
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+    
+                $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
+    
+                $verifyAccountBalance = self::verifyAccountBalance($amount);
+                if (!$verifyAccountBalance->status) {
+                    return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
+                }
+    
+                $vendor = self::$vendor;
+                $electricity = Electricity::whereVendorId($vendor->id)->whereDiscoId($discoId)->first();
+                $discount = $electricity->discount;
+    
+                $transaction = ElectricityTransaction::create([
+                    'user_id' => Auth::id(),
+                    'vendor_id' => $vendor->id,
+                    'disco_id' => $electricity->disco_id,
+                    'disco_name' => $electricity->disco_name,
+                    'meter_number' => $meterNumber,
+                    'meter_type_id' => $meterType,
+                    'meter_type_name' => $meterType == 1 ? 'Prepaid' : 'Postpaid',
+                    'amount' => $amount,
+                    'customer_mobile_number' => $customerMobile,
+                    'customer_name' => $customerName,
+                    'customer_address' => $customerAddress,
+                    'balance_before' => $user->account_balance,
+                    'balance_after' => $user->account_balance,
+                    'discount' => $discount
                 ]);
-                self::$authUser->initiateSuccess($amount, $transaction);
-                BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
-
-                return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
-            }
-
-            if (isset($response->Status) && $response->Status == 'failed') {
-                $errorResponse = [
-                    'error'     => 'API response Error',
-                    'message'   => "Bill purchase failed. Please try again later.",
+    
+                // Deduct the amount from the user's account balance
+                if ($user->account_balance >= $amount) {
+                    $user->account_balance -= $amount;
+                    $user->save();
+                } else {
+                    $errorResponse = [
+                        'error' => 'Insufficient balance',
+                        'message' => 'Your account balance is insufficient to complete this purchase.'
+                    ];
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+    
+                $data = [
+                    'disco_name' => $transaction->disco_id,
+                    'meter_number' => $transaction->meter_number,
+                    'amount' => $amount,
+                    'MeterType' => $transaction->meter_type_name,
+                    'Customer_Phone' => $transaction->customer_mobile_number,
+                    'customer_name' => $transaction->customer_name,
+                    'customer_address' => $transaction->customer_address
                 ];
+    
+                $response = self::url(self::ELECTRICITY_URL, $data);
+                self::storeApiResponse($transaction, $response);
+    
+                if (isset($response->error)) {
+                    self::$authUser->initiateRefund($amount, $transaction);
+                    $errorResponse = [
+                        'error' => 'Insufficient Balance From API.',
+                        'message' => "An error occurred during bill payment request. Please try again later."
+                    ];
+                    Log::error($errorResponse);
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+    
+                if (isset($response->Status) && $response->Status == 'successful') {
+                    $transaction->update([
+                        'balance_after' => self::$authUser->getAccountBalance(),
+                        'token' => VendorHelper::removeTokenPrefix($response->token),
+                        'api_data_id' => $response->id ?? $response->ident
+                    ]);
+                    self::$authUser->initiateSuccess($amount, $transaction);
+                    BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
+    
+                    return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
+                }
+    
+                if (isset($response->Status) && $response->Status == 'failed') {
+                    $errorResponse = [
+                        'error' => 'API response Error',
+                        'message' => "Bill purchase failed. Please try again later.",
+                    ];
+                    self::$authUser->initiatePending($amount, $transaction);
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+    
+                $errorResponse = [
+                    'error' => 'Server Error',
+                    'message' => "Oops! Unable to perform transaction. Please try again later."
+                ];
+    
                 self::$authUser->initiatePending($amount, $transaction);
+    
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            }
-
-            $errorResponse = [
-                'error'     => 'Server Error',
-                'message'   => "Opps! Unable to Perform transaction. Please try again later."
-            ];
-
-            self::$authUser->initiatePending($amount, $transaction);
-
-            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-
+            });
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
-                'error'     =>  'network connection error',
-                'message'   =>  'Opps! Unable to make payment. Please check your network connection.'
+                'error' => 'Network connection error',
+                'message' => 'Oops! Unable to make payment. Please check your network connection.'
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
     }
+    
 
     public static function cable($cableId, $cablePlan, $iucNumber, $customer)
     {
         try {
-            $vendor = self::$vendor;
-            $cable = Cable::whereVendorId($vendor->id)->whereCableId($cableId)->first();
-            $cable_plan = CablePlan::whereVendorId($vendor->id)->whereCablePlanId($cablePlan)->first();
+            return DB::transaction(function () use ($cableId, $cablePlan, $iucNumber, $customer) {
+                $vendor = self::$vendor;
+                $cable = Cable::whereVendorId($vendor->id)->whereCableId($cableId)->first();
+                $cable_plan = CablePlan::whereVendorId($vendor->id)->whereCablePlanId($cablePlan)->first();
 
-            $verifyAccountBalance = self::verifyAccountBalance($cable_plan->amount);
-            if (! $verifyAccountBalance->status) {
-                return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-            }
+                // Lock the user record to prevent double spending
+                $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
-            $discount = $cable->discount;
+                $verifyAccountBalance = self::verifyAccountBalance($cable_plan->amount);
+                if (! $verifyAccountBalance->status) {
+                    return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
+                }
 
-            $transaction = CableTransaction::create([
-                'user_id'             =>  Auth::id(),
-                'vendor_id'           =>  $vendor->id,
-                'cable_name'          =>  $cable->cable_name,
-                'cable_id'            =>  $cable->cable_id,
-                'cable_plan_name'     =>  $cable_plan->package,
-                'cable_plan_id'       =>  $cable_plan->cable_plan_id,
-                'smart_card_number'   =>  $iucNumber,
-                'customer_name'       =>  $customer,
-                'amount'              =>  $cable_plan->amount,
-                'balance_before'      =>  Auth::user()->account_balance,
-                'balance_after'       =>  Auth::user()->account_balance,
-                'discount'            =>  $discount
-            ]);
+                $discount = $cable->discount;
 
-            $data = [
-                'cablename'         =>  $transaction->cable_id,
-                'cableplan'         =>  $transaction->cable_plan_id,
-                'smart_card_number' =>  $transaction->smart_card_number
-            ];
-
-            $response = self::url(self::CABLE_URL, $data);
-
-            self::storeApiResponse($transaction, $response);
-
-            $amount = $transaction->amount;
-
-            if (auth()->user()->isReseller()) {
-                $amount = CalculateDiscount::applyDiscount($amount, 'cable');
-            }
-
-            $amount = CalculateDiscount::calculate($amount, $discount);
-
-            self::$authUser->transaction($amount);
-
-            if (isset($response->error)) {
-                // Insufficient API Wallet Balance Error
-                self::$authUser->initiateRefund($amount, $transaction);
-                $errorResponse = [
-                    'error'   => 'Insufficient Balance From API.',
-                    'message' => "An error occurred during cable payment request. Please try again later."
-                ];
-                Log::error($errorResponse);
-                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            }
-
-            if (isset($response->Status) && $response->Status == 'successful') {
-                $transaction->update([
-                    'balance_after' => self::$authUser->getAccountBalance(),
-                    'api_data_id'   => $response->id ?? $response->ident
+                $transaction = CableTransaction::create([
+                    'user_id'             =>  $user->id,
+                    'vendor_id'           =>  $vendor->id,
+                    'cable_name'          =>  $cable->cable_name,
+                    'cable_id'            =>  $cable->cable_id,
+                    'cable_plan_name'     =>  $cable_plan->package,
+                    'cable_plan_id'       =>  $cable_plan->cable_plan_id,
+                    'smart_card_number'   =>  $iucNumber,
+                    'customer_name'       =>  $customer,
+                    'amount'              =>  $cable_plan->amount,
+                    'balance_before'      =>  $user->account_balance,
+                    'balance_after'       =>  $user->account_balance,
+                    'discount'            =>  $discount
                 ]);
 
-                self::$authUser->initiateSuccess($amount, $transaction);
+                $data = [
+                    'cablename'         =>  $transaction->cable_id,
+                    'cableplan'         =>  $transaction->cable_plan_id,
+                    'smart_card_number' =>  $transaction->smart_card_number
+                ];
 
-                BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
+                $response = self::url(self::CABLE_URL, $data);
 
-                return ApiHelper::sendResponse($transaction, "Cable subscription successful: {$transaction->cable_plan_name} for ₦{$transaction->amount} on {$transaction->customer_name} ({$transaction->smart_card_number}).");
-            }
+                self::storeApiResponse($transaction, $response);
 
-            if (isset($response->Status) && $response->Status == 'failed') {
+                $amount = $transaction->amount;
+
+                if (auth()->user()->isReseller()) {
+                    $amount = CalculateDiscount::applyDiscount($amount, 'cable');
+                }
+
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
+                // Deduct the amount from the user's balance
+                if ($user->account_balance >= $amount) {
+                    $user->account_balance -= $amount;
+                    $user->save();
+                } else {
+                    $errorResponse = [
+                        'error' => 'Insufficient balance',
+                        'message' => 'Your account balance is insufficient to complete this purchase.',
+                    ];
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+
+                if (isset($response->error)) {
+                    self::$authUser->initiateRefund($amount, $transaction);
+                    $errorResponse = [
+                        'error'   => 'Insufficient Balance From API.',
+                        'message' => "An error occurred during cable payment request. Please try again later."
+                    ];
+                    Log::error($errorResponse);
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+
+                if (isset($response->Status) && $response->Status == 'successful') {
+                    $transaction->update([
+                        'balance_after' => $user->account_balance,
+                        'api_data_id'   => $response->id ?? $response->ident
+                    ]);
+
+                    self::$authUser->initiateSuccess($amount, $transaction);
+
+                    BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
+
+                    return ApiHelper::sendResponse($transaction, "Cable subscription successful: {$transaction->cable_plan_name} for ₦{$transaction->amount} on {$transaction->customer_name} ({$transaction->smart_card_number}).");
+                }
+
+                if (isset($response->Status) && $response->Status == 'failed') {
+                    $errorResponse = [
+                        'error'     => 'API response Error',
+                        'message'   => "Cable purchase failed. Please try again later.",
+                    ];
+
+                    self::$authUser->initiatePending($amount, $transaction);
+
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+
                 $errorResponse = [
-                    'error'     => 'API response Error',
-                    'message'   => "Cable purchase failed. Please try again later.",
+                    'error'     => 'Server Error',
+                    'message'   => "Oops! Unable to Perform transaction. Please try again later."
                 ];
 
                 self::$authUser->initiatePending($amount, $transaction);
 
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-            }
-
-            $errorResponse = [
-                'error'     => 'Server Error',
-                'message'   => "Opps! Unable to Perform transaction. Please try again later."
-            ];
-
-            self::$authUser->initiatePending($amount, $transaction);
-
-            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-
+            });
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
-                'error'     =>  'network connection error',
-                'message'   =>  'Opps! Unable to make payment. Please check your network connection.',
+                'error'     =>  'Network Connection Error',
+                'message'   =>  'Oops! Unable to make payment. Please check your network connection.',
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
     }
+
 
    
     public static function data($networkId, $typeId, $dataId, $mobileNumber)
@@ -455,11 +463,6 @@ class PosTraNetService
                 // Lock the user record to prevent double spending
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
-                // Verify if the user has sufficient balance before proceeding
-                $verifyAccountBalance = self::verifyAccountBalance($plan->amount);
-                if (!$verifyAccountBalance->status) {
-                    return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-                }
 
                 // Proceed with transaction logic
                 $transaction = DataTransaction::create([

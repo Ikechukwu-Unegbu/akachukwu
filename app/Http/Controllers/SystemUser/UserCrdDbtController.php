@@ -24,7 +24,7 @@ class UserCrdDbtController extends Controller
     {
        return DB::transaction(function()use($request){
         $validatedData = $request->validate([
-            'amount' => 'required|integer',
+            'amount' => 'required|numeric',
             'action' => 'required|string',
             'reason' => 'required|string',
             'username' => 'required|string'
