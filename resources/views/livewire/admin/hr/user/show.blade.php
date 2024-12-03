@@ -97,8 +97,8 @@
                                 </td>
                                 <td>{{ Str::title($transaction->utility) }}</td>
                                 <td>₦ {{ number_format($transaction->amount, 2) }}</td>
-                                <td>₦ NA </td>
-                                <td>₦ NA </td>
+                                <td>₦ {{$transaction->amount }} </td>
+                                <td>₦ {{ $transaction->amount }} </td>
                               
                                 <td>
                                     <small>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</small>
