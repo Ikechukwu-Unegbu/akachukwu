@@ -97,8 +97,9 @@
                                 </td>
                                 <td>{{ Str::title($transaction->utility) }}</td>
                                 <td>₦ {{ number_format($transaction->amount, 2) }}</td>
-                                <td>₦ {{$transaction->balance_before }} </td>
-                                <td>₦ {{ $transaction->balance_after }} </td>
+                                <td>₦ {{ isset($transaction->balance_before) ? $transaction->balance_before : 'NA' }}</td>
+<td>₦ {{ isset($transaction->balance_after) ? $transaction->balance_after : 'NA' }}</td>
+
                               
                                 <td>
                                     <small>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</small>
