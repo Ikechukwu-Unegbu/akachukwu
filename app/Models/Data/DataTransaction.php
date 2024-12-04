@@ -55,6 +55,7 @@ class DataTransaction extends Model
         'mobile_number',
         'balance_before',
         'balance_after',
+        'balance_after_refund',
         'plan_network',
         'plan_name',
         'plan_amount',

@@ -41,4 +41,10 @@ trait TransactionStatusTrait
         $this->vendor_response = self::STATUS_FAILED;
         $this->save();
     }
+
+    public function balanceAfterRefund($amount)
+    {
+        $this->balance_after_refund = $amount;
+        $this->save();
+    }
 }

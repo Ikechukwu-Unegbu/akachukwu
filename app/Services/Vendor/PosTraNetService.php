@@ -2,6 +2,7 @@
 
 namespace App\Services\Vendor;
 
+use App\Models\User;
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
@@ -21,11 +22,11 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Education\ResultChecker;
 use App\Models\Utility\CableTransaction;
 use App\Models\Utility\AirtimeTransaction;
+use App\Actions\Idempotency\IdempotencyCheck;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
 use App\Models\Education\ResultCheckerTransaction;
-use App\Models\User;
 
 class PosTraNetService
 {
@@ -95,12 +96,26 @@ class PosTraNetService
         try {
             // Start a database transaction to ensure atomicity
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
-
-              
-
                 // Retrieve the network and discount information
                 $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
                 $discount = $network->airtime_discount;
+
+                // Check for duplicate transactions using IdempotencyCheck
+                $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
+                    AirtimeTransaction::class, 
+                    [
+                        'user_id' => Auth::id(), 
+                        'vendor_id' => (int) self::$vendor->id, 
+                        'network_id' => (int) $network->network_id, 
+                        'mobile_number' => $mobileNumber,
+                        'amount' => number_format($amount, 2, '.', '')
+                    ],
+                );
+                
+                // Handle duplicate transactions
+                if ($duplicateTransaction) {
+                    return ApiHelper::sendError($duplicateTransaction, "Transaction is already pending or recently completed. Please wait.");
+                }
 
                 // Lock the user's account balance to prevent double spending
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
@@ -463,6 +478,23 @@ class PosTraNetService
                 // Lock the user record to prevent double spending
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
+                // Check for duplicate transactions using IdempotencyCheck
+                $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
+                    DataTransaction::class, 
+                    [
+                        'user_id' => Auth::id(), 
+                        'vendor_id' => (int) self::$vendor->id, 
+                        'network_id' => (int) $network->network_id, 
+                        'mobile_number' => $mobileNumber,
+                        'plan_amount' => number_format($plan->amount, 2, '.', '')
+                    ],
+                );
+                
+                // Handle duplicate transactions
+                if ($duplicateTransaction) {
+                    return ApiHelper::sendError($duplicateTransaction, "Transaction is already pending or recently completed. Please wait.");
+                }
+
 
                 // Proceed with transaction logic
                 $transaction = DataTransaction::create([
@@ -484,17 +516,28 @@ class PosTraNetService
                 ]);
 
                 // Deduct the amount from the user's account balance
-                if ($user->account_balance >= $plan->amount) {
-                    $user->account_balance -= $plan->amount;  // Deduct balance
-                    $user->save();  // Save updated balance
-                } else {
-                    // Handle insufficient balance
-                    $errorResponse = [
-                        'error' => 'Insufficient balance',
-                        'message' => 'Your account balance is insufficient to complete this purchase.',
-                    ];
-                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                $amount = $plan->amount;
+                //Check is user is a Reseller
+                if ($user->isReseller()) {
+                    // Apply discount amount to transaction
+                    $amount = CalculateDiscount::applyDiscount($amount, 'data');
                 }
+                // Get Discount assign to data
+                $discount = $network->data_discount;
+                $amount = CalculateDiscount::calculate($amount, $discount);
+
+                // Handle insufficient balance
+                if (! self::$authUser->verifyAccountBalance($amount))
+                {
+                    return response()->json([
+                        'status'  => false,
+                        'error' => 'Insufficient Account Balance.',
+                        'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your wallet to continue."
+                    ], 401)->getData(); 
+                }
+                
+                // Deduct the amount from the user's account balance
+                self::$authUser->transaction($amount);
 
                 // External API request and response processing (same as in your code)
                 $data = [
@@ -506,6 +549,17 @@ class PosTraNetService
 
                 $response = self::url(self::DATA_URL, $data);
                 self::storeApiResponse($transaction, $response);
+
+                if (isset($response->error)) {
+                    // Insufficient API Wallet Balance Error
+                    self::$authUser->initiateRefund($amount, $transaction);
+                    $errorResponse = [
+                        'error'   => 'Insufficient Balance From API.',
+                        'message' => "An error occurred during Data request. Please try again later."
+                    ];
+                    Log::error($errorResponse);
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
 
                 if (isset($response->Status) && $response->Status == 'successful') {
                     // Update transaction after successful API response

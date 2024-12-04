@@ -65,6 +65,7 @@ class AccountBalanceService
     public function initiateRefund($amount, $transaction) : bool
     {
         $this->user->setAccountBalance($amount);
+        $transaction->balanceAfterRefund($amount);
         $transaction->refund();
         return true;
     }

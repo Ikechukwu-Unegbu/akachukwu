@@ -30,6 +30,7 @@ class CableTransaction extends Model
         'amount',
         'balance_before',
         'balance_after',
+        'balance_after_refund',
         'api_data_id',
         'api_response',
         'status',

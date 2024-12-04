@@ -47,6 +47,7 @@ class AirtimeTransaction extends Model
         'mobile_number',
         'balance_before',
         'balance_after',
+        'balance_after_refund',
         'api_data_id',
         'api_response',
         'status',

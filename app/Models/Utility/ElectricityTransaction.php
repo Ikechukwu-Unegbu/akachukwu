@@ -33,6 +33,7 @@ class ElectricityTransaction extends Model
         'customer_address',
         'balance_before',
         'balance_after',
+        'balance_after_refund',
         'token',
         'api_data_id',
         'api_response',
