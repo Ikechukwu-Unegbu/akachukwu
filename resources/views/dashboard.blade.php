@@ -75,11 +75,29 @@
         </div>
         <div class="space-y-4">
             @forelse (auth()->user()->transactionHistories(10) as $transaction)
+            @php
+                $parts = explode(' ', class_basename($transaction));
+                
+                $lastPart = end($parts);
+            @endphp
                 <div class="flex items-center justify-between">
                     <div class="flex items-center">
                         <i class="fas {{ $transaction->icon }} bg-blue-100 p-2 rounded-full mr-3"></i>
                         <div>
-                            <p class="font-semibold">{{ Str::title($transaction->utility) }}</p>
+                        <p class="font-semibold">
+                            @if (Str::title($transaction->utility) === 'Transfer')
+                                {{-- Perform actions specific to "Transfer" --}}
+                                @if($transaction->user_id == Auth::user()->id)
+                                <span class="text-red">Transfer</span>
+                                @else 
+                                <span class="text-green">Recieved</span>
+                                @endif 
+                            @else
+                                {{-- Default behavior --}}
+                                {{ Str::title($transaction->utility) }}
+                            @endif
+                        </p>
+
                             <p class="text-sm text-gray-500">
                                 {{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</p>
                         </div>
