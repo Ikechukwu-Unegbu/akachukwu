@@ -77,6 +77,7 @@ class VastelMoneyTransfer{
             'recipient'=>$recipient->id,
             'amount'=>$data['amount'], 
             'status'=>true ,
+            'type'=>'internal',
             'reference_id'=>GeneralHelpers::generateUniqueRef('money_transfers')
         ]);
     }
