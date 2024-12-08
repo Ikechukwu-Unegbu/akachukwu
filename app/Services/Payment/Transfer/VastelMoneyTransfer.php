@@ -4,6 +4,7 @@ namespace  App\Services\Payment\Transfer;
 use App\Helpers\ApiHelper;
 use App\Models\User;
 use App\Helpers\GeneralHelpers;
+use App\Models\MoneyTransfer;
 use Illuminate\Support\Facades\DB;
 use App\Services\Account\AccountBalanceService;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +55,9 @@ class VastelMoneyTransfer{
             $queryRecipient = $this->getRecipient($data['recipient']);
             $recipient = User::where('id', $queryRecipient->id)->lockForUpdate()->firstOrFail();
             $recipientAccount = new AccountBalanceService($this->getRecipient($recipient->email));
-            $recipientAccount->updateAccountBalance($data['amount']);
+            $recipientAccount->updateAccountBalance($data['amount'], $recipient);
+
+            $this->recordInternalTransfer($data, $recipient);
             
             DB::commit();
 
@@ -62,8 +65,21 @@ class VastelMoneyTransfer{
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e->getMessage());
+            // throw $e;
             return ApiHelper::sendError([], 'Oops! Unable to complete the operation. Please try again later.');
         }
+    }
+
+    public function recordInternalTransfer(array $data,User $recipient)
+    {
+        MoneyTransfer::create([
+            'user_id'=>Auth::user()->id, 
+            'recipient'=>$recipient->id,
+            'amount'=>$data['amount'], 
+            'status'=>true ,
+            'type'=>'internal',
+            'reference_id'=>GeneralHelpers::generateUniqueRef('money_transfers')
+        ]);
     }
 
     public function verifyRecipient($recipient)
