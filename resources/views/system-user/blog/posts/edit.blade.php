@@ -54,7 +54,7 @@
                         <!-- Content -->
                         <div class="mb-3">
                             <label for="content" class="form-label">Content</label>
-                            <textarea class="form-control" name="content" rows="5" placeholder="Enter post content" required>{{ old('content', $post->content) }}</textarea>
+                            <textarea class="form-control" name="content" id="content" rows="5" placeholder="Enter post content" required>{{ old('content', $post->content) }}</textarea>
                         </div>
 
                         <!-- Featured Image -->
@@ -115,16 +115,28 @@
 
 @push('scripts')
     <!-- TinyMCE CDN -->
-    <script src="https://cdn.tiny.cloud/1/6ujt7ohjfqxztcoi2uv8nx6tk4tqxzan7cb3rfcvdhbxgxtm/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-
+    <script src="{{ asset('tinymce/tinymce.min.js') }}"></script>
     <script>
-        tinymce.init({
-            selector: 'textarea#content', // Target the content textarea
-            plugins: 'lists link image preview', // Add more TinyMCE plugins if needed
-            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | preview',
-            height: 400, // Set the height of the editor
-            menubar: false, // Disable menubar if not needed
-            branding: false // Disable "Powered by TinyMCE"
+        document.addEventListener('DOMContentLoaded', function() {
+            tinymce.init({
+                selector: '#content',
+                height: 250,
+                menubar: false,
+                plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount'
+                ],
+                toolbar: 'undo redo | formatselect | bold italic backcolor | \
+                                        alignleft aligncenter alignright alignjustify | \
+                                        bullist numlist outdent indent | removeformat | help',
+                setup: function (editor) {
+                    // Save content to textarea on change
+                    editor.on('change', function () {
+                        editor.save();
+                    });
+                }
+            });
         });
     </script>
 @endpush
