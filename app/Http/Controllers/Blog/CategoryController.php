@@ -17,6 +17,10 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
+        if (!auth()->user()->can('view post category')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $categoriesQuery = Category::query();
     
         if ($request->has('type') && in_array($request->query('type'), ['media', 'blog', 'faq'])) {
@@ -37,6 +41,10 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+        if (!auth()->user()->can('create post category')) {
+            abort(403, 'Unauthorized action.');
+        }
+
        $request->validate([
             'type'=>'required|string',
             'name'=>'required|string',
@@ -78,6 +86,9 @@ class CategoryController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if (!auth()->user()->can('edit post category')) {
+            abort(403, 'Unauthorized action.');
+        }
         $request->validate([
             'type' => 'required|string',
             'name' => 'required|string',
@@ -100,6 +111,10 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
+        if (!auth()->user()->can('delete post category')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $category = Category::findOrFail($id);
         $category->delete();
 

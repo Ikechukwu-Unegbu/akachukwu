@@ -54,6 +54,9 @@ class PostController extends Controller
      */
     public function create()
     {
+        if (!auth()->user()->can('create post')) {
+            abort(403, 'Unauthorized action.');
+        }
         // Return a list of posts
         $categories = Category::where('type', 'blog')->get();
         return view('system-user.blog.posts.create')->with('categories', $categories);
@@ -66,6 +69,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
+        if (!auth()->user()->can('edit post')) {
+            abort(403, 'Unauthorized action.');
+        }
         // Return a list of posts
         $post = Post::findOrFail($id);
         $categories = Category::where('type', 'blog')->get();
@@ -79,6 +85,9 @@ class PostController extends Controller
      */
     public function show($id)
     {
+        if (!auth()->user()->can('view post')) {
+            abort(403, 'Unauthorized action.');
+        }
         // Return a list of posts
         $post = Post::findOrFail($id);
         $categories = Category::where('type', 'blog')->get();
@@ -93,6 +102,10 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request, PostService $postService, ImageService $imageService)
     {
+        if (!auth()->user()->can('create post')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $blog = $postService->storePost($request);
     
         if ($request->hasFile('image')) {
@@ -100,7 +113,7 @@ class PostController extends Controller
         }
         
 
-        if ($request->has('image_url')) {
+        if ($request->has('image_url') && !empty($request->image_url)) {
             $blog->featured_image = $request->image_url;
             $blog->save();
         }
@@ -126,6 +139,10 @@ class PostController extends Controller
      */
     public function update(UpdatePostRequest $request, $id, PostService $postService, ImageService $imageService)
     {
+        if (!auth()->user()->can('edit post')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $blog = Post::find($id);
         if (is_null($blog->id)) {
             return redirect()->back()->withErrors('Post ID is null.');

@@ -91,10 +91,10 @@
       @endcan
     </x-admin.dropdown>
     @endif
-    @if(auth()->user()->can('view logs'))
+    @if(auth()->user()->can('view logs') || auth()->user()->can('view post'))
     <li class="nav-heading">Content</li>
     <x-admin.dropdown title="Content" icon="bi-clock-history">
-      @can('view logs')
+      @can('view post')
       <x-admin.dropdown-item title="Blog" link="{{ route('admin.blog.index') }}" />
       @endcan
       @can('view logs')
