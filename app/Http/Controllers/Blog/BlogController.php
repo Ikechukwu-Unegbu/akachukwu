@@ -18,6 +18,10 @@ class BlogController extends Controller
      */
     public function index(Request $request)
     {
+        if (!auth()->user()->can('view post')) {
+            abort(403, 'Unauthorized action.');
+        }
+
         $searchQuery = $request->input('query');
         $categories = Category::all();
         
@@ -45,6 +49,9 @@ class BlogController extends Controller
 
     public function destroy($id)
     {
+        if (!auth()->user()->can('delete post')) {
+            abort(403, 'Unauthorized action.');
+        }
         $post = Post::findOrFail($id);
         $post->deletePostImage();
         $post->delete();
