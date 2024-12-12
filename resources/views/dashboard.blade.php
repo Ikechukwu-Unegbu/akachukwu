@@ -74,7 +74,7 @@
             <a href="{{ route('transactions') }}" class="text-blue-600 text-sm">See all Transactions</a>
         </div>
         <div class="space-y-4">
-            @forelse (auth()->user()->transactionHistories(10) as $transaction)
+            @forelse (auth()->user()->checkUserTransactionHistories(10, auth()->id()) as $transaction)
             @php
                 $parts = explode(' ', class_basename($transaction));
                 

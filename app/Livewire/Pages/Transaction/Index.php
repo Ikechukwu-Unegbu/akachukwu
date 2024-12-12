@@ -41,7 +41,7 @@ class Index extends Component
         }
 
         return view('livewire.pages.transaction.index', [
-            'transactions'  => auth()->user()->transactionHistories($this->perPage, $this->service, $this->selectedDate),
+            'transactions'  => auth()->user()->checkUserTransactionHistories($this->perPage, Auth::id(), $this->service, $this->selectedDate),
             'months'        =>  $months,
             'year'          =>  $year,
         ]);
