@@ -143,6 +143,8 @@
                 </div>
                 <!-- Modal body -->
                 <div class="p-6">
+                    @if (auth()->user()->virtualAccounts()->count())
+
                     @php $count = 0 @endphp
                     @forelse (auth()->user()->virtualAccounts()->get() as $key => $account)
                         @if ($loop->first) 
@@ -175,6 +177,12 @@
                             <p class="mb-4 text-xs text-gray-500">Complete your KYC to access virtual accounts for quick and easy transfers.</p> 
                             <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
                     @endforelse
+
+                    @else
+                    <h5 class="font-medium">Get Started with Virtual Accounts</h5>
+                    <p class="mb-4">Complete your KYC to access virtual accounts for quick and easy transfers.</p> 
+                    <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
+                    @endif  
 
                     <div class="flex items-center justify-center py-4">
                         <span class="text-sm text-gray-500">OR</span>
