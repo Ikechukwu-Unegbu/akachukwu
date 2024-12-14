@@ -29,7 +29,7 @@
             </div>
             <div class="card-body">                        
                 <x-table>
-                    <x-table-header :headers="['#', 'Reference', 'Type', 'Amount', 'Date', 'Status']" />
+                    <x-table-header :headers="['#', 'Reference', 'Type', 'Amount', 'Bal B4', 'Bal After', 'Date', 'Status']" />
                     <x-table-body>
                         @forelse ($walletHistories as $wallet_transaction)
                         <tr>
@@ -39,6 +39,8 @@
                             </td>
                             <td>{{ Str::title($wallet_transaction->utility) }}</td>
                             <td>₦ {{ number_format($wallet_transaction->amount, 2) }}</td>
+                            <td>₦ {{ isset($wallet_transaction->balance_before) ? $wallet_transaction->balance_before : 'NA' }}</td>
+                            <td>₦ {{ isset($wallet_transaction->balance_after) ? $wallet_transaction->balance_after : 'NA' }}</td>
                             <td>
                                 {{ \Carbon\Carbon::parse($wallet_transaction->created_at)->format('M d, Y. h:ia') }}
                             </td>
