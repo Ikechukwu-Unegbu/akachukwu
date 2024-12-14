@@ -438,6 +438,46 @@ class User extends Authenticatable
                         DB::raw('"funding" as type'), DB::raw('"flutterwave" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
                         DB::raw('"Wallet Topup" as title'), 'created_at'
                     ])
+            )
+            ->unionAll(
+                DB::table('paystack_transactions')
+                    ->select([
+                        'id', 'reference_id as transaction_id', DB::raw('"N/A" as balance_before'), 
+                        DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status', 
+                        'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name', 
+                        DB::raw('"funding" as type'), DB::raw('"paystack" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
+                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                    ])
+            )
+            ->unionAll(
+                DB::table('monnify_transactions')
+                    ->select([
+                        'id', 'reference_id as transaction_id', DB::raw('"N/A" as balance_before'), 
+                        DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status', 
+                        'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name', 
+                        DB::raw('"funding" as type'), DB::raw('"monnify" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
+                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                    ])
+            )
+            ->unionAll(
+                DB::table('pay_vessel_transactions')
+                    ->select([
+                        'id', 'reference_id as transaction_id', DB::raw('"N/A" as balance_before'), 
+                        DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status', 
+                        'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name', 
+                        DB::raw('"funding" as type'), DB::raw('"payvessel" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
+                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                    ])
+            )
+            ->unionAll(
+                DB::table('vastel_transactions')
+                    ->select([
+                        'id', 'reference_id as transaction_id', DB::raw('"N/A" as balance_before'), 
+                        DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status', 
+                        'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name', 
+                        DB::raw('"funding" as type'), DB::raw('"vastel" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
+                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                    ])
             );
     
         // Add additional unions for other tables as needed...
