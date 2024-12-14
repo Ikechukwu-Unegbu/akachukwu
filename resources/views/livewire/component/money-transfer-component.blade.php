@@ -30,7 +30,7 @@
                         </div>
                         <div class="mt-2">
                             <label for="" class="dark:text-white mb-3">Enter Amount</label>
-                            <input type="number" placeholder="Enter Amount" wire:model="amount" class="w-full p-2 border-none rounded-lg shadow focus:ring-vastel_blue focus:border-vastel_blue dark:bg-gray-700 dark:border-white dark:placeholder-white dark:text-white">
+                            <input type="number" placeholder="Enter Amount" id="amount_input" wire:model="amount" class="w-full p-2 border-none rounded-lg shadow focus:ring-vastel_blue focus:border-vastel_blue dark:bg-gray-700 dark:border-white dark:placeholder-white dark:text-white">
                             @error ('amount')
                                 <span class="text-red-500 text-sm font-bold flex justify-center">{{ $message }}</span>
                             @enderror
@@ -62,4 +62,12 @@
             </form>
         </div>
     </div>
+
+    <script>
+   document.getElementById('amount_input').addEventListener('change', function (event) {
+        // Remove any '+' or '-' characters from the input
+        event.target.value = event.target.value.replace(/[+-]/g, '');
+    });
+
+    </script>
 </div>

@@ -42,8 +42,12 @@ class MoneyTransferComponent extends Component
     public function handleMoneyTransfer()
     {
         $this->validate([
-            'amount' => 'required|numeric'
+            'amount' => 'required|numeric|min:50',
+        ], [
+            'amount.gte' => 'The amount must be above 50.',
         ]);
+        
+        
 
         $data = [
             'amount' => $this->amount,
