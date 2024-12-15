@@ -5,15 +5,11 @@ namespace App\Http\Controllers\V1\API;
 use Illuminate\Http\Request;
 use App\Models\Data\DataPlan;
 use App\Models\Data\DataType;
-use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
-use Illuminate\Validation\Rules;
 use App\Services\Data\DataService;
 use App\Http\Controllers\Controller;
 use App\Traits\ResolvesVendorService;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\V1\Api\DataApiRequest;
-use Illuminate\Validation\ValidationException;
 
 class DataApiController extends Controller
 {
@@ -93,7 +89,7 @@ class DataApiController extends Controller
                 return response()->json([
                     'status'   => 'failed',
                     'message'  => 'The Network Id provided not found.'
-                ]); 
+                ]);
             }
 
             if (!$type) {
