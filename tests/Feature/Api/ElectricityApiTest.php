@@ -44,7 +44,7 @@ class ElectricityApiTest extends TestCase
             'meter_type' =>  self::METER_TYPE,
         ]);
 
-        if ($response->assertSt)
+        // if ($response->assertSt)
 
         // $response->assertStatus(422);
 
