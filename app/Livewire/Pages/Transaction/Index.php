@@ -16,7 +16,7 @@ class Index extends Component
     public $perPage = 50;
     public $selectedDate;
     public $service;
-    public $services = ['airtime', 'data', 'cable', 'electricity', 'funding'];
+    public $services = ['airtime', 'data', 'cable', 'electricity', 'funding', 'transfer', 'receive'];
 
     public function mount()
     {
