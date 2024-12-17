@@ -12,7 +12,10 @@
     <section class="section">
         <div class="card">
             <div class="card-header">
-                <h5 class="">Manage Airtime Network</h5>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="">Manage Airtime Network</h5>
+                    <div><a href="javascript:void(0)" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateAirtimeSales">Set Airtime Sales</a></div>
+                </div>
             </div>
             <div class="card-body">
                 <div class="mt-3 row">
@@ -61,4 +64,31 @@
             </div>
         @endif
     </section>
+
+    <div class="modal fade" id="updateAirtimeSales" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Airtime Sales</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3 class="text-center text-danger">
+                    Are you sure?
+                </h3>
+                @if ($airtime_sales)
+                    <p class="text-center">You want to Deactivate Airtime Purchase?</p>
+                @else
+                    <p class="text-center">You want to Activate Airtime Purchase?</p>
+                @endif                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+                <button type="button" wire:click="updateAirtimeSale"  data-bs-dismiss="modal"  class="btn btn-primary">
+                    {{ $airtime_sales ? 'Deactivate' : 'Activate' }}
+                </button>
+            </div>
+            </div>
+        </div>
+    </div>
 </div>
