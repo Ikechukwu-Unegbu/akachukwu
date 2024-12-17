@@ -1,4 +1,7 @@
 @extends('layouts.new-guest')
+@section('head')
+<title>Vastel | Dashboard</title>
+@endsection 
 @section('body')
     <!-- Wallet Balance -->
     <div class="px-[2rem] bg-white  shadow-xl p-6 mb-8">

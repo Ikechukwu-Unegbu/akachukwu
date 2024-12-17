@@ -14,6 +14,8 @@ use App\Livewire\Admin\CrdDbt\Create as CrdDbtCreate;
 use App\Livewire\Admin\Settings\AppLogos;
 use App\Livewire\Component\Admin\SiteSettings;
 use App\Models\SiteSettings as ModelsSiteSettings;
+use App\Models\User;
+use App\Services\Account\UserTransactionsAuditService;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,11 @@ use App\Models\SiteSettings as ModelsSiteSettings;
 
 Route::group(['prefix' => 'admin'], function () {
 
+    Route::get('audit/{username}', function($username){
+        $service = new UserTransactionsAuditService();
+        $user = User::where('username', $username)->first();
+        return $service->calculateUserBalance($user);
+    });
     Route::group(['middleware' => ['guest', 'testing']], function() {
         Route::get('/', App\Livewire\Admin\Auth\Login::class)->name('admin.auth.login');
         Route::get('login', App\Livewire\Admin\Auth\Login::class)->name('admin.auth.login');
