@@ -33,7 +33,8 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('audit/{username}', function($username){
         $service = new UserTransactionsAuditService();
         $user = User::where('username', $username)->first();
-        return $service->calculateUserBalance($user);
+        // dd($user);
+        return $service->calculateUserBalance($user->id);
     });
     Route::group(['middleware' => ['guest', 'testing']], function() {
         Route::get('/', App\Livewire\Admin\Auth\Login::class)->name('admin.auth.login');
