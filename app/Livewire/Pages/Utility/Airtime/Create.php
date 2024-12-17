@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Pages\Utility\Airtime;
 
+use App\Http\Requests\AirtimePurchaseRequest;
 use Livewire\Component;
 use App\Models\Beneficiary;
 use App\Models\Data\DataVendor;
@@ -57,14 +58,15 @@ class Create extends Component
         $this->updatedAmount();
     }
 
+    protected function rules(): array
+    {
+        return (new AirtimePurchaseRequest())->rules();
+    }
+ 
+
     public function validateForm()
     {
-        $this->validate([
-            'network'       =>  'required|exists:data_networks,network_id',
-            'amount'        =>  'required|numeric|min:50',
-            'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
-        ]);
-
+        $this->validate();
         if($this->accountBalance < $this->amount){
             $this->addError('amount', 'Your account balance is insufficient for this transaction.');
             return false;

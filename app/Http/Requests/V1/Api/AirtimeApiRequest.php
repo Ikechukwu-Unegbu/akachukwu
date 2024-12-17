@@ -2,9 +2,10 @@
 
 namespace App\Http\Requests\V1\Api;
 
-use App\Services\Account\AccountBalanceService;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Http\FormRequest;
+use App\Services\Account\AccountBalanceService;
 
 class AirtimeApiRequest extends FormRequest
 {
@@ -25,7 +26,19 @@ class AirtimeApiRequest extends FormRequest
     {
         return [
             'network_id'    =>  'required|integer',
-            'amount'        =>  'required|numeric|min:50|check_balance',
+            // 'amount'        =>  'required|numeric|min:50|check_balance',
+            'amount'        =>  [
+                'required', 
+                'numeric', 
+                'min:50',
+                'check_balance', 
+                function ($attribute, $value, $fail) {
+                    $settings = SiteSetting::find(1);
+                    if (!$settings->airtime_sales) {
+                        return $fail('Airtime purchase is currently unavailable.');
+                    }
+                }
+            ],
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ];
     }
