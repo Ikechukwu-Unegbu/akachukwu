@@ -44,52 +44,52 @@ class UserTransactionsAuditService
         ];
     }
 
-    /**
-     * Get usernames of senders and the total amount sent to a given user.
-     *
-     * @param int $userId
-     * @return array
-     */
-    public function getReceivedMoneySummary($userId)
-    {
-        // Group by user_id (senders) and calculate total sent amount
-        $receivedSummary = MoneyTransfer::where('recipient', $userId)
-            ->selectRaw('user_id, SUM(amount) as total_received')
-            ->groupBy('user_id')
-            ->get();
-
-        // Map sender IDs to usernames and total amounts
-        $summary = $receivedSummary->map(function ($transaction) {
-            $senderUser = User::find($transaction->user_id);
-            return [
-                'username' => $senderUser ? $senderUser->username : 'Unknown User',
-                'total_sent' => $transaction->total_received,
-            ];
-        });
-
-        return $summary->toArray();
-    }
-
-       /**
-     * Get usernames of recipients and the total amount sent to each.
+     /**
+     * Fetch all usernames a given user sent money to and the total sent to each.
      *
      * @param int $userId
      * @return array
      */
     public function getSentMoneySummary($userId)
     {
-        // Group by recipient and calculate total sent amount
+        // Group by recipient and sum the amount
         $sentSummary = MoneyTransfer::where('user_id', $userId)
             ->selectRaw('recipient, SUM(amount) as total_sent')
             ->groupBy('recipient')
             ->get();
 
-        // Map recipient IDs to usernames and total amounts
+        // Map recipient IDs to usernames and total sent
         $summary = $sentSummary->map(function ($transaction) {
             $recipientUser = User::find($transaction->recipient);
             return [
                 'username' => $recipientUser ? $recipientUser->username : 'Unknown User',
                 'total_sent' => $transaction->total_sent,
+            ];
+        });
+
+        return $summary->toArray();
+    }
+
+    /**
+     * Fetch all usernames that sent money to a given user and the total received from each.
+     *
+     * @param int $userId
+     * @return array
+     */
+    public function getReceivedMoneySummary($userId)
+    {
+        // Group by sender (user_id) and sum the amount
+        $receivedSummary = MoneyTransfer::where('recipient', $userId)
+            ->selectRaw('user_id, SUM(amount) as total_received')
+            ->groupBy('user_id')
+            ->get();
+
+        // Map sender IDs to usernames and total received
+        $summary = $receivedSummary->map(function ($transaction) {
+            $senderUser = User::find($transaction->user_id);
+            return [
+                'username' => $senderUser ? $senderUser->username : 'Unknown User',
+                'total_received' => $transaction->total_received,
             ];
         });
 
