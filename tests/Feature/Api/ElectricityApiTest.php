@@ -25,7 +25,6 @@ class ElectricityApiTest extends TestCase
         Artisan::call('db:seed', ['--class' => VendorServiceMappingSeeder::class]);
         Artisan::call('db:seed', ['--class' => ElectricitySeeder::class]);
         Artisan::call('db:seed', ['--class' => VTPassSeeder::class]);
-        VendorServiceMapping::updateOrCreate(['service_type' => 'electricity'], ['vendor_id' => 3]);
     }
 
     /** @test electricity purchase fails when user has insufficient balance */
