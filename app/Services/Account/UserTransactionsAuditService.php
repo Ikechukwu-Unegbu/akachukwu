@@ -24,8 +24,8 @@ class UserTransactionsAuditService
     public function calculateUserBalance($userId)
     {
         // Calculate expenses
-        $expenses = AirtimeTransaction::where('user_id', $userId)->sum('amount')
-            + DataTransaction::where('user_id', $userId)->sum('amount')
+        $expenses = AirtimeTransaction::where('user_id', $userId)->where('vendor_status', 'successful')->sum('amount')
+            + DataTransaction::where('user_id', $userId)->where('vendor_status', 'successful')->sum('amount')
             + ElectricityTransaction::where('user_id', $userId)->sum('amount')
             + CableTransaction::where('user_id', $userId)->sum('amount')
             + ResultCheckerTransaction::where('user_id', $userId)->sum('amount')
