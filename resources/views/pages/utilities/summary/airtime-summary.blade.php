@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="{{asset('css/index.css')}}"/>
 <link rel="stylesheet" href="{{asset('css/dashboard_sidebar.css')}}"/>
 <link rel="stylesheet" href="{{asset('css/ut/summary.css')}}"/>
-
+<title>Vastel | Transactions</title>
 @endsection
 
 @section('body')

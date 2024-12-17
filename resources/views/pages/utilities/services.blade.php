@@ -1,5 +1,7 @@
 @extends('layouts.new-guest')
-
+@section('head')
+<title>Vastel | Services</title>
+@endsection 
 @section('body')
 <!-- <div class="bg-gray-100 p-4 md:p-8"> -->
     <div class=" bg-white rounded-lg  p-6">
