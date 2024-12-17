@@ -11,6 +11,7 @@ use App\Models\Utility\ElectricityTransaction;
 use App\Models\Payment\PayVesselTransaction;
 use App\Models\MoneyTransfer;
 use App\Models\Payment\VastelTransaction;
+use App\Models\User;
 
 class UserTransactionsAuditService
 {
@@ -41,5 +42,57 @@ class UserTransactionsAuditService
             'funding' => $funding,
             'net_balance' => $funding - $expenses,
         ];
+    }
+
+    /**
+     * Get usernames of senders and the total amount sent to a given user.
+     *
+     * @param int $userId
+     * @return array
+     */
+    public function getReceivedMoneySummary($userId)
+    {
+        // Group by user_id (senders) and calculate total sent amount
+        $receivedSummary = MoneyTransfer::where('recipient', $userId)
+            ->selectRaw('user_id, SUM(amount) as total_received')
+            ->groupBy('user_id')
+            ->get();
+
+        // Map sender IDs to usernames and total amounts
+        $summary = $receivedSummary->map(function ($transaction) {
+            $senderUser = User::find($transaction->user_id);
+            return [
+                'username' => $senderUser ? $senderUser->username : 'Unknown User',
+                'total_sent' => $transaction->total_received,
+            ];
+        });
+
+        return $summary->toArray();
+    }
+
+       /**
+     * Get usernames of recipients and the total amount sent to each.
+     *
+     * @param int $userId
+     * @return array
+     */
+    public function getSentMoneySummary($userId)
+    {
+        // Group by recipient and calculate total sent amount
+        $sentSummary = MoneyTransfer::where('user_id', $userId)
+            ->selectRaw('recipient, SUM(amount) as total_sent')
+            ->groupBy('recipient')
+            ->get();
+
+        // Map recipient IDs to usernames and total amounts
+        $summary = $sentSummary->map(function ($transaction) {
+            $recipientUser = User::find($transaction->recipient);
+            return [
+                'username' => $recipientUser ? $recipientUser->username : 'Unknown User',
+                'total_sent' => $transaction->total_sent,
+            ];
+        });
+
+        return $summary->toArray();
     }
 }
