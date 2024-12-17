@@ -33,7 +33,7 @@
                     <!-- Icon -->
                     <i class="fas {{ $transaction->icon }} text-blue-500 text-xl"></i>
                     <div>
-                        <p class="font-semibold">{{ $transaction->title }} ({{ Str::upper($transaction->type !== 'funding' ? $transaction->plan_name : $transaction->utility) }})</p>
+                        <p class="font-semibold">{{ $transaction->title }} ({{ Str::upper($transaction->utility) }})</p>
                         @if ($transaction->type !== 'funding')
                         <p class="text-sm text-gray-500">{{ Str::title($transaction->type) }}: {{ $transaction->subscribed_to }}</p>
                         @endif
@@ -41,10 +41,10 @@
                             <a class="text-vastel_blue text-sm">{{ $transaction->transaction_id }}</a>
                         @endif
                         <p class="text-sm text-gray-500">{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:iA') }}</p>
-                        @if ($transaction->type !== 'funding')
-                            <a href="{{ route("user.transaction.{$transaction->utility}.receipt", $transaction->transaction_id) }}" class="text-vastel_blue text-sm">View Receipt</a>
+                        @if ($transaction->type !== 'funding' && $transaction->plan_name !== 'Transfer')
+                            <a href="{{ route("user.transaction.". Str::lower($transaction->utility) .".receipt", $transaction->transaction_id) }}" class="text-vastel_blue text-sm">View Receipt</a>
                             <i class="fa-solid fa-grip-lines-vertical text-vastel_blue"></i>
-                            <a href="{{ route("api.response", [$transaction->utility, $transaction->transaction_id]) }}" class="text-vastel_blue text-sm">Api Response</a>
+                            <a href="{{ route("api.response", [Str::lower($transaction->utility), $transaction->transaction_id]) }}" class="text-vastel_blue text-sm">Api Response</a>
                         @endif
                     </div>
                 </div>

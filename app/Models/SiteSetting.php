@@ -11,4 +11,10 @@ class SiteSetting extends Model
     protected $guarded = [
        
     ];
+
+    public function updateAirtimeSale()
+    {
+        $this->airtime_sales = !$this->airtime_sales;
+        $this->save();
+    }
 }

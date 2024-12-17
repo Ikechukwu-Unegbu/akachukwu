@@ -1,4 +1,7 @@
 @extends('layouts.new-guest')
+@section('head')
+<title>Vastel | Airtime</title>
+@endsection 
 @section('body')
 <div class="max-w-lg w-full bg-white p-8 ">
     <div class="flex items-center mb-6">

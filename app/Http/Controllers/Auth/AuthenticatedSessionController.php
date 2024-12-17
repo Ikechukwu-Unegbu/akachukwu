@@ -39,7 +39,7 @@ class AuthenticatedSessionController extends Controller
         if($user){
             if ($user->blocked_by_admin == true) {
                 $validator = Validator::make([], []);
-                $validator->errors()->add('blocked', 'Your account has been blocked by the admin.');
+                $validator->errors()->add('blocked', 'Account Currently Inaccessible. Please contact Support for further assistance.');
                 throw new ValidationException($validator);
                 return false;
             }

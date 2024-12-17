@@ -1,4 +1,7 @@
 @extends('layouts.new-guest')
+@section('head')
+<title>Vastel | Data</title>
+@endsection 
 @section('body')
 <div class="max-w-lg w-full p-6">
     <!-- Back Button -->

@@ -19,13 +19,7 @@
 
     <link rel="icon" href="{{ asset('images/vastel-icon.png') }}" style="height: 2rem;width:6.94rem;" type="image/png">
 
-    <!-- ===============================================-->
-    <!--    Stylesheets-->
-    <!-- ===============================================-->
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-    <link href="{{ asset('pub-pages\assets\css\theme.css') }}" rel="stylesheet" />
-    <link href="{{ asset('pub-pages/assets/css/font-awesome.css') }}" rel="stylesheet" /> --}}
+
     <link rel="stylesheet" href="{{ asset('css/ut/pin.css') }}" />
 
     <meta name="google-site-verification" content="RSrvupiRl2PlbPCslC1Ygbkon_UyUsWYWaCflhfrow8" />
