@@ -36,7 +36,7 @@ class VastelMoneyTransfer{
 
     public function transfer(array $data)
     {
-        // Start a database transaction
+       
         DB::beginTransaction();
 
         try {
@@ -49,13 +49,16 @@ class VastelMoneyTransfer{
             }
 
             // Deduct the amount from the sender's balance
+            $data['sender_balance_before'] = $sender->account_balance;
             $this->accountBalanceService->transaction($data['amount']);
 
             // Lock the recipient's account for update
             $queryRecipient = $this->getRecipient($data['recipient']);
             $recipient = User::where('id', $queryRecipient->id)->lockForUpdate()->firstOrFail();
+            $data['recipient_balance_before'] = $recipient->account_balance;
             $recipientAccount = new AccountBalanceService($this->getRecipient($recipient->email));
             $recipientAccount->updateAccountBalance($data['amount'], $recipient);
+            $recipient = User::where('id', $queryRecipient->id)->firstOrFail();
 
             $this->recordInternalTransfer($data, $recipient);
             
@@ -78,6 +81,10 @@ class VastelMoneyTransfer{
             'amount'=>$data['amount'], 
             'status'=>true ,
             'type'=>'internal',
+            'sender_balance_before' => $data['sender_balance_before'],
+            'sender_balance_after' => Auth::user()->account_balance,
+            'recipient_balance_before' => $data['recipient_balance_before'],
+            'recipient_balance_after' => $recipient->account_balance,
             'reference_id'=>GeneralHelpers::generateUniqueRef('money_transfers')
         ]);
     }

@@ -19,6 +19,7 @@ class SiteSettingSeeder extends Seeder
                 'stie_title' => 'Your Site Title',
                 'email' => 'admin@example.com',
                 // Add other fields and their values
+                'airtime_sales'=>true
             ]);
         }
     }

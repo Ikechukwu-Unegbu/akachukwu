@@ -41,9 +41,9 @@
             <div class="off-canvas-nav  text-vastel_blue p-4">
                 <ul class="flex flex-col gap-[1rem]">
                     <li><a href="/" class="text-vastel_blue hover:text-vastel_blue">Home</a></li>
-                    <!-- <li><a href="{{ route('airtime.index') }}" class="text-vastel_blue hover:text-vastel_blue">Airtime</a></li>
-                    <li><a href="{{ route('data.index') }}" class="text-vastel_blue hover:text-vastel_blue">Internet Data</a></li>
-                    -->
+                    <!-- <li><a href="{{ route('airtime.index') }}" class="text-vastel_blue hover:text-vastel_blue">Airtime</a></li>-->
+                    <li><a href="{{ route('blog.index') }}" class="text-vastel_blue hover:text-vastel_blue">Blog</a></li>
+                    
                     <li>
                         <a href="{{ route('dashboard') }}" class="text-vastel_blue hover:text-vastel_blue">
                             @guest Bills Payment @else Dashboard @endguest

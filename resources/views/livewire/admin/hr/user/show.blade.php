@@ -75,6 +75,14 @@
                             <div class="col-lg-3 col-md-4 label ">Joined On</div>
                             <div class="col-lg-9 col-md-8">{{ $user->created_at->format('d M, Y') }}</div>
                         </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 label ">BVN</div>
+                            <div class="col-lg-9 col-md-8">{{ $user->bvn}}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 label ">NIN</div>
+                            <div class="col-lg-9 col-md-8">{{ $user->nin}}</div>
+                        </div>
                     </div>
                 </div>
 
