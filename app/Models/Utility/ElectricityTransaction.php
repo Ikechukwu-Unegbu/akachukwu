@@ -5,18 +5,20 @@ namespace App\Models\Utility;
 use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
+use Spatie\Activitylog\LogOptions;
+use App\Traits\ThrottlesTransactions;
 use App\Traits\GeneratesTransactionId;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Activitylog\Traits\LogsActivity;
-use Spatie\Activitylog\LogOptions;
 
 
 class ElectricityTransaction extends Model
 {
-    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId; 
+    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId, ThrottlesTransactions; 
+    protected $throttleActionName = 'electricity_purchase'; 
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',

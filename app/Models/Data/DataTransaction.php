@@ -3,9 +3,10 @@
 namespace App\Models\Data;
 
 use App\Models\User;
-use App\Traits\GeneratesTransactionId;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\LogOptions;
+use App\Traits\ThrottlesTransactions;
+use App\Traits\GeneratesTransactionId;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -14,7 +15,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DataTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId; 
+    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, ThrottlesTransactions; 
+    protected $throttleActionName = 'data_purchase'; 
     protected $guarded = [];
 
     protected $fillable = [
