@@ -36,7 +36,7 @@ class VastelMoneyTransfer{
 
     public function transfer(array $data)
     {
-        // Start a database transaction
+       
         DB::beginTransaction();
 
         try {
