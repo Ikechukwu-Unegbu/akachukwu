@@ -36,6 +36,7 @@ class QueryTransaction extends Component
     public $error_msg;
     public $transaction_type;
     public $transaction_id;
+    public $get_transaction;
 
     public function  mount(Request $request)
     {
@@ -52,6 +53,7 @@ class QueryTransaction extends Component
         $this->vendorResponse = "";
         $this->transaction_id = $id;
         $this->transaction_type = $type;
+        $this->get_transaction = self::getTransactionTableByType($type, $id);
         
         $query =  QueryVendorTransaction::initializeQuery($id, $type);
         
