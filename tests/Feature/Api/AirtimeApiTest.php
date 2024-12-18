@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Log;
 use Database\Seeders\Data\VTPassSeeder;
 use Illuminate\Support\Facades\Artisan;
 use Database\Seeders\Data\DataVendorSeeder;
+use Database\Seeders\SiteSettingSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Database\Seeders\VendorServiceMappingSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -29,6 +30,7 @@ class AirtimeApiTest extends TestCase
         Artisan::call('db:seed', ['--class' => VendorServiceMappingSeeder::class]);
         Artisan::call('db:seed', ['--class' => DataNetworkSeeder::class]);
         Artisan::call('db:seed', ['--class' => VTPassSeeder::class]);
+        Artisan::call('db:seed', ['--class'=>SiteSettingSeeder::class]);
     }
 
     /** @test airtime purchase fails when user has insufficient balance */
