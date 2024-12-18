@@ -17,7 +17,7 @@ class ThrottleAction
     public function execute(string $actionName, int $userId, int $ttl = 60)
     {
         $key = $actionName . '_' . $userId;
-        \Log::info($key);
+
         if (Cache::has($key)) {
             return response()->json([
                 'message' => 'You are performing this action too frequently. Please wait a minute.',
@@ -26,6 +26,6 @@ class ThrottleAction
 
         Cache::put($key, true, $ttl);
 
-        sleep(random_int(1, 20));
+        sleep(random_int(1, 4));
     }
 }
