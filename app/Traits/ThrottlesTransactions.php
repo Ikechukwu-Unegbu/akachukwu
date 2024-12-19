@@ -2,8 +2,9 @@
 
 namespace App\Traits;
 
-use App\Actions\Throttle\ThrottleAction;
+use App\Events\RateLimitExceeded;
 use Illuminate\Support\Facades\Auth;
+use App\Actions\Throttle\ThrottleAction;
 
 trait ThrottlesTransactions
 {
@@ -15,8 +16,13 @@ trait ThrottlesTransactions
                 ? $model->throttleActionName
                 : 'purchase' . class_basename($model);
 
-            $throttler = new ThrottleAction();
-            $throttler->execute($actionName, Auth::id());
+            try {
+                $throttler = new ThrottleAction();
+                $throttler->execute($actionName, Auth::id());
+            } catch (\Exception $e) {
+                event(new RateLimitExceeded($e->getMessage()));
+                return redirect()->to(url()->previous());
+            }
         });
     }
 }

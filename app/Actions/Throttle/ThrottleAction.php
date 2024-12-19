@@ -2,11 +2,8 @@
 
 namespace App\Actions\Throttle;
 
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Cache;
+use App\Events\RateLimitExceeded;
 use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Validation\ValidationException;
 
 class ThrottleAction
 {
@@ -24,7 +21,7 @@ class ThrottleAction
         $key = $actionName . '_' . $userId;
 
         if (RateLimiter::tooManyAttempts($key, $maxAttempts)) {
-            throw new \Exception('You are performing this action too frequently. Please wait before trying again.');
+            throw new \Exception('Your last transaction is still Processing. Please wait before trying again.');
         }
 
         RateLimiter::hit($key, $decaySeconds);
