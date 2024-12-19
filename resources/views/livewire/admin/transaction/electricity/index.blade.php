@@ -17,15 +17,22 @@
             </div>
             <div class="card-body">                
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'User', 'Meter No.', 'Disco Name', 'Amount', 'Date', 'Status', 'Action']" />
+                    <x-admin.table-header :headers="['#','Trx. ID', 'User', 'Meter. Info.','Customer', 'Disco Name','Address', 'Amount','Bal. b4','Bal. After','After Rfund', 'Token','Date', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($electricity_transactions as $electricity_transaction)
                             <tr>
                                 <th scope="row">{{ $loop->index+1 }}</th>
+                                <td>{{$electricity_transaction->transaction_id}}</td>
                                 <td> <a  href="{{route('admin.hr.user.show', [$electricity_transaction->user->username])}}">{{ $electricity_transaction->user->username }}</a> </td>
                                 <td>{{ $electricity_transaction->meter_number }} - (<small>{{ $electricity_transaction->meter_type_name }}</small>)</td>
+                                <td>{{ $electricity_transaction->customer_name }} - {{$electricity_transaction->customer_mobile_number}}</td>
                                 <td>{{ $electricity_transaction->disco_name }}</td>
+                                <td>{{$electricity_transaction->customer_address}}</td>
                                 <td>₦{{ $electricity_transaction->amount }}</td>
+                                <td>₦{{ $electricity_transaction->balance_before }}</td>
+                                <td>₦{{ $electricity_transaction->balance_after }}</td>
+                                <td>₦{{ $electricity_transaction->balance_after_refund }}</td>
+                                <td>{{$electricity_transaction->token}}</td>
                                 <td>{{ $electricity_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $electricity_transaction->status === 1 ? 'success' : ($electricity_transaction->status === 0 ? 'danger' : 'warning') }}">

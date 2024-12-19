@@ -16,16 +16,21 @@
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage" wireSearchAction="wire:model.live=search"  />
             </div>
             <div class="card-body">
-                <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'Customer', 'Phone No.', 'Network', 'Amount', 'Date', 'Status', 'Action']" />
+                <x-admin.table style="font-size: small;">
+                    <x-admin.table-header :headers="['#','Trx. ID', 'Customer', 'Phone No.', 'Network','Vendor', 'Amount','Discount', 'Bal. B4', 'Bal. After', 'Date', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($airtime_transactions as $airtime_transaction)
                             <tr>
                                 <th scope="row">{{ $loop->index+1 }}</th>
                                 <td> <a  href="{{route('admin.hr.user.show', [$airtime_transaction->user->username])}}">{{ $airtime_transaction->user->username }}</a> </td>
+                                <td>{{ $airtime_transaction->transaction_id }}</td>
                                 <td>{{ $airtime_transaction->mobile_number }}</td>
                                 <td>{{ $airtime_transaction->network_name ?? '' }}</td>
+                                <td>{{ $airtime_transaction->vendor->name ?? '' }}</td>
                                 <td>₦{{ $airtime_transaction->amount }}</td>
+                                <td>%{{ $airtime_transaction->discount }}</td>
+                                <td>₦{{ $airtime_transaction->balance_before }}</td>
+                                <td>₦{{ $airtime_transaction->balance_after }}</td>
                                 <td>{{ $airtime_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $airtime_transaction->status === 1 ? 'success' : ($airtime_transaction->status === 0 ? 'danger' : 'warning') }}">

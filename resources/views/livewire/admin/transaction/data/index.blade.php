@@ -17,16 +17,22 @@
             </div>
             <div class="card-body">                
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'User', 'Phone No.', 'Network', 'Data Plan', 'Amount', 'Date', 'Status', 'Action']" />
+                    <x-admin.table-header :headers="['#', 'Trx. ID', 'User', 'Phone No.', 'Network','Vendor', 'Data Plan', 'Amount', 'Bal. B4', 'Bal. After', 'After Refund','Discount', 'Date', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($data_transactions as $data_transaction)
                             <tr>
                                 <th scope="row">{{ $loop->index+1 }}</th>
                                 <td> <a  href="{{route('admin.hr.user.show', [$data_transaction->user->username])}}">{{ $data_transaction->user->username }}</a> </td>
+                                <td>{{ $data_transaction->transaction_id }}</td>
                                 <td>{{ $data_transaction->mobile_number }}</td>
                                 <td>{{ $data_transaction->plan_network }}</td>
+                                <td>{{ $data_transaction->vendor->name }}</td>
                                 <td>{{ $data_transaction->size }}</td>
                                 <td>₦{{ $data_transaction->amount }}</td>
+                                <td>₦{{ $data_transaction->balance_before }}</td>
+                                <td>₦{{ $data_transaction->balance_after }}</td>
+                                <td>₦{{ $data_transaction->balance_after_refund }}</td>
+                                <td>%{{ $data_transaction->discount }}</td>
                                 <td>{{ $data_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $data_transaction->status === 1 ? 'success' : ($data_transaction->status === 0 ? 'danger' : 'warning') }}">
