@@ -71,6 +71,7 @@ class Create extends Component
 
     public function validateForm()
     {
+       
         $this->validate([
             'network'       =>  'required|exists:data_networks,network_id',
             'dataType'      =>  'required',

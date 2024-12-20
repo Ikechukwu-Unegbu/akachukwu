@@ -70,6 +70,7 @@ class Create extends Component
 
     public function validateForm()
     {
+        sleep(random_int(0, 5));
         $this->validate();
         if($this->accountBalance < $this->amount){
             $this->addError('amount', 'Your account balance is insufficient for this transaction.');

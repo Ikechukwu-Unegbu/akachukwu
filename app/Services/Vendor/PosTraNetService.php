@@ -96,11 +96,19 @@ class PosTraNetService
         try {
             // Start a database transaction to ensure atomicity
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
-                // Retrieve the network and discount information
+               
                 $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
                 $discount = $network->airtime_discount;
 
-                // Check for duplicate transactions using IdempotencyCheck
+
+                sleep(random_int(1, 5));
+                if(Auth::check()){
+                    if(Auth::user()->account_balance < $amount){
+                        return ApiHelper::sendError('Insufficient balance', "You dont have enough money for this transaction.");
+                    }
+                }
+
+              
                 $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
                     AirtimeTransaction::class, 
                     [
@@ -178,7 +186,7 @@ class PosTraNetService
                         'error' => 'Insufficient Balance From API.',
                         'message' => "An error occurred during the Airtime request. Please try again later."
                     ];
-                    Log::error($errorResponse);
+                    Log::error($response->error);
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
 
@@ -557,7 +565,7 @@ class PosTraNetService
                         'error'   => 'Insufficient Balance From API.',
                         'message' => "An error occurred during Data request. Please try again later."
                     ];
-                    Log::error($response->error);
+                    Log::error($response->object());
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
 
