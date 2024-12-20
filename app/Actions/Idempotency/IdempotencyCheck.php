@@ -21,7 +21,7 @@ class IdempotencyCheck
         array $conditions,
         string $statusColumn = 'vendor_status',
         array $statusValues = ['pending', 'refunded'],
-        int $timeWindow = 5
+        int $timeWindow = 1
     ) {
         // Ensure the model class exists
         if (!class_exists($modelClass)) {

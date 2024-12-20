@@ -18,6 +18,7 @@ use Illuminate\Validation\ValidationException;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
 use App\Services\Electricity\ElectricityService;
+use Illuminate\Support\Facades\RateLimiter;
 
 class Create extends Component
 {
@@ -152,11 +153,66 @@ class Create extends Component
         }
     }
 
+    // public function submit()
+    // {
+    //     if ($this->validate_action) {
+    //         $electricityTransaction = ElectricityService::create($this->vendor->id, $this->disco_name, $this->meter_number, $this->meter_type, $this->amount, $this->customer_name, $this->customer_phone_number, $this->customer_address); 
+            
+    //         if (!$electricityTransaction->status) {
+    //             $this->closeModal();
+    //             $this->transaction_modal = true;
+    //             $this->transaction_status = false;
+    //             $this->transaction_link = "";
+    //             return $this->dispatch('error-toastr', ['message' => $electricityTransaction->message]);
+    //         }
+    
+    //         if ($electricityTransaction->status) {
+    //             $this->closeModal();
+    //             $this->validate_action = false;
+    //             $this->transaction_status = true;
+    //             $this->transaction_modal = true;
+    //             $this->transaction_link = route('user.transaction.electricity.receipt', $electricityTransaction->response->transaction_id);
+    //             $this->customer_name = "";
+    //             $this->customer_address = "";
+    //             $this->disco_name = "";
+    //             $this->meter_type = "";
+    //             $this->amount = "";
+    //             $this->meter_number = "";
+    //             $this->customer_phone_number = "";
+    //             return true;
+    //         }
+        
+    //     }
+    // }
+
+
     public function submit()
     {
+        $rateLimitKey = 'electricity-submit-' . Auth::id(); 
+
+        
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
+            $seconds = RateLimiter::availableIn($rateLimitKey);
+            $this->closeModal();
+            $this->transaction_modal = false;
+            return $this->dispatch('error-toastr', ['message' => 'Wait a moment. Last transaction still processing.']);
+        }
+
+       
+        RateLimiter::hit($rateLimitKey, 60);
+
         if ($this->validate_action) {
-            $electricityTransaction = ElectricityService::create($this->vendor->id, $this->disco_name, $this->meter_number, $this->meter_type, $this->amount, $this->customer_name, $this->customer_phone_number, $this->customer_address); 
-            
+            $electricityTransaction = ElectricityService::create(
+                $this->vendor->id,
+                $this->disco_name,
+                $this->meter_number,
+                $this->meter_type,
+                $this->amount,
+                $this->customer_name,
+                $this->customer_phone_number,
+                $this->customer_address
+            );
+
             if (!$electricityTransaction->status) {
                 $this->closeModal();
                 $this->transaction_modal = true;
@@ -164,7 +220,7 @@ class Create extends Component
                 $this->transaction_link = "";
                 return $this->dispatch('error-toastr', ['message' => $electricityTransaction->message]);
             }
-    
+
             if ($electricityTransaction->status) {
                 $this->closeModal();
                 $this->validate_action = false;
@@ -180,9 +236,9 @@ class Create extends Component
                 $this->customer_phone_number = "";
                 return true;
             }
-        
         }
     }
+
 
     public function beneficiary_action()
     {

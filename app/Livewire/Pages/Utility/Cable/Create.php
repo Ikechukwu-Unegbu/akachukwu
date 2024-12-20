@@ -17,6 +17,7 @@ use App\Services\Account\UserPinService;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
+use Illuminate\Support\Facades\RateLimiter;
 
 class Create extends Component
 {
@@ -140,8 +141,23 @@ class Create extends Component
         }
     }
 
+
     public function submit()
     {
+        $rateLimitKey = 'cable-submit-' . Auth::id(); // Unique key for throttling by user ID.
+
+        // Check  the user has exceeded the rate limit.
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
+            $seconds = RateLimiter::availableIn($rateLimitKey);
+            $this->closeModal();
+            $this->transaction_modal = false;
+            return $this->dispatch('error-toastr', ['message' => 'Wait a moment. Last transaction still processing.']);
+        }
+
+        // Record a new attempt with a 60-second expiry.
+        RateLimiter::hit($rateLimitKey, 60);
+
+        // Proceed with the transaction if validation action is set.
         if ($this->validate_action) {
             $cableTransaction = CableService::create($this->vendor->id, $this->cable_name, $this->cable_plan, $this->iuc_number, $this->customer);
 
@@ -152,7 +168,7 @@ class Create extends Component
                 $this->transaction_link = "";
                 return $this->dispatch('error-toastr', ['message' => $cableTransaction->message]);
             }
-    
+
             if ($cableTransaction->status) {
                 $this->closeModal();
                 $this->cable_name = "";
@@ -166,6 +182,7 @@ class Create extends Component
             }
         }
     }
+
 
     public function beneficiary_action()
     {

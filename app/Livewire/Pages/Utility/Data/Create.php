@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Traits\ResolvesVendorService;
 use App\Services\Account\UserPinService;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\RateLimiter;
 use App\Services\Beneficiary\BeneficiaryService;
 
 class Create extends Component
@@ -139,8 +140,20 @@ class Create extends Component
         return $this->validate_pin_action = true;
     }
 
+
     public function submit()
     {
+        $rateLimitKey = 'data-submit-' . Auth::id(); // Unique key for each user.
+
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
+            $seconds = RateLimiter::availableIn($rateLimitKey);
+            $this->closeModal();
+            $this->transaction_modal = false;
+            return $this->dispatch('error-toastr', ['message' => 'Wait a moment. Last transaction still processing.']);
+        }
+
+        RateLimiter::hit($rateLimitKey, 60); // Allow one attempt per minute.
+
         $dataTransaction = DataService::create(
             $this->vendor->id, 
             $this->network, 
@@ -167,6 +180,7 @@ class Create extends Component
             $this->plan = "";
         }
     }
+
 
     public function beneficiary_action()
     {

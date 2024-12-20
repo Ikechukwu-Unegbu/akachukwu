@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AirtimeTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, ThrottlesTransactions; 
+    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId; 
     protected $throttleActionName = 'airtime_purchase';
     protected $guarded = [];
     protected $fillable = [
