@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
 use Spatie\Activitylog\LogOptions;
-use App\Traits\ThrottlesTransactions;
 use App\Traits\GeneratesTransactionId;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
