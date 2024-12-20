@@ -16,4 +16,15 @@ class MoneyTransfer extends Model
             $model->user_id = auth()->id();
         });
     }
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function receiver()
+    {
+        return $this->belongsTo(User::class, 'recipient');
+    }
+
 }
