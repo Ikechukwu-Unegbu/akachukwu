@@ -18,6 +18,10 @@ use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
 use App\Services\CalculateDiscount;
 
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
+
 class Create extends Component
 {
     use ResolvesVendorService;
@@ -66,6 +70,7 @@ class Create extends Component
 
     public function validateForm()
     {
+        sleep(random_int(0, 5));
         $this->validate();
         if($this->accountBalance < $this->amount){
             $this->addError('amount', 'Your account balance is insufficient for this transaction.');
@@ -107,8 +112,25 @@ class Create extends Component
         return $this->validate_pin_action = true;
     }
 
+
+
     public function submit()
     {
+   
+        $rateLimitKey = 'airtime-submit-' . Auth::id();
+
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
+            $seconds = RateLimiter::availableIn($rateLimitKey);
+            $this->closeModal();
+            $this->transaction_modal = false;
+            return $this->dispatch('error-toastr', ['message' => 'Wait a moment. Last transaction still processing.']);
+    
+            return redirect()->back();
+        }
+    
+        RateLimiter::hit($rateLimitKey, 60); 
+
+      
         $airtimeTransaction = AirtimeService::create(
             $this->vendor->id,
             $this->network,
@@ -132,6 +154,7 @@ class Create extends Component
             $this->transaction_link = route('user.transaction.airtime.receipt', $airtimeTransaction->response->transaction_id);
         }
     }
+
 
     public function beneficiary_action()
     {

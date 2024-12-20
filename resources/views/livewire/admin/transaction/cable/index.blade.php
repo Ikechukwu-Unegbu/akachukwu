@@ -17,17 +17,24 @@
             </div>
             <div class="card-body">                
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'User', 'Card No.', 'Cable Plan', 'Amount', 'Date', 'Status', 'Action']" />
+                    <x-admin.table-header :headers="['#', 'Trx. ID','Vendor', 'User', 'Card Name', 'Card No.', 'Cable Plan', 'Amount','Bal B4', 'Bal After', 'After Refund','IUC', 'Date', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($cable_transactions as $cable_transaction)
                             <tr>
                                 <th scope="row">{{ $loop->index+1 }}</th>
+                                <td>{{$cable_transaction->transaction_id}}</td>
+                                <td><a href="{{route('admin.hr.user.show', [$cable_transaction->user->username])}}">{{$cable_transaction->vendor->name}}</a></td>
+                                <td>{{$cable_transaction->customer_name}}</td>
                                 <td>{{ $cable_transaction->user->name }}</td>
                                 <td>{{ $cable_transaction->smart_card_number }}</td>
                                 <td>
                                     {{ $cable_transaction->cable_name  }} - <small style="font-size: 13px">({{ $cable_transaction->cable_plan_name }})</small>
                                 </td>
                                 <td>₦{{ $cable_transaction->amount }}</td>
+                                <td>₦{{ $cable_transaction->balance_before }}</td>
+                                <td>₦{{ $cable_transaction->balance_after }}</td>
+                                <td>₦{{ $cable_transaction->balance_after_refund }}</td>
+                                <td>{{$cable_transaction->smart_card_number}}</td>
                                 <td>{{ $cable_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $cable_transaction->status === 1 ? 'success' : ($cable_transaction->status === 0 ? 'danger' : 'warning') }}">

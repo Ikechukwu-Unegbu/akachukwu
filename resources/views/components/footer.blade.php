@@ -13,7 +13,7 @@
         <div>
             <h4 class="font-semibold mb-4">Resources</h4>
             <ul>
-                <li><a href="#" class="hover:underline">Blog</a></li>
+                <li><a href="{{route('blog.index')}}" class="hover:underline">Blog</a></li>
                 <li><a href="{{route('privacy')}}" class="hover:underline">Privacy Policy</a></li>
                 <li><a href="{{route('refund')}}" class="hover:underline">Refund Policy</a></li>
                 <li><a href="{{route('terms')}}" class="hover:underline">Terms of Use</a></li>

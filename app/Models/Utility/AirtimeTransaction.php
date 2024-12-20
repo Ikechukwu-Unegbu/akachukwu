@@ -6,8 +6,9 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
-use App\Traits\GeneratesTransactionId;
 use Spatie\Activitylog\LogOptions;
+use App\Traits\ThrottlesTransactions;
+use App\Traits\GeneratesTransactionId;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class AirtimeTransaction extends Model
 {
     use LogsActivity, TransactionStatusTrait, GeneratesTransactionId; 
+    protected $throttleActionName = 'airtime_purchase';
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',

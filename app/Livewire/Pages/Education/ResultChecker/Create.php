@@ -9,6 +9,8 @@ use App\Models\Education\ResultChecker;
 use App\Services\Account\UserPinService;
 use App\Services\Education\ResultCheckerService;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\RateLimiter;
+
 
 class Create extends Component
 {
@@ -92,9 +94,45 @@ class Create extends Component
         return $this->validate_pin_action = true;
     }
 
+    // public function submit()
+    // {
+        
+    //     $resultCheckerService = ResultCheckerService::create($this->vendor->id, $this->exam_name, $this->quantity);
+
+    //     if (!$resultCheckerService->status) {
+    //         $this->closeModal();
+    //         $this->transaction_modal = true;
+    //         $this->transaction_status = false;
+    //         $this->transaction_link = "";
+    //         return $this->dispatch('error-toastr', ['message' => $resultCheckerService->message]);
+    //     }
+
+    //     if ($resultCheckerService->status) {
+    //         $this->closeModal();
+    //         $this->quantity = 1;
+    //         $this->transaction_status = true;
+    //         $this->transaction_modal = true;
+    //         $this->transaction_link = route('user.transaction.education.receipt', $resultCheckerService->response->transaction_id);
+    //     }
+    // }
+
+   
     public function submit()
     {
-        
+        $rateLimitKey = 'result-checker-submit-' . Auth::id(); // Unique key for throttling by user ID.
+
+        // Check if the user has exceeded the rate limit.
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
+            $seconds = RateLimiter::availableIn($rateLimitKey);
+            $this->closeModal();
+            $this->transaction_modal = false;
+            return $this->dispatch('error-toastr', ['message' => 'Wait a moment. Last transaction still processing.']);
+        }
+
+        // Record a new attempt with a 60-second expiry.
+        RateLimiter::hit($rateLimitKey, 60);
+
+        // Proceed with the transaction.
         $resultCheckerService = ResultCheckerService::create($this->vendor->id, $this->exam_name, $this->quantity);
 
         if (!$resultCheckerService->status) {
@@ -113,6 +151,7 @@ class Create extends Component
             $this->transaction_link = route('user.transaction.education.receipt', $resultCheckerService->response->transaction_id);
         }
     }
+
 
     public function render()
     {
