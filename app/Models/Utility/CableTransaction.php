@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
 use Spatie\Activitylog\LogOptions;
-use App\Traits\ThrottlesTransactions;
 use App\Traits\GeneratesTransactionId;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
@@ -16,8 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class CableTransaction extends Model
 {
-    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId, ThrottlesTransactions; 
-    protected $throttleActionName = 'cable_purchase'; 
+    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId;
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',

@@ -17,8 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ElectricityTransaction extends Model
 {
-    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId, ThrottlesTransactions; 
-    protected $throttleActionName = 'electricity_purchase'; 
+    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId;
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',
