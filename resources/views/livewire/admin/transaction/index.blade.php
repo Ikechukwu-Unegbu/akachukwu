@@ -21,7 +21,7 @@
                                 <select class="form-control" wire:model="type" name="type" id="type">
                                     <option value="">All</option>
                                     @foreach ($types as $__type)
-                                    <option value="{{ $__type }}">{{ Str::title($__type) }}</option>
+                                    <option value="{{ $__type }}">{{ Str::replace('_', ' ', Str::title($__type)) }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -48,6 +48,7 @@
                                     <option value="1">Success</option>
                                     <option value="0">Failed</option>
                                     <option value="2">Refunded</option>
+                                    <option value="negative">Negative Balance</option>
                                 </select>
                             </div>
                         </div>
@@ -68,7 +69,7 @@
             </div>
             <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="[$status == 0 ? '#' : 'SN', 'Customer', 'Amount', 'Type', 'Date', 'Status']" />
+                    <x-admin.table-header :headers="[$status == 0 ? '#' : 'SN', 'Customer', 'Amount', 'Type', 'Date', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($transactions as $transaction)
                             <tr>
@@ -83,12 +84,19 @@
                                 </th>
                                 <td> <a href="{{route('admin.hr.user.show', [$transaction->user_name])}}">{{ $transaction->user_name }}</a> </td>
                                 <td>₦{{ $transaction->amount }}</td>
-                                <td>{{ Str::title($transaction->utility) }}</td>
+                                <td>{{ Str::replace('_', ' ', Str::title($transaction->utility)) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $transaction->status === 1 ? 'success' : ($transaction->status === 0 ? 'danger' : 'warning') }}">
                                         {{ Str::title($transaction->vendor_status) }}</span>
                                 </td>
+                                <td>
+                                    <div class="filter">
+                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                            <li><a x-on:click="$wire.handleTransaction({{ $transaction->id }}, '{{ $transaction->utility }}')" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#action-modal" class="dropdown-item text-success"><i class="bx bx-bullseye"></i> View</a></li>
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         @empty
@@ -99,6 +107,35 @@
                     </x-admin.table-body>
                 </x-admin.table>
                 <x-admin.paginate :paginate=$transactions />
+
+                <div wire:ignore.self class="modal fade" id="action-modal" tabindex="-1" data-bs-backdrop="false">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ $transaction_type ? Str::replace('_', ' ', Str::title($transaction_type)) . " Transaction" : '' }}</h5>
+                                <button type="button" class="btn-close" x-on:click="$wire.handleModal" data-bs-dismiss="modal"aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                @if ($loader)
+                                    <div class="text-center" style="font-size: 20px"><i class="bx bx-loader-circle bx-spin" style="font-size: 40px"></i>
+                                        <p class="p-0 m-0">Gathering Information...</p>
+                                        <p class="p-0 m-0"><small>Please Wait</small></p>
+                                    </div>
+                                @else
+                                @php $viewPath = "livewire.admin.transaction.partials.{$transaction_type}"; @endphp
+                                @if(view()->exists($viewPath))
+                                    @include($viewPath, ['transactionDetails' => $transactionDetails])
+                                @else
+                                    Transaction Modal Not Found!
+                                @endif
+                                @endif
+                            </div>
+                            <div class="modal-footer d-flex justify-content-between">
+                                <button type="button" x-on:click="$wire.handleModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         @if ($status == 0)
