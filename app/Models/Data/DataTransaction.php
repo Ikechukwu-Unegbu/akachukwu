@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DataTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, ThrottlesTransactions; 
+    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId; 
     protected $throttleActionName = 'data_purchase'; 
     protected $guarded = [];
 
