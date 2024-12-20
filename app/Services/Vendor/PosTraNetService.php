@@ -308,7 +308,7 @@ class PosTraNetService
                         'error' => 'Insufficient Balance From API.',
                         'message' => "An error occurred during bill payment request. Please try again later."
                     ];
-                    Log::error($errorResponse);
+                    Log::error($response->error);
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
     
