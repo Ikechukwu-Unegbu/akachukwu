@@ -20,6 +20,36 @@
 
 
         </div>
+        <div class="container p-3 bg-light border rounded">
+    <form method="GET" class="row align-items-end gx-3">
+        <div class="col-md-4">
+            <label for="start-date" class="form-label">Start Date</label>
+            <input
+                type="date"
+                id="start-date"
+                name="startDate"
+                class="form-control"
+            >
+        </div>
+        <div class="col-md-4">
+            <label for="end-date" class="form-label">End Date</label>
+            <input
+                type="date"
+                id="end-date"
+                name="endDate"
+                class="form-control"
+            >
+        </div>
+        <div class="col-md-4 d-flex justify-content-start mt-md-0 mt-2">
+            <button type="submit" class="btn btn-primary w-100">
+                Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+
+
         <div class="card">
             <div class="card-header">
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage" wireSearchAction="wire:model.live=search"  />

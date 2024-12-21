@@ -14,11 +14,17 @@ class Index extends Component
     public $perPages = [50, 100, 200];
     public $search;
     public $param; // For query parameters
+    public $startDate;
+    public $endDate;
+
 
     protected $queryString = [
         'search' => ['except' => ''],
         'param' => ['except' => ''],
         'perPage' => ['except' => 50],
+        'endDate' => ['except' => ''],
+        'startDate' => ['except' => ''],
+      
     ];
 
     public function mount()
@@ -38,6 +44,14 @@ class Index extends Component
             $query->where('blocked_by_admin', true); // Assuming "status" is the column for blocked users
         } elseif ($this->param === 'negative-balance') {
             $query->where('account_balance', '<', 0);
+        }
+
+        if ($this->startDate && $this->endDate) {
+            // dd('hell');
+            $query->whereBetween('created_at', [
+                date('Y-m-d 00:00:00', strtotime($this->startDate)),
+                date('Y-m-d 23:59:59', strtotime($this->endDate))
+            ]);
         }
 
         $users = $query
