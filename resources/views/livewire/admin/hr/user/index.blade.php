@@ -10,6 +10,15 @@
             <div class="card-header">
                 <h5 class="card-title">Manage Users</h5>
             </div>
+
+            <select class="form-select" aria-label="Default select example" id="filter-select">
+  <option value="">All Users</option>
+  <option value="blocked">Blocked Users</option>
+  <option value="negative-balance">Negative Balance</option>
+</select>
+
+
+
         </div>
         <div class="card">
             <div class="card-header">
@@ -17,7 +26,7 @@
             </div>
             <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'Name', 'Username', 'Account Balance', 'Level', 'Joined', 'Action']" />
+                    <x-admin.table-header :headers="['#', 'Name', 'Username', 'Bal.', 'Level', 'Joined', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($users as $user)
                             <tr>
@@ -52,6 +61,32 @@
         </div>
     </section>
 </div>
+<script>
+  // Get the current URL and query parameters
+  const url = new URL(window.location.href);
+  const select = document.getElementById('filter-select');
+  const param = url.searchParams.get('param');
+
+  // Set the initial value of the select input based on the URL
+  if (param) {
+    select.value = param;
+  } else {
+    select.value = ""; // Default to the first option if no param is present
+  }
+
+  // Add event listener for select input changes
+  select.addEventListener('change', function () {
+    const selectedValue = this.value;
+
+    if (selectedValue) {
+      url.searchParams.set('param', selectedValue); // Set or update the `param` query parameter
+    } else {
+      url.searchParams.delete('param'); // Remove the `param` query parameter if the first option is selected
+    }
+
+    window.location.href = url.toString(); // Navigate to the updated URL
+  });
+</script>
 @push('title')
 Human Resource Mgt. / Users
 @endpush
