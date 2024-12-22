@@ -9,6 +9,10 @@
             <div class="col-lg-8 col-md-8">{{ $transactionDetails?->trx_ref }}</div>
         </div>
         <div class="row">
+            <div class="col-lg-4 col-md-4 label ">Reference ID</div>
+            <div class="col-lg-8 col-md-8">{{ $transactionDetails?->reference_id  }}</div>
+        </div>
+        <div class="row">
             <div class="col-lg-4 col-md-4 label ">Amount</div>
             <div class="col-lg-8 col-md-8">₦ {{ number_format($transactionDetails?->amount, 2) }}</div>
         </div>
