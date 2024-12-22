@@ -14,6 +14,7 @@ use App\Http\Controllers\V1\Utilities\DataController;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;
 use App\Http\Controllers\V1\Education\ResultCheckerController;
+use App\Http\Controllers\V1\PinController;
 use App\Http\Controllers\V1\SettingsController;
 use App\Http\Controllers\V1\TransactionController;
 
@@ -98,6 +99,12 @@ Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate'])
     
     Route::post('/upgrade-to-reseller', UpgradeToResellerController::class)->name('reseller-upgrade');
     // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
+
+    Route::prefix('user-pin')->as('pin.')->group(function () {
+        Route::post('send-otp', [PinController::class, 'sendOtp'])->name('send-otp');
+        Route::post('verify-otp', [PinController::class, 'verifyOtp'])->name('verify-otp');
+        Route::post('update', [PinController::class, 'update'])->name('update');
+    });
 });
 
 Route::post('/impersonate/{user}', [AdminController::class, 'impersonate'])->name('impersonate.start');

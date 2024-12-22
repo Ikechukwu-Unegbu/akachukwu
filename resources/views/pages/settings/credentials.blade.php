@@ -109,8 +109,6 @@
                     <i class="fas fa-eye text-gray-400"></i>
                 </button>
             </div>
-
-
             <!-- Save Changes Button -->
             <button type="submit"
                 class="text-white bg-vastel_blue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-[8rem] mb-6">
@@ -122,16 +120,118 @@
         <div class="border-t pt-6">
             <h2 class="text-xl font-semibold mb-2">{{ !empty(auth()->user()->pin) ? 'Change Security PIN ' : 'Setup Security PIN' }}</h2>
             <p class="text-gray-600 text-sm mb-4">Click the button below to {{ !empty(auth()->user()->pin) ? 'change' : 'setup' }} your security PIN</p>
-            <button type="button" id="openChangePinResetBtn"
-                class="text-white bg-vastel_blue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-[16rem]">
+            <button type="button"  data-modal-target="handlePinModal" data-modal-toggle="handlePinModal"
+                class="text-white bg-vastel_blue hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center w-[16rem] handleOtp">
                 {{ !empty(auth()->user()->pin) ? 'Change Pin ' : 'Setup PIN' }}
             </button>
         </div>
-        <div id="pinResetModal" class="hidden fixed inset-0 items-center justify-center bg-gray-800 bg-opacity-50">
+        @if (request()->query('otp_verified') == 'true')
+            <button type="button" data-modal-target="handlePin" data-modal-toggle="handlePin" class=""></button>
+            <div id="handlePin" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+                <div class="relative w-full max-w-md max-h-full">
+                    <!-- Modal content -->
+                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                        <!-- Modal header -->
+                        <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                            <h3 class="text-xl font-semibold dark:text-white">
+                                Change Transaction Pin
+                            </h3>
+                            <button type="button"
+                                class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                                data-modal-hide="handlePin">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 011.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <!-- Modal body -->
+                        <div class="p-6 text-center ">
+                            <form action="{{ route('pin.update') }}" method="POST" id="otp-form">
+                                @csrf
+                                <p class="dark:text-white">A 4-digit code has been sent to your email address.</p>
+                                <p class="text-vastel_blue dark:text-white">New Transaction pin</p>
+                                <div class="text-center">
+                                    <div class="flex justify-center gap-2 mt-4" id="otp-container">
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                    </div>
+                                </div>
+                                <p class="text-vastel_blue dark:text-white">Confirm new Transaction pin</p>
+                                <div class="text-center">
+                                    <div class="flex justify-center gap-2 mt-4" id="otp-container">
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                        <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                    </div>
+                                </div>
+                                <!-- Hidden input to hold the concatenated OTP -->
+                                <input type="hidden" name="otp" id="otp-hidden">
+                                <p class="text-blue-500 mt-4 cursor-pointer">
+                                    Didn't receive the OTP? <a href="javascript:void(0)" class="underline handleOtp">Resend code</a>
+                                </p>
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-6">Continue</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
+        <div id="handlePinModal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative w-full max-w-md max-h-full">
+                <!-- Modal content -->
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <!-- Modal header -->
+                    <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                        <h3 class="text-xl font-semibold dark:text-white">
+                            OTP Verification
+                        </h3>
+                        <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-hide="handlePinModal">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 011.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- Modal body -->
+                    <div class="p-6 text-center ">
+                        <form action="{{ route('pin.verify-otp') }}" method="POST" id="otp-form">
+                            @csrf
+                            <p class="dark:text-white">A 4-digit code has been sent to your email address.</p>
+                            <p class="text-vastel_blue dark:text-white">{{ auth()->user()->email }}</p>
+                            <div class="flex justify-center gap-2 mt-4" id="otp-container">
+                                <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                                <input type="text" maxlength="1" class="otp-input w-12 h-12 text-center border border-gray-300 rounded" />
+                            </div>
+                            <!-- Hidden input to hold the concatenated OTP -->
+                            <input type="hidden" name="otp" id="otp-hidden">
+                            <p class="text-blue-500 mt-4 cursor-pointer">
+                                Didn't receive the OTP? <a href="javascript:void(0)" class="underline handleOtp">Resend code</a>
+                            </p>
+                            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded mt-6">Continue</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+        {{-- <div id="pinResetModal" class="hidden fixed inset-0 items-center justify-center bg-gray-800 bg-opacity-50">
             <div class="bg-white p-6 rounded-lg shadow-lg w-[80%] md:w-[40%] text-center">
                 @livewire('profile.pin-form', [App\Models\User::find(auth()->user()->id)])
             </div>
-        </div>
+        </div> --}}
         {{-- <div id="pinResetModal" class="hidden fixed inset-0 items-center justify-center bg-gray-800 bg-opacity-50">
             <div class="bg-white p-6 rounded-lg shadow-lg w-[80%] md:w-[40%] text-center">
                 <h2 class="text-lg font-semibold">Change Transaction Pin</h2>
@@ -354,21 +454,92 @@
    
 @endsection
 @push('scripts')
-<script>
-  
-    const openChangePinResetBtn = document.getElementById('openChangePinResetBtn');
-    const pinResetModal = document.getElementById('pinResetModal');
-    openChangePinResetBtn.addEventListener('click', function () {
-        pinResetModal.classList.remove('hidden');
-        pinResetModal.classList.add('flex');
-    });
+<script>  
+    // const openChangePinResetBtn = document.getElementById('openChangePinResetBtn');
+    // const pinModal = document.getElementById('pinModal');
+    // openChangePinResetBtn.addEventListener('click', function () {
+    //     pinModal.classList.remove('hidden');
+    //     pinModal.classList.add('flex');
+    // });
 
     // Optionally, close modal when clicking outside
-    window.addEventListener('click', (e) => {
-        if (e.target === pinResetModal) {
-            pinResetModal.classList.add('hidden');
-        }
+    // window.addEventListener('click', (e) => {
+    //     if (e.target === pinModal) {
+    //         pinModal.classList.add('hidden');
+    //     }
+    // });
+
+    const handleOtps = document.querySelectorAll('.handleOtp'); 
+    handleOtps.forEach((handleOtp, index) => {
+        handleOtp.addEventListener('click', function() {
+            const xhr = new XMLHttpRequest();
+            const url = "{{ route('pin.send-otp') }}";
+            
+            xhr.open('POST', url, true);
+            xhr.setRequestHeader('X-CSRF-TOKEN', "{{ csrf_token() }}");
+            xhr.setRequestHeader('Content-Type', 'application/json');
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    const responseMessage = document.getElementById('responseMessage');
+                    if (xhr.status === 200) {
+                        const response = JSON.parse(xhr.responseText);
+                        
+                    } else {
+                        console.log(`Failed to send OTP. Error: ${xhr.status}`);
+                    }
+                }
+            };
+
+            xhr.send();        
+        });
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const otpForm = document.getElementById('otp-form');
+        const otpInputs = document.querySelectorAll('.otp-input');
+        const otpHiddenInput = document.getElementById('otp-hidden');
+
+        // Concatenate OTP and set the hidden input value before form submission
+        otpForm.addEventListener('submit', (e) => {
+            let otp = '';
+            otpInputs.forEach(input => {
+                otp += input.value;
+            });
+
+            if (otp.length !== otpInputs.length) {
+                e.preventDefault(); // Prevent form submission
+                alert('Please fill all OTP fields.');
+                return;
+            }
+
+            otpHiddenInput.value = otp; // Set concatenated OTP
+        });
+
+        // Handle navigation between OTP fields
+        otpInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+                if (e.target.value.length === 1 && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace' && e.target.value === '' && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
+        });
+    });
+
+    if (window.location.search.indexOf('otp_verified=true') !== -1) {
+        alert(true);
+        // Trigger the click event on the hidden button
+        const button = document.querySelector('[data-modal-target="handlePin"]');
+        if (button) {
+            button.click(); // Simulate the button click
+        }
+    }
 </script>
 
 

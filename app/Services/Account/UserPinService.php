@@ -61,7 +61,7 @@ class UserPinService
         return true;
     }
 
-    private static function updatePin($user, string $pin): void
+    public static function updatePin($user, string $pin): void
     {
         $user->pin = Hash::make($pin);
         $user->save();

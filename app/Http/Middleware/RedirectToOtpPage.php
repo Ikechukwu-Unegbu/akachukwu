@@ -20,7 +20,7 @@ class RedirectToOtpPage
     {
         if (Auth::check()) {
             $user = Auth::user();
-            if (Otp::where('user_id', $user->id)->exists()) {
+            if (Otp::where('user_id', $user->id)->where('type', 'registration')->exists()) {
                 if (!Route::is('otp')) {
                     return redirect()->route('otp');
                 }
