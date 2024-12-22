@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('otps', function (Blueprint $table) {
-            $table->enum('type', ['registration', 'pin_reset'])->after('status')->default('registration');
+            $table->enum('type', ['registration', 'pin_setup', 'pin_reset'])->after('status')->default('registration');
         });
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Models\Otp;
 use App\Models\User;
 use App\Services\OTPService;
 use Illuminate\Http\Request;
@@ -9,9 +10,9 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Account\UserPinService;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Notification;
 use App\Notifications\PinSetupOTPNotification;
-use Illuminate\Contracts\Auth\Authenticatable;
 
 class PinController extends Controller
 {
@@ -27,10 +28,10 @@ class PinController extends Controller
     {
         try {
             $user = Auth::user();
-            $otp = $this->otpService->generateOTP($user, 'pin_reset');
-            $purpose = !empty($user->pin) ? 'pin_reset' : 'Setup PIN';
+            $type = !empty($user->pin) ? 'pin_reset' : 'pin_setup';
+            $otp = $this->otpService->generateOTP($user, $type);
             
-            Notification::sendNow($user, new PinSetupOTPNotification( $user, $otp,$purpose));
+            Notification::sendNow($user, new PinSetupOTPNotification( $user, $otp,$type));
             return response()->json([
                 'status' => true,
                 'message' => 'OTP sent successfully!',
@@ -51,8 +52,8 @@ class PinController extends Controller
         ]);
 
         $user = Auth::user();
-
-        $verifyOtp = $this->otpService->verifyOTP($user, $request->otp, 'pin_reset');
+        $type = !empty($user->pin) ? 'pin_reset' : 'pin_setup';
+        $verifyOtp = $this->otpService->verifyOTP($user, $request->otp, $type);
         
         if ($verifyOtp == false) {
             return redirect()->back()->withErrors( 'The OTP you entered is incorrect. Please try again.');
@@ -65,7 +66,25 @@ class PinController extends Controller
     }
 
     public function update(Request $request)
-    {
+    {        
+        $validator = Validator::make($request->all(), [
+            'new_pin' => 'required|string|size:4',
+            'confirm_pin' => 'required|string|size:4|same:new_pin',
+        ]);
         
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator->errors());
+        }
+
+        $user = Auth::user();
+        $type = !empty($user->pin) ? 'pin_reset' : 'pin_setup';
+        if (Otp::where('user_id', $user->id)->where('type', $type)->exists()) {
+            return redirect()->route('settings.credentials')->withErrors( 'Complete OTP verification to set up or reset your PIN. Check your email or request a new OTP.');
+        }
+
+        UserPinService::updatePin($user, $request->new_pin);
+        $message = sprintf("Your PIN has been %s successfully.", !empty($user->pin) ? 'updated' : 'created');
+        session()->flash('success', $message);
+        return redirect()->route('settings.credentials');
     }
 }

@@ -13,16 +13,16 @@ class PinSetupOTPNotification extends Notification
 
     public $user;
     public $otp;
-    public $purpose;
+    public $type;
 
     /**
      * Create a new notification instance.
      */
-    public function __construct($user, $otp, $purpose)
+    public function __construct($user, $otp, $type)
     {
         $this->user = $user;
         $this->otp = $otp;
-        $this->purpose = $purpose;
+        $this->type = $type;
     }
 
     /**
@@ -43,7 +43,7 @@ class PinSetupOTPNotification extends Notification
         return (new MailMessage)
             ->subject("OTP Request")
             ->greeting('Hello ' . $this->user?->name . '!')
-            ->line('You requested to ' . ($this->purpose === 'pin_reset' ? 'reset your PIN' : 'set up your PIN') . ' for your Vastel account.')
+            ->line('You requested to ' . ($this->type === 'pin_reset' ? 'reset your PIN' : 'set up your PIN') . ' for your Vastel account.')
             ->line('Your One-Time Password (OTP) is: **' . $this->otp . '**')
             ->line('This OTP is valid for 10 minutes. Please do not share it with anyone for your account security.')
             ->line('If you did not request this action, please ignore this message or contact our support team.')
