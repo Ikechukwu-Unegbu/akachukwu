@@ -9,11 +9,24 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     use WithPagination;
-    
+
     public $perPage = 50;
     public $perPages = [50, 100, 200];
     public $search;
-    
+    public $param; // For query parameters
+    public $startDate;
+    public $endDate;
+
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'param' => ['except' => ''],
+        'perPage' => ['except' => 50],
+        'endDate' => ['except' => ''],
+        'startDate' => ['except' => ''],
+      
+    ];
+
     public function mount()
     {
         $this->authorize('view users');
@@ -21,12 +34,32 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.admin.hr.user.index', [
-            'users' =>     User::search($this->search)
+        $query = User::query();
+
+        if ($this->search) {
+            $query->search($this->search);
+        }
+
+        if ($this->param === 'blocked') {
+            $query->where('blocked_by_admin', true); // Assuming "status" is the column for blocked users
+        } elseif ($this->param === 'negative-balance') {
+            $query->where('account_balance', '<', 0);
+        }
+
+        if ($this->startDate && $this->endDate) {
+            // dd('hell');
+            $query->whereBetween('created_at', [
+                date('Y-m-d 00:00:00', strtotime($this->startDate)),
+                date('Y-m-d 23:59:59', strtotime($this->endDate))
+            ]);
+        }
+
+        $users = $query
             ->whereRole('user')
             ->orderBy('account_balance', 'desc')
             ->latest()
-            ->paginate($this->perPage)
-        ]);
+            ->paginate($this->perPage);
+
+        return view('livewire.admin.hr.user.index', compact('users'));
     }
 }

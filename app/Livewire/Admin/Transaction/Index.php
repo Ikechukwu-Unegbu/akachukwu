@@ -4,6 +4,12 @@ namespace App\Livewire\Admin\Transaction;
 
 use App\Models\Data\DataTransaction;
 use App\Models\Education\ResultCheckerTransaction;
+use App\Models\MoneyTransfer;
+use App\Models\Payment\Flutterwave;
+use App\Models\Payment\MonnifyTransaction;
+use App\Models\Payment\Paystack;
+use App\Models\Payment\PayVesselTransaction;
+use App\Models\Payment\VastelTransaction;
 use App\Models\Utility\AirtimeTransaction;
 use App\Models\Utility\CableTransaction;
 use App\Models\Utility\ElectricityTransaction;
@@ -26,7 +32,11 @@ class Index extends Component
     public $endDate;
     public $status;
     public $selectedUser = [];
-    public $types = ['data', 'airtime', 'cable', 'electricity', 'education', 'flutterwave', 'paystack', 'monnify', 'payvessel', 'vastel'];
+    public $types = ['data', 'airtime', 'cable', 'electricity', 'education', 'flutterwave', 'paystack', 'monnify', 'payvessel', 'vastel', 'money_transfer'];
+    public $transactionDetails;
+    public $transaction_id;
+    public $transaction_type;
+    public $loader = true;
 
     public function  mount(Request $request)
     {
@@ -93,6 +103,48 @@ class Index extends Component
         $this->redirect(url()->previous());
     }
 
+    public function handleTransaction($id, $type)
+    {
+        $this->transaction_id = $id;
+        $this->transaction_type = $type;
+        $this->loader = false;
+        $this->transactionDetails = self::getTransactionTableByType($type, $id);
+    }
+
+    public function handleModal()
+    {
+        $this->transactionDetails = "";
+        $this->loader = true;
+    }
+
+    public static function getTransactionTableByType($type, $id)
+    {
+        $transactionTables = [
+            'airtime'        =>  AirtimeTransaction::class,
+            'cable'          =>  CableTransaction::class,
+            'data'           =>  DataTransaction::class,
+            'electricity'    =>  ElectricityTransaction::class,
+            'education'      =>  ResultCheckerTransaction::class,
+            'flutterwave'    =>  Flutterwave::class,
+            'paystack'       =>  Paystack::class,
+            'monnify'        =>  MonnifyTransaction::class,
+            'payvessel'      =>  PayVesselTransaction::class,
+            'vastel'         =>  VastelTransaction::class,
+            'money_transfer' => MoneyTransfer::class
+        ];
+
+        // Check if the provided type exists in the mapping
+        if (!isset($transactionTables[$type])) {
+            // If type is invalid, return an error message
+            throw new \InvalidArgumentException("Invalid transaction type: {$type}");
+        }
+
+        // Get the corresponding table name for the provided type
+        $tableName = $transactionTables[$type];
+
+        return  (new $tableName)->findOrFail($id);
+    }
+
     public function render(Request $request)
     {
         $query = DB::table(DB::raw('
@@ -116,6 +168,8 @@ class Index extends Component
                 SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM pay_vessel_transactions
                 UNION ALL
                 SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM vastel_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, user_id, amount, status, transfer_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "money_transfer" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM money_transfers
             ) as transactions
         '))->join('users', 'transactions.user_id', '=', 'users.id')
             ->select('transactions.*', 'users.username as user_name')
@@ -139,8 +193,14 @@ class Index extends Component
             $query->where('transactions.created_at', '<=', $this->endDate);
         }
 
-        if ($this->status !== "") {
+       
+
+        if (is_numeric($this->status)) {
             $query->where('transactions.status', (int) $this->status);
+        }
+
+        if ($this->status === 'negative') {
+            $query->where('transactions.amount', '<', 0);
         }
         
         $transactions = $query->paginate($this->perPage);
