@@ -1,9 +1,13 @@
 @extends('layouts.new-guest')
 
+@section('head')
+<title>VASTel | Security</title>
+@endsection
+
 @section('body')
     <div class="w-full lg:w-[60%] bg-white p-6">
         <!-- Back button -->
-        <a href="{{ route('settings.index') }}" class="inline-flex items-center mb-4 text-blue-600 hover:text-blue-800">
+        <a href="{{ route('settings.index') }}" class="inline-flex items-center mb-4 text-vastel_blue hover:text-blue-800">
             <i class="fas fa-chevron-left mr-2"></i>
             Back
         </a>
@@ -121,7 +125,7 @@
         </form>
 
         <!-- Change Security Pin Section -->
-        <div class="border-t pt-6">
+        <div class="shadow-lg p-[1rem] pt-6">
             <h2 class="text-xl font-semibold mb-2">
                 {{ !empty(auth()->user()->pin) ? 'Change Security PIN ' : 'Setup Security PIN' }}</h2>
             <p class="text-gray-600 text-sm mb-4">Click the button below to
@@ -279,7 +283,7 @@
                     <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
                 </div>
             
-                <button id="closeChangePinModal" class="mt-6 bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">
+                <button id="closeChangePinModal" class="mt-6 bg-vastel_blue text-white py-2 px-4 rounded hover:bg-vastel_blue">
                   Continue
                 </button>
             </div>
@@ -291,13 +295,14 @@
     <!-- account deactivation -->
     <div class="w-full lg:w-[60%] bg-white p-6">
         <!-- Title -->
-        <h2 class="text-xl font-bold text-blue-600 mb-4">Delete/Deactivate Account</h2>
+        <h2 class="text-xl font-bold text-vastel_blue mb-4">Delete/Deactivate Account</h2>
 
         <!-- Deactivate Account -->
         <a type="button" data-modal-target="deactivateAccountModal" data-modal-toggle="deactivateAccountModal"
             class="flex items-center p-4 mb-4 bg-gray-50 rounded-lg shadow-sm">
             <div class="bg-blue-100 p-3 rounded-lg">
-                <i class="fas fa-trash-alt text-blue-600 fa-lg"></i> <!-- Trash icon -->
+            <i class="fas fa-power-off text-vastel_blue fa-lg"></i>
+            <!-- Trash icon -->
             </div>
             <div class="ml-4">
                 <h3 class="text-lg font-semibold text-gray-900">Deactivate account</h3>
@@ -357,7 +362,7 @@
         <a type="button" data-modal-target="deleteAccountModal" data-modal-toggle="deleteAccountModal"
             class="flex items-center p-4 bg-gray-50 rounded-lg shadow-sm">
             <div class="bg-blue-100 p-3 rounded-lg">
-                <i class="fas fa-trash-alt text-blue-600 fa-lg"></i> <!-- Trash icon -->
+                <i class="fas fa-trash-alt text-vastel_blue fa-lg"></i> <!-- Trash icon -->
             </div>
             <div class="ml-4">
                 <h3 class="text-lg font-semibold text-gray-900">Delete account</h3>

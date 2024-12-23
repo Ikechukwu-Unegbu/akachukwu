@@ -1,4 +1,9 @@
 @extends('layouts.new-guest')
+
+@section('head')
+
+<title>VASTel | Settings</title>
+@endsection
 @section('body')
     <div class="w-full px-[1rem] md:pl-[1.5rem] max-w-md space-y-4">
         <!-- Settings -->
