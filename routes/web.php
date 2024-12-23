@@ -29,8 +29,8 @@ use App\Http\Controllers\V1\TransactionController;
 */
 
 
-Route::get('modal', function(){
-    view('new.hello');
+Route::get('too-much', function(){
+    view('errors.429');
 });
 
 

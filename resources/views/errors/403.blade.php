@@ -1,7 +1,7 @@
 @extends('layouts.new-ui')
 
 @section('head')
-    <title>VASTEL | Page Not Found</title>
+    <title>VASTEL | Forbidden</title>
 @endsection
 
 @section('body')
@@ -13,14 +13,14 @@
             <div class="mb-8">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40 mx-auto animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9.172 16.828a4 4 0 005.656 0l4.243-4.243a4 4 0 10-5.656-5.656L9.172 11.172a4 4 0 10-5.656 5.656l4.243 4.243a4 4 0 005.656 0z" />
+                        d="M10 14L8 12m0 0l2-2m-2 2h12m-6 6v-8m0 0H7m13-1.5a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z" />
                 </svg>
             </div>
 
             <!-- Heading -->
-            <h1 class="text-6xl font-extrabold">404</h1>
+            <h1 class="text-6xl font-extrabold">403</h1>
             <p class="mt-4 text-xl font-light">
-                Uh-oh! We couldn’t find the page you’re looking for.
+                You don’t have permission to access this page.
             </p>
 
             <!-- Actions -->
