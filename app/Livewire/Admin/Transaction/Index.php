@@ -132,7 +132,7 @@ class Index extends Component
             $this->error_msg = "Unable to query transaction. Please try again later.";
             $this->loader = false;
             return;
-        } else {
+        } elseif (!$query->status) {
             $this->dispatch('error-toastr', ['message' => $query->msg]);
             $this->error_msg = $query->msg;
             $this->loader = false;
