@@ -30,7 +30,7 @@ use App\Http\Controllers\V1\TransactionController;
 
 
 Route::get('too-much', function(){
-    view('errors.429');
+    return view('errors.419');
 });
 
 

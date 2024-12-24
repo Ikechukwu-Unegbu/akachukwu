@@ -185,6 +185,8 @@ Route::group(['prefix' => 'admin'], function () {
 
         //blacklist
         Route::get('blacklist', [BlacklistController::class, 'index'])->name('admin.blacklist');
+        Route::post('blacklist', [BlacklistController::class, 'store'])->name('admin.blacklist.store');
+        Route::post('blacklist/{id}', [BlacklistController::class, 'destroy'])->name('admin.blacklist.remove');
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');
