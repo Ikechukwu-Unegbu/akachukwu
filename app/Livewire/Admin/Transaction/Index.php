@@ -127,9 +127,14 @@ class Index extends Component
         
         $query =  QueryVendorTransaction::initializeQuery($id, $type);
         // dd($query);
-        if (!isset($query->status) || $query->status) {
+        if (!isset($query->status)) {
             $this->dispatch('error-toastr', ['message' => "Unable to query transaction. Please try again later."]);
             $this->error_msg = "Unable to query transaction. Please try again later.";
+            $this->loader = false;
+            return;
+        } else {
+            $this->dispatch('error-toastr', ['message' => $query->msg]);
+            $this->error_msg = $query->msg;
             $this->loader = false;
             return;
         }
