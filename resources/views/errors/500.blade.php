@@ -1,7 +1,7 @@
 @extends('layouts.new-ui')
 
 @section('head')
-    <title>VASTEL | Page Not Found</title>
+    <title>VASTEL | Server Error</title>
 @endsection
 
 @section('body')
@@ -11,16 +11,16 @@
         <div class="text-center">
             <!-- Animated Icon -->
             <div class="mb-8">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40 mx-auto animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40 mx-auto animate-spin" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9.172 16.828a4 4 0 005.656 0l4.243-4.243a4 4 0 10-5.656-5.656L9.172 11.172a4 4 0 10-5.656 5.656l4.243 4.243a4 4 0 005.656 0z" />
+                        d="M12 8v4l3 3m4-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
 
             <!-- Heading -->
-            <h1 class="text-6xl font-extrabold">404</h1>
+            <h1 class="text-6xl font-extrabold">500</h1>
             <p class="mt-4 text-xl font-light">
-                Uh-oh! We couldn’t find the page you’re looking for.
+                Oops! Something went wrong on our end. Please try again later.
             </p>
 
             <!-- Actions -->

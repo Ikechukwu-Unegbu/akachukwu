@@ -6,6 +6,7 @@ use App\Http\Controllers\Blog\FaqController;
 use App\Http\Controllers\Blog\MediaController;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SystemUser\BlacklistController;
 use App\Http\Controllers\SystemUser\DashboardController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
 use Illuminate\Support\Facades\Route;
@@ -13,6 +14,7 @@ use App\Http\Controllers\SystemUser\UserCrdDbtController;
 use App\Livewire\Admin\CrdDbt\Create as CrdDbtCreate;
 use App\Livewire\Admin\Settings\AppLogos;
 use App\Livewire\Component\Admin\SiteSettings;
+use App\Models\Blacklist;
 use App\Models\SiteSettings as ModelsSiteSettings;
 use App\Models\User;
 use App\Services\Account\UserTransactionsAuditService;
@@ -180,6 +182,11 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('education/result-checker/vendor/{vendor:id}/exam/{exam:id}/edit', App\Livewire\Admin\Education\ResultChecker\Edit::class)->name('admin.education.result-checker.edit');
     
         Route::get('wallet/user/{user:username}', App\Livewire\Admin\Wallet\Index::class)->name('admin.wallet.history');
+
+        //blacklist
+        Route::get('blacklist', [BlacklistController::class, 'index'])->name('admin.blacklist');
+        Route::post('blacklist', [BlacklistController::class, 'store'])->name('admin.blacklist.store');
+        Route::post('blacklist/{id}', [BlacklistController::class, 'destroy'])->name('admin.blacklist.remove');
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');

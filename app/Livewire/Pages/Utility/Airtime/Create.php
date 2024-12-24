@@ -16,6 +16,7 @@ use App\Models\Utility\AirtimeTransaction;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
+use App\Services\Blacklist\CheckBlacklist;
 use App\Services\CalculateDiscount;
 
 use Illuminate\Support\Facades\RateLimiter;
@@ -117,6 +118,13 @@ class Create extends Component
     public function submit()
     {
    
+        //check if blacklisted
+        $isBlacklisted = CheckBlacklist::checkIfUserIsBlacklisted();
+        if($isBlacklisted){
+    
+            return redirect()->route('restrained');
+        }
+        //rate limit
         $rateLimitKey = 'airtime-submit-' . Auth::id();
 
         if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {

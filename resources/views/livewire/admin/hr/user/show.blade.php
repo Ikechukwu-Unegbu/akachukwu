@@ -96,9 +96,9 @@
             <div class="card-body">
                 <x-table>
                     <x-table-header :headers="['#', 'Reference', 'Type', 'Amount','Bal B4', 'Bal After', 'Date', 'Status']" />
-                    <x-table-body>
+                    <x-table-body class="text-sm">
                         @forelse ($user->checkUserTransactionHistories(10, $user->id) as $transaction)
-                            <tr>
+                            <tr style="font-size: 8px;">
                                 <th scope="row">{{ $loop->index + 1 }}</th>
                                 <td>
                                     <small>{{ $transaction->transaction_id }}</small>

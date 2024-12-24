@@ -1,7 +1,7 @@
 @extends('layouts.new-ui')
 
 @section('head')
-    <title>VASTEL | Page Not Found</title>
+    <title>VASTEL | Session Expired</title>
 @endsection
 
 @section('body')
@@ -13,38 +13,31 @@
             <div class="mb-8">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-40 h-40 mx-auto animate-bounce" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9.172 16.828a4 4 0 005.656 0l4.243-4.243a4 4 0 10-5.656-5.656L9.172 11.172a4 4 0 10-5.656 5.656l4.243 4.243a4 4 0 005.656 0z" />
+                        d="M12 4v1m0 14v1m8-8h-1M4 12H3m15.364-7.364l-.707.707M6.343 17.657l-.707.707M16.243 17.657l.707.707M6.343 6.343l.707.707" />
                 </svg>
             </div>
 
             <!-- Heading -->
-            <h1 class="text-6xl font-extrabold">404</h1>
+            <h1 class="text-6xl font-extrabold">419</h1>
             <p class="mt-4 text-xl font-light">
-                Uh-oh! We couldn’t find the page you’re looking for.
+                Your session has expired. Please refresh the page or go back.
             </p>
 
             <!-- Actions -->
             <div class="mt-8">
-                <a href="{{ url('/') }}"
+                <a href="javascript:history.back()"
                     class="inline-flex items-center px-6 py-3 bg-white text-blue-600 font-bold rounded-full shadow-lg hover:bg-gray-100 transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M3 10h11M9 21V3M16.5 7.5l3 3-3 3" />
+                            d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
-                    Go Back Home
+                    Back
                 </a>
-                <a href="{{ url('/contact') }}"
+                <a href="{{ url('/') }}"
                     class="ml-4 inline-flex items-center px-6 py-3 bg-transparent border border-white text-white font-bold rounded-full hover:bg-white hover:text-blue-600 transition-all">
-                    Contact Support
+                    Go to Homepage
                 </a>
             </div>
-
-            <!-- Animated Background Elements -->
-            <!-- <div class="absolute inset-0 overflow-hidden">
-                <div class="absolute top-10 left-10 w-40 h-40 bg-blue-300 opacity-20 rounded-full animate-pulse"></div>
-                <div class="absolute bottom-20 right-20 w-64 h-64 bg-blue-200 opacity-30 rounded-full animate-ping"></div>
-                <div class="absolute top-1/3 left-1/4 w-32 h-32 bg-blue-400 opacity-10 rounded-full animate-pulse"></div>
-            </div> -->
         </div>
     </div>
 @endsection

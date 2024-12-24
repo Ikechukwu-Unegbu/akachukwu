@@ -29,9 +29,13 @@ use App\Http\Controllers\V1\TransactionController;
 */
 
 
-Route::get('modal', function(){
-    view('new.hello');
+Route::get('too-much', function(){
+    return view('errors.restrained');
 });
+
+Route::get('restrained', function(){
+    return view('errors.restrained');
+})->name('restrained');
 
 
 Route::middleware(['testing'])->group(function () {

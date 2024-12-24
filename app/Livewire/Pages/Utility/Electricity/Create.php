@@ -4,6 +4,7 @@ namespace App\Livewire\Pages\Utility\Electricity;
 
 use Livewire\Component;
 use App\Models\Beneficiary;
+use App\Models\Blacklist;
 use Livewire\Attributes\Rule;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\Electricity;
@@ -17,6 +18,7 @@ use App\Models\Utility\ElectricityTransaction;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
+use App\Services\Blacklist\CheckBlacklist;
 use App\Services\Electricity\ElectricityService;
 use Illuminate\Support\Facades\RateLimiter;
 
@@ -188,6 +190,14 @@ class Create extends Component
 
     public function submit()
     {
+
+           //check if blacklisted
+        $isBlacklisted = CheckBlacklist::checkIfUserIsBlacklisted();
+        if($isBlacklisted){
+    
+            return redirect()->route('restrained');
+        }
+        
         $rateLimitKey = 'electricity-submit-' . Auth::id(); 
 
         

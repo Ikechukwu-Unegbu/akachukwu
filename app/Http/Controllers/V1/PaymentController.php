@@ -10,6 +10,8 @@ use App\Services\Payment\FlutterwaveService;
 use App\Services\Payment\MonnifyService;
 use App\Services\Payment\PaystackService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Session;
 
 class PaymentController extends Controller
@@ -74,6 +76,13 @@ class PaymentController extends Controller
             'amount'    =>  'required|numeric',
             'gateway'   =>  'required',
        ]);
+    
+    //    $rateLimitKey = '-submit-' . Auth::id();
+
+    //    if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
+    //        $seconds = RateLimiter::availableIn($rateLimitKey);
+    //        return redirect()->back();
+    //    }
 
        if ($request->gateway !== 'paystack' && $request->gateway !== 'flutterwave' && $request->gateway !== 'monnify') {
             session()->flash('error', 'Unable to process your payment. Please try again.');
