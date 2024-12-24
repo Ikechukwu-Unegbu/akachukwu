@@ -34,6 +34,14 @@
 
     @yield('body')
 <script src="https://cdn.jsdelivr.net/npm/flowbite@2.5.1/dist/flowbite.min.js"></script>
+<script>
+    function handleFormSubmission(event) {
+        const submitButton = document.getElementById('submitButton');
+        submitButton.disabled = true; // Disable the button
+        submitButton.textContent = 'Submitting...'; // Optional: Change button text
+    }
+</script>
+
 </body>
 
 </html>
