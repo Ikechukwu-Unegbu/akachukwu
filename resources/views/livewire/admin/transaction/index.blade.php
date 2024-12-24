@@ -95,6 +95,7 @@
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             <li><a x-on:click="$wire.handleTransaction({{ $transaction->id }}, '{{ $transaction->utility }}')" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#action-modal" class="dropdown-item text-success"><i class="bx bx-bullseye"></i> View</a></li>
+                                            <li><a href="javascript.void(0)" x-on:click="$wire.queryTransaction({{ $transaction->id }}, '{{ $transaction->utility }}')" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#action-query"><i class="bi bi-database"></i>Query Vendor</a> </li>                                       
                                         </ul>
                                     </div>
                                 </td>
@@ -132,6 +133,67 @@
                             </div>
                             <div class="modal-footer d-flex justify-content-between">
                                 <button type="button" x-on:click="$wire.handleModal" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div wire:ignore.self class="modal fade" id="action-query" tabindex="-1" data-bs-backdrop="false">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Query Vendor</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" x-on:click="$wire.handleModal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body"> 
+                                @if ($loader)
+                                    <div class="text-center" style="font-size: 20px">
+                                        <i class="bx bx-loader-circle bx-spin" style="font-size: 40px"></i>
+                                        <p>
+                                            Quering Transaction...
+                                            <br />
+                                            <small>Please Wait</small>
+                                        </p>
+                                    </div>
+                                @endif
+                                @if ($error_msg)
+                                    <h5 class="text-danger">{{ $error_msg }}</h5>
+                                @endif
+                                @php
+                                    $decodedResponse = json_decode(json_encode($vendorResponse), true);
+                                @endphp
+                                <ul>
+                                    @if (is_array($decodedResponse))
+                                    @foreach ($decodedResponse as $key => $value)
+                                        @if (!is_array($key) && !is_array($value))
+                                        <li>{{ $key }}: {{ $value }}</li>
+                                        @endif
+                                    @endforeach
+                                    @endif
+                                </ul>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-between">
+                                @if (!$loader)
+                                @if ($get_transaction?->vendor_status == 'pending' || $get_transaction?->vendor_status == 'processing' || $get_transaction?->vendor_status == 'failed')
+                                <button 
+                                    type="button"
+                                    class="btn btn-warning"
+                                    x-data
+                                    x-on:click='if (confirm("Are you sure you want to refund this user?")) { $wire.handleRefund(); }'
+                                >
+                                    Refund
+                                </button>
+                                @endif
+                                <button 
+                                    type="button"
+                                    x-data
+                                    x-on:click='if (confirm("Are you sure you want to debit this user?")) { $wire.handleDebit(); }'
+                                    class="btn btn-danger" 
+                                >
+                                    Debit
+                                </button>
+                                @endif
+                                <button type="button"  x-on:click="$wire.handleModal"  class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             </div>
                         </div>
                     </div>

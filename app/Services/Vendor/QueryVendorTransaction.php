@@ -36,7 +36,7 @@ class QueryVendorTransaction
         }
         
         $vendor = Vendor::find($table->vendor_id);
-        $vendor = Vendor::find(2);
+        // $vendor = Vendor::find(2);
         $vendorService =  VendorServiceFactory::make($vendor);
         return $vendorService::queryTransactionFromVendor($table, $type);
     }

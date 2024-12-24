@@ -2,22 +2,24 @@
 
 namespace App\Livewire\Admin\Transaction;
 
-use App\Models\Data\DataTransaction;
-use App\Models\Education\ResultCheckerTransaction;
-use App\Models\MoneyTransfer;
-use App\Models\Payment\Flutterwave;
-use App\Models\Payment\MonnifyTransaction;
-use App\Models\Payment\Paystack;
-use App\Models\Payment\PayVesselTransaction;
-use App\Models\Payment\VastelTransaction;
-use App\Models\Utility\AirtimeTransaction;
-use App\Models\Utility\CableTransaction;
-use App\Models\Utility\ElectricityTransaction;
-use App\Services\CalculateDiscount;
-use Illuminate\Http\Request;
 use Livewire\Component;
+use Illuminate\Http\Request;
 use Livewire\WithPagination;
+use App\Models\MoneyTransfer;
+use App\Models\Payment\Paystack;
 use Illuminate\Support\Facades\DB;
+use App\Models\Payment\Flutterwave;
+use App\Services\CalculateDiscount;
+use Illuminate\Support\Facades\Log;
+use App\Models\Data\DataTransaction;
+use App\Models\Utility\CableTransaction;
+use App\Models\Payment\VastelTransaction;
+use App\Models\Payment\MonnifyTransaction;
+use App\Models\Utility\AirtimeTransaction;
+use App\Models\Payment\PayVesselTransaction;
+use App\Models\Utility\ElectricityTransaction;
+use App\Services\Vendor\QueryVendorTransaction;
+use App\Models\Education\ResultCheckerTransaction;
 
 class Index extends Component
 {
@@ -37,6 +39,9 @@ class Index extends Component
     public $transaction_id;
     public $transaction_type;
     public $loader = true;
+    public $error_msg;
+    public $get_transaction;
+    public $vendorResponse;
 
     public function  mount(Request $request)
     {
@@ -111,10 +116,71 @@ class Index extends Component
         $this->transactionDetails = self::getTransactionTableByType($type, $id);
     }
 
+
+    public function queryTransaction($id, $type)
+    {
+        $this->error_msg = "";
+        $this->vendorResponse = "";
+        $this->transaction_id = $id;
+        $this->transaction_type = $type;
+        $this->get_transaction = self::getTransactionTableByType($type, $id);
+        
+        $query =  QueryVendorTransaction::initializeQuery($id, $type);
+        // dd($query);
+        if (!isset($query->status)) {
+            $this->dispatch('error-toastr', ['message' => "Unable to query transaction. Please try again later."]);
+            $this->error_msg = "Unable to query transaction. Please try again later.";
+            $this->loader = false;
+            return;
+        }
+
+        $this->loader = false;
+        $this->dispatch('success-toastr', ['message' => $query->msg]);
+        $this->vendorResponse = $query->result;
+        return;
+    }
+
     public function handleModal()
     {
-        $this->transactionDetails = "";
+        $this->error_msg = "";
+        $this->vendorResponse = "";
         $this->loader = true;
+    }
+    
+    public function handleRefund()
+    {
+        try {
+            $transaction = self::getTransactionTableByType($this->transaction_type, $this->transaction_id);
+            $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
+            $transaction->user->setAccountBalance($amount);
+            $transaction->refund();
+            $this->dispatch('success-toastr', ['message' => 'Transaction Refunded Successfully']);
+            session()->flash('success', 'Transaction Refunded Successfully');
+            $this->redirect(url()->previous());
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $this->dispatch('success-toastr', ['message' => 'Unable to Refund User, Please try again later.']);
+            session()->flash('success', 'Unable to Refund User, Please try again later.');
+            $this->redirect(url()->previous());
+        }
+    }
+
+    public function handleDebit()
+    {
+       try {
+            $transaction = self::getTransactionTableByType($this->transaction_type, $this->transaction_id);
+            $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
+            $transaction->user->setTransaction($amount);
+            $transaction->debit();
+            $this->dispatch('success-toastr', ['message' => 'Transaction Debited Successfully']);
+            session()->flash('success', 'Transaction Debited Successfully');
+            $this->redirect(url()->previous());
+       } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $this->dispatch('success-toastr', ['message' => 'Unable to Debited User, Please try again later.']);
+            session()->flash('success', 'Unable to Debited User, Please try again later.');
+            $this->redirect(url()->previous());
+       }
     }
 
     public static function getTransactionTableByType($type, $id)

@@ -38,7 +38,6 @@
         @can('view all transactions')
       <x-admin.dropdown-item title="All Transactions" link="{{ route('admin.transaction') }}" />
       @endcan
-      <x-admin.dropdown-item title="Query Vendor" link="{{ route('admin.transaction.query-vendor') }}" />
       @can('view airtime transaction')
         <x-admin.dropdown-item title="Airtime" link="{{ route('admin.transaction.airtime') }}" />
       @endcan
