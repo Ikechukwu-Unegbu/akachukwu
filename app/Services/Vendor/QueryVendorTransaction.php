@@ -21,7 +21,8 @@ class QueryVendorTransaction
         // Check if the provided type exists in the mapping
         if (!isset($transactionTables[$type])) {
             // If type is invalid, return an error message
-            throw new \InvalidArgumentException("Invalid transaction type: {$type}");
+            // throw new \InvalidArgumentException("Invalid transaction type: {$type}");
+            return response()->json(['status' => false, 'result' => [], 'msg' => "Unable to query {$type} transaction"])->getData();
         }
 
         // Get the corresponding table name for the provided type
