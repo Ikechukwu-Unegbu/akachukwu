@@ -184,7 +184,7 @@
                                     Refund
                                 </button>
                                 @endif
-                                @if ($get_transaction)
+                                @if (count($get_transaction))
                                 <button 
                                     type="button"
                                     x-data
