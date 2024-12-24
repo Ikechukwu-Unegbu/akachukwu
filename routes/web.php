@@ -30,8 +30,12 @@ use App\Http\Controllers\V1\TransactionController;
 
 
 Route::get('too-much', function(){
-    return view('errors.419');
+    return view('errors.restrained');
 });
+
+Route::get('restrained', function(){
+    return view('errors.restrained');
+})->name('restrained');
 
 
 Route::middleware(['testing'])->group(function () {

@@ -7,6 +7,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Education\ResultChecker;
 use App\Services\Account\UserPinService;
+use App\Services\Blacklist\CheckBlacklist;
 use App\Services\Education\ResultCheckerService;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\RateLimiter;
@@ -94,31 +95,17 @@ class Create extends Component
         return $this->validate_pin_action = true;
     }
 
-    // public function submit()
-    // {
-        
-    //     $resultCheckerService = ResultCheckerService::create($this->vendor->id, $this->exam_name, $this->quantity);
 
-    //     if (!$resultCheckerService->status) {
-    //         $this->closeModal();
-    //         $this->transaction_modal = true;
-    //         $this->transaction_status = false;
-    //         $this->transaction_link = "";
-    //         return $this->dispatch('error-toastr', ['message' => $resultCheckerService->message]);
-    //     }
-
-    //     if ($resultCheckerService->status) {
-    //         $this->closeModal();
-    //         $this->quantity = 1;
-    //         $this->transaction_status = true;
-    //         $this->transaction_modal = true;
-    //         $this->transaction_link = route('user.transaction.education.receipt', $resultCheckerService->response->transaction_id);
-    //     }
-    // }
 
    
     public function submit()
     {
+           //check if blacklisted
+        $isBlacklisted = CheckBlacklist::checkIfUserIsBlacklisted();
+        if($isBlacklisted){
+    
+            return redirect()->route('restrained');
+        }
         $rateLimitKey = 'result-checker-submit-' . Auth::id(); // Unique key for throttling by user ID.
 
         // Check if the user has exceeded the rate limit.

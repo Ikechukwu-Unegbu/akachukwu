@@ -40,4 +40,6 @@ class BlacklistController extends Controller
         Session::flash('success', 'Successfully deleted.');
         return redirect()->back();
     }
+
+    
 }
