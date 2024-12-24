@@ -203,6 +203,7 @@
     </div>
 
     <livewire:component.global.announcement-modal/>
+    <livewire:component.global.pin-setup-modal/>
 
 @endsection
 @push('scripts')
