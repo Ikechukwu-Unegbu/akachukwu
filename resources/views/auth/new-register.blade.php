@@ -31,7 +31,7 @@
             @csrf
             @include("components.error_message")
                 <div class="relative mb-6">
-                    <input type="text" id="username" name="username" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                    <input type="text" id="username" value="{{old('username')}}" name="username" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                     <label for="username" class="absolute left-10 top-3 text-gray-500 transition-all">Username</label>
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fas fa-user text-gray-400"></i>
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="relative mb-6">
-                    <input type="text" id="first-name" name="first_name" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                    <input type="text" id="first-name"  value="{{old('first_name')}}" name="first_name" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                     <label for="first-name" class="absolute left-10 top-3 text-gray-500 transition-all">First Name</label>
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fas fa-user text-gray-400"></i>
@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="relative mb-6">
-                    <input type="text" id="last-name" name="last_name" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                    <input type="text" id="last-name" name="last_name"  value="{{old('last_name')}}" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                     <label for="last-name" class="absolute left-10 top-3 text-gray-500 transition-all">Last Name</label>
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fas fa-user text-gray-400"></i>
@@ -55,7 +55,7 @@
                 </div>
 
                 <div class="relative mb-6">
-                    <input type="email" id="email" name="email" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                    <input type="email" id="email" name="email"  value="{{old('email')}}" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                     <label for="email" class="absolute left-10 top-3 text-gray-500 transition-all">Email</label>
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fas fa-envelope text-gray-400"></i>
@@ -63,7 +63,7 @@
                 </div>
 
                 <div class="relative mb-6">
-                    <input type="tel" id="phone-number" name="phone_number" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                    <input type="tel" id="phone-number" name="phone_number"  value="{{old('phone_number')}}" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                     <label for="phone-number" class="absolute left-10 top-3 text-gray-500 transition-all">Phone Number</label>
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fas fa-phone text-gray-400"></i>

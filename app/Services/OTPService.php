@@ -17,13 +17,16 @@ class OTPService{
      * @param User $user
      * @return string The generated OTP
      */
-    public function generateOTP(User $user)
+    public function generateOTP(User $user, $type = 'registration')
     {
         $otp = mt_rand(1000, 9999);
 
         // Create or update the OTP record
         OTP::updateOrCreate(
-            ['user_id' => $user->id],
+            [
+                'user_id' => $user->id,
+                'type'  =>  $type
+            ],
             [
                 'otp' => $otp,
                 'expires_at' => Carbon::now()->addMinutes($this->otpExpirationMinutes)
@@ -40,11 +43,12 @@ class OTPService{
      * @param string $otp
      * @return bool True if OTP is valid, false otherwise
      */
-    public function verifyOTP(User $user, $otp)
+    public function verifyOTP(User $user, $otp, $type = 'registration')
     {
        
         $otpRecord = Otp::where('user_id', $user->id)
                         ->where('otp', $otp)
+                        ->where('type', $type)
                         ->where('expires_at', '>', Carbon::now())
                         ->first();
 

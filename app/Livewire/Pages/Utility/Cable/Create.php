@@ -17,6 +17,7 @@ use App\Services\Account\UserPinService;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
+use App\Services\Blacklist\CheckBlacklist;
 use Illuminate\Support\Facades\RateLimiter;
 
 class Create extends Component
@@ -144,6 +145,14 @@ class Create extends Component
 
     public function submit()
     {
+
+           //check if blacklisted
+           $isBlacklisted = CheckBlacklist::checkIfUserIsBlacklisted();
+           if($isBlacklisted){
+       
+               return redirect()->route('restrained');
+           }
+
         $rateLimitKey = 'cable-submit-' . Auth::id(); // Unique key for throttling by user ID.
 
         // Check  the user has exceeded the rate limit.

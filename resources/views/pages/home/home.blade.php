@@ -1,5 +1,8 @@
 @extends('layouts.new-ui')
 
+@section('head')
+<title>VASTEL | Nigerian VTU Topup</title>
+@endsection 
 
 @section('body')
 

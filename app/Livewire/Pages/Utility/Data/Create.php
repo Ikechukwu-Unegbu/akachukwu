@@ -17,6 +17,7 @@ use App\Services\Account\UserPinService;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\RateLimiter;
 use App\Services\Beneficiary\BeneficiaryService;
+use App\Services\Blacklist\CheckBlacklist;
 
 class Create extends Component
 {
@@ -144,6 +145,13 @@ class Create extends Component
 
     public function submit()
     {
+        //check if blacklisted
+        $isBlacklisted = CheckBlacklist::checkIfUserIsBlacklisted();
+        if($isBlacklisted){
+    
+            return redirect()->route('restrained');
+        }
+
         $rateLimitKey = 'data-submit-' . Auth::id(); // Unique key for each user.
 
         if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
