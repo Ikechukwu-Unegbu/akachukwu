@@ -184,7 +184,7 @@
                                     Refund
                                 </button>
                                 @endif
-                                @if (count($vendorResponse))
+                                @if (is_array($vendorResponse))
                                 <button 
                                     type="button"
                                     x-data
