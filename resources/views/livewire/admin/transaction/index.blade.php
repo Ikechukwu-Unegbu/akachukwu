@@ -174,6 +174,7 @@
                             </div>
                             <div class="modal-footer d-flex justify-content-between">
                                 @if (!$loader)
+                                {{ $get_transaction }}
                                 @if ($get_transaction?->vendor_status == 'pending' || $get_transaction?->vendor_status == 'processing' || $get_transaction?->vendor_status == 'failed')
                                 <button 
                                     type="button"
