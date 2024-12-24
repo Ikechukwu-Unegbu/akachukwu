@@ -135,7 +135,7 @@ class Index extends Component
         } elseif (!$query->status) {
             $this->dispatch('error-toastr', ['message' => $query->msg]);
             $this->error_msg = $query->msg;
-            $this->loader = false;
+            $this->loader = false; 
             return;
         }
 
