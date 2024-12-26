@@ -4,12 +4,13 @@ namespace App\Models\Payment;
 
 use App\Models\User;
 use App\Traits\PaymentStatusTrait;
+use App\Traits\RecordsBalanceChanges;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class VastelTransaction extends Model
 {
-    use PaymentStatusTrait;
+    use PaymentStatusTrait, RecordsBalanceChanges;
     
     use HasFactory;
 
