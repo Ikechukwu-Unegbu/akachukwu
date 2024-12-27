@@ -29,6 +29,9 @@ use App\Http\Controllers\V1\TransactionController;
 |
 */
 
+Route::get('restrained', function () {
+    return view('errors.restrained');
+})->name('restrained');
 
 Route::middleware(['testing'])->group(function () {
     Route::get('/', function () {
