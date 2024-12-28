@@ -22,8 +22,8 @@ class VirtualAccountRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'bvn' => 'nullable|numeric|digits:11|required_without:nin',
-            'nin' => 'nullable|numeric|digits:11|required_without:bvn',
+            'bvn' => 'nullable|numeric|digits:11|required_without:nin|unique:users,bvn',
+            'nin' => 'nullable|numeric|digits:11|required_without:bvn|unique:users,nin',
             'account_number' => 'required_with:bvn|numeric|digits:10',
             'bank_code' => 'required_with:bvn'
         ];
