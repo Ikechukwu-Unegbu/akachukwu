@@ -7,10 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
 use App\Traits\PaymentStatusTrait;
+use App\Traits\RecordsBalanceChanges;
 
 class MonnifyTransaction extends Model
 {
-    use PaymentStatusTrait;
+    use PaymentStatusTrait, RecordsBalanceChanges;
     
     protected $guarded = [];
 
