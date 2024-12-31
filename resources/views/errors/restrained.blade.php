@@ -37,7 +37,7 @@
                     class="inline-flex items-center px-5 py-3 bg-transparent border border-white text-white font-bold rounded-full hover:bg-white hover:text-blue-600 transition-all">
                     Go to Homepage
                 </a>
-                <a href=""
+                <a id="triggerZohoChat"
                     class="inline-flex items-center px-5 py-3 bg-blue-500 text-white font-bold rounded-full hover:bg-blue-600 transition-all">
                     Contact Support
                 </a>
