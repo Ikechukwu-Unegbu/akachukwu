@@ -274,6 +274,16 @@
         }
 
     </script>
+      <script>
+        document.getElementById("triggerZohoChat").addEventListener("click", function() {
+            if (typeof $zoho !== "undefined" && $zoho.salesiq) {
+                $zoho.salesiq.chat.start();  // Opens the chat window
+            } else {
+                console.error("Zoho SalesIQ is not loaded");
+            }
+        });
+
+    </script>
 
 </body>
 
