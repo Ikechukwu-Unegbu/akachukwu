@@ -148,7 +148,7 @@ class Create extends Component
 
            //check if blacklisted
            $isBlacklisted = CheckBlacklist::checkIfUserIsBlacklisted();
-           if($isBlacklisted){
+           if($isBlacklisted || !auth()->user()->hasCompletedKYC()){
        
                return redirect()->route('restrained');
            }

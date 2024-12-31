@@ -634,6 +634,13 @@ class User extends Authenticatable
         // Return paginated results
         return $query->paginate($perPage);
     }
+
+
+    public function hasCompletedKYC(): bool
+    {
+        return !is_null($this->nin) || !is_null($this->bvn);
+    }
+
     
 
 }
