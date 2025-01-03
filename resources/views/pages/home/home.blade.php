@@ -12,11 +12,14 @@
     <section class="flex flex-col gap-5 md:flex-row items-center justify-between px-4 py-12  bg-gray-50 md:px-[3rem]">
         <!-- Text Content -->
         <div class="md:w-1/2 space-y-6">
-            <h1 class="text-4xl md:text-5xl font-bold text-vastel_blue">Empower Your Everyday Transactions With Ease</h1>
-            <p class="text-lg text-gray-600">Fund Your Account, Send Money, Pay Bills, And More — All In One App.</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-vastel_blue">Seamless Digital Transactions</h1>
+            <p class="text-lg text-gray-600">Fund your wallet, buy airtime and data, pay utility bills, and much more—all in one place.
+            </p>
             <a href="{{route('register')}}"
                 class="bg-vastel_blue text-white py-3 px-6 rounded-md hover:bg-blue-800 inline-block text-lg font-semibold">Get
                 Started</a>
+                <p class="text-lg text-gray-600">Download the Vastel app now for a seamless and reliable experience.
+                </p>
         </div>
 
         <!-- Placeholder for Image -->
