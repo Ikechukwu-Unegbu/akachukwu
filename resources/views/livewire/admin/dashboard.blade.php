@@ -225,6 +225,16 @@
               <a href="{{route('admin.app-logos')}}" class="text-decoration-none text-primary">Manage Mobile App Assets</a>
               <p class="mb-0 small text-muted">Logos and Images displayed on mobile app.</p>
             </li>
+            @can('blacklist')
+            <li class="list-group-item">
+              <a href="{{route('admin.blacklist')}}" class="text-decoration-none text-primary">Blacklist</a>
+              <p class="mb-0 small text-muted">Restrain malicious users from spending while allowing them to fund.</p>
+            </li>
+            @endcan
+            <li class="list-group-item">
+              <a href="{{route('admin.api.vendor.service')}}" class="text-decoration-none text-primary">Manage Services and Vendors</a>
+              <p class="mb-0 small text-muted">Manage which vendor powers each of the services.</p>
+            </li>
           @if(Auth::user()->role =='superadmin')
           <li class="list-group-item">
               <a href="{{route('admin.settings.role')}}" class="text-decoration-none text-primary">Roles and Permissions</a>

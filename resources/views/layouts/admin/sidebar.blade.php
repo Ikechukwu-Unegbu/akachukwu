@@ -67,6 +67,9 @@
       @can('view administrators')
       <x-admin.dropdown-item title="Administrators" link="{{ route('admin.hr.administrator') }}" />
       @endcan
+      @can('blacklist')
+      <x-admin.dropdown-item title="Blacklist" link="{{ route('admin.blacklist') }}" />
+      @endcan
     </x-admin.dropdown>
     @endif
 
