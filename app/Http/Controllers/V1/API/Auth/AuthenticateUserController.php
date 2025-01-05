@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 use App\Notifications\WelcomeEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Services\V1\User\UserProfileService;
 use Illuminate\Support\Facades\Notification;
 use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
 
 class AuthenticateUserController extends Controller
 {
-    public function login(Request $request)
+    public function login(Request $request, UserProfileService $service)
     {
         $request->validate([
             'login' => 'required', 
@@ -24,6 +25,13 @@ class AuthenticateUserController extends Controller
         ]);
     
         $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
+        
+        $user = $service->getUser($request->login);
+        if($user){
+            if ($user->blocked_by_admin == true) {
+                return response()->json(['message' => 'Account Currently Inaccessible. Please contact Support for further assistance.'], 403);
+            }
+        }
     
         if (Auth::attempt([$loginType => $request->login, 'password' => $request->password])) {
             $user = User::find(Auth::user()->id);
