@@ -11,11 +11,8 @@ class VerifyOtpTest extends TestCase
 {
     use RefreshDatabase;
 
-    use RefreshDatabase;
-
     protected $user;
     protected $otp;
-    protected OTPService $otpService;
     
     protected function setUp(): void
     {
