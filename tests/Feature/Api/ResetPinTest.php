@@ -123,21 +123,4 @@ class ResetPinTest extends TestCase
 
         $response->assertStatus(200);
     }
-
-    // /**
-    //  * Test that reset fails with missing new PIN.
-    //  */
-    // public function test_reset_pin_fails_with_missing_pin()
-    // {
-    //     $user = User::factory()->create(['email' => 'user@example.com']);
-    //     Otp::factory()->create(['email' => $user->email, 'otp' => '123456']);
-
-    //     $response = $this->postJson('/api/reset-pin', [
-    //         'email' => $user->email,
-    //         'otp' => '123456',
-    //     ]);
-
-    //     $response->assertStatus(422)
-    //              ->assertJsonValidationErrors(['new_pin']);
-    // }
 }
