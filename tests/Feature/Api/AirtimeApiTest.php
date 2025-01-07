@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Models\VendorServiceMapping;
 use Database\Seeders\Data\DataNetworkSeeder;
 use Illuminate\Support\Facades\Log;
 use Database\Seeders\Data\VTPassSeeder;
@@ -13,24 +14,29 @@ use Database\Seeders\SiteSettingSeeder;
 use Illuminate\Foundation\Testing\WithFaker;
 use Database\Seeders\VendorServiceMappingSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Services\VendorTestService;
 
 class AirtimeApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected CONST PHONE_NUMBER = '08011111111';
+    protected $vendorService;
+
     protected CONST ACCOUNT_BALANCE = 100;
-    protected CONST NETWORK_ID = 1;
-    protected CONST AMOUNT = 50;
 
     protected function setUp(): void
     {
-        parent::setUp();
+        parent::setUp();        
         Artisan::call('db:seed', ['--class' => DataVendorSeeder::class]);
         Artisan::call('db:seed', ['--class' => VendorServiceMappingSeeder::class]);
         Artisan::call('db:seed', ['--class' => DataNetworkSeeder::class]);
         Artisan::call('db:seed', ['--class' => VTPassSeeder::class]);
         Artisan::call('db:seed', ['--class'=>SiteSettingSeeder::class]);
+
+        // $this->vendorService = new VendorTestService('POSTRANET');
+        // $this->vendorService = new VendorTestService('GLADTIDINGSDATA');
+        $this->vendorService = new VendorTestService();
+        VendorServiceMapping::query()->update(['vendor_id' => $this->vendorService->getVendor()->id]);
     }
 
     /** @test airtime purchase fails when user has insufficient balance */
@@ -42,9 +48,9 @@ class AirtimeApiTest extends TestCase
             ]);
     
             $response = $this->actingAs($user)->postJson('/api/airtime/create', [
-                'network_id' => self::NETWORK_ID,
-                'amount'    => self::AMOUNT,
-                'phone_number' => self::PHONE_NUMBER,
+                'network_id' => $this->vendorService->getNetworkId(),
+                'amount'    => $this->vendorService->getAmount(),
+                'phone_number' => $this->vendorService->getPhoneNumber(),
             ]);
     
             $response->assertStatus(422);
@@ -66,9 +72,9 @@ class AirtimeApiTest extends TestCase
             ]);
     
             $response = $this->actingAs($user)->postJson('/api/airtime/create', [
-                'network_id' => self::NETWORK_ID,
-                'amount'    => self::AMOUNT,
-                'phone_number' => self::PHONE_NUMBER,
+                'network_id' => $this->vendorService->getNetworkId(),
+                'amount'    => $this->vendorService->getAmount(),
+                'phone_number' => $this->vendorService->getPhoneNumber(),
             ]);
     
             $response->assertStatus(200);
@@ -91,9 +97,9 @@ class AirtimeApiTest extends TestCase
             ]);
     
             $response = $this->actingAs($user)->postJson('/api/airtime/create', [
-                'network_id' => self::NETWORK_ID,
-                'amount'    => self::AMOUNT,
-                'phone_number' => self::PHONE_NUMBER,
+                'network_id' => $this->vendorService->getNetworkId(),
+                'amount'    => $this->vendorService->getAmount(),
+                'phone_number' => $this->vendorService->getPhoneNumber(),
             ]);
 
             $response->assertStatus(200);
