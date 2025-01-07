@@ -4,6 +4,7 @@ namespace Tests\Feature\Api;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Services\VendorTestService;
 use Illuminate\Support\Facades\Log;
 use App\Models\VendorServiceMapping;
 use Database\Seeders\Data\VTPassSeeder;
@@ -18,6 +19,8 @@ class ElectricityApiTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected $vendorService;
+
     public function setup() : void
     {
         parent::setup();
@@ -25,6 +28,11 @@ class ElectricityApiTest extends TestCase
         Artisan::call('db:seed', ['--class' => VendorServiceMappingSeeder::class]);
         Artisan::call('db:seed', ['--class' => ElectricitySeeder::class]);
         Artisan::call('db:seed', ['--class' => VTPassSeeder::class]);
+
+        // $this->vendorService = new VendorTestService('POSTRANET');
+        // $this->vendorService = new VendorTestService('GLADTIDINGSDATA');
+        $this->vendorService = new VendorTestService();
+        VendorServiceMapping::query()->update(['vendor_id' => $this->vendorService->getVendor()->id]);
     }
 
     /** @test electricity purchase fails when user has insufficient balance */
@@ -38,10 +46,10 @@ class ElectricityApiTest extends TestCase
             // Set up test data
             $requestPayload = [
                 'amount'        => 1000,
-                'meter_number'  => '1111111111111',
-                'disco_id'      => 'ikeja-electric',
-                'meter_type'    => '1',
-                'phone_number'  => '08130974397',
+                'meter_number'  => $this->vendorService->getMeterNumber(),
+                'disco_id'      => $this->vendorService->getDiscoId(),
+                'meter_type'    => $this->vendorService->getMeterType(),
+                'phone_number'  => $this->vendorService->getPhoneNumber(),
             ];
 
             $validateResponse = $this->actingAs($user)->postJson('/api/electricity/validate', [
@@ -88,10 +96,10 @@ class ElectricityApiTest extends TestCase
             // Set up test data
             $requestPayload = [
                 'amount'        => 500,
-                'meter_number'  => '1111111111111',
-                'disco_id'      => 'ikeja-electric',
-                'meter_type'    => '1',
-                'phone_number'  => '08130974397',
+                'meter_number'  => $this->vendorService->getMeterNumber(),
+                'disco_id'      => $this->vendorService->getDiscoId(),
+                'meter_type'    => $this->vendorService->getMeterType(),
+                'phone_number'  => $this->vendorService->getPhoneNumber(),
             ];
 
             $validateResponse = $this->actingAs($user)->postJson('/api/electricity/validate', [
@@ -135,10 +143,10 @@ class ElectricityApiTest extends TestCase
             // Set up test data
             $requestPayload = [
                 'amount'        => 500,
-                'meter_number'  => '1111111111111',
-                'disco_id'      => 'ikeja-electric',
-                'meter_type'    => '1',
-                'phone_number'  => '08130974397',
+                'meter_number'  => $this->vendorService->getMeterNumber(),
+                'disco_id'      => $this->vendorService->getDiscoId(),
+                'meter_type'    => $this->vendorService->getMeterType(),
+                'phone_number'  => $this->vendorService->getPhoneNumber(),
             ];
 
             $validateResponse = $this->actingAs($user)->postJson('/api/electricity/validate', [

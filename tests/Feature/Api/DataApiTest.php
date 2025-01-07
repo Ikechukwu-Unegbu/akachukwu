@@ -4,7 +4,9 @@ namespace Tests\Feature\Api;
 
 use Tests\TestCase;
 use App\Models\User;
+use App\Services\VendorTestService;
 use Illuminate\Support\Facades\Log;
+use App\Models\VendorServiceMapping;
 use Database\Seeders\Data\VTPassSeeder;
 use Illuminate\Support\Facades\Artisan;
 use Database\Seeders\Data\DataPlanSeeder;
@@ -19,11 +21,9 @@ class DataApiTest extends TestCase
 {
     use RefreshDatabase;
 
-    protected const PHONE_NUMBER = '08011111111';
+    protected $vendorService;
+
     protected const ACCOUNT_BALANCE = 1000;
-    protected const NETWORK_ID = 1;
-    protected const DATA_TYPE_ID = 61;
-    protected const PLAN_ID = 253;
     
     protected function setUp(): void
     {
@@ -34,6 +34,11 @@ class DataApiTest extends TestCase
         Artisan::call('db:seed', ['--class' => DataTypeSeeder::class]);
         Artisan::call('db:seed', ['--class' => DataPlanSeeder::class]);
         Artisan::call('db:seed', ['--class' => VTPassSeeder::class]);
+
+        // $this->vendorService = new VendorTestService('POSTRANET');
+        // $this->vendorService = new VendorTestService('GLADTIDINGSDATA');
+        $this->vendorService = new VendorTestService();
+        VendorServiceMapping::query()->update(['vendor_id' => $this->vendorService->getVendor()->id]);
     }
 
     /** @test data purchase fails when user has insufficient balance */
@@ -45,10 +50,10 @@ class DataApiTest extends TestCase
             ]);
 
             $response = $this->actingAs($user)->postJson('/api/data/create', [
-                'network_id' => self::NETWORK_ID,
-                'data_type_id' => self::DATA_TYPE_ID,
-                'plan_id' => self::PLAN_ID,
-                'phone_number' => self::PHONE_NUMBER,
+                'network_id' => $this->vendorService->getNetworkId(),
+                'data_type_id' => $this->vendorService->getDataTypeId(),
+                'plan_id' => $this->vendorService->getPlanId(),
+                'phone_number' => $this->vendorService->getPhoneNumber(),
             ]);
 
             $response->assertStatus(422);
@@ -70,10 +75,10 @@ class DataApiTest extends TestCase
             ]);
 
             $response = $this->actingAs($user)->postJson('/api/data/create', [
-                'network_id' => self::NETWORK_ID,
-                'data_type_id' => self::DATA_TYPE_ID,
-                'plan_id' => self::PLAN_ID,
-                'phone_number' => self::PHONE_NUMBER,
+                'network_id' => $this->vendorService->getNetworkId(),
+                'data_type_id' => $this->vendorService->getDataTypeId(),
+                'plan_id' => $this->vendorService->getPlanId(),
+                'phone_number' => $this->vendorService->getPhoneNumber(),
             ]);
 
             $response->assertStatus(200);
@@ -95,10 +100,10 @@ class DataApiTest extends TestCase
             ]);
 
             $response = $this->actingAs($user)->postJson('/api/data/create', [
-                'network_id' => self::NETWORK_ID,
-                'data_type_id' => self::DATA_TYPE_ID,
-                'plan_id' => self::PLAN_ID,
-                'phone_number' => self::PHONE_NUMBER,
+                'network_id' => $this->vendorService->getNetworkId(),
+                'data_type_id' => $this->vendorService->getDataTypeId(),
+                'plan_id' => $this->vendorService->getPlanId(),
+                'phone_number' => $this->vendorService->getPhoneNumber(),
             ]);
 
             $response->assertStatus(200);
