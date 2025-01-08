@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Services\Account\AccountBalanceService;
+use App\Services\Blacklist\CheckBlacklist;
 
 class AirtimeApiRequest extends FormRequest
 {
@@ -52,22 +53,20 @@ class AirtimeApiRequest extends FormRequest
                 $validator->errors()->add('rate_limit', 'Wait a minute. Your last transaction is still processing.');
             }
         });
+
+        $validator->after(function ($validator) {
+            if ($this->has('account')) {
+                $validator->errors()->add('account', "There a problem with your account. Contact support.");
+            }
+        });
+        $validator->after(function ($validator) {
+            if ($this->has('kyc')) {
+                $validator->errors()->add('kcy', 'Please complete your kyc first');
+            }
+        });
         // Register the custom validation rule for checking balance
         $this->registerCheckBalanceRule($validator);
 
-
-        // Add custom rule for blacklist and KYC check
-        $validator->after(function ($validator) {
-            $user = Auth::user();
-
-            if ($user->is_blacklisted) {
-                $validator->errors()->add('user_status', 'You are blacklisted and cannot perform this transaction.');
-            }
-
-            if (!$user->hasCompletedKYC()) {
-                $validator->errors()->add('kyc_status', 'You must complete KYC verification to perform this transaction.');
-            }
-        });
     }
 
        /**
@@ -84,13 +83,24 @@ class AirtimeApiRequest extends FormRequest
         if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
             $seconds = RateLimiter::availableIn($rateLimitKey);
 
-            // Merge the rate limit error into the request for validation handling
             $this->merge([
-                'rate_limit_error' => "Wait a moment. Last transaction is still processing. Try again in {$seconds} seconds.",
+                'rate_limit_error' => "Wait a moment. Last transaction is still processing.",
             ]);
         } else {
-            // Record a new attempt
-            RateLimiter::hit($rateLimitKey, 60); // Limit: 1 attempt per 60 seconds
+            
+            RateLimiter::hit($rateLimitKey, 30);
+        }
+
+        $user = Auth::user();
+        if( CheckBlacklist::checkIfUserIsBlacklisted()){
+            $this->merge([
+                'account' => "There a problem with your account. Contact support.",
+            ]);
+        }
+        if(!$user->hasCompletedKYC()){
+            $this->merge([
+                'kyc' => "Please complete your kyc first.",
+            ]);
         }
     }
 
