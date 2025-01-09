@@ -74,7 +74,7 @@ class DataApiRequest extends FormRequest
     {
         $rateLimitKey = 'data-api-submit-' . Auth::id();
 
-        if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 2)) {
             $seconds = RateLimiter::availableIn($rateLimitKey);
 
             $this->merge([
