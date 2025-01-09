@@ -1,0 +1,36 @@
+<?php
+return [
+    'POSTRANET' => [
+        'phone_number' => '08011111111',
+        'network_id' => 1,
+        'data_id' => 214,
+        'datatype_id' => 35,
+        'plan_id' => 210,
+        'amount' => 50,
+        'meter_number' => '1111111111111',
+        'disco_id' => '1',
+        'meter_type' => 1,
+    ],
+    'GLADTIDINGSDATA' => [
+        'phone_number' => '08011111111',
+        'network_id' => 1,
+        'data_id' => 1,
+        'datatype_id' => 1,
+        'plan_id' => 1,
+        'amount' => 50,
+        'meter_number' => '1111111111111',
+        'disco_id' => '18',
+        'meter_type' => 1,
+    ],
+    'VTPASS' => [
+        'phone_number' => '08011111111',
+        'network_id' => 1,
+        'data_id' => 1,
+        'datatype_id' => 61,
+        'plan_id' => 253,
+        'amount' => 50,
+        'meter_number' => '1111111111111',
+        'disco_id' => 'ikeja-electric',
+        'meter_type' => 1,
+    ],
+];
