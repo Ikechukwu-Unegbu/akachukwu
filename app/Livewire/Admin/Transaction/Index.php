@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Transaction;
 
+use App\Models\Data\DataNetwork;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Livewire\WithPagination;
@@ -12,6 +13,7 @@ use App\Models\Payment\Flutterwave;
 use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
 use App\Models\Data\DataTransaction;
+use App\Models\Data\DataType;
 use App\Models\Utility\CableTransaction;
 use App\Models\Payment\VastelTransaction;
 use App\Models\Payment\MonnifyTransaction;
@@ -42,6 +44,9 @@ class Index extends Component
     public $error_msg;
     public $get_transaction;
     public $vendorResponse;
+    public $network;
+    public $networkIds;
+    public $dataType;
 
     public function  mount(Request $request)
     {
@@ -216,6 +221,11 @@ class Index extends Component
         return  (new $tableName)->findOrFail($id);
     }
 
+    public function updatedNetwork()
+    {
+        $this->networkIds = DataNetwork::where('name', $this->network)->pluck('id')->toArray();
+    }
+
     public function render(Request $request)
     {
         $query = DB::table(DB::raw('
@@ -276,6 +286,10 @@ class Index extends Component
         
         $transactions = $query->paginate($this->perPage);
 
-        return view('livewire.admin.transaction.index', compact('transactions'));
+        $networks = DataNetwork::get()->unique('name');
+        // $dataNetworks = DataNetwork::whereIn('id', $this->networkIds)->get();
+        $dataTypes = $this->network ? DataType::whereIn('network_id', $this->networkIds)->where('status', true)->get() : [];
+
+        return view('livewire.admin.transaction.index', compact('transactions', 'networks', 'dataTypes'));
     }
 }

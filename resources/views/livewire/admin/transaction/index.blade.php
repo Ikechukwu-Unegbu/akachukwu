@@ -67,6 +67,32 @@
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage"
                     wireSearchAction="wire:model.live=search" />
             </div>
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-md-2 col-6 col-lg-3">
+                        <div>
+                            <label for="type">Networks</label>
+                            <select class="form-control" wire:model.lazy="network" name="network" id="network">
+                                <option value="">----</option>
+                                @foreach ($networks as $__network)
+                                <option value="{{ $__network->name }}">{{ $__network->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 col-lg-3">
+                        <div>
+                            <label for="type">Data Types</label>
+                            <select class="form-control" wire:model.lazy="network" name="network" id="network">
+                                <option value="">----</option>
+                                @foreach ($dataTypes as $__dataType)
+                                <option value="{{ $__dataType->id }}">{{ $__dataType->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <x-admin.table>
                     <x-admin.table-header :headers="[$status == 0 ? '#' : 'SN', 'Customer', 'Amount', 'Type', 'Date', 'Status', 'Action']" />
