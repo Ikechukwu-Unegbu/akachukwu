@@ -4,8 +4,10 @@ namespace App\Http\Requests\V1\Api;
 
 use App\Models\Data\DataPlan;
 use App\Services\Account\AccountBalanceService;
+use App\Services\Blacklist\CheckBlacklist;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 
 class DataApiRequest extends FormRequest
 {
@@ -34,6 +36,23 @@ class DataApiRequest extends FormRequest
 
     public function withValidator($validator)
     {
+
+        $validator->after(function ($validator) {
+            if ($this->has('rate_limit_error')) {
+                $validator->errors()->add('rate_limit', 'Wait a minute. Your last transaction is still processing.');
+            }
+        });
+
+        $validator->after(function ($validator) {
+            if ($this->has('account')) {
+                $validator->errors()->add('account', "There a problem with your account. Contact support.");
+            }
+        });
+        $validator->after(function ($validator) {
+            if ($this->has('kyc')) {
+                $validator->errors()->add('kcy', 'Please complete your kyc first');
+            }
+        });
         $validator->after(function ($validator) {
             $user = Auth::user();
 
@@ -50,4 +69,33 @@ class DataApiRequest extends FormRequest
             }
         });
     }
+
+    protected function prepareForValidation()
+    {
+        $rateLimitKey = 'data-api-submit-' . Auth::id();
+
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
+            $seconds = RateLimiter::availableIn($rateLimitKey);
+
+            $this->merge([
+                'rate_limit_error' => "Wait a moment. Last transaction is still processing.",
+            ]);
+        } else {
+            
+            RateLimiter::hit($rateLimitKey, 30);
+        }
+
+        $user = Auth::user();
+        if( CheckBlacklist::checkIfUserIsBlacklisted()){
+            $this->merge([
+                'account' => "There a problem with your account. Contact support.",
+            ]);
+        }
+        if(!$user->hasCompletedKYC()){
+            $this->merge([
+                'kyc' => "Please complete your kyc first.",
+            ]);
+        }
+    }
+
 }
