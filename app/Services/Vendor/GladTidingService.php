@@ -103,13 +103,19 @@ class GladTidingService
                     'network_name'   => $network->name,
                     'amount'         => $amount,
                     'mobile_number'  => $mobileNumber,
-                    'balance_before' => $user->account_balance,
-                    'balance_after'  => $user->account_balance - $amount,
+                    // 'balance_before' => $user->account_balance,
+                    // 'balance_after'  => $user->account_balance - $amount,
                     'discount'       => $discount,
                 ]);
 
+                $discountedAmount = $amount;
+                if (auth()->user()->isReseller()) {
+                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'airtime');
+                }
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
+
                 // Deduct the amount from the user's account balance
-                $user->account_balance -= $amount;
+                $user->account_balance -= $discountedAmount;
                 $user->save();
 
                 // Prepare data for the API request
@@ -127,12 +133,6 @@ class GladTidingService
                 // Store the API response
                 self::storeApiResponse($transaction, $response);
 
-                $discountedAmount = $amount;
-                if (auth()->user()->isReseller()) {
-                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'airtime');
-                }
-                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
-
                 // Handle API response
                 if (isset($response->error)) {
                     // Refund user if API transaction fails
@@ -147,7 +147,7 @@ class GladTidingService
                 if (isset($response->Status) && $response->Status === 'successful') {
                     // Update transaction details on success
                     $transaction->update([
-                        'balance_after' => $user->account_balance,
+                        // 'balance_after' => $user->account_balance,
                         'api_data_id'   => $response->id ?? $response->ident,
                     ]);
 
@@ -230,13 +230,19 @@ class GladTidingService
                     'customer_mobile_number'    => $customerMobile,
                     'customer_name'             => $customerName,
                     'customer_address'          => $customerAddress,
-                    'balance_before'            => $user->account_balance,
-                    'balance_after'             => $user->account_balance - $amount,
+                    // 'balance_before'            => $user->account_balance,
+                    // 'balance_after'             => $user->account_balance - $amount,
                     'discount'                  => $discount,
                 ]);
+
+                $discountedAmount = $amount;
+                if (auth()->user()->isReseller()) {
+                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'electricity');
+                }
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
     
                 // Deduct the amount from the user's account balance
-                $user->account_balance -= $amount;
+                $user->account_balance -= $discountedAmount;
                 $user->save();
     
                 // Prepare API request data
@@ -256,12 +262,6 @@ class GladTidingService
                 // Store the API response
                 self::storeApiResponse($transaction, $response);
     
-                $discountedAmount = $amount;
-                if (auth()->user()->isReseller()) {
-                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'electricity');
-                }
-                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
-    
                 // Handle API response
                 if (isset($response->error)) {
                     // Refund user if API transaction fails
@@ -276,7 +276,7 @@ class GladTidingService
                 if (isset($response->Status) && $response->Status === 'successful') {
                     // Update transaction details on success
                     $transaction->update([
-                        'balance_after' => $user->account_balance,
+                        // 'balance_after' => $user->account_balance,
                         'token'         => VendorHelper::removeTokenPrefix($response->token ?? ''),
                         'api_data_id'   => $response->id ?? $response->ident,
                     ]);
@@ -353,13 +353,21 @@ class GladTidingService
                     'smart_card_number'   => $iucNumber,
                     'customer_name'       => $customer,
                     'amount'              => $cable_plan->amount,
-                    'balance_before'      => $user->account_balance,
-                    'balance_after'       => $user->account_balance,
+                    // 'balance_before'      => $user->account_balance,
+                    // 'balance_after'       => $user->account_balance,
                     'discount'            => $discount,
                 ]);
+
+                $amount = $transaction->amount;
+                $discountedAmount = $amount;
+                // Apply reseller or general discounts
+                if (auth()->user()->isReseller()) {
+                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'cable');
+                }
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
     
                 // Deduct the amount from the user's balance
-                $user->account_balance -= $cable_plan->amount;
+                $user->account_balance -= $discountedAmount;
                 $user->save();
     
                 // Prepare data for the external API request
@@ -375,13 +383,7 @@ class GladTidingService
                 // Store the API response in the transaction
                 self::storeApiResponse($transaction, $response);
     
-                $amount = $transaction->amount;
-    
-                // Apply reseller or general discounts
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'cable');
-                }
-                $amount = CalculateDiscount::calculate($amount, $discount);
+               
     
                 // Handle API response
                 if (isset($response->error)) {
@@ -397,11 +399,11 @@ class GladTidingService
                 if (isset($response->Status) && $response->Status == 'successful') {
                     // Update transaction and mark as successful
                     $transaction->update([
-                        'balance_after' => $user->account_balance,
+                        // 'balance_after' => $user->account_balance,
                         'api_data_id'   => $response->id ?? $response->ident,
                     ]);
     
-                    self::$authUser->initiateSuccess($amount, $transaction);
+                    self::$authUser->initiateSuccess($discountedAmount, $transaction);
     
                     // Record the beneficiary
                     BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
@@ -414,7 +416,7 @@ class GladTidingService
                     'error'   => 'API Response Error',
                     'message' => "Cable purchase failed. Please try again later.",
                 ];
-                self::$authUser->initiatePending($amount, $transaction);
+                self::$authUser->initiatePending($discountedAmount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             });
         } catch (\Throwable $th) {
@@ -465,16 +467,25 @@ class GladTidingService
                     'size'           => $plan->size,
                     'validity'       => $plan->validity,
                     'mobile_number'  => $mobileNumber,
-                    'balance_before' => $user->account_balance,
-                    'balance_after'  => $user->account_balance,
+                    // 'balance_before' => $user->account_balance,
+                    // 'balance_after'  => $user->account_balance,
                     'plan_network'   => $network->name,
                     'plan_name'      => $plan->size,
                     'plan_amount'    => $plan->amount,
                     'discount'       => $discount,
                 ]);
 
+                // Apply any reseller or general discounts
+                $amount = $plan->amount;
+                $discountedAmount = $amount;
+
+                if (auth()->user()->isReseller()) {
+                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'data');
+                }
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
+
                 // Deduct amount from user's balance
-                $user->account_balance -= $plan->amount;
+                $user->account_balance -= $discountedAmount;
                 $user->save();
 
                 // Prepare data for external API request
@@ -491,17 +502,12 @@ class GladTidingService
                 // Store the API response in the transaction
                 self::storeApiResponse($transaction, $response);
 
-                // Apply any reseller or general discounts
-                $amount = $plan->amount;
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'data');
-                }
-                $amount = CalculateDiscount::calculate($amount, $discount);
+                
 
                 // Handle API response
                 if (isset($response->error)) {
                     // Refund the user on failure
-                    self::$authUser->initiateRefund($amount, $transaction);
+                    self::$authUser->initiateRefund($discountedAmount, $transaction);
                     $errorResponse = [
                         'error'   => 'Insufficient Balance From API',
                         'message' => "An error occurred during Data request. Please try again later.",
@@ -512,15 +518,15 @@ class GladTidingService
                 if (isset($response->Status) && $response->Status == 'successful') {
                     // Update transaction and mark as successful
                     $transaction->update([
-                        'balance_after'     => $user->account_balance,
-                        'status'            => true,
+                        // 'balance_after'     => $user->account_balance,
+                        // 'status'            => true,
                         'plan_network'      => $response->plan_network ?? $network->name,
                         'plan_name'         => $response->plan_name ?? $plan->size,
                         'plan_amount'       => $response->plan_amount ?? $plan->amount,
                         'api_data_id'       => $response->id ?? $response->ident,
                     ]);
 
-                    self::$authUser->initiateSuccess($amount, $transaction);
+                    self::$authUser->initiateSuccess($discountedAmount, $transaction);
 
                     // Record beneficiary
                     BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
@@ -533,7 +539,7 @@ class GladTidingService
                     'error'   => 'API Response Error',
                     'message' => "Data purchase failed. Please try again later.",
                 ];
-                self::$authUser->initiatePending($amount, $transaction);
+                self::$authUser->initiatePending($discountedAmount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             });
         } catch (\Throwable $th) {
@@ -652,8 +658,8 @@ class GladTidingService
             'exam_name'         =>  $resultCheckerModel->name,
             'quantity'          =>  $quantity,
             'amount'            =>  $amount,
-            'balance_before'    =>  Auth::user()->account_balance,
-            'balance_after'     =>  Auth::user()->account_balance
+            // 'balance_before'    =>  Auth::user()->account_balance,
+            // 'balance_after'     =>  Auth::user()->account_balance
         ]);
 
         $data = [

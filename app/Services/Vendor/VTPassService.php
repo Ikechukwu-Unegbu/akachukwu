@@ -220,8 +220,16 @@ class VTPassService
                     'discount'          => $discount,
                 ]);
 
+                // Apply reseller discount if applicable
+                $discountedAmount = $amount;
+                if (auth()->user()->isReseller()) {
+                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'airtime');
+                }
+
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
+
                 // Deduct the amount from the user's account balance
-                $user->account_balance -= $amount;
+                $user->account_balance -= $discountedAmount;
                 $user->save();
 
                 // Prepare data for the API request
@@ -238,12 +246,7 @@ class VTPassService
                 // Store the API response
                 self::storeApiResponse($transaction, $response);
 
-                // Apply reseller discount if applicable
-                $discountedAmount = $amount;
-                if (auth()->user()->isReseller()) {
-                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'airtime');
-                }
-                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
+                
 
                 // Handle API response
                 if (isset($response->code) && isset($response->content->transactions->status)) {
@@ -438,8 +441,16 @@ class VTPassService
                     'discount'         => $discount,
                 ]);
 
+                // Apply reseller discount if applicable
+                $amount = $plan->amount;
+                $discountedAmount = $amount;
+                if (auth()->user()->isReseller()) {
+                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'data');
+                }
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
+
                 // Deduct the amount from the user's account balance
-                $user->account_balance -= $plan->amount;
+                $user->account_balance -= $discountedAmount;
                 $user->save();
 
                 // Prepare data for the API request
@@ -462,19 +473,14 @@ class VTPassService
                 // Store the API response
                 self::storeApiResponse($transaction, $response);
 
-                // Apply reseller discount if applicable
-                $amount = $plan->amount;
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'data');
-                }
-                $amount = CalculateDiscount::calculate($amount, $discount);
+              
 
                 // Handle API response
                 if (isset($response->code) && isset($response->content->transactions->status)) {
                     $status = $response->content->transactions->status;
 
                     if ($status === 'failed') {
-                        self::$authUser->initiateRefund($amount, $transaction);
+                        self::$authUser->initiateRefund($discountedAmount, $transaction);
 
                         $errorResponse = [
                             'error'   => 'API Error',
@@ -491,7 +497,7 @@ class VTPassService
                             'api_data_id'     => $response->content->transactions->transactionId,
                         ]);
 
-                        self::$authUser->initiateSuccess($amount, $transaction);
+                        self::$authUser->initiateSuccess($discountedAmount, $transaction);
 
                         // Record beneficiary information
                         BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
@@ -505,7 +511,7 @@ class VTPassService
                     'error'   => 'Server Error',
                     'message' => 'Oops! Unable to perform the transaction. Please try again later.',
                 ];
-                self::$authUser->initiatePending($amount, $transaction);
+                self::$authUser->initiatePending($discountedAmount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             });
         } catch (\Throwable $th) {
@@ -672,8 +678,15 @@ class VTPassService
                     'discount'                  => $discount,
                 ]);
 
+                 // Apply reseller discount if applicable
+                 $finalAmount = $amount;
+                 if (auth()->user()->isReseller()) {
+                     $finalAmount = CalculateDiscount::applyDiscount($finalAmount, 'electricity');
+                 }
+                 $finalAmount = CalculateDiscount::calculate($finalAmount, $discount);
+
                 // Deduct the amount from the user's account balance
-                $user->account_balance -= $amount;
+                $user->account_balance -= $finalAmount;
                 $user->save();
 
                 // Prepare data for the API request
@@ -691,13 +704,6 @@ class VTPassService
 
                 // Store the API response
                 self::storeApiResponse($transaction, $response);
-
-                // Apply reseller discount if applicable
-                $finalAmount = $amount;
-                if (auth()->user()->isReseller()) {
-                    $finalAmount = CalculateDiscount::applyDiscount($finalAmount, 'electricity');
-                }
-                $finalAmount = CalculateDiscount::calculate($finalAmount, $discount);
 
                 // Handle API response
                 if (isset($response->code) && isset($response->content->transactions->status)) {
@@ -924,8 +930,15 @@ class VTPassService
                     'discount'            => $discount,
                 ]);
 
+                // Apply reseller discount if applicable
+                $finalAmount = $cable_plan->amount;
+                if (auth()->user()->isReseller()) {
+                    $finalAmount = CalculateDiscount::applyDiscount($finalAmount, 'cable');
+                }
+                $finalAmount = CalculateDiscount::calculate($finalAmount, $discount);
+
                 // Deduct the amount from the user's account balance
-                $user->account_balance -= $cable_plan->amount;
+                $user->account_balance -= $finalAmount;
                 $user->save();
 
                 // Prepare data for the API request
@@ -944,13 +957,7 @@ class VTPassService
 
                 // Store the API response
                 self::storeApiResponse($transaction, $response);
-
-                // Apply reseller discount if applicable
-                $finalAmount = $cable_plan->amount;
-                if (auth()->user()->isReseller()) {
-                    $finalAmount = CalculateDiscount::applyDiscount($finalAmount, 'cable');
-                }
-                $finalAmount = CalculateDiscount::calculate($finalAmount, $discount);
+                
 
                 // Handle API response
                 if (isset($response->code) && isset($response->content->transactions->status)) {
