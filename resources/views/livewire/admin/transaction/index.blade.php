@@ -45,10 +45,9 @@
                                 <label for="status">Status</label>
                                 <select class="form-control" wire:model="status" name="status" id="status">
                                     <option value="">All</option>
-                                    <option value="1">Success</option>
-                                    <option value="0">Failed</option>
-                                    <option value="2">Refunded</option>
-                                    <option value="negative">Negative Balance</option>
+                                    @foreach ($statuses as $__status)
+                                        <option value="{{ $__status }}">{{ Str::title($__status) }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -67,16 +66,42 @@
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage"
                     wireSearchAction="wire:model.live=search" />
             </div>
+            {{-- <div class="card-header">
+                <div class="row">
+                    <div class="col-md-2 col-6 col-lg-3">
+                        <div>
+                            <label for="type">Networks</label>
+                            <select class="form-control" wire:model.lazy="network" name="network" id="network">
+                                <option value="">----</option>
+                                @foreach ($networks as $__network)
+                                <option value="{{ $__network->name }}">{{ $__network->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2 col-6 col-lg-3">
+                        <div>
+                            <label for="type">Data Types</label>
+                            <select class="form-control" wire:model.lazy="dataType" name="dataType" id="dataType">
+                                <option value="">----</option>
+                                @foreach ($dataTypes as $__dataType)
+                                <option value="{{ $__dataType->name }}">{{ $__dataType->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
             <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="[$status == 0 ? '#' : 'SN', 'Customer', 'Amount', 'Type', 'Date', 'Status', 'Action']" />
+                    <x-admin.table-header :headers="[$status === 'pending' ? '#' : 'SN', 'Customer', 'Amount', 'Type', 'Date', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($transactions as $transaction)
                             <tr>
                                 <th scope="row">
-                                    @if ($status == 0)
+                                    @if ($status === 'pending')
                                         <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" wire:model="selectedUser.{{ $transaction->utility }}.{{ $transaction->transaction_id }}">
+                                            <input class="form-check-input form-check-lg" type="checkbox" wire:model="selectedUser.{{ $transaction->utility }}.{{ $transaction->transaction_id }}">
                                         </div>
                                     @else
                                         {{ $loop->index + $transactions->firstItem() }}
@@ -202,7 +227,7 @@
                 </div>
             </div>
         </div>
-        @if ($status == 0)
+        @if ($status === 'pending')
             <div class="card mt-4">
                 <div class="card-body p-3">
                     <button class="btn btn-primary w-25" data-bs-toggle="modal"

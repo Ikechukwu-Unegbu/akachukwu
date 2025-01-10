@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use Spatie\Activitylog\LogOptions;
+use App\Traits\RecordsBalanceChanges;
 use App\Traits\ThrottlesTransactions;
 use App\Traits\GeneratesTransactionId;
 use App\Traits\TransactionStatusTrait;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AirtimeTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId; 
+    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges; 
     protected $throttleActionName = 'airtime_purchase';
     protected $guarded = [];
     protected $fillable = [
@@ -30,6 +31,7 @@ class AirtimeTransaction extends Model
         'mobile_number',
         'balance_before',
         'balance_after',
+        'balance_after_refund',
         'api_data_id',
         'api_response',
         'status',
@@ -55,14 +57,6 @@ class AirtimeTransaction extends Model
         'status',
         'discount' ]);
         // Chain fluent methods for configuration options
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            $model->user_id = auth()->user()->id;
-        });
     }
 
     public function vendor() : BelongsTo

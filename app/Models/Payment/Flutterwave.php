@@ -12,7 +12,7 @@ use App\Traits\RecordsBalanceChanges;
 class Flutterwave extends Model
 {
     use PaymentStatusTrait, RecordsBalanceChanges;
-    
+    protected $statusField = 'api_status';
     protected $table = 'flutterwave_transactions';
     protected $guarded = [];
 

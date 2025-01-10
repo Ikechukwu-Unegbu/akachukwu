@@ -140,10 +140,18 @@ class PosTraNetService
                     'balance_after' => $user->account_balance,
                     'discount' => $discount
                 ]);
+                
+                 // If the user is a reseller, apply any discounts
+                 $discountedAmount = $amount;
+                 if (auth()->user()->isReseller()) {
+                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'airtime');
+                }
+                // Apply any other discounts (if applicable)
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
 
                 // Deduct the amount from the user's balance if they have enough funds
                 if ($user->account_balance >= $amount) {
-                    $user->account_balance -= $amount;  // Deduct the amount
+                    $user->account_balance -= $discountedAmount;  // Deduct the amount
                     $user->save();  // Save the updated balance
                 } else {
                     // Insufficient funds
@@ -169,13 +177,7 @@ class PosTraNetService
                 // Store the API response in the transaction
                 self::storeApiResponse($transaction, $response);
 
-                // If the user is a reseller, apply any discounts
-                if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
-                }
-
-                // Apply any other discounts (if applicable)
-                $amount = CalculateDiscount::calculate($amount, $discount);
+               
                 self::$authUser->transaction($amount);
 
                 // Handle the response from the API
@@ -194,11 +196,11 @@ class PosTraNetService
                 if (isset($response->Status) && $response->Status == 'successful') {
                     // Update the transaction after successful API response
                     $transaction->update([
-                        'balance_after' => self::$authUser->getAccountBalance(),
+                        // 'balance_after' => self::$authUser->getAccountBalance(),
                         'api_data_id' => $response->id ?? $response->ident
                     ]);
 
-                    self::$authUser->initiateSuccess($amount, $transaction);
+                    self::$authUser->initiateSuccess($discountedAmount, $transaction);
 
                     // Record the beneficiary for this transaction
                     BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
@@ -212,7 +214,7 @@ class PosTraNetService
                         'error' => 'API response Error',
                         'message' => "Airtime purchase failed. Please try again later.",
                     ];
-                    self::$authUser->initiatePending($amount, $transaction);
+                    self::$authUser->initiatePending($discountedAmount, $transaction);
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
 
@@ -221,7 +223,7 @@ class PosTraNetService
                     'error' => 'Server Error',
                     'message' => "Opps! Unable to Perform transaction. Please try again later.",
                 ];
-                self::$authUser->initiatePending($amount, $transaction);
+                self::$authUser->initiatePending($discountedAmount, $transaction);
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             });  // End of DB transaction
         } catch (\Throwable $th) {
@@ -272,14 +274,21 @@ class PosTraNetService
                     'customer_mobile_number' => $customerMobile,
                     'customer_name' => $customerName,
                     'customer_address' => $customerAddress,
-                    'balance_before' => $user->account_balance,
-                    'balance_after' => $user->account_balance,
+                    // 'balance_before' => $user->account_balance,
+                    // 'balance_after' => $user->account_balance,
                     'discount' => $discount
                 ]);
+
+                $discountedAmount = $amount;
+                if (auth()->user()->isReseller()) {
+                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'electricity');
+                }
+
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
     
                 // Deduct the amount from the user's account balance
                 if ($user->account_balance >= $amount) {
-                    $user->account_balance -= $amount;
+                    $user->account_balance -= $discountedAmount;
                     $user->save();
                 } else {
                     $errorResponse = [
@@ -303,7 +312,7 @@ class PosTraNetService
                 self::storeApiResponse($transaction, $response);
     
                 if (isset($response->error)) {
-                    self::$authUser->initiateRefund($amount, $transaction);
+                    self::$authUser->initiateRefund($discountedAmount, $transaction);
                     $errorResponse = [
                         'error' => 'Insufficient Balance From API.',
                         'message' => "An error occurred during bill payment request. Please try again later."
@@ -314,11 +323,11 @@ class PosTraNetService
     
                 if (isset($response->Status) && $response->Status == 'successful') {
                     $transaction->update([
-                        'balance_after' => self::$authUser->getAccountBalance(),
+                        // 'balance_after' => self::$authUser->getAccountBalance(),
                         'token' => VendorHelper::removeTokenPrefix($response->token),
                         'api_data_id' => $response->id ?? $response->ident
                     ]);
-                    self::$authUser->initiateSuccess($amount, $transaction);
+                    self::$authUser->initiateSuccess($discountedAmount, $transaction);
                     BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
     
                     return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
@@ -329,7 +338,7 @@ class PosTraNetService
                         'error' => 'API response Error',
                         'message' => "Bill purchase failed. Please try again later.",
                     ];
-                    self::$authUser->initiatePending($amount, $transaction);
+                    self::$authUser->initiatePending($discountedAmount, $transaction);
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
     
@@ -338,7 +347,7 @@ class PosTraNetService
                     'message' => "Oops! Unable to perform transaction. Please try again later."
                 ];
     
-                self::$authUser->initiatePending($amount, $transaction);
+                self::$authUser->initiatePending($discountedAmount, $transaction);
     
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             });
@@ -398,15 +407,16 @@ class PosTraNetService
 
                 $amount = $transaction->amount;
 
+                $discountedAmount = $amount;
                 if (auth()->user()->isReseller()) {
-                    $amount = CalculateDiscount::applyDiscount($amount, 'cable');
+                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'cable');
                 }
 
-                $amount = CalculateDiscount::calculate($amount, $discount);
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
 
                 // Deduct the amount from the user's balance
                 if ($user->account_balance >= $amount) {
-                    $user->account_balance -= $amount;
+                    $user->account_balance -= $discountedAmount;
                     $user->save();
                 } else {
                     $errorResponse = [
@@ -417,7 +427,7 @@ class PosTraNetService
                 }
 
                 if (isset($response->error)) {
-                    self::$authUser->initiateRefund($amount, $transaction);
+                    self::$authUser->initiateRefund($discountedAmount, $transaction);
                     $errorResponse = [
                         'error'   => 'Insufficient Balance From API.',
                         'message' => "An error occurred during cable payment request. Please try again later."
@@ -428,11 +438,11 @@ class PosTraNetService
 
                 if (isset($response->Status) && $response->Status == 'successful') {
                     $transaction->update([
-                        'balance_after' => $user->account_balance,
+                        // 'balance_after' => $user->account_balance,
                         'api_data_id'   => $response->id ?? $response->ident
                     ]);
 
-                    self::$authUser->initiateSuccess($amount, $transaction);
+                    self::$authUser->initiateSuccess($discountedAmount, $transaction);
 
                     BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
 
@@ -445,7 +455,7 @@ class PosTraNetService
                         'message'   => "Cable purchase failed. Please try again later.",
                     ];
 
-                    self::$authUser->initiatePending($amount, $transaction);
+                    self::$authUser->initiatePending($discountedAmount, $transaction);
 
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
@@ -455,7 +465,7 @@ class PosTraNetService
                     'message'   => "Oops! Unable to Perform transaction. Please try again later."
                 ];
 
-                self::$authUser->initiatePending($amount, $transaction);
+                self::$authUser->initiatePending($discountedAmount, $transaction);
 
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             });
@@ -525,14 +535,18 @@ class PosTraNetService
 
                 // Deduct the amount from the user's account balance
                 $amount = $plan->amount;
+                
+                // Get Discount assign to data
+                $discount = $network->data_discount;
+
+                $discountedAmount = $amount;
                 //Check is user is a Reseller
                 if ($user->isReseller()) {
                     // Apply discount amount to transaction
-                    $amount = CalculateDiscount::applyDiscount($amount, 'data');
+                    $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'data');
                 }
-                // Get Discount assign to data
-                $discount = $network->data_discount;
-                $amount = CalculateDiscount::calculate($amount, $discount);
+
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
 
                 // Handle insufficient balance
                 if (! self::$authUser->verifyAccountBalance($amount))
@@ -545,7 +559,7 @@ class PosTraNetService
                 }
                 
                 // Deduct the amount from the user's account balance
-                self::$authUser->transaction($amount);
+                self::$authUser->transaction($discountedAmount);
 
                 // External API request and response processing (same as in your code)
                 $data = [
@@ -560,7 +574,7 @@ class PosTraNetService
              
                 if (isset($response->error)) {
                     // Insufficient API Wallet Balance Error
-                    self::$authUser->initiateRefund($amount, $transaction);
+                    self::$authUser->initiateRefund($discountedAmount, $transaction);
                     $errorResponse = [
                         'error'   => 'Insufficient Balance From API.',
                         'message' => "An error occurred during Data request. Please try again later."
@@ -572,7 +586,7 @@ class PosTraNetService
                 if (isset($response->Status) && $response->Status == 'successful') {
                     // Update transaction after successful API response
                     $transaction->update([
-                        'balance_after' => $user->account_balance,
+                        // 'balance_after' => $user->account_balance,
                         'plan_network' => $response->plan_network,
                         'plan_name' => $response->plan_name,
                         'plan_amount' => $response->plan_amount,
@@ -580,7 +594,7 @@ class PosTraNetService
                     ]);
 
                     // Complete success processing
-                    self::$authUser->initiateSuccess($plan->amount, $transaction);
+                    self::$authUser->initiateSuccess($discountedAmount, $transaction);
 
                     return ApiHelper::sendResponse($transaction, "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobileNumber}.");
                 } else {
@@ -589,7 +603,7 @@ class PosTraNetService
                         'error' => 'API Error',
                         'message' => 'Data purchase failed. Please try again later.',
                     ];
-                    self::$authUser->initiatePending($plan->amount, $transaction);
+                    self::$authUser->initiatePending($discountedAmount, $transaction);
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
             });  // End of DB transaction

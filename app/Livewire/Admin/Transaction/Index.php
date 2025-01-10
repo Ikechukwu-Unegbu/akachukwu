@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Transaction;
 
+use App\Models\Data\DataNetwork;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Livewire\WithPagination;
@@ -12,6 +13,7 @@ use App\Models\Payment\Flutterwave;
 use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
 use App\Models\Data\DataTransaction;
+use App\Models\Data\DataType;
 use App\Models\Utility\CableTransaction;
 use App\Models\Payment\VastelTransaction;
 use App\Models\Payment\MonnifyTransaction;
@@ -42,6 +44,13 @@ class Index extends Component
     public $error_msg;
     public $get_transaction;
     public $vendorResponse;
+    public $network;
+    public $networkIds;
+    public $dataType;
+    public $dataTypeIds;
+    public $statuses = [
+        'successful', 'processing', 'pending', 'failed', 'refunded', 'negative'
+    ];
 
     public function  mount(Request $request)
     {
@@ -63,16 +72,17 @@ class Index extends Component
                 $dataTransaction = DataTransaction::where('transaction_id', $data)->first();
                 $amount = CalculateDiscount::calculate($dataTransaction->amount, $dataTransaction->discount);
                 $dataTransaction->user->setAccountBalance($amount);
-                $dataTransaction->update(['status' => 2]);
+                $dataTransaction->refund();
             }
         }
 
         if (isset($this->selectedUser['airtime'])) {
             foreach (array_keys($this->selectedUser['airtime']) as $airtime) {
                 $airtimeTransaction = AirtimeTransaction::where('transaction_id', $airtime)->first();
-                $amount = CalculateDiscount::calculate($airtimeTransaction->amount, $airtimeTransaction->discount);
+                // $amount = CalculateDiscount::calculate($airtimeTransaction->amount, $airtimeTransaction->discount);
+                $amount = $airtimeTransaction->amount;
                 $airtimeTransaction->user->setAccountBalance($amount);
-                $airtimeTransaction->update(['status' => 2]);
+                $airtimeTransaction->refund();
             }
         }
 
@@ -81,7 +91,7 @@ class Index extends Component
                 $cableTransaction = CableTransaction::where('transaction_id', $cable)->first();
                 $amount = CalculateDiscount::calculate($cableTransaction->amount, $cableTransaction->discount);
                 $cableTransaction->user->setAccountBalance($amount);
-                $cableTransaction->update(['status' => 2]);
+                $cableTransaction->refund();
             }
         }
 
@@ -90,7 +100,7 @@ class Index extends Component
                 $electricityTransaction = ElectricityTransaction::where('transaction_id', $electricity)->first();
                 $amount = CalculateDiscount::calculate($electricityTransaction->amount, $electricityTransaction->discount);
                 $electricityTransaction->user->setAccountBalance($amount);
-                $electricityTransaction->update(['status' => 2]);
+                $electricityTransaction->refund();
             }
         }
 
@@ -99,7 +109,7 @@ class Index extends Component
                 $educationTransaction = ResultCheckerTransaction::where('transaction_id', $education)->first();
                 $amount = CalculateDiscount::calculate($electricityTransaction->amount, $electricityTransaction->discount);
                 $educationTransaction->user->setAccountBalance($amount);
-                $educationTransaction->update(['status' => 2]);
+                $educationTransaction->refund();
             }
         }
 
@@ -157,6 +167,11 @@ class Index extends Component
         try {
             $transaction = self::getTransactionTableByType($this->transaction_type, $this->transaction_id);
             $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
+            
+            if ($this->transaction_type === 'airtime') {
+                $amount = $transaction->amount;
+            }
+
             $transaction->user->setAccountBalance($amount);
             $transaction->refund();
             $this->dispatch('success-toastr', ['message' => 'Transaction Refunded Successfully']);
@@ -175,6 +190,11 @@ class Index extends Component
        try {
             $transaction = self::getTransactionTableByType($this->transaction_type, $this->transaction_id);
             $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
+
+            if ($this->transaction_type === 'airtime') {
+                $amount = $transaction->amount;
+            }
+            
             $transaction->user->setTransaction($amount);
             $transaction->debit();
             $this->dispatch('success-toastr', ['message' => 'Transaction Debited Successfully']);
@@ -214,6 +234,16 @@ class Index extends Component
         $tableName = $transactionTables[$type];
 
         return  (new $tableName)->findOrFail($id);
+    }
+
+    public function updatedNetwork()
+    {
+        $this->networkIds = DataNetwork::where('name', $this->network)->pluck('id')->toArray();
+    }
+
+    public function updatedDataType()
+    {
+        $this->dataTypeIds = DataType::where('name', $this->dataType)->pluck('id')->toArray();
     }
 
     public function render(Request $request)
@@ -265,9 +295,8 @@ class Index extends Component
         }
 
        
-
-        if (is_numeric($this->status)) {
-            $query->where('transactions.status', (int) $this->status);
+        if ($this->status && $this->status !== 'negative') {
+            $query->where('transactions.vendor_status', $this->status);
         }
 
         if ($this->status === 'negative') {
@@ -276,6 +305,10 @@ class Index extends Component
         
         $transactions = $query->paginate($this->perPage);
 
-        return view('livewire.admin.transaction.index', compact('transactions'));
+        $networks = DataNetwork::get()->unique('name');
+        
+        $dataTypes = $this->network ? DataType::whereIn('network_id', $this->networkIds)->where('status', true)->get()->unique('name') : [];
+
+        return view('livewire.admin.transaction.index', compact('transactions', 'networks', 'dataTypes'));
     }
 }
