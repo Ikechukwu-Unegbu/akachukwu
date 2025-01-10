@@ -79,7 +79,8 @@ class Index extends Component
         if (isset($this->selectedUser['airtime'])) {
             foreach (array_keys($this->selectedUser['airtime']) as $airtime) {
                 $airtimeTransaction = AirtimeTransaction::where('transaction_id', $airtime)->first();
-                $amount = CalculateDiscount::calculate($airtimeTransaction->amount, $airtimeTransaction->discount);
+                // $amount = CalculateDiscount::calculate($airtimeTransaction->amount, $airtimeTransaction->discount);
+                $amount = $airtimeTransaction->amount;
                 $airtimeTransaction->user->setAccountBalance($amount);
                 $airtimeTransaction->refund();
             }
@@ -166,6 +167,11 @@ class Index extends Component
         try {
             $transaction = self::getTransactionTableByType($this->transaction_type, $this->transaction_id);
             $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
+            
+            if ($this->transaction_type === 'airtime') {
+                $amount = $transaction->amount;
+            }
+
             $transaction->user->setAccountBalance($amount);
             $transaction->refund();
             $this->dispatch('success-toastr', ['message' => 'Transaction Refunded Successfully']);
@@ -184,6 +190,11 @@ class Index extends Component
        try {
             $transaction = self::getTransactionTableByType($this->transaction_type, $this->transaction_id);
             $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
+
+            if ($this->transaction_type === 'airtime') {
+                $amount = $transaction->amount;
+            }
+            
             $transaction->user->setTransaction($amount);
             $transaction->debit();
             $this->dispatch('success-toastr', ['message' => 'Transaction Debited Successfully']);
