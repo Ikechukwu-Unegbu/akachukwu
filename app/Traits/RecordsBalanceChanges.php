@@ -7,32 +7,56 @@ use Illuminate\Support\Facades\DB;
 
 trait RecordsBalanceChanges
 {
-    const STATUS_ACTIVE = 1;
+    protected const STATUS_SUCCESS = 'successful';
+    protected const STATUS_PROCESSING = 'processing';
+    protected const STATUS_PENDING = 'pending';
+    protected const STATUS_REFUND = 'refunded';
+    protected const STATUS_FAILED = 'failed';
 
     protected static function bootRecordsBalanceChanges()
     {
         static::creating(function ($model) {
-            $user = User::find($model->user_id);
-            $model->balance_before = $user->account_balance;
-            $model->balance_after = $model->balance_before;
-
-            if ($model->status === self::STATUS_ACTIVE && self::where('reference_id', $model->reference_id)->exists()) {
-                $model->balance_after = $model->balance_before + $model->amount;
-            }
-        });
-
-        static::updating(function ($model) {
             DB::transaction(function () use ($model) {
-                $user = User::find($model->user_id);
-                $existingRecord = self::where('reference_id', $model->reference_id)
-                    ->where('user_id', $user->id)
-                    ->lockForUpdate()
-                    ->first();
-
-                if ($model->status === self::STATUS_ACTIVE && $existingRecord) {
-                    $model->balance_after = $existingRecord->balance_after + $model->amount;
+                $user = User::where('id', $model->user_id)->lockForUpdate()->firstOrFail();
+                $model->balance_before = $user->account_balance;
+                $model->balance_after = $model->balance_before;
+            
+                $statusField = $model->getStatusField();
+                $field = ($statusField === 'vendor_status') ? 'transaction_id' : 'reference_id';
+            
+                if ($model->$statusField === self::STATUS_SUCCESS && self::where($field, $model->$field)->exists()) {
+                    $model->balance_after = $user->account_balance;
                 }
             });
         });
+        
+
+        static::updating(function ($model) {
+            DB::transaction(function () use ($model) {
+                $user = User::where('id', $model->user_id)->lockForUpdate()->firstOrFail();
+                $statusField = $model->getStatusField();
+                $field = ($statusField === 'vendor_status') ? 'transaction_id' : 'reference_id';
+        
+                $existingRecord = self::where($field, $model->$field)
+                    ->where('user_id', $user->id)
+                    ->lockForUpdate()
+                    ->first();
+        
+                if ($existingRecord) {
+                    $model->balance_after = $user->account_balance;
+                }
+            });
+        });
+        
+    }
+
+    /**
+     * Get the status field name dynamically.
+     *
+     * @return string
+     */
+    protected function getStatusField()
+    {
+        return property_exists($this, 'statusField') ? $this->statusField : 'vendor_status';
     }
 }
