@@ -136,8 +136,8 @@ class PosTraNetService
                     'network_name' => $network->name,
                     'amount' => $amount,
                     'mobile_number' => $mobileNumber,
-                    'balance_before' => $user->account_balance,
-                    'balance_after' => $user->account_balance,
+                    // 'balance_before' => $user->account_balance,
+                    // 'balance_after' => $user->account_balance,
                     'discount' => $discount
                 ]);
 
@@ -194,7 +194,7 @@ class PosTraNetService
                 if (isset($response->Status) && $response->Status == 'successful') {
                     // Update the transaction after successful API response
                     $transaction->update([
-                        'balance_after' => self::$authUser->getAccountBalance(),
+                        // 'balance_after' => self::$authUser->getAccountBalance(),
                         'api_data_id' => $response->id ?? $response->ident
                     ]);
 
@@ -272,8 +272,8 @@ class PosTraNetService
                     'customer_mobile_number' => $customerMobile,
                     'customer_name' => $customerName,
                     'customer_address' => $customerAddress,
-                    'balance_before' => $user->account_balance,
-                    'balance_after' => $user->account_balance,
+                    // 'balance_before' => $user->account_balance,
+                    // 'balance_after' => $user->account_balance,
                     'discount' => $discount
                 ]);
     
@@ -314,7 +314,7 @@ class PosTraNetService
     
                 if (isset($response->Status) && $response->Status == 'successful') {
                     $transaction->update([
-                        'balance_after' => self::$authUser->getAccountBalance(),
+                        // 'balance_after' => self::$authUser->getAccountBalance(),
                         'token' => VendorHelper::removeTokenPrefix($response->token),
                         'api_data_id' => $response->id ?? $response->ident
                     ]);
@@ -381,8 +381,8 @@ class PosTraNetService
                     'smart_card_number'   =>  $iucNumber,
                     'customer_name'       =>  $customer,
                     'amount'              =>  $cable_plan->amount,
-                    'balance_before'      =>  $user->account_balance,
-                    'balance_after'       =>  $user->account_balance,
+                    // 'balance_before'      =>  $user->account_balance,
+                    // 'balance_after'       =>  $user->account_balance,
                     'discount'            =>  $discount
                 ]);
 
@@ -428,7 +428,7 @@ class PosTraNetService
 
                 if (isset($response->Status) && $response->Status == 'successful') {
                     $transaction->update([
-                        'balance_after' => $user->account_balance,
+                        // 'balance_after' => $user->account_balance,
                         'api_data_id'   => $response->id ?? $response->ident
                     ]);
 
@@ -515,8 +515,8 @@ class PosTraNetService
                     'size' => $plan->size,
                     'validity' => $plan->validity,
                     'mobile_number' => $mobileNumber,
-                    'balance_before' => $user->account_balance,
-                    'balance_after' => $user->account_balance,
+                    // 'balance_before' => $user->account_balance,
+                    // 'balance_after' => $user->account_balance,
                     'plan_network' => $network->name,
                     'plan_name' => $plan->size,
                     'plan_amount' => $plan->amount,
@@ -572,7 +572,7 @@ class PosTraNetService
                 if (isset($response->Status) && $response->Status == 'successful') {
                     // Update transaction after successful API response
                     $transaction->update([
-                        'balance_after' => $user->account_balance,
+                        // 'balance_after' => $user->account_balance,
                         'plan_network' => $response->plan_network,
                         'plan_name' => $response->plan_name,
                         'plan_amount' => $response->plan_amount,
@@ -706,8 +706,8 @@ class PosTraNetService
             'exam_name'         =>  $resultCheckerModel->name,
             'quantity'          =>  $quantity,
             'amount'            =>  $amount,
-            'balance_before'    =>  Auth::user()->account_balance,
-            'balance_after'     =>  Auth::user()->account_balance
+            // 'balance_before'    =>  Auth::user()->account_balance,
+            // 'balance_after'     =>  Auth::user()->account_balance
         ]);
 
         $data = [

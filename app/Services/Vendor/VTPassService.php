@@ -209,13 +209,14 @@ class VTPassService
 
                 // Create the airtime transaction record
                 $transaction = AirtimeTransaction::create([
+                    'user_id'           => Auth::id(),
                     'vendor_id'         => self::$vendor->id,
                     'network_id'        => $network->network_id,
                     'network_name'      => $network->name,
                     'amount'            => $amount,
                     'mobile_number'     => $mobileNumber,
-                    'balance_before'    => $user->account_balance,
-                    'balance_after'     => $user->account_balance - $amount,
+                    // 'balance_before'    => $user->account_balance,
+                    // 'balance_after'     => $user->account_balance - $amount,
                     'discount'          => $discount,
                 ]);
 
@@ -261,7 +262,7 @@ class VTPassService
                     if ($status === 'delivered') {
                         // Update the transaction on success
                         $transaction->update([
-                            'balance_after'     => $user->account_balance,
+                            // 'balance_after'     => $user->account_balance,
                             'api_data_id'       => $response->content->transactions->transactionId,
                             'amount'            => $discountedAmount,
                         ]);
@@ -429,8 +430,8 @@ class VTPassService
                     'size'             => $plan->size,
                     'validity'         => $plan->validity,
                     'mobile_number'    => $mobileNumber,
-                    'balance_before'   => $user->account_balance,
-                    'balance_after'    => $user->account_balance - $plan->amount,
+                    // 'balance_before'   => $user->account_balance,
+                    // 'balance_after'    => $user->account_balance - $plan->amount,
                     'plan_network'     => $network->name,
                     'plan_name'        => $plan->size,
                     'plan_amount'      => $plan->amount,
@@ -485,7 +486,7 @@ class VTPassService
                     if ($status === 'delivered') {
                         // Update the transaction on success
                         $transaction->update([
-                            'balance_after'   => $user->account_balance,
+                            // 'balance_after'   => $user->account_balance,
                             'plan_amount'     => $response->amount,
                             'api_data_id'     => $response->content->transactions->transactionId,
                         ]);
@@ -666,8 +667,8 @@ class VTPassService
                     'customer_mobile_number'    => $customerMobile,
                     'customer_name'             => $customerName,
                     'customer_address'          => $customerAddress,
-                    'balance_before'            => $user->account_balance,
-                    'balance_after'             => $user->account_balance - $amount,
+                    // 'balance_before'            => $user->account_balance,
+                    // 'balance_after'             => $user->account_balance - $amount,
                     'discount'                  => $discount,
                 ]);
 
@@ -715,7 +716,7 @@ class VTPassService
                     if ($status === 'delivered') {
                         // Update the transaction on success
                         $transaction->update([
-                            'balance_after' => $user->account_balance,
+                            // 'balance_after' => $user->account_balance,
                             'status'        => true,
                             'token'         => VendorHelper::removeTokenPrefix($response->purchased_code),
                             'api_data_id'   => $response->content->transactions->transactionId,
@@ -918,8 +919,8 @@ class VTPassService
                     'smart_card_number'   => $iucNumber,
                     'customer_name'       => $customer,
                     'amount'              => $cable_plan->amount,
-                    'balance_before'      => $user->account_balance,
-                    'balance_after'       => $user->account_balance - $cable_plan->amount,
+                    // 'balance_before'      => $user->account_balance,
+                    // 'balance_after'       => $user->account_balance - $cable_plan->amount,
                     'discount'            => $discount,
                 ]);
 
@@ -968,7 +969,7 @@ class VTPassService
                     if ($status === 'delivered') {
                         // Update the transaction on success
                         $transaction->update([
-                            'balance_after' => $user->account_balance,
+                            // 'balance_after' => $user->account_balance,
                             'status'        => true,
                             'api_data_id'   => $response->content->transactions->transactionId,
                         ]);
@@ -1040,8 +1041,8 @@ class VTPassService
                     'exam_name'         => $resultCheckerModel->name,
                     'quantity'          => $quantity,
                     'amount'            => $amount,
-                    'balance_before'    => $user->account_balance,
-                    'balance_after'     => $user->account_balance - $amount
+                    // 'balance_before'    => $user->account_balance,
+                    // 'balance_after'     => $user->account_balance - $amount
                 ]);
     
                 // Deduct the amount from the user's account balance
@@ -1088,7 +1089,7 @@ class VTPassService
     
                         // Update the transaction status after successful purchase
                         $transaction->update([
-                            'balance_after' => $user->account_balance,
+                            // 'balance_after' => $user->account_balance,
                             'api_data_id'   => $response->content->transactions->transactionId
                         ]);
     

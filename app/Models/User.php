@@ -563,6 +563,15 @@ class User extends Authenticatable
                     ])
             )
             ->unionAll(
+                DB::table('electricity_transactions')
+                    ->select([
+                        'id', 'transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount',
+                        'status', 'vendor_status', 'meter_number as subscribed_to', 'disco_name as plan_name',
+                        DB::raw('"IUC" as type'), DB::raw('"electricity" as utility'), DB::raw('"fa-tv" as icon'),
+                        DB::raw('"Electricity Purchased" as title'), 'created_at'
+                    ])
+            )
+            ->unionAll(
                 DB::table('flutterwave_transactions')
                     ->select([
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status', 
@@ -601,8 +610,7 @@ class User extends Authenticatable
             ->unionAll(
                 DB::table('vastel_transactions')
                     ->select([
-                        'id', 'reference_id as transaction_id', DB::raw('"N/A" as balance_before'), 
-                        DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status', 
+                        'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status', 
                         'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name', 
                         DB::raw('"funding" as type'), DB::raw('"vastel" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
                         DB::raw('"Wallet Topup" as title'), 'created_at'

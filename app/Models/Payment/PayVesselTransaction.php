@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class PayVesselTransaction extends Model
 {
     use PaymentStatusTrait, RecordsBalanceChanges;
-    
+    protected $statusField = 'api_status';
     protected $guarded = [];
     
     public function user()

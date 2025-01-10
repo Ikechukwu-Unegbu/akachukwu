@@ -46,7 +46,8 @@
                             </td>
                             <td>
                                 <span class="badge bg-{{ $wallet_transaction->status === 1 ? 'success' : ($wallet_transaction->status === 0 ? 'danger' : 'warning') }}">
-                                    {{ $wallet_transaction->status === 1 ? 'Successful' : ($wallet_transaction->status === 0 ? 'Failed' : 'Refunded') }}
+                                    {{ Str::title($wallet_transaction->vendor_status) }}
+                                    {{-- {{ $wallet_transaction->status === 1 ? 'Successful' : ($wallet_transaction->status === 0 ? 'Failed' : 'Refunded') }} --}}
                                     {{-- @if($wallet_transaction->type==='vastel' && $wallet_transaction->type == false)
                                         <small class="text-xs">Debit</small>
                                     @endif  --}}

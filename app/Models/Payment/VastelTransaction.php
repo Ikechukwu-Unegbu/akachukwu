@@ -11,8 +11,8 @@ use Illuminate\Database\Eloquent\Model;
 class VastelTransaction extends Model
 {
     use PaymentStatusTrait, RecordsBalanceChanges;
-    
-    use HasFactory;
+    protected $statusField = 'api_status';
+    protected $guarded = [];
 
     public function sender()
     {
