@@ -7,19 +7,7 @@
     </x-admin.page-title>--}}
 
     <section class="section profile">
-       {{-- <div class="row">
-            <div class="col-xl-12">
-                <div class="card">
-                    <div class="pt-4 card-body profile-card d-flex flex-column align-items-center">
-                        <img src="{{ $user->profilePicture }}" alt="Profile" class="rounded-circle">
-                        <h2>{{ $user->name }}</h2>
-                        <h3>{{ $user->username }}</h3>
-                        <h3>{{ $user->email }}</h3>
-                    </div>
-                </div>
-            </div>
-        </div>--}}
-
+    
         <div class="card mt-5">
             <div class="card-header">
                 <h4 class="card-title">Wallet History</h4>
