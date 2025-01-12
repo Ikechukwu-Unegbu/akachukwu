@@ -89,12 +89,10 @@
             </div>
         </div>
 
-        <div class="card mt-5">
-            <div class="card-header">
-                <h4 class="card-title">Wallet History</h4>
-            </div>
-            <div class="card-body">
-                <x-table>
+        <!-- <div class="card mt-5"> -->
+
+            <!-- <div class="card-body"> -->
+               {{-- <x-table>
                     <x-table-header :headers="['#', 'Reference', 'Type', 'Amount','Bal B4', 'Bal After', 'Date', 'Status']" />
                     <x-table-body class="text-sm">
                         @forelse ($user->checkUserTransactionHistories(10, $user->id) as $transaction)
@@ -132,9 +130,10 @@
                             </tr>
                         @endforelse
                     </x-table-body>
-                </x-table>
-            </div>
-        </div>
+                </x-table>--}}
+                <livewire:admin.wallet.index :user="$user"/>
+            <!-- </div> -->
+        <!-- </div> -->
 
         <div class="modal fade" id="impersonateUserModal" tabindex="-1">
             <div class="modal-dialog">
@@ -198,7 +197,29 @@
     </div>
 <!-- end of modal -->
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const tableId = 'userTable';
+    const table = document.querySelector(`#${tableId}`);
 
+    // Save the scroll position before navigation
+    window.addEventListener('beforeunload', () => {
+        const scrollPosition = table.getBoundingClientRect().top;
+        sessionStorage.setItem('scrollPosition', scrollPosition);
+    });
+
+    // Restore scroll position after page reload
+    const savedScrollPosition = sessionStorage.getItem('scrollPosition');
+    if (savedScrollPosition) {
+        window.scrollTo({
+            top: parseInt(savedScrollPosition),
+            behavior: 'smooth',
+        });
+        sessionStorage.removeItem('scrollPosition');
+    }
+});
+
+</script>
 
 @push('title')
     Human Resource Mgt. / Users
