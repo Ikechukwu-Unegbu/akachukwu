@@ -1,4 +1,9 @@
 @extends('layouts.new-guest')
+
+@section('head')
+
+<title>VASTel | Support</title>
+@endsection
 @section('body')
     <!-- Back Button -->
     <div class="max-w-7xl mx-auto py-6 px-4">
