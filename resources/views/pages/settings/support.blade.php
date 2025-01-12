@@ -16,19 +16,19 @@
         <ul class="space-y-4">
             <!-- Email Option -->
             <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div class="flex items-center space-x-4">
+                <a href="mailto:support@vastel.io" class="flex items-center space-x-4">
                     <i class="fas fa-envelope text-vastel_blue text-2xl"></i>
                     <div>
                         <h3 class="text-gray-900 font-semibold">Email</h3>
                         <p class="text-sm text-gray-500">support@vastel.io</p>
                     </div>
-                </div>
+                </a>
                 <i class="fas fa-chevron-right text-gray-500"></i>
             </li>
 
             <!-- Phone Option -->
             <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div class="flex items-center space-x-4">
+                <a  href="tel:  {{$settings->phone1}}{{ $settings->phone1 && $settings->phone2 ? ', ' : '' }}{{$settings->phone2}}" class="flex items-center space-x-4">
                     <i class="fas fa-phone-alt text-vastel_blue text-2xl"></i>
                     <div>
                         <h3 class="text-gray-900 font-semibold">Phone</h3>
@@ -37,14 +37,14 @@
                         </p>
 
                     </div>
-                </div>
+                </a>
                 <i class="fas fa-chevron-right text-gray-500"></i>
             </li>
 
 
             <!-- Live Chat Option -->
-            <li class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                <div  id="triggerZohoChat"  class="flex items-center space-x-4">
+            <li  id="triggerZohoChat"  class="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div  class="flex items-center space-x-4">
                     <i class="fas fa-comments text-vastel_blue text-2xl"></i>
                     <div>
                         <h3 class="text-gray-900 font-semibold">Live Chat</h3>
