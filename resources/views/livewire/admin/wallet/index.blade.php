@@ -1,13 +1,13 @@
 <div>
-    <x-admin.page-title title="Human Resource Mgt.">
+    {{--<x-admin.page-title title="Human Resource Mgt.">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
         <x-admin.page-title-item subtitle="HR Mgt." />
         <x-admin.page-title-item subtitle="Users" link="{{ route('admin.hr.user') }}" />
         <x-admin.page-title-item subtitle="Wallet History" status="true" />
-    </x-admin.page-title>
+    </x-admin.page-title>--}}
 
     <section class="section profile">
-        <div class="row">
+       {{-- <div class="row">
             <div class="col-xl-12">
                 <div class="card">
                     <div class="pt-4 card-body profile-card d-flex flex-column align-items-center">
@@ -18,7 +18,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>--}}
 
         <div class="card mt-5">
             <div class="card-header">
