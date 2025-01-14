@@ -28,16 +28,18 @@ trait RecordsBalanceChanges
                     $model->balance_after = $user->account_balance;
                 }
             });
-        });
-        
+        });        
 
         static::updating(function ($model) {
             DB::transaction(function () use ($model) {
                 $user = User::where('id', $model->user_id)->lockForUpdate()->firstOrFail();
-                $model->balance_after = $user->account_balance;
+                $statusField = $model->getStatusField();
+                $field = ($statusField === 'vendor_status') ? 'transaction_id' : 'reference_id';
+                if ($model->$statusField === self::STATUS_SUCCESS && self::where($field, $model->$field)->exists()) {
+                    $model->balance_after = $user->account_balance;
+                }
             });
-        });
-        
+        });        
     }
 
     /**
