@@ -28,7 +28,7 @@ trait RecordsBalanceChanges
                     $model->balance_after = $user->account_balance;
                 }
             });
-        });        
+        });
 
         static::updating(function ($model) {
             DB::transaction(function () use ($model) {

@@ -11,7 +11,7 @@ use App\Traits\RecordsBalanceChanges;
 
 class MonnifyTransaction extends Model
 {
-    use PaymentStatusTrait, RecordsBalanceChanges;
+    use RecordsBalanceChanges, PaymentStatusTrait;
     protected $statusField = 'api_status';
     protected $guarded = [];
 
