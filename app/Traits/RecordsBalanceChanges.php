@@ -35,7 +35,13 @@ trait RecordsBalanceChanges
                 $user = User::where('id', $model->user_id)->lockForUpdate()->firstOrFail();
                 $statusField = $model->getStatusField();
                 $field = ($statusField === 'vendor_status') ? 'transaction_id' : 'reference_id';
-                if ($model->$statusField === self::STATUS_SUCCESS && self::where($field, $model->$field)->exists()) {
+        
+                $existingRecord = self::where($field, $model->$field)
+                    ->where('user_id', $user->id)
+                    ->lockForUpdate()
+                    ->first();
+        
+                if ($existingRecord) {
                     $model->balance_after = $user->account_balance;
                 }
             });

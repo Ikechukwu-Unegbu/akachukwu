@@ -268,14 +268,12 @@ class PayVesselService
                         'user_id'       => $user->id,
                         'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
-                        'meta'          => json_encode($payload),
-                        'status'        => true,
-                        'api_status'    => 'successful',
+                        'meta'          => json_encode($payload)
                     ]);
 
-                    $transaction->success();
-    
                     $user->setAccountBalance($amountPaid);
+                    
+                    $transaction->success();
     
                     return ApiHelper::sendResponse($transaction, "Transaction successful.");
                 }            
