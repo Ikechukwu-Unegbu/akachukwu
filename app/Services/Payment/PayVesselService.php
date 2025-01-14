@@ -268,7 +268,9 @@ class PayVesselService
                         'user_id'       => $user->id,
                         'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
-                        'meta'          => json_encode($payload)
+                        'meta'          => json_encode($payload),
+                        'status'        => true,
+                        'api_status'    => 'successful',
                     ]);
 
                     $transaction->success();

@@ -496,7 +496,9 @@ class MonnifyService implements Payment
                         'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
                         'redirect_url'  => config('app.url'),
-                        'meta'          => json_encode($payload)
+                        'meta'          => json_encode($payload),
+                        'status'        => true,
+                        'api_status'    => 'successful',
                     ]);
                     
                     $transaction->success();
