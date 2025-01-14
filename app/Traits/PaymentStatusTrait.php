@@ -21,15 +21,17 @@ trait PaymentStatusTrait
 
     public function failed()
     {
-        $this->status = 0;
-        $this->api_status = self::STATUS_FAILED;
-        $this->save();
+        $this->update([
+            'status' => 0,
+            'api_status' => self::STATUS_FAILED,
+        ]);
     }
 
     public function success()
     {
-        $this->status = 1;
-        $this->api_status = self::STATUS_SUCCESS;
-        $this->save();
+        $this->update([
+            'status' => 1,
+            'api_status' => self::STATUS_SUCCESS,
+        ]);
     }
 }
