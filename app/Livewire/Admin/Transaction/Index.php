@@ -276,7 +276,10 @@ class Index extends Component
             ->select('transactions.*', 'users.username as user_name')
             ->when($this->search, function ($query, $search) {
                 $query->where('transaction_id', 'LIKE', "%$search%")
+                ->where('subscribed_to', 'LIKE', "%$search%")
                     ->orWhere('users.name', 'LIKE', "%$search%")
+                    ->orWhere('users.username', 'LIKE', "%$search%")
+                    // ->orWhere('users.phone', 'LIKE', "%$search%")
                     ->orWhere('users.phone', 'LIKE', "%$search%")
                     ->orWhere('type', 'LIKE', "%$search%");
             })
