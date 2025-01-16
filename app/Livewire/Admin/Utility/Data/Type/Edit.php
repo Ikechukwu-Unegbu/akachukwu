@@ -13,6 +13,7 @@ class Edit extends Component
     public $network;
     public $type;
     public $data_type_title;
+    public $data_type_percentage_referall_pay;
     public $status;
 
     public function mount(DataType $type, DataVendor $vendor, DataNetwork $network)
@@ -21,6 +22,7 @@ class Edit extends Component
         $this->network = $network;
         $this->type = $type;
         $this->data_type_title = $this->type->name;
+        $this->data_type_percentage_referall_pay = $this->type->referral_pay;
         $this->status = $this->type->status ? true : false;
         $this->authorize('edit data utility');
     }
@@ -29,12 +31,14 @@ class Edit extends Component
     {
         $this->validate([
             'data_type_title' =>  'required|string',
-            'status'          =>  'boolean'
+            'status'          =>  'boolean',
+            'data_type_percentage_referall_pay'=>'required'
         ]);
 
         $this->type->update([
             'name'      =>  trim($this->data_type_title),
-            'status'    =>  $this->status
+            'status'    =>  $this->status,
+            'referral_pay' => $this->data_type_percentage_referall_pay
         ]);
 
         $this->dispatch('success-toastr', ['message' => 'Data Type Updated Successfully']);

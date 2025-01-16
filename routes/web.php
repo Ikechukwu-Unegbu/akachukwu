@@ -17,6 +17,8 @@ use App\Http\Controllers\V1\Education\ResultCheckerController;
 use App\Http\Controllers\V1\PinController;
 use App\Http\Controllers\V1\SettingsController;
 use App\Http\Controllers\V1\TransactionController;
+use App\Models\Data\DataPlan;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +30,14 @@ use App\Http\Controllers\V1\TransactionController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::get('/ref', function(){
+    $user = User::find(15);
+    $plan = DataPlan::find(1);
+    // return $user->referralsReceived->referrer;
+    return $plan->datanetwork;
+});
+
 
 Route::get('restrained', function () {
     return view('errors.restrained');

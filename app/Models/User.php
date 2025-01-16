@@ -126,7 +126,7 @@ class User extends Authenticatable
 
     public function referralsReceived()
     {
-        return $this->hasMany(Referral::class, 'referred_user_id');
+        return $this->hasOne(Referral::class, 'referred_user_id');
     }
 
     public function getReferredUsersWithEarnings()
