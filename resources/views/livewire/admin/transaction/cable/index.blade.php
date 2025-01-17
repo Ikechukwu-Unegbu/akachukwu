@@ -11,6 +11,58 @@
                 <h5 class="card-title">Cable TV {{ Str::plural('Transaction', count($cable_transactions)) }}</h5>
             </div>
         </div>
+        <div>
+            <div class="card">
+                <div class="card-body p-4">
+                    <button class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#reimbursement">Reimbursement</button>
+                    <div wire:ignore.self class="modal fade" id="reimbursement" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Transaction Confirmation</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gridRadios"
+                                            id="debit" value="debit" wire:model="action">
+                                        <label class="form-check-label" for="debit">
+                                            Debit
+                                        </label>
+                                    </div>
+
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="gridRadios"
+                                            id="refund" value="refund" wire:model="action">
+                                        <label class="form-check-label" for="refund">
+                                            Refund
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="mx-auto">
+                                        <button type="button" wire:loading.remove wire:target="performReimbursement"
+                                            class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" wire:click='performReimbursement'>
+
+                                            <div wire:loading.remove wire:target="performReimbursement">
+                                                Proceed
+                                            </div>
+
+                                            <div wire:loading wire:target="performReimbursement">
+                                                <i class="bx bx-loader-circle bx-spin"></i> Please wait...
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="card">
             <div class="card-header">
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage" wireSearchAction="wire:model.live=search"  />
@@ -65,59 +117,6 @@
                     </x-admin.table-body>
                 </x-admin.table>
                 <x-admin.paginate :paginate=$cable_transactions /> 
-            </div>
-        </div>
-
-        <div>
-            <div class="card">
-                <div class="card-body p-4">
-                    <button class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#reimbursement">Reimbursement</button>
-                    <div wire:ignore.self class="modal fade" id="reimbursement" tabindex="-1">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Transaction Confirmation</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="gridRadios"
-                                            id="debit" value="debit" wire:model="action">
-                                        <label class="form-check-label" for="debit">
-                                            Debit
-                                        </label>
-                                    </div>
-
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="gridRadios"
-                                            id="refund" value="refund" wire:model="action">
-                                        <label class="form-check-label" for="refund">
-                                            Refund
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="mx-auto">
-                                        <button type="button" wire:loading.remove wire:target="performReimbursement"
-                                            class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" wire:click='performReimbursement'>
-
-                                            <div wire:loading.remove wire:target="performReimbursement">
-                                                Proceed
-                                            </div>
-
-                                            <div wire:loading wire:target="performReimbursement">
-                                                <i class="bx bx-loader-circle bx-spin"></i> Please wait...
-                                            </div>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

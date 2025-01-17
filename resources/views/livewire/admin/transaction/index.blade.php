@@ -61,6 +61,43 @@
                 </form>
             </div>
         </div>
+        @if ($status === 'pending')
+            <div class="card mt-4">
+                <div class="card-body p-3">
+                    <button class="btn btn-primary w-25" data-bs-toggle="modal"
+                        data-bs-target="#verticalycentered">Refund</button>
+                    <div wire:ignore.self class="modal fade" id="verticalycentered" tabindex="-1">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Refund</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5 class="text-center">Are you sure you want to perform this transaction refund?</h5>
+                                </div>
+                                <div class="modal-footer">
+                                    <div class="mx-auto">
+                                        <button type="button" wire:loading.remove wire:target="performRefund" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-primary" wire:click='performRefund'>
+                                            
+                                            <div wire:loading.remove wire:target="performRefund">
+                                                 Proceed
+                                            </div>
+                
+                                            <div wire:loading wire:target="performRefund">  
+                                                <i class="bx bx-loader-circle bx-spin"></i>  Please wait...
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @endif
         <div class="card">
             <div class="card-header">
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage"
@@ -227,43 +264,6 @@
                 </div>
             </div>
         </div>
-        @if ($status === 'pending')
-            <div class="card mt-4">
-                <div class="card-body p-3">
-                    <button class="btn btn-primary w-25" data-bs-toggle="modal"
-                        data-bs-target="#verticalycentered">Refund</button>
-                    <div wire:ignore.self class="modal fade" id="verticalycentered" tabindex="-1">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Refund</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <h5 class="text-center">Are you sure you want to perform this transaction refund?</h5>
-                                </div>
-                                <div class="modal-footer">
-                                    <div class="mx-auto">
-                                        <button type="button" wire:loading.remove wire:target="performRefund" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
-                                        <button type="button" class="btn btn-primary" wire:click='performRefund'>
-                                            
-                                            <div wire:loading.remove wire:target="performRefund">
-                                                 Proceed
-                                            </div>
-                
-                                            <div wire:loading wire:target="performRefund">  
-                                                <i class="bx bx-loader-circle bx-spin"></i>  Please wait...
-                                            </div>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endif
     </section>
 </div>
 @push('title')
