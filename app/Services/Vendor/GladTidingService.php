@@ -2,6 +2,7 @@
 
 namespace App\Services\Vendor;
 
+use App\Models\User;
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
@@ -10,6 +11,7 @@ use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataNetwork;
 use App\Models\Utility\CablePlan;
+use Illuminate\Support\Facades\DB;
 use App\Helpers\Admin\VendorHelper;
 use App\Models\Utility\Electricity;
 use App\Services\CalculateDiscount;
@@ -20,12 +22,11 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Education\ResultChecker;
 use App\Models\Utility\CableTransaction;
 use App\Models\Utility\AirtimeTransaction;
+use App\Services\Referrals\ReferralService;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
 use App\Models\Education\ResultCheckerTransaction;
-use App\Models\User;
-use Illuminate\Support\Facades\DB;
 
 class GladTidingService
 {
@@ -527,6 +528,8 @@ class GladTidingService
                     ]);
 
                     self::$authUser->initiateSuccess($discountedAmount, $transaction);
+
+                    (new ReferralService)->payReferrerForData(Auth::user(), $plan, $type, $transaction);
 
                     // Record beneficiary
                     BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);

@@ -17,8 +17,11 @@ class ReferralService{
                 return;
             }
             $bonus = $this->calculateReferrerBonus($type->referral_pay, $plan->getDiscountedAmount());
+            $dataTrx->referral_pay = $bonus;
             $dataTrx->save();
-            $user->bonus_balance = $user->bonus_balance+$bonus;
+            $referrer = User::find($user->referralsReceived->referrer_id);
+            $referrer->bonus_balance = $referrer->bonus_balance+$bonus;
+            $referrer->save();
         });
        
     }
@@ -38,11 +41,14 @@ class ReferralService{
     public function reverseRferrerpay(DataTransaction $dataTransaction)
     {
        return DB::transaction(function()use($dataTransaction){
-            $user = User::find($dataTransaction->user->id)->lockForUpdate();
-            $user->bonus_balance = $user->bonus_balance-$dataTransaction->referral_pay;
-            $user->save();
+            if(!$dataTransaction->user->referralsReceived){
+                return;
+            }
+            User::lockForUpdate()->find($dataTransaction->user->id);
+            $referrer = User::lockForUpdate()->find($dataTransaction->user->referralsReceived->referrer_id);
+            $referrer->bonus_balance = $referrer->bonus_balance-$dataTransaction->referral_pay;
+            $referrer->save();
        });
-
     }
     
 }

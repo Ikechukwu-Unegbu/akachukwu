@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Education\ResultChecker;
 use App\Models\Utility\CableTransaction;
 use App\Models\Utility\AirtimeTransaction;
+use App\Services\Referrals\ReferralService;
 use App\Actions\Idempotency\IdempotencyCheck;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
@@ -595,6 +596,8 @@ class PosTraNetService
 
                     // Complete success processing
                     self::$authUser->initiateSuccess($discountedAmount, $transaction);
+                    
+                    (new ReferralService)->payReferrerForData(Auth::user(), $plan, $type, $transaction);
 
                     return ApiHelper::sendResponse($transaction, "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobileNumber}.");
                 } else {

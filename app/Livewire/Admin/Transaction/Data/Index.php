@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use App\Services\CalculateDiscount;
 use App\Models\Data\DataTransaction;
+use App\Services\Referrals\ReferralService;
 
 class Index extends Component
 {
@@ -50,6 +51,7 @@ class Index extends Component
                 $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
                 $transaction->user->setAccountBalance($amount);
                 $transaction->refund();
+                (new ReferralService)->reverseRferrerpay($transaction);
             }
 
             $this->dispatch('success-toastr', ['message' => 'Transaction Refunded Successfully']);
