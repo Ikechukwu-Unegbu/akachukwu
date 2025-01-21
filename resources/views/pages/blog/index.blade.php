@@ -10,20 +10,25 @@
         <div class="container mx-auto px-4 bg-red" >
             <!-- Featured Article -->
             <div class="grid grid-cols-1 lg:grid-cols-1 gap-8 mb-12">
-                <a href="{{route('blog.show', [$featured->slug])}}" class="bg-[#F9FAFB] p-5 rounded-lg flex flex-col md:flex-row  md:h-[60vh] justify-between items-center">
-                    <img src="{{ $featured->featured_image ? asset($featured->featured_image) : asset('images/blog-logo.png') }}" 
+             
+                @if($featured)
+                    <a href="{{ route('blog.show', [$featured->slug]) }}" class="bg-[#F9FAFB] p-5 rounded-lg flex flex-col md:flex-row md:h-[60vh] justify-between items-center">
+                        <img src="{{ $featured->featured_image ? asset($featured->featured_image) : asset('images/blog-logo.png') }}" 
                             alt="Featured Article Image" 
                             class="w-full h-64 object-cover rounded-t-lg">
 
-                    <div class="p-6 text-left w-full">
-                        <p class="text-sm text-gray-500 uppercase mb-2">{{$featured->author->name}}</p>
-                        <h3 class="text-2xl font-semibold mb-4">{{$featured->title}}</h3>
-                        <p class="text-gray-600 mb-4">
-                           {!!$featured->excerpt!!}
-                        </p>
-                        <p class="text-sm text-gray-400">{{$featured->created_at->diffForHumans()}}</p>
-                    </div>
-                </a>
+                        <div class="p-6 text-left w-full">
+                            <p class="text-sm text-gray-500 uppercase mb-2">{{ $featured->author->name ?? 'Unknown Author' }}</p>
+                            <h3 class="text-2xl font-semibold mb-4">{{ $featured->title ?? 'No Title Available' }}</h3>
+                            <p class="text-gray-600 mb-4">
+                                {!! $featured->excerpt ?? 'No excerpt available.' !!}
+                            </p>
+                            <p class="text-sm text-gray-400">{{ $featured->created_at?->diffForHumans() ?? 'No Date Available' }}</p>
+                        </div>
+                    </a>
+                @else
+                
+                @endif
             </div>
 
             <!-- Grid of Articles -->
