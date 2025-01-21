@@ -21,7 +21,11 @@
                         <p class="text-gray-600 mb-4">
                            {!!$featured->excerpt!!}
                         </p>
-                        <p class="text-sm text-gray-400">{{$featured->created_at->diffForHumans()}}</p>
+                        @if ($featured->updated_at > $featured->created_at)
+                            <p class="text-sm text-gray-400">Last Updated On: {{$featured->updated_at->format('M d, Y')}}</p>
+                        @else
+                            <p class="text-sm text-gray-400">Created On: {{$featured->created_at->format('M d, Y')}}</p>
+                        @endif
                     </div>
                 </a>
             </div>
@@ -40,7 +44,12 @@
                         <h4 class="text-xl font-semibold mb-4">
                             {!!$post->title!!}
                         </h4>
-                        <p class="text-sm text-gray-400">{{$post->created_at->diffForHumans()}}</p>
+                        @if ($post->updated_at > $post->created_at)
+                        <p class="text-sm text-gray-400">Last Updated On: {{$post->updated_at->format('M d, Y')}}</p>
+                        @else
+                            <p class="text-sm text-gray-400">Created On: {{$post->created_at->format('M d, Y')}}</p>
+                        @endif
+                    
                     </div>
                 </a>
                 @endforeach 
