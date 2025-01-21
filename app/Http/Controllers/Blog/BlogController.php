@@ -29,13 +29,13 @@ class BlogController extends Controller
             $posts = Post::where('title', 'LIKE', '%' . $searchQuery . '%')
                         ->whereHas('categories', function($query) {
                             $query->where('type', 'blog');
-                        })
+                        })->orDoesntHave('categories')
                         ->latest()
                         ->paginate(10);
         } else {
             $posts = Post::whereHas('categories', function($query) {
                             $query->where('type', 'blog');
-                        })
+                        })->orDoesntHave('categories')
                         ->latest()
                         ->paginate(10);
         }
