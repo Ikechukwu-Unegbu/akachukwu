@@ -2,22 +2,23 @@
 
 namespace App\Livewire\Admin\Transaction;
 
-use App\Models\Data\DataNetwork;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Livewire\WithPagination;
+use App\Models\Data\DataType;
 use App\Models\MoneyTransfer;
+use App\Models\Data\DataNetwork;
 use App\Models\Payment\Paystack;
 use Illuminate\Support\Facades\DB;
 use App\Models\Payment\Flutterwave;
 use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Log;
 use App\Models\Data\DataTransaction;
-use App\Models\Data\DataType;
 use App\Models\Utility\CableTransaction;
 use App\Models\Payment\VastelTransaction;
 use App\Models\Payment\MonnifyTransaction;
 use App\Models\Utility\AirtimeTransaction;
+use App\Services\Referrals\ReferralService;
 use App\Models\Payment\PayVesselTransaction;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Vendor\QueryVendorTransaction;
@@ -73,6 +74,7 @@ class Index extends Component
                 $amount = CalculateDiscount::calculate($dataTransaction->amount, $dataTransaction->discount);
                 $dataTransaction->user->setAccountBalance($amount);
                 $dataTransaction->refund();
+                (new ReferralService)->reverseRferrerpay($dataTransaction);
             }
         }
 

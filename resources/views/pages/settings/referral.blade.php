@@ -1,4 +1,7 @@
 @extends('layouts.new-guest')
+@section('head')
+<title>VASTel | Referral</title>
+@endsection
 @section('body')
     <!-- Back Button -->
     <a href="{{ route('settings.index') }}" class="text-vastel_blue p-6 flex items-center mb-0 pb-0">

@@ -26,6 +26,7 @@ use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
 use App\Models\Education\ResultCheckerTransaction;
 use App\Models\User;
+use App\Services\Referrals\ReferralService;
 use Illuminate\Support\Facades\DB;
 
 class VTPassService
@@ -498,6 +499,8 @@ class VTPassService
                         ]);
 
                         self::$authUser->initiateSuccess($discountedAmount, $transaction);
+
+                        (new ReferralService)->payReferrerForData(Auth::user(), $plan, $type, $transaction);
 
                         // Record beneficiary information
                         BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
