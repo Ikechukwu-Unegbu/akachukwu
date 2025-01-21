@@ -499,9 +499,9 @@ class MonnifyService implements Payment
                         'meta'          => json_encode($payload)
                     ]);
                     
-                    $transaction->success();
-
                     $user->setAccountBalance($amountPaid);
+                    
+                    $transaction->success();
 
                     return response()->json([
                         'status'   =>    true,

@@ -271,9 +271,9 @@ class PayVesselService
                         'meta'          => json_encode($payload)
                     ]);
 
-                    $transaction->success();
-    
                     $user->setAccountBalance($amountPaid);
+                    
+                    $transaction->success();
     
                     return ApiHelper::sendResponse($transaction, "Transaction successful.");
                 }            
