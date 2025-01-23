@@ -1,4 +1,7 @@
 @extends('layouts.new-guest')
+@section('head')
+<title>VASTel | Referral</title>
+@endsection
 @section('body')
     <!-- Back Button -->
     <a href="{{ route('settings.index') }}" class="text-vastel_blue p-6 flex items-center mb-0 pb-0">
@@ -13,14 +16,14 @@
 
     <div class="bg-white p-6  w-[70%]">
         <h2 class="text-xl font-semibold mb-4">Referral & Bonus</h2>
-        <div class="flex flex-col gap-[2rem] md:flex-rows justify-between items-center mb-6 mt-6">
+        <div class="flex flex-col gap-[2rem] md:flex-row justify-between items-center mb-6 mt-6">
             <!-- Total Earned -->
             <div class="flex flex-col items-center space-x-2">
                 <!-- <i class="fas fa-money-bill-wave "></i> -->
                 <i class="fa-solid fa-sack-dollar text-4xl text-vastel_blue"></i>
                 <div class="flex flex-row gap-5 font-semibold text-vastel_blue">
                     <p class="text-sm text-vastel_blue">Total Earned:</p>
-                    <p class="text-sm ">₦ {{ number_format(auth()->user()->getReferredUsersWithEarnings()->sum('referrerEarning'), 2) }}</p>
+                    <p class="text-sm ">₦ {{auth()->user()->bonus_balance}}</p>
                 </div>
             </div>
             <!-- Total Invited -->

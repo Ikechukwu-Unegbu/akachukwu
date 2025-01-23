@@ -28,6 +28,19 @@
                             </div>
                         </div>
                         <div class="col-md-8 col-12 col-lg-8 col-xl-8">
+                            <div class=" mb-4 form-group">
+                                <label for="data_type_title" class="form-label mb-2">Percentage Referral Pay</label>
+                                <input 
+                                    type="number" 
+                                    name="data_type_percentage_referall_pay" 
+                                    class="form-control @error('data_type_percentage_referall_pay') is-invalid @enderror" 
+                                    wire:model="data_type_percentage_referall_pay" 
+                                    step="0.01">
+
+                                @error('data_type_percentage_referall_pay') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                        </div>
+                        <div class="col-md-8 col-12 col-lg-8 col-xl-8">
                             <div class="form-check form-switch" >
                                 <input class="form-check-input" type="checkbox" id="status" wire:model="status">
                                 <label class="form-check-label" for="status">Status</label>

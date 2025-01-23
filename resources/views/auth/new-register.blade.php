@@ -92,7 +92,8 @@
 
 
                 <div class="relative mb-6">
-                    <input type="text" id="referral" name="referral_code" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
+                    <input type="text" id="referral"
+                        value="{{ request('ref') }}"  name="referral_code" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                     <label for="referral" class="absolute left-10 top-3 text-gray-500 transition-all">Referral (Optional)</label>
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fas fa-gift text-gray-400"></i>
