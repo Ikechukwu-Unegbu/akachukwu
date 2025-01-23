@@ -28,6 +28,14 @@ class Index extends Component
         return redirect()->to(url()->previous());
     }
 
+    public function updateNetworkStatus(DataNetwork $dataNetwork)
+    {
+        $dataNetwork->update(['airtime_status' => !$dataNetwork->airtime_status]);
+        $this->dispatch('success-toastr', ['message' => 'Network status Updated Successfully']);
+        session()->flash('success', 'Network status Updated Successfully');
+        return redirect()->to(url()->previous());
+    }
+
     public function render()
     {
         return view('livewire.admin.utility.airtime.index', [
