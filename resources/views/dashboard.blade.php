@@ -9,7 +9,7 @@
         <div class="flex items-center justify-start md:justify-between flex-col md:flex-row">
             <div class="text-vastel_blue w-[100%] pl-5 md:pl-0  md:w-[50%] flex flex-col justify-end">
                 <h2 class="text-3xl font-bold">₦ {{ number_format(auth()->user()->account_balance, 2) }}</h2>
-                <p class="text-sm text-blue-600 mt-1">Referral Bonus: ₦0 <i class="fas fa-chevron-right"></i></p>
+                <p class="text-sm text-blue-600 mt-1">Referral Bonus: ₦ {{auth()->user()->bonus_balance}} <i class="fas fa-chevron-right"></i></p>
             </div>
             <div class="flex justify-between gap-[2rem]">
                 <button data-modal-target="addMoneyModal" data-modal-toggle="addMoneyModal"

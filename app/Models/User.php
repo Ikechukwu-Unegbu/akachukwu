@@ -134,14 +134,15 @@ class User extends Authenticatable
         return $this->referralsMade->map(function($ref) {
             return [
                 'user' => User::where('id', $ref->referred_user_id)->select('name', 'username', 'phone', 'created_at')->first(),
-                'referrerEarning' => $this->referrerEarning($ref->id)
+                'referrerEarning' => $this->referrerEarning($ref->referred_user_id)
             ];
         });
     }
 
     public function referrerEarning($userId)
     {
-        $totalReferralPay = DataTransaction::where('user_id', $userId)->sum('referral_pay');
+        // dd($userId);
+        $totalReferralPay = DataTransaction::where('user_id', $userId)->where('vendor_status', 'successful')->sum('referral_pay');
     
         return $totalReferralPay ?? 0;
     }
