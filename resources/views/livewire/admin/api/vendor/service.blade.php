@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-header"></div>
+            <div class="card-header">Manage Utility Services</div>
             <div class="card-body">
                 <x-admin.table>
                     <x-admin.table-header :headers="['#', 'Service', 'Vendor', 'Action']" />
@@ -52,6 +52,60 @@
                                     @foreach ($vendors as $__vendor)
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="vendor" id="vendor-{{ $__vendor->id }}" wire:model='vendor' value="{{ $__vendor->id }}" @checked($__vendor->id === $service?->vendor?->id ? true : false)>
+                                            <label class="form-check-label" for="vendor-{{ $__vendor->id }}">{{ $__vendor->name }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" wire:loading.attr="disabled" class="btn btn-primary">Update</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card">
+            <div class="card-header">Manage Airtime Services</div>
+            <div class="card-body">
+                <x-admin.table>
+                    <x-admin.table-header :headers="['#', 'Network', 'Vendor', 'Action']" />
+                    <x-admin.table-body>
+                        @forelse ($networks as $__network)
+                            <tr>
+                                <th scope="row" width="3%">{{ $loop->index + 1 }}</th>
+                                <td width="20%">{{ Str::title($__network->name) }}</td>
+                                <td width="20%">{{ $__network->airtimeMapping->vendor->name ?? 'N/A' }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-primary" wire:click="updateAirtimeNetworkModal('{{ $__network->name }}')" data-bs-toggle="modal" data-bs-target="#updateAirtimeNetworkModal"><i class="bx bx-edit"></i>
+                                        Edit
+                                    </button>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="4">No records available</td>
+                            </tr>
+                        @endforelse
+                    </x-admin.table-body>
+                </x-admin.table>
+                <div wire:ignore.self class="modal fade" id="updateAirtimeNetworkModal" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Update {{ Str::title($__network?->name) }} Airtime Network</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <form 
+                                wire:submit="updateAirtimeService"
+                            >
+                                <div class="modal-body">
+                                    @foreach ($vendors as $__vendor)
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="vendor" id="vendor-{{ $__vendor->id }}" wire:model='vendor' value="{{ $__vendor->id }}" @checked($__vendor->id === $__network->airtimeMapping?->vendor?->id ? true : false)>
                                             <label class="form-check-label" for="vendor-{{ $__vendor->id }}">{{ $__vendor->name }}</label>
                                         </div>
                                     @endforeach
