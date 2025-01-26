@@ -2,6 +2,7 @@
 
 namespace App\Models\Data;
 
+use App\Models\AirtimeVendorMapping;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
@@ -31,4 +32,8 @@ class DataNetwork extends Model
         return "https://via.placeholder.com/24x24";
     }
 
+    public function airtimeMapping()
+    {
+        return $this->hasOne(AirtimeVendorMapping::class, 'network', 'name');
+    }
 }
