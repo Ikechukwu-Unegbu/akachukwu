@@ -25,7 +25,8 @@ class KycForm extends Component
     }
 
     protected $rules = [
-        'bvn'            => 'required|numeric|digits:11|unique:users,bvn',
+        // 'bvn'            => 'required|numeric|digits:11|unique:users,bvn',
+        'bvn'            => 'required|numeric|digits:11',
         'account_number' => 'required|numeric|digits:10',
         'bank'           => 'required'
     ];
@@ -39,7 +40,8 @@ class KycForm extends Component
     public function verifyNin()
     {
         $this->validate([
-            'nin'  => 'required|numeric|digits:11|unique:users,nin',
+            // 'nin'  => 'required|numeric|digits:11|unique:users,nin',
+            'nin'  => 'required|numeric|digits:11',
         ]);
         return $this->verification('NIN');
     }
