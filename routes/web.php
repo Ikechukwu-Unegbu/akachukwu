@@ -10,6 +10,7 @@ use App\Http\Controllers\V1\Utilities\TVController;
 use App\Http\Controllers\ProfileSettingsController;
 use App\Http\Controllers\UpgradeToResellerController;
 use App\Http\Controllers\V1\ApiResponseController;
+use App\Http\Controllers\V1\BonusWithdrawalController;
 use App\Http\Controllers\V1\Utilities\DataController;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;
@@ -76,6 +77,8 @@ Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate'])
     Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::get('settings/referrals', [SettingsController::class, 'referral'])->name('settings.referral');
     Route::get('settings/credentials', [SettingsController::class, 'credentials'])->name('settings.credentials');
+
+    Route::get('/withdraw', BonusWithdrawalController::class)->name('withdrawal');
 
     Route::get('settings/support', [SettingsController::class, 'support'])->name('settings.support');
     Route::get('settings/kyc', [SettingsController::class, 'kyc'])->name('settings.kyc');
