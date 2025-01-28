@@ -43,7 +43,7 @@
                         <div><a href="{{ route('admin.utility.airtime.discount', $vendors->find($vendor)->id) }}" class="btn btn-sm btn-primary">Set Discounts</a></div>
                     </div>
                     <x-admin.table>
-                        <x-admin.table-header :headers="['#', 'Network(s)', 'API ID', 'Discounts(%)', 'Status']" />
+                        <x-admin.table-header :headers="['#', 'Network(s)', 'API ID', 'Discounts(%)', 'Status', 'Action']" />
                         <x-admin.table-body>
                             @forelse ($networks as $__network)
                                 <tr>
@@ -51,8 +51,51 @@
                                     <td>{{ $__network->name }}</td>
                                     <td>{{ $__network->network_id }}</td>
                                     <td>{{ $__network->airtime_discount }}</td>
-                                    <td><span class="badge bg-{{ $__network->status ? 'success' : 'danger' }}">{{ $__network->status ? 'Active' : 'Not-Active' }}</span></td>
+                                    <td><span class="badge bg-{{ $__network->airtime_status ? 'success' : 'danger' }}">{{ $__network->airtime_status ? 'Active' : 'Not-Active' }}</span></td>
+                                    <td>
+                                        <div class="filter">
+                                            <a class="icon" href="#" data-bs-toggle="dropdown"><i
+                                                    class="bi bi-three-dots"></i></a>
+                                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                                                <li>
+                                                    <a href="javascript:void(0)"
+                                                        data-bs-toggle="modal" data-bs-target="#updateNetworkStatus-{{ $__network->id }}"
+                                                        class="dropdown-item text-primary">
+                                                        <i class="bx bx-edit"></i>
+                                                        Edit Status
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </td>
                                 </tr>
+
+                                <div class="modal fade" id="updateNetworkStatus-{{ $__network->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Update Network Status</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h3 class="text-center text-danger">
+                                                Are you sure?
+                                            </h3>          
+                                            @if ($__network->airtime_status)
+                                            <p class="text-center">You want to Deactivate {{ $__network->name }} Network on Airtime Purchase?</p>
+                                            @else
+                                                <p class="text-center">You want to Activate {{ $__network->name }} Network on Airtime Purchase?</p>
+                                            @endif     
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+                                            <button type="button" wire:click="updateNetworkStatus({{ $__network->id }})"  data-bs-dismiss="modal"  class="btn btn-primary">
+                                                {{ $__network->airtime_status ? 'Deactivate' : 'Activate' }}
+                                            </button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
                             @empty
                                 <tr>
                                     <td colspan="7">No records available</td>
@@ -60,6 +103,8 @@
                             @endforelse
                         </x-admin.table-body>
                     </x-admin.table>
+
+                    
                 </div>
             </div>
         @endif

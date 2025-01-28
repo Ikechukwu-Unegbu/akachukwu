@@ -226,7 +226,7 @@
 
                 <!-- Modal body -->
                 <div class="p-6 space-y-6 text-center">
-                    <p>You are about to transfer <strong>₦ {{ number_format(auth()->user()->referrerEarning(auth()->id()), 2) }}</strong> to your wallet balance.</p>
+                    <p>You are about to transfer <strong>₦ {{ number_format(auth()->user()->bonus_balance, 2) }}</strong> to your wallet balance.</p>
                 </div>
 
                 <!-- Modal footer -->
@@ -235,15 +235,53 @@
                         class="text-vastel_blue bg-white border border-vastel_blue focus:ring-4 focus:outline-none focus:ring-vastel_blue rounded-lg text-sm px-5 py-2.5 hover:text-gray-900 hover:bg-gray-100">
                         Cancel
                     </button>
-                    <button
+                    <a href="{{route('withdrawal')}}"
                         class="text-white bg-vastel_blue focus:ring-4 focus:outline-none focus:ring-blue-600 font-medium rounded-lg text-sm px-5 py-2.5">
                         Continue
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
     </div>
     <!-- end of withdrawal modal -->
+
+    <div id="successModal" tabindex="-1"
+    class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full h-full bg-black bg-opacity-30 items-center justify-center">
+    <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow">
+            <!-- Modal header -->
+            <div class="flex justify-between items-center p-5 rounded-t">
+                <h3 class="text-xl font-medium text-gray-900">
+                    Transfer Successful
+                </h3>
+                <button type="button"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
+                    id="closeSuccessModal">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd"
+                            d="M4.293 9.293a1 1 0 011.414 0L10 13.586l4.293-4.293a1 1 0 011.414 1.414l-5 5a1 1 0 01-1.414 0l-5-5a1 1 0 010-1.414z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="p-6 space-y-6 text-center">
+                <p>Your transfer was successful. Thank you!</p>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="flex justify-end p-6">
+                <button id="closeSuccessModalButton"
+                    class="text-white bg-vastel_blue focus:ring-4 focus:outline-none focus:ring-blue-600 font-medium rounded-lg text-sm px-5 py-2.5">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
     <script>
         // Function to copy link to clipboard
@@ -254,6 +292,33 @@
             alert("Link copied to clipboard: " + copyText.value);
         }
     </script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const modalParam = urlParams.get('modal');
+
+        // Show modal if ?modal=successful is in the URL
+        if (modalParam === 'successful') {
+            const successModal = document.getElementById('successModal');
+            successModal.classList.remove('hidden');
+            successModal.classList.add('flex');
+        }
+
+        const closeModal = () => {
+            const url = new URL(window.location);
+            url.searchParams.delete('modal');
+            window.history.pushState({}, '', url);
+            document.getElementById('successModal').classList.add('hidden');
+            document.getElementById('successModal').classList.remove('flex');
+        };
+
+        // Add event listeners for close actions
+        document.getElementById('closeSuccessModal')?.addEventListener('click', closeModal);
+        document.getElementById('closeSuccessModalButton')?.addEventListener('click', closeModal);
+    });
+</script>
 
 
 @endsection
