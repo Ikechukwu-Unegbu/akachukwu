@@ -26,7 +26,5 @@ class AirtimeVendorMappingSeeder extends Seeder
                 'network' => $network
             ]);
         });
-
-        VendorServiceMapping::where('service_type', 'airtime')->delete();
     }
 }
