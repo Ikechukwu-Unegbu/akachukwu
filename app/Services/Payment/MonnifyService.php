@@ -22,6 +22,7 @@ use App\Services\Account\AccountBalanceService;
 
 use App\Services\Payment\VirtualAccountServiceFactory;
 use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
+use App\Models\Compliance;
 
 class MonnifyService implements Payment
 {
@@ -362,6 +363,7 @@ class MonnifyService implements Payment
             
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
                 self::updateAccountBvn($response->responseBody->bvn);
+                Compliance::storePayload($response, $response->responseBody->bvn, NULL);
                 (new GenerateRemainingAccounts)->generateRemaingingAccounts();
                 return ApiHelper::sendResponse([], "KYC updated & BVN linked to your account successfully.");
             }
@@ -388,7 +390,7 @@ class MonnifyService implements Payment
         }
     }
 
-    public static function verifyNin($nin)
+    public static function verifyNin($nin, $dob = null)
     {
         try {
             $response = Http::withHeaders([
@@ -399,9 +401,21 @@ class MonnifyService implements Payment
             ]);
 
             $response = $response->object();
-
+            
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+                
+                if ($dob && $dob !== $response->responseBody->dateOfBirth) {
+                    $errorResponse = [
+                        'error'    =>    "Invalid Date of Birth.",
+                        'message'  =>    "The date of birth provided does not match our records.",
+                    ];
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+
                 self::updateAccountNin($response->responseBody->nin);
+
+                Compliance::storePayload($response, NULL, $response->responseBody->nin);
+                
                 (new GenerateRemainingAccounts)->generateRemaingingAccounts();
                 return ApiHelper::sendResponse([], "KYC updated & NIN linked to your account successfully.");
             }
