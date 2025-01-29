@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\SiteSetting;
+use App\Services\AirtimeValidationService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AirtimePurchaseRequest extends FormRequest
@@ -29,9 +30,9 @@ class AirtimePurchaseRequest extends FormRequest
                 'numeric', 
                 'min:50',  
                 function ($attribute, $value, $fail) {
-                    $settings = SiteSetting::find(1);
-                    if (!$settings->airtime_sales) {
-                        return $fail('Airtime purchase is currently unavailable.');
+                    $errorMessage = AirtimeValidationService::validateAirtimeAmount($value);
+                    if ($errorMessage) {
+                        $fail($errorMessage);
                     }
                 }
             ],

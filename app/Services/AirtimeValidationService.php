@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Services;
 use Carbon\Carbon;
 use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Auth;
