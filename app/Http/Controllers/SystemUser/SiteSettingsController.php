@@ -23,6 +23,7 @@ class SiteSettingsController extends Controller
             'facebook' => 'nullable|string|max:255',
             'instagram' => 'nullable|string|max:255',
             'linkedin' => 'nullable|string|max:255',
+            'airtime_limit' => 'required|numeric',
         ], [
             'stie_title.required' => 'The site title field is required.',
             'site_logo.image' => 'The site logo must be an image file.',
@@ -51,6 +52,7 @@ class SiteSettingsController extends Controller
         $siteSettings->facebook = $validatedData['facebook'];
         $siteSettings->instagram = $validatedData['instagram'];
         $siteSettings->linkedin = $validatedData['linkedin'];
+        $siteSettings->airtime_limit = $validatedData['airtime_limit'];
         $siteSettings->address_one = $request->address_one;
         $siteSettings->address_two = $request->address_two;
         
