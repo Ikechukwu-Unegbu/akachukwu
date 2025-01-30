@@ -1,4 +1,4 @@
-s<div>
+<div>
     <x-admin.page-title title="Human Resource Mgt.">
         <x-admin.page-title-item subtitle="Dashboard" link="{{ route('admin.dashboard') }}" />
         <x-admin.page-title-item subtitle="Site Settings" />
@@ -56,6 +56,10 @@ s<div>
             <div class="mb-3">
               <label for="total_users" class="form-label">Total Users</label>
               <input type="text" class="form-control" value="{{$setting->total_users}}" id="total_users" name="total_users" >
+            </div>
+            <div class="mb-3">
+              <label for="airtime_limit" class="form-label">Airtime Purchase Limit</label>
+              <input type="number" class="form-control" value="{{$setting->airtime_limit}}" id="airtime_limit" name="airtime_limit">
             </div>
             <div class="mb-3">
               <label for="name" class="form-label">Name</label>
