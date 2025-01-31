@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Admin\Api\Vendor;
 
-use App\Models\AirtimeVendorMapping;
-use App\Models\Data\DataNetwork;
+use Carbon\Carbon;
 use App\Models\Vendor;
-use App\Models\VendorServiceMapping;
 use Livewire\Component;
+use App\Models\Data\DataNetwork;
+use Illuminate\Support\Facades\DB;
+use App\Models\AirtimeVendorMapping;
+use App\Models\VendorServiceMapping;
 
 class Service extends Component
 {
@@ -55,12 +57,40 @@ class Service extends Component
                 'message' => "Vendor could not be assigned to '{$this->network_name}' because the vendor network ID was not found."
             ]);
             return;
-        }       
+        }
 
-        AirtimeVendorMapping::updateOrCreate(['network' => $this->network_name], ['vendor_id' => $this->vendor]);
-        $this->dispatch('success-toastr', ['message' => 'Airtime Service Updated Successfully']);
-        session()->flash('success', 'Airtime Service Updated Successfully');
-        $this->redirect(url()->previous());
+        try {
+            
+            DB::beginTransaction();
+
+            $pendingTransactionExists = DB::table('airtime_transactions')
+                ->where('status', false)
+                ->whereDate('created_at', Carbon::today())
+                ->lockForUpdate()
+                ->exists();
+
+            if ($pendingTransactionExists) {
+                DB::rollBack();
+                $this->dispatch('error-toastr', ['message' => 'Cannot update vendor mapping while transactions are in progress.']);
+                session()->flash('error', 'Cannot update vendor mapping while transactions are in progress.');
+                return $this->redirect(url()->previous());                
+            }
+
+            AirtimeVendorMapping::updateOrCreate(['network' => $this->network_name], ['vendor_id' => $this->vendor]);
+            DB::commit();
+
+            $this->dispatch('success-toastr', ['message' => 'Airtime Service Updated Successfully']);
+            session()->flash('success', 'Airtime Service Updated Successfully');
+            return $this->redirect(url()->previous());
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->dispatch('error-toastr', ['message' => 'Cannot update vendor mapping while transactions are in progress.']);
+            session()->flash('error', 'Cannot update vendor mapping while transactions are in progress.');
+            return $this->redirect(url()->previous());
+        }
+
+        
     }
 
     public function render()
