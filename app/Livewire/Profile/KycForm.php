@@ -40,7 +40,7 @@ class KycForm extends Component
     public function verifyNin()
     {
         $this->validate([
-            'nin'  => 'required|numeric|digits:11|unique:users,nin',
+            // 'nin'  => 'required|numeric|digits:11|unique:users,nin',
             'dob'  => 'required|date',
         ]);
         return $this->verification('NIN');

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('compliances', function (Blueprint $table) {
             $table->id();
             $table->uuid()->unique();
-            $table->foreignId('user_id')->constrained()->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->string('bvn')->nullable();
             $table->string('nin')->nullable();
             $table->json('meta');
