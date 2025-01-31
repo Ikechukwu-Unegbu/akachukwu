@@ -16,7 +16,8 @@ class AirtimeVendorMappingSeeder extends Seeder
      */
     public function run(): void
     {
-        // AirtimeVendorMapping::truncate();
+        AirtimeVendorMapping::truncate();
+        
         $vendorId = Vendor::where('status', true)->first()->id;
         $networks = DataNetwork::get()->where('status', true)->pluck('name')->toArray();
 
@@ -26,5 +27,7 @@ class AirtimeVendorMappingSeeder extends Seeder
                 'network' => $network
             ]);
         });
+
+        VendorServiceMapping::where('service_type', 'airtime')->delete();
     }
 }

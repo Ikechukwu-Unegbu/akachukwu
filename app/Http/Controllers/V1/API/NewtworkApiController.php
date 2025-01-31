@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\API;
 
+use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -25,9 +26,18 @@ class NewtworkApiController extends Controller
         $queryNetwork = Str::lower($request->query('type'));
         
         try {
-            $vendor = $this->getVendorService($queryNetwork);
-            $network = DataNetwork::whereVendorId($vendor?->id)->whereStatus(true)->get();
+            
+            // $vendor = $this->getVendorService($queryNetwork);
+            $vendor = Vendor::where('status', true)->first();
+
+            if ($request->query('type') === 'airtime') {
+                $network = DataNetwork::where('vendor_id', $vendor?->id)->where('airtime_status', true)->get();
+                return ApiHelper::sendResponse($network, 'Networks Fetched Successfully');
+            }
+
+            $network = DataNetwork::where('vendor_id', $vendor?->id)->where('status', true)->get();
             return ApiHelper::sendResponse($network, 'Networks Fetched Successfully');
+            
         } catch (\Throwable $th) {
             return ApiHelper::sendError([$th->getMessage()], 'Unable to fetch network. Try again later');
         }
