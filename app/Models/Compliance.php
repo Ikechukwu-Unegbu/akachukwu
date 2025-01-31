@@ -20,7 +20,7 @@ class Compliance extends Model
         parent::boot();
 
         static::creating(function($model) {
-            $model->user_id = Auth::id();
+            $model->user_id = Auth::id() ?? NULL;
             do {
                 $uuid = Str::uuid();
             } while (self::where('uuid', $uuid)->exists());
@@ -28,7 +28,7 @@ class Compliance extends Model
         });
     }
 
-    public static function storePayload($payload, $bvn = null, $nin = null)
+    public static function payload($payload, $bvn = null, $nin = null)
     {
         return self::create([
             'meta' => $payload,

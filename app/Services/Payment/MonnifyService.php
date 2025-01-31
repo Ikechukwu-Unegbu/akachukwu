@@ -23,6 +23,7 @@ use App\Services\Account\AccountBalanceService;
 use App\Services\Payment\VirtualAccountServiceFactory;
 use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
 use App\Models\Compliance;
+use App\Services\ComplianceService;
 
 class MonnifyService implements Payment
 {
@@ -363,7 +364,9 @@ class MonnifyService implements Payment
             
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
                 self::updateAccountBvn($response->responseBody->bvn);
-                Compliance::storePayload($response, $response->responseBody->bvn, NULL);
+                
+                ComplianceService::storePayload($response, $response->responseBody->bvn, NULL);
+
                 (new GenerateRemainingAccounts)->generateRemaingingAccounts();
                 return ApiHelper::sendResponse([], "KYC updated & BVN linked to your account successfully.");
             }
@@ -414,7 +417,7 @@ class MonnifyService implements Payment
 
                 self::updateAccountNin($response->responseBody->nin);
 
-                Compliance::storePayload($response, NULL, $response->responseBody->nin);
+                ComplianceService::storePayload($response, NULL, $response->responseBody->nin);
                 
                 (new GenerateRemainingAccounts)->generateRemaingingAccounts();
                 return ApiHelper::sendResponse([], "KYC updated & NIN linked to your account successfully.");
