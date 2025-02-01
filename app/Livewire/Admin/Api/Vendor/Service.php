@@ -65,8 +65,8 @@ class Service extends Component
 
             $pendingTransactionExists = DB::table('airtime_transactions')
                 ->where('status', false)
-                ->whereDate('created_at', Carbon::today())
-                ->lockForUpdate()
+                ->whereDate('created_at', '>=', Carbon::now()->subMinutes(1))
+                ->sharedLock()
                 ->exists();
 
             if ($pendingTransactionExists) {
