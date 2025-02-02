@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Models\SiteSetting;
+use App\Rules\AirtimeValidationRule;
 use App\Services\AirtimeValidationService;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,13 +29,8 @@ class AirtimePurchaseRequest extends FormRequest
             'amount'        =>  [
                 'required', 
                 'numeric', 
-                'min:50',  
-                function ($attribute, $value, $fail) {
-                    $errorMessage = AirtimeValidationService::validateAirtimeAmount($value);
-                    if ($errorMessage) {
-                        $fail($errorMessage);
-                    }
-                }
+                'min:50',
+                new AirtimeValidationRule()
             ],
             'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/']
         ];
