@@ -71,6 +71,21 @@ class PermissionSeeder extends Seeder
             'create post',
             'edit post',
             'delete post',
+
+            'view faq',
+            'create faq',
+            'edit faq',
+            'delete faq',
+
+            'view media',
+            'create media',
+            'edit media',
+            'delete media',
+
+            'view announcement',
+            'create announcement',
+            'edit announcement',
+            'delete announcement',
         ];
 
         // foreach ($permissions as $permission) Permission::create(['name' => $permission]);

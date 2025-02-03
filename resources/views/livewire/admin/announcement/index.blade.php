@@ -3,7 +3,9 @@
     <div class="card">
         <div class="card-header">
             <h4>Announcements List</h4>
+            @can('create announcement')
             <a href="{{route('admin.announcement')}}">Create Announcement</a>
+            @endcan
         </div>
         <div class="card-body table-responsive">
             <table class="table table-bordered">
@@ -40,9 +42,12 @@
                         <td>{{ \Carbon\Carbon::parse($announcement->end_at)->format('d M Y - h:s:i a') }}</td>
                         <td><span class="badge bg-{{ $announcement->is_active ? 'success' : 'danger' }}">{{ $announcement->is_active ? 'Active' : 'Not-Active' }}</span></td>
                         <td style="display: flex; gap:0.2rem;">
+                            @can('edit announcement')
                             <a href="{{ route('admin.announcement.edit', $announcement->id) }}" class="btn btn-warning btn-sm">
                                 <i class="fa-solid fa-pen-to-square"></i>
                             </a>
+                            @endcan
+                            @can('delete announcement')
                             <button 
                                 data-bs-toggle="modal"
                                 data-bs-target="#deleteAnnouncement-{{ $announcement->id }}"
@@ -72,6 +77,7 @@
                                     </div>
                                 </div>
                             </div>
+                            @endcan
                         </td>
                     </tr>
                     @empty

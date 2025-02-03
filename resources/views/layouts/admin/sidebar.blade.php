@@ -93,22 +93,22 @@
       @endcan
     </x-admin.dropdown>
     @endif
-    @if(auth()->user()->can('view logs') || auth()->user()->can('view post'))
+    @if(auth()->user()->can('view post') || auth()->user()->can('view faq') || auth()->user()->can('view post category') || auth()->user()->can('view media')  || auth()->user()->can('view announcement') )
     <li class="nav-heading">Content</li>
     <x-admin.dropdown title="Content" icon="bi-clock-history">
       @can('view post')
       <x-admin.dropdown-item title="Blog" link="{{ route('admin.blog.index') }}" />
       @endcan
-      @can('view logs')
+      @can('view faq')
       <x-admin.dropdown-item title="FAQ" link="{{ route('admin.faq.index') }}" />
       @endcan
-      @can('view logs')
+      @can('view post category')
       <x-admin.dropdown-item title="Category" link="{{ route('admin.category.index') }}" />
       @endcan
-      @can('view logs')
+      @can('view media')
       <x-admin.dropdown-item title="Media" link="{{ route('admin.media.index') }}" />
       @endcan
-      @can('view logs')
+      @can('view announcement')
       <x-admin.dropdown-item title="Announcement" link="{{ route('admin.announcement.index') }}" />
       @endcan
     </x-admin.dropdown>

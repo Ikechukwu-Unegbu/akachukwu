@@ -11,6 +11,15 @@ use Illuminate\Support\Facades\Storage;
 
 class MediaController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:view media')->only('index');
+        $this->middleware('can:create media')->only(['store', 'create']);
+        $this->middleware('can:edit media')->only('update');
+        $this->middleware('can:delete media')->only('destroy');
+    }
+
      /**
      * Display a listing of the media resources.
      * 
