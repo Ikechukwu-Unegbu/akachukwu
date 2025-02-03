@@ -13,19 +13,20 @@ use App\Traits\ResolvesVendorService;
 use App\Services\Account\UserPinService;
 use App\Services\Airtime\AirtimeService;
 use App\Models\Utility\AirtimeTransaction;
+use App\Models\Vendor;
 use Illuminate\Validation\ValidationException;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
 use App\Services\Blacklist\CheckBlacklist;
 use App\Services\CalculateDiscount;
-
+use App\Traits\ResolvesAirtimeVendorService;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
 
 class Create extends Component
 {
-    use ResolvesVendorService;
+    use ResolvesVendorService, ResolvesAirtimeVendorService;
 
     public $network;
     public $vendor;
@@ -44,7 +45,8 @@ class Create extends Component
     public function mount()
     {
         $this->pin = array_fill(1, 4, '');
-        $this->vendor = $this->getVendorService('airtime');
+        // $this->vendor = $this->getVendorService('airtime');
+        $this->vendor = Vendor::where('status', true)->first();
         $this->network = DataNetwork::where('vendor_id', $this->vendor?->id)->where('airtime_status', true)->first()?->network_id;
         $accountBalanceService = new AccountBalanceService(Auth::user());
         $this->accountBalance = $accountBalanceService->getAccountBalance();
