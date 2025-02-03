@@ -47,7 +47,7 @@ class Create extends Component
         $this->pin = array_fill(1, 4, '');
         // $this->vendor = $this->getVendorService('airtime');
         $this->vendor = Vendor::where('status', true)->first();
-        $this->network = DataNetwork::whereVendorId($this->vendor?->id)->whereStatus(true)->first()?->network_id;
+        $this->network = DataNetwork::where('vendor_id', $this->vendor?->id)->where('airtime_status', true)->first()?->network_id;
         $accountBalanceService = new AccountBalanceService(Auth::user());
         $this->accountBalance = $accountBalanceService->getAccountBalance();
 
@@ -184,7 +184,7 @@ class Create extends Component
     public function render()
     {
         return view('livewire.pages.utility.airtime.create', [
-            'networks'      =>  $this->vendor ? DataNetwork::whereVendorId($this->vendor->id)->whereStatus(true)->get() : [],
+            'networks'      =>  $this->vendor ? DataNetwork::where('vendor_id', $this->vendor?->id)->where('airtime_status', true)->get() : [],
             'beneficiaries' =>  BeneficiaryService::get('airtime')
         ]);
     }
