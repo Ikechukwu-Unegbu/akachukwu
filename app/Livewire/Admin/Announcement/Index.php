@@ -11,6 +11,11 @@ class Index extends Component
     use WithPagination;
 
     public $perPage = 10; // Number of items per page
+
+    public function mount()
+    {
+        $this->authorize('view announcement');
+    }
    
     public function delete(Announcement $announcement)
     {

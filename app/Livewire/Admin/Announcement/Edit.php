@@ -26,6 +26,7 @@ class Edit extends Component
 
     public function mount(Announcement $announcement)
     {
+        $this->authorize('edit announcement');
         $this->announcement = $announcement;
         $this->title = $this->announcement->title;
         $this->message = $this->announcement->message;

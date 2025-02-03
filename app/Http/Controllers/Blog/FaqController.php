@@ -10,6 +10,15 @@ use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('can:view faq')->only('index');
+        $this->middleware('can:create faq')->only(['store', 'create']);
+        $this->middleware('can:edit faq')->only('update');
+        $this->middleware('can:delete faq')->only('destroy');
+    }
+    
     public function index()
     {
         $faqs = Post::whereHas('categories', function ($query) {
@@ -37,7 +46,6 @@ class FaqController extends Controller
 
     public function update(Request $request, $id, PostService $postService)
     {
-
         $faq = Post::find($id);
         $postService->updatePost($request, $faq);
         return redirect()->back()->with('success', 'FAQ post updated successfully.');
