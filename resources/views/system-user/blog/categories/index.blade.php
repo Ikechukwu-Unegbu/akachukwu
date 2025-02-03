@@ -51,14 +51,19 @@
                                         <td>{{ ucfirst($cate->type) }}</td> <!-- Displaying the type -->
                                         <td>{{ $cate->description }}</td> <!-- Displaying the description -->
                                         <td>
+                                            @can('edit post category')
                                             <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#editCategoryModal{{ $cate->id }}">
                                                 Edit
                                             </button>
+                                            @endcan
+                                            @can('delete post category')
                                             <button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteCategoryModal{{ $cate->id }}">
                                                 Delete
                                             </button>
+                                            @endcan
                                         </td>
                                     </tr>
+                                    @can('edit post category')
                                     <!-- Edit Modal -->
                                     <div class="modal fade" id="editCategoryModal{{ $cate->id }}" tabindex="-1" aria-labelledby="editCategoryModalLabel{{ $cate->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -96,7 +101,8 @@
                                             </form>
                                         </div>
                                     </div>
-
+                                    @endcan
+                                    @can('delete post category')
                                     <!-- Delete Modal -->
                                     <div class="modal fade" id="deleteCategoryModal{{ $cate->id }}" tabindex="-1" aria-labelledby="deleteCategoryModalLabel{{ $cate->id }}" aria-hidden="true">
                                         <div class="modal-dialog">
@@ -119,6 +125,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    @endcan
                                 @endforeach
                             </tbody>
                         </table>

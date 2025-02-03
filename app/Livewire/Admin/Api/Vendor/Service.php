@@ -2,15 +2,21 @@
 
 namespace App\Livewire\Admin\Api\Vendor;
 
+use Carbon\Carbon;
 use App\Models\Vendor;
-use App\Models\VendorServiceMapping;
 use Livewire\Component;
+use App\Models\Data\DataNetwork;
+use Illuminate\Support\Facades\DB;
+use App\Models\AirtimeVendorMapping;
+use App\Models\VendorServiceMapping;
 
 class Service extends Component
 {
     
     public $vendor;
     public $service;
+    public $airtimeService;
+    public $network_name;
 
     public function mount()
     {
@@ -24,6 +30,18 @@ class Service extends Component
         return true;
     }
 
+    public function updateAirtimeNetworkModal($network)
+    {
+        $airtimeVendorMapping = AirtimeVendorMapping::where('network', $network)->first();
+        $this->network_name = $network;
+        if ($airtimeVendorMapping) {
+            $this->airtimeService = $airtimeVendorMapping;
+            $this->vendor = $this->airtimeService?->vendor?->id;
+            return true;
+        }
+        return false;
+    }
+
     public function updateService()
     {
         $this->service->update(['vendor_id' => $this->vendor]);
@@ -32,11 +50,55 @@ class Service extends Component
         $this->redirect(url()->previous());
     }
 
+    public function updateAirtimeService()
+    {
+        if (!DataNetwork::where('name', $this->network_name)->where('vendor_id', $this->vendor)->exists()) {
+            $this->dispatch('error-toastr', [
+                'message' => "Vendor could not be assigned to '{$this->network_name}' because the vendor network ID was not found."
+            ]);
+            return;
+        }
+
+        try {
+            
+            DB::beginTransaction();
+
+            $pendingTransactionExists = DB::table('airtime_transactions')
+                ->where('status', false)
+                ->whereDate('created_at', '>=', Carbon::now()->subMinutes(1))
+                ->sharedLock()
+                ->exists();
+
+            if ($pendingTransactionExists) {
+                DB::rollBack();
+                $this->dispatch('error-toastr', ['message' => 'Cannot update vendor mapping while transactions are in progress.']);
+                session()->flash('error', 'Cannot update vendor mapping while transactions are in progress.');
+                return $this->redirect(url()->previous());                
+            }
+
+            AirtimeVendorMapping::updateOrCreate(['network' => $this->network_name], ['vendor_id' => $this->vendor]);
+            DB::commit();
+
+            $this->dispatch('success-toastr', ['message' => 'Airtime Service Updated Successfully']);
+            session()->flash('success', 'Airtime Service Updated Successfully');
+            return $this->redirect(url()->previous());
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            $this->dispatch('error-toastr', ['message' => 'Cannot update vendor mapping while transactions are in progress.']);
+            session()->flash('error', 'Cannot update vendor mapping while transactions are in progress.');
+            return $this->redirect(url()->previous());
+        }
+
+        
+    }
+
     public function render()
     {
         return view('livewire.admin.api.vendor.service', [
             'vendor_services'  => VendorServiceMapping::with('vendor')->orderBy('service_type')->get(),
-            'vendors'          => Vendor::get()
+            'vendors'          => Vendor::get(),
+            'networks'         => DataNetwork::with('airtimeMapping')->get()->unique('name')
         ]);
     }
 }

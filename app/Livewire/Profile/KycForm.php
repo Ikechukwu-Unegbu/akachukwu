@@ -13,6 +13,7 @@ class KycForm extends Component
 {
     public $bvn;
     public $nin;
+    public $dob;
     public $account_number;
     public $bank;
     public $check_bvn_exists;
@@ -40,6 +41,7 @@ class KycForm extends Component
     {
         $this->validate([
             'nin'  => 'required|numeric|digits:11|unique:users,nin',
+            'dob'  => 'required|date',
         ]);
         return $this->verification('NIN');
     }
@@ -60,7 +62,7 @@ class KycForm extends Component
         }
 
         if ($type === 'NIN') {
-            $kycService = $virtualAccountFactory::verifyNin($this->nin);
+            $kycService = $virtualAccountFactory::verifyNin($this->nin, $this->dob);
         }
         
         if (!$kycService->status) {

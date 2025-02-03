@@ -5,6 +5,7 @@
 <div class="container py-4">
     <h1 class="mb-4">Media Manager</h1>
 
+    @can('create media')
     <!-- Upload Section -->
     <div class="card mb-4">
         <div class="card-header">
@@ -32,7 +33,8 @@
             </form>
         </div>
     </div>
-
+    @endcan
+    @can('view media')
     <!-- Media Library Section -->
     <div class="card">
         <div class="card-header">
@@ -65,9 +67,11 @@
                                 <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#viewMediaModal{{ $media->id }}">
                                 <i class="fa-solid fa-eye"></i>
                                 </button>
+                                @can ('delete media')
                                 <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteMediaModal{{ $media->id }}">
                                 <i class="fa-solid fa-trash-can"></i>
                                 </button>
+                                @endcan
                                 <button class="btn btn-sm btn-info copy-url-btn" data-url="{{ $media->path }}" onclick="copyUrlToClipboard('{{ asset($media->path) }}')">
                                 <i class="fa-solid fa-copy"></i>
                                 </button>
@@ -97,6 +101,7 @@
                     </div>
                 </div>
 
+                @can ('delete media')
                 <!-- Delete Media Modal -->
                 <div class="modal fade" id="deleteMediaModal{{ $media->id }}" tabindex="-1" aria-labelledby="deleteMediaLabel{{ $media->id }}" aria-hidden="true">
                     <div class="modal-dialog">
@@ -119,10 +124,12 @@
                         </div>
                     </div>
                 </div>
+                @endcan
             @endforeach
             </div>
         </div>
     </div>
+    @endcan
 </div>
 
 <!-- Toast Element -->

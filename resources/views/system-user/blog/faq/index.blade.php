@@ -11,7 +11,9 @@
     <section class="section">
         <div class="d-flex justify-content-between mb-4">
             <h3>FAQs</h3>
+            @can('create faq')
             <a href="{{route('admin.faq.create')}}" class="btn btn-primary">Add New FAQ</a>
+            @endcan
         </div>
 
         @if($faqs->isEmpty())
@@ -31,12 +33,17 @@
                                 <hr>
                                 <div class="card-text">{!! $faq->content !!}</div>
                                 <div class="d-flex justify-content-between">
+                                    @can('edit faq')
                                     <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#editFaqModal{{ $faq->id }}">Edit</button>
+                                    @endcan
+                                    @can('delete faq')
                                     <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteFaqModal{{ $faq->id }}">Delete</button>
+                                    @endcan
                                 </div>
                             </div>
                         </div>
 
+                        @can('edit faq')
                         <!-- Edit Modal -->
                         <div class="modal fade" id="editFaqModal{{ $faq->id }}" tabindex="-1" aria-labelledby="editFaqModalLabel{{ $faq->id }}" aria-hidden="true">
                             <div class="modal-dialog">
@@ -94,7 +101,9 @@
                                 </div>
                             </div>
                         </div>
+                        @endcan
 
+                        @can('delete faq')
                         <!-- Delete Modal -->
                         <div class="modal fade" id="deleteFaqModal{{ $faq->id }}" tabindex="-1" aria-labelledby="deleteFaqModalLabel{{ $faq->id }}" aria-hidden="true">
                             <div class="modal-dialog">
@@ -117,6 +126,7 @@
                                 </div>
                             </div>
                         </div>
+                        @endcan
                     </div>
                 @endforeach
             </div>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1\API;
 
+use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -26,7 +27,8 @@ class NewtworkApiController extends Controller
         
         try {
             
-            $vendor = $this->getVendorService($queryNetwork);
+            // $vendor = $this->getVendorService($queryNetwork);
+            $vendor = Vendor::where('status', true)->first();
 
             if ($request->query('type') === 'airtime') {
                 $network = DataNetwork::where('vendor_id', $vendor?->id)->where('airtime_status', true)->get();
