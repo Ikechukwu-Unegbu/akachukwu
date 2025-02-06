@@ -12,7 +12,7 @@ class DataHealthService {
         $startTime = Carbon::now()->subHours($hours);
         $endTime = Carbon::now();
 
-        $stats = DataTransaction::swhereBetween('created_at', [$startTime, $endTime])
+        $stats = DataTransaction::whereBetween('created_at', [$startTime, $endTime])
             ->selectRaw("COUNT(*) as total, SUM(CASE WHEN status = 'successful' THEN 1 ELSE 0 END) as successful")
             ->first();
 

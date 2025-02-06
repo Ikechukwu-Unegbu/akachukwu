@@ -12,7 +12,7 @@ class AirtimeHealthService {
         $startTime = Carbon::now()->subHours($hours);
         $endTime = Carbon::now();
 
-        $stats = AirtimeTransaction::swhereBetween('created_at', [$startTime, $endTime])
+        $stats = AirtimeTransaction::whereBetween('created_at', [$startTime, $endTime])
             ->selectRaw("COUNT(*) as total, SUM(CASE WHEN status = 'successful' THEN 1 ELSE 0 END) as successful")
             ->first();
 

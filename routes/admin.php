@@ -19,6 +19,8 @@ use App\Models\SiteSettings as ModelsSiteSettings;
 use App\Models\User;
 use App\Services\Account\UserTransactionsAuditService;
 
+use App\Http\Controllers\SystemUser\HealthController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -58,6 +60,12 @@ Route::group(['prefix' => 'admin'], function () {
        Route::resource('media', MediaController::class);
        Route::resource('faq', FaqController::class);
     });
+
+    Route::group(['as' => 'admin.', 'middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
+        Route::get('/health', [HealthController::class, 'index']);
+     });
+
+
 
     
     Route::group(['middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
