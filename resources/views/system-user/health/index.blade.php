@@ -30,11 +30,12 @@
                         <div class="card-body text-center">
                             <h5 class="card-title">Database Connection</h5>
                             <i class="bi bi-database fs-1 text-primary"></i>
-                            <p class="mt-2">Connected</p>
-                            <span class="badge bg-primary">Active</span>
+                            <p class="mt-2">{{ $systemHealth['db_connections']['db_connections'] }}</p>
+                            <span class="badge bg-primary">{{ $systemHealth['db_connections']['status'] }}</span>
                         </div>
                     </div>
                 </div>
+                
 
                 <!-- Queue Workers -->
                 <div class="col-lg-4">
@@ -48,7 +49,54 @@
                     </div>
                 </div>
 
-                <!-- API Status -->
+            
+                <!-- Disk Usage -->
+                @php
+                    $diskUsagePct = (float) str_replace('%', '', $systemHealth['disk_usage']['usage_pct']);
+                    $diskProgressBarClass = $diskUsagePct > 70 ? 'bg-danger' : 'bg-success';
+                @endphp
+
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Disk Usage</h5>
+                            <div class="progress">
+                                <div class="progress-bar {{ $diskProgressBarClass }}" role="progressbar" style="width: {{ $systemHealth['disk_usage']['usage_pct'] }}" aria-valuenow="{{ $systemHealth['disk_usage']['usage_pct'] }}" aria-valuemin="0" aria-valuemax="100">{{ $systemHealth['disk_usage']['usage_pct'] }} Used</div>
+                            </div>
+                            <div class="mt-2">
+                                <p><strong>Total:</strong> {{ $systemHealth['disk_usage']['total'] }}</p>
+                                <p><strong>Used:</strong> {{ $systemHealth['disk_usage']['used'] }}</p>
+                                <p><strong>Free:</strong> {{ $systemHealth['disk_usage']['free'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                {{-- memory useage --}}
+                @php
+                    $usagePct = (float) str_replace('%', '', $systemHealth['memory']['usage_pct']);
+                    $progressBarClass = $usagePct > 70 ? 'bg-danger' : 'bg-warning';
+                @endphp
+                
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">Memory Usage</h5>
+                            <div class="progress">
+                                <div class="progress-bar {{ $progressBarClass }}" role="progressbar" style="width: {{ $systemHealth['memory']['usage_pct'] }}" aria-valuenow="{{ $systemHealth['memory']['usage_pct'] }}" aria-valuemin="0" aria-valuemax="100">{{ $systemHealth['memory']['usage_pct'] }} Used</div>
+                            </div>
+                            <div class="mt-2">
+                                <p><strong>Total:</strong> {{ $systemHealth['memory']['total_memory'] }}</p>
+                                <p><strong>Used:</strong> {{ $systemHealth['memory']['used_memory'] }}</p>
+                                <p><strong>Free:</strong> {{ $systemHealth['memory']['free_memory'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h1>Services Health</h1>
+                {{-- api status --}}
                 <div class="col-lg-6">
                     <div class="card shadow-sm">
                         <div class="card-body">
@@ -59,19 +107,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Disk Usage -->
-                <div class="col-lg-6">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">Disk Usage</h5>
-                            <div class="progress">
-                                <div class="progress-bar bg-danger" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">75% Used</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Airtime Transaction Success Rate -->
                 <div class="col-lg-6">
                     <div class="card shadow-sm">

@@ -71,6 +71,22 @@ class SystemHealthService
         ];
     }
 
+    public function getMemoryInfo(): array
+    {
+        $totalMemory = round(memory_get_usage(true) / 1024 / 1024, 2);
+        $usedMemory = round(memory_get_usage(false) / 1024 / 1024, 2);
+        $freeMemory = round(($totalMemory - $usedMemory), 2);
+        $percentUsed = $totalMemory > 0 ? round(($usedMemory / $totalMemory) * 100, 2) : 0;
+        
+        return [
+            'total_memory' => $totalMemory . ' MB',
+            'used_memory'  => $usedMemory . ' MB',
+            'free_memory'  => $freeMemory . ' MB',
+            'usage_pct'    => $percentUsed . '%',
+        ];
+    }
+
+
     /**
      * Get Active Queue Workers.
      */
@@ -82,12 +98,19 @@ class SystemHealthService
     /**
      * Get Active Database Connections.
      */
-    public function getDatabaseConnections(): int
+    public function getDatabaseConnectionStatus(): array
     {
         $connections = DB::select("SHOW STATUS WHERE `variable_name` = 'Threads_connected'");
-        return (int) $connections[0]->Value;
+        $dbConnections = (int) $connections[0]->Value;
+    
+        $status = $dbConnections > 0 ? 'Connected' : 'Disconnected';
+    
+        return [
+            'db_connections' => $dbConnections,
+            'status' => $status,
+        ];
     }
-
+    
     /**
      * Get overall system health report.
      */
@@ -97,8 +120,9 @@ class SystemHealthService
             'cpu_load'         => $this->getCpuUsage() . '%',
             'memory_usage'     => $this->getMemoryUsage(),
             'disk_usage'       => $this->getDiskUsage(),
-            'db_connections'   => $this->getDatabaseConnections(),
+            'db_connections'   => $this->getDatabaseConnectionStatus(),
             'queue_workers'    => $this->getActiveWorkers(),
+            'memory'=>$this->getMemoryInfo()
         ];
     }
 
