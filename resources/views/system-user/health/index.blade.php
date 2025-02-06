@@ -96,6 +96,19 @@
                 </div>
                 
                 <h1>Services Health</h1>
+                <div class="container mt-4">
+                    <label for="durationSelect" class="form-label">Select Duration</label>
+                    <select class="form-select" id="durationSelect">
+                        <option value="">Choose...</option>
+                        <option value="1h">One Hour</option>
+                        <option value="1w">One Week</option>
+                        <option value="1m">One Month</option>
+                        <option value="3m">Three Months</option>
+                        <option value="6m">Six Months</option>
+                        <option value="1y">One Year</option>
+                    </select>
+                </div>
+
                 {{-- api status --}}
                 <div class="col-lg-6">
                     <div class="card shadow-sm">
@@ -170,21 +183,58 @@
                 <!-- Recent Logs -->
                 <div class="col-lg-6">
                     <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">Recent Logs</h5>
-                            <ul class="list-group">
-                                <li class="list-group-item">[12:34] Airtime transaction completed</li>
-                                <li class="list-group-item">[12:35] Data purchase successful</li>
-                                <li class="list-group-item">[12:36] Money transfer failed</li>
-                                <li class="list-group-item text-muted">More logs...</li>
-                            </ul>
-                        </div>
+                    <div class="card-body">
+    <h5 class="card-title">Recent Logs</h5>
+    <ul class="list-group">
+        @foreach ($transactions['airtime'] as $transaction)
+            <li class="list-group-item">
+                [{{ $transaction->created_at->format('H:i') }}] Airtime transaction failed ({{ $transaction->amount }} {{ $transaction->currency }})
+            </li>
+        @endforeach
+
+        @foreach ($transactions['data'] as $transaction)
+            <li class="list-group-item">
+                [{{ $transaction->created_at->format('H:i') }}] Data transaction failed for {{ $transaction->mobile_number }}
+            </li>
+        @endforeach
+
+        @if (empty($transactions['airtime']) && empty($transactions['data']))
+            <li class="list-group-item text-muted">No recent failed transactions</li>
+        @endif
+    </ul>
+</div>
+
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedValue = urlParams.get('duration');
+    const selectElement = document.getElementById('durationSelect');
+
+    // Set the selected value if it exists in the URL
+    if (selectedValue) {
+        selectElement.value = selectedValue;
+    }
+
+    // Update the URL and refresh when selection changes
+    selectElement.addEventListener('change', function() {
+        const newValue = this.value;
+        const url = new URL(window.location.href);
+        if (newValue) {
+            url.searchParams.set('duration', newValue);
+        } else {
+            url.searchParams.delete('duration'); // Remove param if no selection
+        }
+        window.location.href = url.toString(); // Reload the page with new URL
+    });
+});
+
+</script>
 @endsection
 
 @push('title')
