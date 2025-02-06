@@ -125,7 +125,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Data Success Rate</h5>
                             <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">80% Success</div>
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{$dataSuccessRate}}%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100">{{$dataSuccessRate}}% Success</div>
                             </div>
                         </div>
                     </div>
