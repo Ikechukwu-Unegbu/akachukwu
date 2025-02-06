@@ -113,7 +113,7 @@
                         <div class="card-body">
                             <h5 class="card-title">Airtime Success Rate</h5>
                             <div class="progress">
-                                <div class="progress-bar bg-success" role="progressbar" style="width: 85%" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">85% Success</div>
+                                <div class="progress-bar bg-success" role="progressbar" style="width: {{$airtimeSuccessRate}}%" aria-valuenow="{{$airtimeSuccessRate}}" aria-valuemin="0" aria-valuemax="100">{{$airtimeSuccessRate}}% Success</div>
                             </div>
                         </div>
                     </div>

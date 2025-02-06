@@ -35,7 +35,7 @@ class HealthController extends Controller
         // Fetch transaction success rates
         $airtimeSuccessRate = $this->airtimeHealthService->successRate();
         $dataSuccessRate = $this->dataHealthService->successRate();
-
+        // var_dump($airtimeSuccessRate);die;
         return view('system-user.health.index', compact(
             'systemHealth',
             'airtimeSuccessRate',
