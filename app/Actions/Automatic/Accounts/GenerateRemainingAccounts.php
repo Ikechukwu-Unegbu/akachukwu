@@ -11,6 +11,8 @@ class GenerateRemainingAccounts{
 
     public $expectedBankCodes = ["120001", "035", "50515"]; //9PSB, Wema, Moniepoint
 
+    public static $virtualAccountService = ["120001" => "9PSB", "035" => "WEMA", "50515" => "MONIEPOINT"];
+
     public function generateRemaingingAccounts():void
     {
         if ($this->isUserAccountLessThanThree() && auth()->user()->isKycDone()) {
@@ -55,5 +57,24 @@ class GenerateRemainingAccounts{
         return array_values($missingBankCodes);
     }
     
-       
+    public function generateSpecificAccount($bankCode)
+    {
+        if ($this->isUserAccountLessThanThree() && auth()->user()->isKycDone()) {
+            if ($bankCode === "120001") {
+                $payVessleGateway = PaymentGateway::where('name', 'Payvessel')->first();
+                $virtualAccountFactory = VirtualAccountServiceFactory::make($payVessleGateway);
+                $virtualAccountFactoryResponse = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $bankCode);
+                return $virtualAccountFactoryResponse;
+            }
+
+            if ($bankCode === "035" || $bankCode === "50515") {
+                $monifyGateway = PaymentGateway::where('name', 'Monnify')->first();
+                $virtualAccountFactory = VirtualAccountServiceFactory::make($monifyGateway);
+                $virtualAccountFactoryResponse = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $bankCode);
+                return $virtualAccountFactoryResponse;
+            }
+        }
+
+        return false;
+    }
 }
