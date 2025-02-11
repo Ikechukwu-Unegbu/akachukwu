@@ -130,6 +130,13 @@ Route::middleware(['auth', 'impersonate'])->group(function () {
 
 Route::post('update-password', [SettingsController::class, 'updatePassword'])->name('update.password');
 
+Route::get('/process-palmpay', function () {
+    return \App\Services\Money\PalmPayService::transfer();
+});
+
+Route::get('/process-palmpay-success', function () {
+    dd(request()->all());
+});
 //Blogs
 
 

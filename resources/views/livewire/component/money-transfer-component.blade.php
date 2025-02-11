@@ -44,11 +44,6 @@
                         @endif
                     </div>
                     @endif
-                    {{-- <!-- Bank Selection Dropdown -->
-                    <select class="w-full p-2 border-none rounded-lg shadow focus:ring-vastel_blue focus:border-vastel_blue dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
-                        <option>Select bank</option>
-                        <!-- Populate with bank options as needed -->
-                    </select> --}}
                 </div>
                 <!-- Modal footer -->
                 <div class="p-6">
@@ -59,6 +54,16 @@
                         </span>
                     </button>
                 </div>
+            </form>
+
+            <form >
+                <!-- Bank Selection Dropdown -->
+                <select class="w-full p-2 border-none rounded-lg shadow focus:ring-vastel_blue focus:border-vastel_blue dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white">
+                    <option>Select bank</option>
+                    @foreach($banks as $bank)
+                    <option value="{{ $bank->id }}">{{ $bank->name }}</option>
+                    @endforeach
+                </select>
             </form>
         </div>
     </div>

@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Component;
 
+use App\Models\PalmPayBank;
 use App\Models\User;
-use Livewire\Component;
-use Livewire\Attributes\Validate;
-use Illuminate\Validation\ValidationException;
 use App\Services\Payment\Transfer\VastelMoneyTransfer;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Validate;
+use Livewire\Component;
 
 class MoneyTransferComponent extends Component
 {
@@ -76,6 +77,8 @@ class MoneyTransferComponent extends Component
 
     public function render()
     {
-        return view('livewire.component.money-transfer-component');
+        return view('livewire.component.money-transfer-component', [
+            'banks' => PalmPayBank::where('status', true)->orderBy('name')->get()
+        ]);
     }
 }
