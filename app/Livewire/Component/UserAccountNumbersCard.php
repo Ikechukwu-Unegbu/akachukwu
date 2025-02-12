@@ -2,12 +2,13 @@
 
 namespace App\Livewire\Component;
 
-use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
-use App\Models\PaymentGateway;
 use App\Models\User;
-use App\Models\VirtualAccount;
-use App\Services\Payment\VirtualAccountServiceFactory;
 use Livewire\Component;
+use App\Models\PaymentGateway;
+use App\Models\VirtualAccount;
+use Illuminate\Support\Facades\Log;
+use App\Services\Payment\VirtualAccountServiceFactory;
+use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
 
 class UserAccountNumbersCard extends Component
 {
@@ -42,18 +43,23 @@ class UserAccountNumbersCard extends Component
 
     public function createVirtualAccount($bankCode)
     {
-        $service = (new GenerateRemainingAccounts)->generateSpecificAccount($bankCode);
+        try {
+            $service = (new GenerateRemainingAccounts)->generateSpecificAccount($bankCode);
+            Log::info($service);
 
-        if (isset($service->status) && $service->status === true) {
-            $this->dispatch('success-toastr', ['message' => $service->message]);
-            session()->flash('success', $service->message);
+            if (isset($service->status) && $service->status === true) {
+                $this->dispatch('success-toastr', ['message' => $service->message]);
+                session()->flash('success', $service->message);
+                return $this->redirect(url()->previous());
+            }
+
+            $errorMessage = "Failed to create virtual account. Please try again.";
+            $this->dispatch('error-toastr', ['message' => $errorMessage]);
+            session()->flash('error', $errorMessage);
             return $this->redirect(url()->previous());
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
         }
-
-        $errorMessage = "Failed to create virtual account. Please try again.";
-        $this->dispatch('error-toastr', ['message' => $errorMessage]);
-        session()->flash('error', $errorMessage);
-        return $this->redirect(url()->previous());
     }
 
 

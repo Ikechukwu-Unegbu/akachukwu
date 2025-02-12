@@ -331,7 +331,6 @@ class MonnifyService implements Payment
                     return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
                 }
 
-                Log::info($response);
 
                 $errorResponse = [
                     'error'    =>    "Server Error",
