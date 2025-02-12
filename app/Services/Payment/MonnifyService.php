@@ -301,7 +301,6 @@ class MonnifyService implements Payment
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
              }
 
-            Log::info(json_encode($response));
                 if ($response->requestSuccessful) {
 
                     if($accountId != null){
