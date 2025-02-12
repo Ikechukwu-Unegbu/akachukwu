@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Component;
 
+use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
 use App\Models\PaymentGateway;
 use App\Models\User;
 use App\Models\VirtualAccount;
@@ -13,6 +14,13 @@ class UserAccountNumbersCard extends Component
 
 
     public User $user;
+
+    public $virtualAccountService;
+
+    public function mount()
+    {
+        $this->virtualAccountService = GenerateRemainingAccounts::$virtualAccountService;
+    }
 
 
     public function changeAccount($virtualAccountID, $bankCode, $user)
@@ -30,6 +38,22 @@ class UserAccountNumbersCard extends Component
         }
 
         $this->dispatch('accountChanged');
+    }
+
+    public function createVirtualAccount($bankCode)
+    {
+        $service = (new GenerateRemainingAccounts)->generateSpecificAccount($bankCode);
+
+        if (isset($service->status) && $service->status === true) {
+            $this->dispatch('success-toastr', ['message' => $service->message]);
+            session()->flash('success', $service->message);
+            return $this->redirect(url()->previous());
+        }
+
+        $errorMessage = "Failed to create virtual account. Please try again.";
+        $this->dispatch('error-toastr', ['message' => $errorMessage]);
+        session()->flash('error', $errorMessage);
+        return $this->redirect(url()->previous());
     }
 
 

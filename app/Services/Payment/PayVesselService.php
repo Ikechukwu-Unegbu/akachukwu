@@ -116,7 +116,7 @@ class PayVesselService
                 ];
     
                 $response = self::url(self::CREATE_VIRTUAL_ACCOUNT_URL, $data);
-                // dd($response->object());
+                dd($response->object());
 
                 if ($response->ok() === true) {
                     $response = $response->object();
@@ -147,7 +147,7 @@ class PayVesselService
                     }
                 }
             });
-
+            
             return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
 
         } catch (\Throwable $th) {

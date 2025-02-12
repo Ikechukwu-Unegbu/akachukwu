@@ -10,7 +10,7 @@
     <section class="section profile">
         <div class="row">
             <div class="col-xl-4">
-                <div class="card">
+                <div class="card mb-0 pb-0">
                     <div class="pt-4 card-body profile-card d-flex flex-column align-items-center">
                         <img src="{{ $user->profilePicture }}" alt="Profile" class="rounded-circle">
                         <h2>{{ $user->name }} <span>@if($user->blocked_by_admin ==true) <i class="fa-solid fa-lock"></i> @else <i class="fa-solid fa-check"></i>@endif</span></h2>
