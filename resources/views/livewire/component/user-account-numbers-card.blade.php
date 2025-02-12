@@ -107,7 +107,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
                         <button type="button" class="btn btn-primary"
-                            wire:click="createVirtualAccount('{{ $bankCode }}')" wire:loading.attr="disabled" wire:target="createVirtualAccount">
+                            wire:click="createVirtualAccount('{{ $bankCode }}', {{ $user->id }})" wire:loading.attr="disabled" wire:target="createVirtualAccount">
                             <!-- Spinner while loading -->
                             <span wire:loading wire:target="createVirtualAccount"
                                 class="spinner-border spinner-border-sm" role="status"

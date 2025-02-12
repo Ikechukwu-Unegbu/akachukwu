@@ -41,10 +41,13 @@ class UserAccountNumbersCard extends Component
         $this->dispatch('accountChanged');
     }
 
-    public function createVirtualAccount($bankCode)
+    public function createVirtualAccount($bankCode, $userId)
     {
         try {
-            $service = (new GenerateRemainingAccounts)->generateSpecificAccount($this->user, $bankCode);
+
+            $user = User::find($userId);
+
+            $service = (new GenerateRemainingAccounts)->generateSpecificAccount($user, $bankCode);
     
             if (isset($service->status) && $service->status === true) {
                 $this->dispatch('success-toastr', ['message' => $service->message]);
