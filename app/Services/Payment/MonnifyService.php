@@ -274,18 +274,6 @@ class MonnifyService implements Payment
                 $kyc = $user->bvn;
             }
 
-            Log::info([
-                "accountReference"      =>  self::generateVirtualAccountReference(),
-                "accountName"           =>  Str::title($user->username),
-                "currencyCode"          =>  "NGN",
-                "contractCode"          =>  static::monnifyDetails('contract_code'),
-                "customerEmail"         =>  $user->email,
-                "customerName"          =>  $user->name,
-                "getAllAvailableBanks"  =>  false,
-                $kycType                =>  $kyc,
-                "preferredBanks"        =>  [$bankCode]
-        ]);
-
                 $response = Http::withHeaders([
                     'Accept' => 'application/json',
                     'Authorization' => 'Bearer ' . self::token(),
@@ -306,7 +294,7 @@ class MonnifyService implements Payment
                 //delete bank account
                 // dd($response);
              
-
+            Log::info(json_encode($response));
                 if ($response->requestSuccessful) {
 
                     if($accountId != null){
