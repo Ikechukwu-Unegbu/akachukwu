@@ -265,7 +265,7 @@ class MonnifyService implements Payment
     {
         // dd($user->id, $accountId, $bankCode);
         try {
-
+            Log::info([$user, $accountId=null, $bankCode]);
             if (!empty($user->nin)) {
                 $kycType = 'nin';
                 $kyc = $user->nin;
@@ -330,7 +330,6 @@ class MonnifyService implements Payment
                     VirtualAccount::insert($data);
                     return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
                 }
-
 
                 $errorResponse = [
                     'error'    =>    "Server Error",
