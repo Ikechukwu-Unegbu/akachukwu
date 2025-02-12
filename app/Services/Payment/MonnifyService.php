@@ -263,9 +263,7 @@ class MonnifyService implements Payment
 
     public static function createSpecificVirtualAccount($user, $accountId=null, $bankCode)
     {
-        // dd($user->id, $accountId, $bankCode);
-        try {
-            Log::info([$user->name, $bankCode]);
+        try {           
             if (!empty($user->nin)) {
                 $kycType = 'nin';
                 $kyc = $user->nin;
@@ -273,18 +271,6 @@ class MonnifyService implements Payment
                 $kycType = 'bvn';
                 $kyc = $user->bvn;
             }
-
-            Log::info([
-                "accountReference"      =>  self::generateVirtualAccountReference(),
-                "accountName"           =>  Str::title($user->username),
-                "currencyCode"          =>  "NGN",
-                "contractCode"          =>  static::monnifyDetails('contract_code'),
-                "customerEmail"         =>  $user->email,
-                "customerName"          =>  $user->name,
-                "getAllAvailableBanks"  =>  false,
-                $kycType                =>  $kyc,
-                "preferredBanks"        =>  [$bankCode]
-        ]);
 
                 $response = Http::withHeaders([
                     'Accept' => 'application/json',

@@ -44,8 +44,8 @@ class UserAccountNumbersCard extends Component
     public function createVirtualAccount($bankCode)
     {
         try {
-            $service = (new GenerateRemainingAccounts)->generateSpecificAccount($bankCode);
-            Log::info(json_encode($service));
+            $service = (new GenerateRemainingAccounts)->generateSpecificAccount($this->user, $bankCode);
+    
             if (isset($service->status) && $service->status === true) {
                 $this->dispatch('success-toastr', ['message' => $service->message]);
                 session()->flash('success', $service->message);

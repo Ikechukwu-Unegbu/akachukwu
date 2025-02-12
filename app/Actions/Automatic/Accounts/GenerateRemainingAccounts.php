@@ -45,9 +45,9 @@ class GenerateRemainingAccounts{
 
   
 
-    public function getBankCodesOfMissingAccounts():array 
+    public function getBankCodesOfMissingAccounts($userId = null):array 
     {
-        $userId = auth()->id();
+        $userId = ($userId) ? $userId : auth()->id();
         $userBankCodes = VirtualAccount::where('user_id', $userId)
             ->pluck('bank_code')
             ->toArray();
@@ -57,20 +57,20 @@ class GenerateRemainingAccounts{
         return array_values($missingBankCodes);
     }
     
-    public function generateSpecificAccount($bankCode)
+    public function generateSpecificAccount($user, $bankCode)
     {
-        if (auth()->user()->isKycDone()) {
+        if ($this->getBankCodesOfMissingAccounts($user->id) && $user->isKycDone()) {
             if ($bankCode == "120001") {
                 $payVessleGateway = PaymentGateway::where('name', 'Payvessel')->first();
                 $virtualAccountFactory = VirtualAccountServiceFactory::make($payVessleGateway);
-                $virtualAccountFactoryResponse = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $bankCode);
+                $virtualAccountFactoryResponse = $virtualAccountFactory::createSpecificVirtualAccount($user, null, $bankCode);
                 return $virtualAccountFactoryResponse;
             }
 
             if ($bankCode == "035" || $bankCode == "50515") {
                 $monifyGateway = PaymentGateway::where('name', 'Monnify')->first();
                 $virtualAccountFactory = VirtualAccountServiceFactory::make($monifyGateway);
-                $virtualAccountFactoryResponse = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $bankCode);
+                $virtualAccountFactoryResponse = $virtualAccountFactory::createSpecificVirtualAccount($user, null, $bankCode);
                 return $virtualAccountFactoryResponse;
             }
         }
