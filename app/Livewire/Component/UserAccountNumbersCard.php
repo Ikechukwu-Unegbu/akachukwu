@@ -45,7 +45,7 @@ class UserAccountNumbersCard extends Component
     {
         try {
             $service = (new GenerateRemainingAccounts)->generateSpecificAccount($bankCode);
-            Log::info(json_decode($service));
+            Log::info(json_encode($service));
             if (isset($service->status) && $service->status === true) {
                 $this->dispatch('success-toastr', ['message' => $service->message]);
                 session()->flash('success', $service->message);
