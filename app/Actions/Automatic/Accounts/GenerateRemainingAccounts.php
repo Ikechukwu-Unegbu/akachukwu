@@ -60,6 +60,7 @@ class GenerateRemainingAccounts{
     public function generateSpecificAccount($user, $bankCode)
     {
         if ($this->isUserAccountLessThanThree($user->id) && $user->isKycDone()) {
+            Log::info([$user]);
             if ($bankCode == "120001") {
                 $payVessleGateway = PaymentGateway::where('name', 'Payvessel')->first();
                 $virtualAccountFactory = VirtualAccountServiceFactory::make($payVessleGateway);
