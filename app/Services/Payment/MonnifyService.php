@@ -265,7 +265,7 @@ class MonnifyService implements Payment
     {
         // dd($user->id, $accountId, $bankCode);
         try {
-            Log::info([$user, $accountId=null, $bankCode]);
+            Log::info([$user->name, $bankCode]);
             if (!empty($user->nin)) {
                 $kycType = 'nin';
                 $kyc = $user->nin;
