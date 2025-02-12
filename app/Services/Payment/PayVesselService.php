@@ -116,7 +116,7 @@ class PayVesselService
                 ];
     
                 $response = self::url(self::CREATE_VIRTUAL_ACCOUNT_URL, $data);
-                dd($response->object());
+                
 
                 if ($response->ok() === true) {
                     $response = $response->object();
