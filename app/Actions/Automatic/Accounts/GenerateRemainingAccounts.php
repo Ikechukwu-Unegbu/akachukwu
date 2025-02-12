@@ -60,14 +60,14 @@ class GenerateRemainingAccounts{
     public function generateSpecificAccount($bankCode)
     {
         if ($this->isUserAccountLessThanThree() && auth()->user()->isKycDone()) {
-            if ($bankCode === "120001") {
+            if ($bankCode == "120001") {
                 $payVessleGateway = PaymentGateway::where('name', 'Payvessel')->first();
                 $virtualAccountFactory = VirtualAccountServiceFactory::make($payVessleGateway);
                 $virtualAccountFactoryResponse = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $bankCode);
                 return $virtualAccountFactoryResponse;
             }
 
-            if ($bankCode === "035" || $bankCode === "50515") {
+            if ($bankCode == "035" || $bankCode == "50515") {
                 $monifyGateway = PaymentGateway::where('name', 'Monnify')->first();
                 $virtualAccountFactory = VirtualAccountServiceFactory::make($monifyGateway);
                 $virtualAccountFactoryResponse = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $bankCode);
