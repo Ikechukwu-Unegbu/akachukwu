@@ -35,9 +35,9 @@ class GenerateRemainingAccounts{
         }
     }
 
-    public function isUserAccountLessThanThree():bool
+    public function isUserAccountLessThanThree($userId = null):bool
     {
-        $userId = auth()->id();
+        $userId = ($userId) ? $userId : auth()->id();
         $virtualAccountCount = VirtualAccount::where('user_id', $userId)->count();
     
         return $virtualAccountCount < 3;
@@ -45,9 +45,9 @@ class GenerateRemainingAccounts{
 
   
 
-    public function getBankCodesOfMissingAccounts($userId = null):array 
+    public function getBankCodesOfMissingAccounts():array 
     {
-        $userId = ($userId) ? $userId : auth()->id();
+        $userId = auth()->id();
         $userBankCodes = VirtualAccount::where('user_id', $userId)
             ->pluck('bank_code')
             ->toArray();
@@ -59,7 +59,7 @@ class GenerateRemainingAccounts{
     
     public function generateSpecificAccount($user, $bankCode)
     {
-        if ($this->getBankCodesOfMissingAccounts($user->id) && $user->isKycDone()) {
+        if ($this->isUserAccountLessThanThree($user->id) && $user->isKycDone()) {
             if ($bankCode == "120001") {
                 $payVessleGateway = PaymentGateway::where('name', 'Payvessel')->first();
                 $virtualAccountFactory = VirtualAccountServiceFactory::make($payVessleGateway);
