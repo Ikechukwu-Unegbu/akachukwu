@@ -293,7 +293,14 @@ class MonnifyService implements Payment
 
                 //delete bank account
                 // dd($response);
-             
+             if (!$response->requestSuccessful) {
+                $errorResponse = [
+                    'error'    =>    "API Error",
+                    'message'  =>      $response->responseMessage,
+                ];
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+             }
+
             Log::info(json_encode($response));
                 if ($response->requestSuccessful) {
 
