@@ -1,11 +1,12 @@
 <?php 
 namespace App\Actions\Automatic\Accounts;
 
+use App\Helpers\ApiHelper;
 use App\Models\PaymentGateway;
 use App\Models\VirtualAccount;
-use App\Services\Payment\VirtualAccountServiceFactory;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Payment\VirtualAccountServiceFactory;
 
 class GenerateRemainingAccounts{
 
@@ -56,11 +57,23 @@ class GenerateRemainingAccounts{
     
         return array_values($missingBankCodes);
     }
+
+    public function checkKyc($user)
+    {
+        return !is_null($user->nin) || !is_null($user->bvn);
+    }
     
     public function generateSpecificAccount($user, $bankCode)
     {
-        if ($this->isUserAccountLessThanThree($user->id) && $user->isKycDone()) {
-            Log::info([$user]);
+        if (!$this->checkKyc($user)) {
+            $errorResponse = [
+                'error'    =>    "Error",
+                'message'  =>    "User KYC not completed",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+        }
+
+        if ($this->isUserAccountLessThanThree($user->id)) {
             if ($bankCode == "120001") {
                 $payVessleGateway = PaymentGateway::where('name', 'Payvessel')->first();
                 $virtualAccountFactory = VirtualAccountServiceFactory::make($payVessleGateway);
