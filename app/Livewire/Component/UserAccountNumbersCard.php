@@ -43,18 +43,22 @@ class UserAccountNumbersCard extends Component
 
     public function createVirtualAccount($bankCode)
     {
-        $service = (new GenerateRemainingAccounts)->generateSpecificAccount($bankCode);
+        try {
+            $service = (new GenerateRemainingAccounts)->generateSpecificAccount($bankCode);
 
-        if (isset($service->status) && $service->status === true) {
-            $this->dispatch('success-toastr', ['message' => $service->message]);
-            session()->flash('success', $service->message);
+            if (isset($service->status) && $service->status === true) {
+                $this->dispatch('success-toastr', ['message' => $service->message]);
+                session()->flash('success', $service->message);
+                return $this->redirect(url()->previous());
+            }
+
+            $errorMessage = "Failed to create virtual account. Please try again.";
+            $this->dispatch('error-toastr', ['message' => $errorMessage]);
+            session()->flash('error', $errorMessage);
             return $this->redirect(url()->previous());
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
         }
-
-        $errorMessage = "Failed to create virtual account. Please try again.";
-        $this->dispatch('error-toastr', ['message' => $errorMessage]);
-        session()->flash('error', $errorMessage);
-        return $this->redirect(url()->previous());
     }
 
 
