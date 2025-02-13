@@ -41,7 +41,9 @@ class DatabaseSeeder extends Seeder
             CableSeeder::class,
             CablePlanSeeder::class,
             VTPassSeeder::class,
-            ResultCheckerSeeder::class
+            ResultCheckerSeeder::class,
+            VendorServiceMappingSeeder::class,
+            AirtimeVendorMappingSeeder::class
         ]);
     }
 }
