@@ -5,6 +5,8 @@
 
     <x-admin.menu title="Dashboard" icon="bi-grid" link="{{ route('admin.dashboard') }}" />
 
+    <x-admin.menu title="Health" icon="bi-app-indicator" link="{{ route('admin.health.index') }}" />
+
     @if(auth()->user()->can('view airtime utility') || auth()->user()->can('view data utility') || auth()->user()->can('view cable utility') || auth()->user()->can('view electricity utility'))
       <li class="nav-heading">Manage Utilities</li>
       <x-admin.dropdown title="Utilities" icon="bxs-data">

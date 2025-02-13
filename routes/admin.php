@@ -62,7 +62,7 @@ Route::group(['prefix' => 'admin'], function () {
     });
 
     Route::group(['as' => 'admin.', 'middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
-        Route::get('/health', [HealthController::class, 'index']);
+        Route::get('/health', [HealthController::class, 'index'])->name('health.index');
      });
 
 
