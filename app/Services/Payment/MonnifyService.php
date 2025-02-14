@@ -265,7 +265,7 @@ class MonnifyService implements Payment
     {
         // dd($user->id, $accountId, $bankCode);
         try {
-
+           
             if (!empty($user->nin)) {
                 $kycType = 'nin';
                 $kyc = $user->nin;
@@ -293,7 +293,13 @@ class MonnifyService implements Payment
 
                 //delete bank account
                 // dd($response);
-             
+             if (!$response->requestSuccessful) {
+                $errorResponse = [
+                    'error'    =>    "API Error",
+                    'message'  =>      $response->responseMessage,
+                ];
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+             }
 
                 if ($response->requestSuccessful) {
 
@@ -330,7 +336,6 @@ class MonnifyService implements Payment
                     VirtualAccount::insert($data);
                     return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
                 }
-
 
                 $errorResponse = [
                     'error'    =>    "Server Error",
