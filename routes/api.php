@@ -1,33 +1,34 @@
 <?php
 
-use App\Http\Controllers\V1\API\AccountManagementContorller;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\V1\API\AirtimeApiController;
+use App\Http\Controllers\V1\WebhookController;
+use App\Http\Controllers\V1\API\DataApiController;
+use App\Http\Controllers\V1\API\UpgradeController;
+use App\Http\Controllers\V1\API\UserPinController;
+use App\Http\Controllers\V1\API\CableApiController;
+use App\Http\Controllers\V1\API\ReferralController;
+use App\Http\Controllers\V1\API\TransferController;
 use App\Http\Controllers\V1\API\AppAssetsController;
+use App\Http\Controllers\V1\API\EducationController;
+use App\Http\Controllers\V1\API\AirtimeApiController;
+use App\Http\Controllers\V1\API\FileUploadController;
+use App\Http\Controllers\V1\PalmPayWebhookController;
 use App\Http\Controllers\V1\API\NewtworkApiController;
 use App\Http\Controllers\V1\API\UserProfileController;
+// use Livewire\Features\SupportFileUploads\FileUploadController;
+use App\Http\Controllers\V1\PayVesselWebhookController;
+use App\Http\Controllers\V1\API\NotificationsController;
+use App\Http\Controllers\V1\API\ElectricityApiController;
+use App\Http\Controllers\V1\API\VirtualAccountController;
+use App\Http\Controllers\V1\API\TransactionsApiController;
+use App\Http\Controllers\V1\API\AccountManagementContorller;
 use App\Http\Controllers\V1\API\Auth\RegisterUserController;
 use App\Http\Controllers\V1\API\Auth\ChangePasswordController;
 use App\Http\Controllers\V1\API\Auth\ForgotPasswordController;
 use App\Http\Controllers\V1\API\Auth\AuthenticateUserController;
-use App\Http\Controllers\V1\API\CableApiController;
-use App\Http\Controllers\V1\API\DataApiController;
-use App\Http\Controllers\V1\API\EducationController;
-use App\Http\Controllers\V1\API\ElectricityApiController;
-use App\Http\Controllers\V1\API\UserPinController;
-use App\Http\Controllers\V1\PayVesselWebhookController;
-use App\Http\Controllers\V1\WebhookController;
-// use Livewire\Features\SupportFileUploads\FileUploadController;
-use App\Http\Controllers\V1\API\FileUploadController;
-use App\Http\Controllers\V1\API\NotificationsController;
-use App\Http\Controllers\V1\API\ReferralController;
-use App\Http\Controllers\V1\API\TransactionsApiController;
-use App\Http\Controllers\V1\API\TransferController;
-use App\Http\Controllers\V1\API\UpgradeController;
-use App\Http\Controllers\V1\API\VirtualAccountController;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,3 +118,4 @@ Route::post('webhook/monnify', WebhookController::class);
 Route::post('webhook/payvessel', PayVesselWebhookController::class);
 Route::post('exams', [EducationController::class, 'index']);
 Route::get('banks', [VirtualAccountController::class, 'banks']);
+Route::any('webhook/palmpay-bank-transfer', PalmPayWebhookController::class)->name('webhook.palmpay');
