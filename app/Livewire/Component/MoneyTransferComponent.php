@@ -38,6 +38,7 @@ class MoneyTransferComponent extends Component
     public $transferMethod;
     public $transactionStatus = false;
     public $transactionStatusModal = false;
+    public $vastelTransactionStatus = false;
 
     public function __construct()
     {
@@ -82,10 +83,11 @@ class MoneyTransferComponent extends Component
         if ($handleMoneyTransfer?->status) {
             $this->dispatch('success-toastr', ['message' => $handleMoneyTransfer?->message]);
             session()->flash('success', $handleMoneyTransfer?->message);
+            $this->vastelTransactionStatus = true;
             $this->redirect(url()->previous());
             return;
         }
-
+        $this->vastelTransactionStatus = false;
         $this->dispatch('error-toastr', ['message' => $handleMoneyTransfer?->message]);
         return true;
     }

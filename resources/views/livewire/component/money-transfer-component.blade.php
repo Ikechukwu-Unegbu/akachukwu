@@ -293,7 +293,7 @@
                     </div>
                     @endif
                   
-                    <div class="text-center p-6 {{ $transactionStatusModal ? 'hidden' : '' }}">
+                    <div class="text-center p-6 {{ $transactionStatusModal ? 'hidden' : ($vastelTransactionStatus ? 'hidden' : '' )}}">
                         <div wire:loading wire:target="handleInitiateTransactionPin">
                             <p ><i class="fa fa-circle-notch fa-spin"></i> Processing...</p>
                         </div>
