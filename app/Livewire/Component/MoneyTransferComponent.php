@@ -36,9 +36,9 @@ class MoneyTransferComponent extends Component
     public $handleMethodAction = ['method' => 'handleVerifyAccountNumber', 'action' => 'Proceed'];
     public $transferMethods = [1 => 'Vastel User', 2 => 'Bank Transfer'];
     public $transferMethod;
+    public $vastelTransactionStatus = false;
     public $transactionStatus = false;
     public $transactionStatusModal = false;
-    public $vastelTransactionStatus = false;
 
     public function __construct()
     {
@@ -81,9 +81,10 @@ class MoneyTransferComponent extends Component
         $handleMoneyTransfer = $this->vastelMoneyTransfer->transfer($data);
 
         if ($handleMoneyTransfer?->status) {
+            $this->vastelTransactionStatus = true;
+            // dd($this->vastelTransactionStatus);
             $this->dispatch('success-toastr', ['message' => $handleMoneyTransfer?->message]);
             session()->flash('success', $handleMoneyTransfer?->message);
-            $this->vastelTransactionStatus = true;
             $this->redirect(url()->previous());
             return;
         }
