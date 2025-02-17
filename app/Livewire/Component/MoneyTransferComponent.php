@@ -81,9 +81,9 @@ class MoneyTransferComponent extends Component
         $handleMoneyTransfer = $this->vastelMoneyTransfer->transfer($data);
 
         if ($handleMoneyTransfer?->status) {
+            $this->vastelTransactionStatus = true;
             $this->dispatch('success-toastr', ['message' => $handleMoneyTransfer?->message]);
             session()->flash('success', $handleMoneyTransfer?->message);
-            $this->vastelTransactionStatus = true;
             $this->redirect(url()->previous());
             return;
         }
