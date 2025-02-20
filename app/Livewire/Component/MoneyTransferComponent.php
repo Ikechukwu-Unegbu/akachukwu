@@ -23,7 +23,7 @@ class MoneyTransferComponent extends Component
     public $amount;
     public $bank;
     public $bankDetails;
-    public $account_number = 8152522525;
+    public $account_number;
     public $account_name;
     public $initiateBankTransfer = true;
     public $account_verification = false;

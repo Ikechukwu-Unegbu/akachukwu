@@ -2,18 +2,20 @@
 
 namespace App\Services\Money;
 
-use App\Models\User;
-use App\Helpers\ApiHelper;
-use Illuminate\Support\Str;
-use App\Models\PalmPayTransaction;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\RateLimiter;
 use App\Actions\Idempotency\IdempotencyCheck;
+use App\Helpers\ApiHelper;
+use App\Models\PalmPayTransaction;
+use App\Models\PaymentGateway;
+use App\Models\User;
+use App\Models\VirtualAccount;
 use App\Services\Account\AccountBalanceService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class PalmPayService
 {
@@ -21,11 +23,15 @@ class PalmPayService
     protected CONST PRODUCTION_URL       = "https://open-gw-daily.palmpay-inc.com/";
     protected CONST QUERY_ACCOUNT_URL    = "api/v2/payment/merchant/payout/queryBankAccount";
     protected CONST BANK_TRANSFER_URL    = "api/v2/merchant/payment/payout";
+    protected CONST VIRTUAL_ACCOUNT_URL  = "api/v2/virtual/account/label/create";
     protected CONST ORDER_STATUS_UNPAID  = "unpaid";
     protected CONST ORDER_STATUS_PAYING  = "paying";
     protected CONST ORDER_STATUS_SUCCESS = "success";
     protected CONST ORDER_STATUS_FAIL    = "fail";
     protected CONST ORDER_CLOSE_FAIL     = "close";
+
+    protected CONST BANK_CODE = 100033;
+    protected CONST BANK_NAME = 'PalmPay';
 
     protected static function getUrl()
     {
@@ -179,6 +185,61 @@ class PalmPayService
         }
     }
 
+    public static function createSpecificVirtualAccount($user, $accountId=null)
+    {
+        try {           
+            if (!empty($user->nin)) {
+                $kycType = 'nin';
+                $kyc = $user->nin;
+            } elseif (!empty($user->bvn)) {
+                $kycType = 'bvn';
+                $kyc = $user->bvn;
+            }
+
+            ## Example Payload
+            // $payload = ["requestTime" => round(microtime(true) * 1000), "identityType" => "personal", "licenseNumber" => "dasd141234114123", "virtualAccountName" => "PPTV2", "version" => "V2.0", "customerName"  => "palmpayTester", "email" => "2222@palmpay.com", "nonceStr" => Str::random(40), "accountReference" => Str::random(60)];
+
+            $payload = [
+                "requestTime"          =>   round(microtime(true) * 1000),
+                "identityType"         =>   "personal",
+                "licenseNumber"        =>   $kyc,
+                "virtualAccountName"   =>   $user->name,   
+                "version"              =>   "V2.0",
+                "customerName"         =>   $user->name,
+                "email"                =>   $user->email,
+                "nonceStr"             =>   self::generateVirtualAccountReference(15),
+                "accountReference"     =>   self::generateVirtualAccountReference(25)
+            ];
+
+            $response = self::processEndpoint(self::VIRTUAL_ACCOUNT_URL, $payload);
+
+            if (isset($response->data) && isset($response->status) && $response->status) {
+                VirtualAccount::create([
+                    "reference"      => $response->data->accountReference,
+                    "bank_code"      => self::BANK_CODE,
+                    "bank_name"      => self::BANK_NAME,
+                    "account_name"   => $response->data->virtualAccountName,
+                    "account_number" => $response->data->virtualAccountNo,
+                    "account_type"   => $response->data->identityType,
+                    "status"         => 'ACTIVE',
+                    "user_id"        => $user->id,
+                    "reservation_reference" => $response->data->appId,
+                    "payment_id"     => PaymentGateway::where('name', 'Palmpay')->first()?->id
+                ]);
+                
+                return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
+            }
+
+            self::causer($response, 'Palmpay Virtul Account');
+            return ApiHelper::sendError('API Error', 'Unable to create virtual account. Please try again later.');
+
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            self::causer($th->getMessage(), 'Palmpay Virtul Account');
+            return ApiHelper::sendError([], "Opps! Unable to create static account. Please check your network connection.");
+        }    
+    }
+
     protected static function generateSign($params, $privateKey) 
     {
         // Step 1: Create the parameter string
@@ -266,5 +327,12 @@ class PalmPayService
         );
   
         return $duplicateTransaction;
+    }
+
+    public static function generateVirtualAccountReference($length = 15): string
+    {
+        $referenceId = Str::random($length);
+        $referenceId = preg_replace('/[^a-zA-Z0-9_-]/', '', $referenceId);
+        return $referenceId;
     }
 }

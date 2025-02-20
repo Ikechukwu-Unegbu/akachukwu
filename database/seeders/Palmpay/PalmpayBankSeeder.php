@@ -15,7 +15,7 @@ class PalmpayBankSeeder extends Seeder
      */
     public function run(): void
     {
-      $bankFile = __DIR__ . '/bank.json';
+        $bankFile = __DIR__ . '/bank.json';
 
         if (File::exists($bankFile)) {
             $banks = json_decode(file_get_contents($bankFile), true);
