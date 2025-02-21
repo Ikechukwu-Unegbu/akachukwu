@@ -24,7 +24,7 @@
             <div class="p-4 pb-5" x-data="{ open: false, selectedMethod: '' }">
                 <!-- Button to toggle dropdown -->
                 <button @click="open = !open" type="button"
-                    class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 pb-3">
+                    class="w-full text-left bg-transparent dark:text-white border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 pb-3">
                     <span x-text="selectedMethod || 'Select Transfer Method'"></span>
                 </button>
             
