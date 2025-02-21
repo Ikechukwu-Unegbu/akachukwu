@@ -134,7 +134,7 @@ class MoneyTransferComponent extends Component
     {
         $this->validate([
             'account_number' => ['required', 'numeric', 'digits:10'],
-            'bank'           =>  ['required', 'exists:palm_pay_banks,id']
+            'bank'           =>  ['required', 'exists:banks,id']
         ]);
 
         $this->account_verification = false;
