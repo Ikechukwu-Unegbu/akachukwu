@@ -118,4 +118,4 @@ Route::post('webhook/monnify', WebhookController::class);
 Route::post('webhook/payvessel', PayVesselWebhookController::class);
 Route::post('exams', [EducationController::class, 'index']);
 Route::get('banks', [VirtualAccountController::class, 'banks']);
-Route::any('webhook/palmpay-bank-transfer', PalmPayWebhookController::class)->name('webhook.palmpay');
+Route::post('webhook/palmpay', PalmPayWebhookController::class)->name('webhook.palmpay');
