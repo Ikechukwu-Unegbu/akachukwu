@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\Palmpay;
 
+use App\Models\Bank;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
@@ -22,8 +23,8 @@ class PalmpayBankSeeder extends Seeder
 
             $data = collect($banks)->map(function ($bank) {
                 return [
-                    'uuid'       => Str::uuid(),
                     'name'       => $bank['bankName'] ?? null,
+                    'type'       => 'palmpay',  
                     'code'       => $bank['bankCode'] ?? null,
                     'image'      => $bank['bankUrl'] ?? null,
                     'created_at' => now(),
@@ -32,7 +33,7 @@ class PalmpayBankSeeder extends Seeder
             })->toArray();
 
             if (!empty($data)) {
-                PalmPayBank::insert($data);
+                Bank::insert($data);
             }
         }
     }

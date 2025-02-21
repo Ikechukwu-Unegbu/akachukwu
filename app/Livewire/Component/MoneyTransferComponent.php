@@ -4,7 +4,7 @@ namespace App\Livewire\Component;
 
 use App\Models\User;
 use Livewire\Component;
-use App\Models\PalmPayBank;
+use App\Models\Bank;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Money\PalmPayService;
@@ -115,7 +115,7 @@ class MoneyTransferComponent extends Component
         $this->account_verification = false;
         $this->account_name = "";
         $this->bank = $id;
-        $this->bankDetails = PalmPayBank::find($this->bank);
+        $this->bankDetails = Bank::find($this->bank);
     }
 
     public function updatedSearch($id)
@@ -138,7 +138,7 @@ class MoneyTransferComponent extends Component
         ]);
 
         $this->account_verification = false;
-        $this->bankDetails = PalmPayBank::find($this->bank);
+        $this->bankDetails = Bank::find($this->bank);
         $palmPayService = PalmPayService::queryBankAccount($this->bankDetails->code, $this->account_number);
 
         if (!$palmPayService->status) {
@@ -250,7 +250,7 @@ class MoneyTransferComponent extends Component
     public function render()
     {
         return view('livewire.component.money-transfer-component', [
-            'banks' => PalmPayBank::where('status', true)->orderBy('name')->get()
+            'banks' => Bank::where('type', 'palmpay')->where('status', true)->orderBy('name')->get()
         ]);
     }
 }

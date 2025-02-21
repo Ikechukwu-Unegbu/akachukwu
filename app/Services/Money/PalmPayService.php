@@ -2,20 +2,21 @@
 
 namespace App\Services\Money;
 
-use App\Actions\Idempotency\IdempotencyCheck;
-use App\Helpers\ApiHelper;
-use App\Models\PalmPayTransaction;
-use App\Models\PaymentGateway;
 use App\Models\User;
-use App\Models\VirtualAccount;
-use App\Services\Account\AccountBalanceService;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\RateLimiter;
-use Illuminate\Support\Facades\Storage;
+use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use App\Models\PaymentGateway;
+use App\Models\VirtualAccount;
+use App\Models\PalmPayTransaction;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\RateLimiter;
+use App\Actions\Idempotency\IdempotencyCheck;
+use App\Services\Account\AccountBalanceService;
 
 class PalmPayService
 {
@@ -182,6 +183,44 @@ class PalmPayService
             DB::rollBack();
             self::causer($th->getMessage(), 'Bank Transfer');
             return ApiHelper::sendError("Server Error!", "An error occurred while processing the transaction. Please try again later.");
+        }
+    }
+
+    public static function webhook(Request $request)
+    {
+        // Verify the webhook signature
+        $webhook = [
+            'ip'      => $request->ip(),
+            'time'    => date('H:i:s'),
+            'date'    => date('d-m-Y'),
+            'payload' => $request->all(),
+            'headers' => $request->headers->all()
+        ];
+
+        self::storePayload($webhook);
+        return;
+    }
+
+    public static function storePayload($payload)
+    {
+        $filename = 'palmpay-payload.json';
+        $payloadString = json_encode($payload, JSON_PRETTY_PRINT);
+    
+        if (Storage::disk('webhooks')->exists($filename)) {
+
+            $existingContent = Storage::disk('webhooks')->get($filename);
+    
+            $existingContent = rtrim($existingContent, "\n]");
+    
+            if (strlen($existingContent) > 1) {
+                $existingContent .= ",\n";
+            }
+
+            $newContent = $existingContent . $payloadString . "\n]";
+            Storage::disk('webhooks')->put($filename, $newContent);
+        } else {
+            $newContent = "[\n" . $payloadString . "\n]";
+            Storage::disk('webhooks')->put($filename, $newContent);
         }
     }
 
