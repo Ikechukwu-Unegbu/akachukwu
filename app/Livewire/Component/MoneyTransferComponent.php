@@ -234,8 +234,7 @@ class MoneyTransferComponent extends Component
             $this->transactionStatusModal = true;
             $this->transactionStatus = true;
             sleep(5);
-            return;
-            // return $this->redirect(url()->previous());            
+            return $this->redirect(url()->previous());            
         }
         
         $this->initiateTransactionPin = false;

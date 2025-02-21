@@ -292,7 +292,7 @@
                     @endif
                   
                     <div class="text-center p-6 {{ ($transactionStatusModal) ? 'hidden' : '' }}">
-                        <div wire:loading wire:target="handleInitiateTransactionPin">
+                        <div wire:loading wire:target="handleInitiateTransactionPin" class="dark:text-white">
                             <p ><i class="fa fa-circle-notch fa-spin"></i> Processing...</p>
                         </div>
 
