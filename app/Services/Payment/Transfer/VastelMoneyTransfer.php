@@ -1,14 +1,15 @@
 <?php
 namespace  App\Services\Payment\Transfer;
 
-use App\Helpers\ApiHelper;
 use App\Models\User;
-use App\Helpers\GeneralHelpers;
+use App\Helpers\ApiHelper;
+use App\Models\SiteSetting;
 use App\Models\MoneyTransfer;
+use App\Helpers\GeneralHelpers;
 use Illuminate\Support\Facades\DB;
-use App\Services\Account\AccountBalanceService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Account\AccountBalanceService;
 
 class VastelMoneyTransfer{
 
@@ -19,6 +20,11 @@ class VastelMoneyTransfer{
     {
         $this->helper = new GeneralHelpers();
         $this->accountBalanceService = new AccountBalanceService(Auth::user());
+    }
+
+    private function isMoneyTransferAvailable(): bool
+    {
+        return (bool) optional(SiteSetting::find(1))->money_transfer_status ?? true;
     }
 
     public function getRecipient($recipient)
@@ -36,7 +42,10 @@ class VastelMoneyTransfer{
 
     public function transfer(array $data)
     {
-       
+        if (!$this->isMoneyTransferAvailable()) {
+            return ApiHelper::sendError([], 'Service Not Available!');
+        }
+        
         DB::beginTransaction();
 
         try {
