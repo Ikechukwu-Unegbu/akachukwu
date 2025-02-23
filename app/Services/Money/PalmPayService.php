@@ -21,7 +21,7 @@ use App\Services\Account\AccountBalanceService;
 class PalmPayService
 {
     protected CONST TEST_URL             = "https://open-gw-daily.palmpay-inc.com/";
-    protected CONST PRODUCTION_URL       = "https://open-gw-daily.palmpay-inc.com/";
+    protected CONST PRODUCTION_URL       = "https://open-gw-prod.palmpay-inc.com/";
     protected CONST QUERY_ACCOUNT_URL    = "api/v2/payment/merchant/payout/queryBankAccount";
     protected CONST BANK_TRANSFER_URL    = "api/v2/merchant/payment/payout";
     protected CONST VIRTUAL_ACCOUNT_URL  = "api/v2/virtual/account/label/create";
