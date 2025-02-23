@@ -60,12 +60,12 @@ class VastelMoneyTransfer{
             }
 
             /** Check for duplicate transactions using IdempotencyCheck */
-            if (self::initiateIdempotencyCheck($sender->id))  {
+            if ($this->initiateIdempotencyCheck($sender->id))  {
                 return ApiHelper::sendError([], "Transaction is already pending or recently completed. Please wait!");
             }
 
             /**  Handle duplicate transactions */
-            if (self::initiateLimiter($sender->id)) {
+            if ($this->initiateLimiter($sender->id)) {
                 return ApiHelper::sendError([], "Please Wait a moment. Last transaction still processing.");
             }
 
@@ -125,7 +125,7 @@ class VastelMoneyTransfer{
         return ApiHelper::sendError([], 'The recipient could not be found.');
     }
 
-    protected static function initiateLimiter($userId) : bool
+    private function initiateLimiter($userId) : bool
     {        
         $rateLimitKey = "money-transfer-{$userId}";
 
@@ -139,7 +139,7 @@ class VastelMoneyTransfer{
         return false;
     }
 
-    protected static function initiateIdempotencyCheck($userId)
+    private function initiateIdempotencyCheck($userId)
     {
         $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
             MoneyTransfer::class, 
