@@ -9,6 +9,8 @@ use App\Helpers\GeneralHelpers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use App\Actions\Idempotency\IdempotencyCheck;
 use App\Services\Account\AccountBalanceService;
 
 class VastelMoneyTransfer{
@@ -57,6 +59,16 @@ class VastelMoneyTransfer{
                 return ApiHelper::sendError([], 'Insufficient wallet balance. Please top up your account to complete the transfer.');
             }
 
+            /** Check for duplicate transactions using IdempotencyCheck */
+            if (self::initiateIdempotencyCheck($sender->id))  {
+                return ApiHelper::sendError([], "Transaction is already pending or recently completed. Please wait!");
+            }
+
+            /**  Handle duplicate transactions */
+            if (self::initiateLimiter($sender->id)) {
+                return ApiHelper::sendError([], "Please Wait a moment. Last transaction still processing.");
+            }
+
             // Deduct the amount from the sender's balance
             $data['sender_balance_before'] = $sender->account_balance;
             $this->accountBalanceService->transaction($data['amount']);
@@ -88,7 +100,8 @@ class VastelMoneyTransfer{
             'user_id'=>Auth::user()->id, 
             'recipient'=>$recipient->id,
             'amount'=>$data['amount'], 
-            'status'=>true ,
+            'status'=>true,
+            'transfer_status'=> 'successful',
             'type'=>'internal',
             'sender_balance_before' => $data['sender_balance_before'],
             'sender_balance_after' => Auth::user()->account_balance,
@@ -110,6 +123,32 @@ class VastelMoneyTransfer{
         }
 
         return ApiHelper::sendError([], 'The recipient could not be found.');
+    }
+
+    protected static function initiateLimiter($userId) : bool
+    {        
+        $rateLimitKey = "money-transfer-{$userId}";
+
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
+            RateLimiter::availableIn($rateLimitKey);           
+            return true;
+        }
+    
+        RateLimiter::hit($rateLimitKey, 60);
+
+        return false;
+    }
+
+    protected static function initiateIdempotencyCheck($userId)
+    {
+        $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
+            MoneyTransfer::class, 
+            ['user_id'   => $userId],
+            'transfer_status',
+            ['successful', 'failed', 'pending']
+        );
+  
+        return $duplicateTransaction;
     }
 }
 
