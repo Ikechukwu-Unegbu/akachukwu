@@ -139,7 +139,7 @@ class PalmPayService
                 'balance_before'   =>  $balance_before,
                 'balance_after'    =>  $balance_after
             ];
-
+            dd($transactionData);
             $transaction = PalmPayTransaction::create($transactionData);
 
             /** Prepare API Payload */
@@ -151,7 +151,7 @@ class PalmPayService
                 "payeeName"         => $transaction->account_name,
                 "payeeBankCode"     => $transaction->bank_code,
                 "payeeBankAccNo"    => $transaction->account_number,
-                "amount"            => intval($transaction->amount) * 100,
+                "amount"            => $transaction->amount,
                 "currency"          => config('palmpay.country_code'),
                 "notifyUrl"         => route('webhook.palmpay'),
                 "remark"            => $transaction->remark
