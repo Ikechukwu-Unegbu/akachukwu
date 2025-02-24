@@ -58,6 +58,13 @@
               <input type="text" class="form-control" value="{{$setting->total_users}}" id="total_users" name="total_users" >
             </div>
             <div class="mb-3">
+              <label for="money_transfer_status" class="form-label">Vastel Money Transfer</label>
+              <select class="form-select" id="money_transfer_status" required="" name="money_transfer_status">
+                <option value="1" @selected($setting->money_transfer_status === 1)>Activate</option>
+                <option value="0" @selected($setting->money_transfer_status === 0)>Deactivate</option>
+              </select>
+            </div>
+            <div class="mb-3">
               <label for="airtime_limit" class="form-label">Airtime Purchase Limit</label>
               <input type="number" class="form-control" value="{{$setting->airtime_limit}}" id="airtime_limit" name="airtime_limit">
             </div>

@@ -24,6 +24,7 @@ class SiteSettingsController extends Controller
             'instagram' => 'nullable|string|max:255',
             'linkedin' => 'nullable|string|max:255',
             'airtime_limit' => 'required|numeric',
+            'money_transfer_status' => 'required|integer'
         ], [
             'stie_title.required' => 'The site title field is required.',
             'site_logo.image' => 'The site logo must be an image file.',
@@ -53,6 +54,7 @@ class SiteSettingsController extends Controller
         $siteSettings->instagram = $validatedData['instagram'];
         $siteSettings->linkedin = $validatedData['linkedin'];
         $siteSettings->airtime_limit = $validatedData['airtime_limit'];
+        $siteSettings->money_transfer_status = $validatedData['money_transfer_status'];
         $siteSettings->address_one = $request->address_one;
         $siteSettings->address_two = $request->address_two;
         

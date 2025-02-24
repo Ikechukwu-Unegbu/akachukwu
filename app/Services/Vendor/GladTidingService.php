@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Education\ResultChecker;
 use App\Models\Utility\CableTransaction;
+use App\Services\Airtime\AirtimeService;
 use App\Models\Utility\AirtimeTransaction;
 use App\Services\Referrals\ReferralService;
 use App\Models\Utility\ElectricityTransaction;
@@ -86,6 +87,12 @@ class GladTidingService
     public static function airtime($networkId, $amount, $mobileNumber)
     {
         try {
+            
+            $checkLimit = AirtimeService::checkAirtimeLimit($amount);
+            if ($checkLimit !== true) {
+                return $checkLimit;
+            }
+
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
             
                 // Lock user's account balance to prevent race conditions

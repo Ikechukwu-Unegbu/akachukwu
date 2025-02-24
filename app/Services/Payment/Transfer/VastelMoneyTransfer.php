@@ -1,14 +1,17 @@
 <?php
 namespace  App\Services\Payment\Transfer;
 
-use App\Helpers\ApiHelper;
 use App\Models\User;
-use App\Helpers\GeneralHelpers;
+use App\Helpers\ApiHelper;
+use App\Models\SiteSetting;
 use App\Models\MoneyTransfer;
+use App\Helpers\GeneralHelpers;
 use Illuminate\Support\Facades\DB;
-use App\Services\Account\AccountBalanceService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
+use App\Actions\Idempotency\IdempotencyCheck;
+use App\Services\Account\AccountBalanceService;
 
 class VastelMoneyTransfer{
 
@@ -19,6 +22,11 @@ class VastelMoneyTransfer{
     {
         $this->helper = new GeneralHelpers();
         $this->accountBalanceService = new AccountBalanceService(Auth::user());
+    }
+
+    private function isMoneyTransferAvailable(): bool
+    {
+        return (bool) optional(SiteSetting::find(1))->money_transfer_status ?? true;
     }
 
     public function getRecipient($recipient)
@@ -36,7 +44,10 @@ class VastelMoneyTransfer{
 
     public function transfer(array $data)
     {
-       
+        if (!$this->isMoneyTransferAvailable()) {
+            return ApiHelper::sendError([], 'Service Not Available!');
+        }
+        
         DB::beginTransaction();
 
         try {
@@ -46,6 +57,16 @@ class VastelMoneyTransfer{
             // Check if the sender has sufficient balance
             if ($sender->account_balance < $data['amount']) {
                 return ApiHelper::sendError([], 'Insufficient wallet balance. Please top up your account to complete the transfer.');
+            }
+
+            /** Check for duplicate transactions using IdempotencyCheck */
+            if ($this->initiateIdempotencyCheck($sender->id))  {
+                return ApiHelper::sendError([], "Transaction is already pending or recently completed. Please wait!");
+            }
+
+            /**  Handle duplicate transactions */
+            if ($this->initiateLimiter($sender->id)) {
+                return ApiHelper::sendError([], "Please Wait a moment. Last transaction still processing.");
             }
 
             // Deduct the amount from the sender's balance
@@ -79,7 +100,8 @@ class VastelMoneyTransfer{
             'user_id'=>Auth::user()->id, 
             'recipient'=>$recipient->id,
             'amount'=>$data['amount'], 
-            'status'=>true ,
+            'status'=>true,
+            'transfer_status'=> 'successful',
             'type'=>'internal',
             'sender_balance_before' => $data['sender_balance_before'],
             'sender_balance_after' => Auth::user()->account_balance,
@@ -101,6 +123,32 @@ class VastelMoneyTransfer{
         }
 
         return ApiHelper::sendError([], 'The recipient could not be found.');
+    }
+
+    private function initiateLimiter($userId) : bool
+    {        
+        $rateLimitKey = "money-transfer-{$userId}";
+
+        if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
+            RateLimiter::availableIn($rateLimitKey);           
+            return true;
+        }
+    
+        RateLimiter::hit($rateLimitKey, 60);
+
+        return false;
+    }
+
+    private function initiateIdempotencyCheck($userId)
+    {
+        $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
+            MoneyTransfer::class, 
+            ['user_id'   => $userId],
+            'transfer_status',
+            ['successful', 'failed', 'pending']
+        );
+  
+        return $duplicateTransaction;
     }
 }
 

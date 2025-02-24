@@ -139,7 +139,11 @@ class Create extends Component
         }
     
         RateLimiter::hit($rateLimitKey, 60); 
-
+        
+        $checkLimit = AirtimeService::checkAirtimeLimit($this->amount);
+        if ($checkLimit !== true) {
+            return $this->dispatch('error-toastr', ['message' => $checkLimit->message]);
+        }
       
         $airtimeTransaction = AirtimeService::create(
             $this->vendor->id,

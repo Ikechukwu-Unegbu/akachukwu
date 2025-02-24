@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Education\ResultChecker;
 use App\Models\Utility\CableTransaction;
+use App\Services\Airtime\AirtimeService;
 use App\Models\Utility\AirtimeTransaction;
 use App\Services\Referrals\ReferralService;
 use App\Actions\Idempotency\IdempotencyCheck;
@@ -95,6 +96,12 @@ class PosTraNetService
     public static function airtime($networkId, $amount, $mobileNumber)
     {
         try {
+            
+            $checkLimit = AirtimeService::checkAirtimeLimit($amount);
+            if ($checkLimit !== true) {
+                return $checkLimit;
+            }
+
             // Start a database transaction to ensure atomicity
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
                
