@@ -220,7 +220,7 @@ class MoneyTransferComponent extends Component
             $this->account_number,
             $this->bankDetails->code,
             $this->bankDetails->id,
-            $this->amount+$this->transactionFee,
+            $this->amount,
             $this->transactionFee,
             $this->remark,
             auth()->id()
