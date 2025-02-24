@@ -31,7 +31,7 @@ class MoneyTransferComponent extends Component
     public $initiatePreviewTransaction = false;
     public $initiateTransactionPin = false;
     public $remark;
-    public $transactionFee = 10.0;
+    public $transactionFee = 20.0;
     public $pin = [];
     public $handleMethodAction = ['method' => 'handleVerifyAccountNumber', 'action' => 'Proceed'];
     public $transferMethods = [1 => 'Vastel User', 2 => 'Bank Transfer'];

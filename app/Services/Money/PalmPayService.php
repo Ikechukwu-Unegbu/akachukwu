@@ -106,7 +106,7 @@ class PalmPayService
             DB::beginTransaction();
             /** Lock the user record to prevent double spending */
             $user = User::where('id', $userId)->lockForUpdate()->firstOrFail();            
-            if ($user->account_balance < $amount)
+            if ($user->account_balance < $amount+$fee)
                 return ApiHelper::sendError('Insufficient balance', "Insufficient balance in your wallet to complete this transaction. Please top up and try again");
             
             /** Perform Wallet Deduction from the user's balance if they have enough funds */
