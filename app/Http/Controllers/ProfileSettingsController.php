@@ -42,7 +42,7 @@ class ProfileSettingsController extends Controller
         $request->validate([
             'firstname' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
+            // 'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'phone' => 'required|string|max:15',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -57,7 +57,6 @@ class ProfileSettingsController extends Controller
         }
 
         $user->name = $request->input('firstname') . ' ' . $request->input('lastname');
-        $user->username = $request->input('username');
      
         $user->phone = $request->input('phone');
         
