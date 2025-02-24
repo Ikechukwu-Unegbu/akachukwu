@@ -166,7 +166,7 @@ class MoneyTransferComponent extends Component
             'amount' => [
                 'required',
                 'numeric',
-                'min:100',
+                'min:50',
                 function ($attribute, $value, $fail) {
                     $user = auth()->user();
                     if ($value > $user->account_balance) {
