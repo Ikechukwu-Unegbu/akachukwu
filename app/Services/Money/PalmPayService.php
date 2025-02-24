@@ -151,18 +151,18 @@ class PalmPayService
                 "payeeName"         => $transaction->account_name,
                 "payeeBankCode"     => $transaction->bank_code,
                 "payeeBankAccNo"    => $transaction->account_number,
-                "amount"            => intval($transaction->amount) * 10,
+                "amount"            => intval($transaction->amount) * 100,
                 "currency"          => config('palmpay.country_code'),
                 "notifyUrl"         => route('webhook.palmpay'),
                 "remark"            => $transaction->remark
             ];
-
+            
             /** Store API Payload */
             $transaction->update(['meta' => $payload]);
 
             $response = self::processEndpoint(self::BANK_TRANSFER_URL, $payload);
-            dd($response);
-            if (property_exists($response, 'data') && $response->data->message === 'success') {
+            
+            if (property_exists($response, 'data') && $response->data?->message === 'success') {
                 $transaction->update([
                     'status'          => $response->data->status,
                     'session_id'      => $response->data->sessionId,
