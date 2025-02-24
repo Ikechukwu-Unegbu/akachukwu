@@ -161,7 +161,7 @@ class PalmPayService
             $transaction->update(['meta' => $payload]);
 
             $response = self::processEndpoint(self::BANK_TRANSFER_URL, $payload);
-            
+            dd($response);
             if (property_exists($response, 'data') && $response->data->message === 'success') {
                 $transaction->update([
                     'status'          => $response->data->status,
