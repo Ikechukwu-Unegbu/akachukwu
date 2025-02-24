@@ -156,7 +156,7 @@ class PalmPayService
                 "notifyUrl"         => route('webhook.palmpay'),
                 "remark"            => $transaction->remark
             ];
-dd( $payload);
+            
             /** Store API Payload */
             $transaction->update(['meta' => $payload]);
 
