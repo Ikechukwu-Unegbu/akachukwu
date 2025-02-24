@@ -151,12 +151,12 @@ class PalmPayService
                 "payeeName"         => $transaction->account_name,
                 "payeeBankCode"     => $transaction->bank_code,
                 "payeeBankAccNo"    => $transaction->account_number,
-                "amount"            => intval($transaction->amount) * 100,
+                "amount"            => intval($transaction->amount) * 10,
                 "currency"          => config('palmpay.country_code'),
                 "notifyUrl"         => route('webhook.palmpay'),
                 "remark"            => $transaction->remark
             ];
-            
+
             /** Store API Payload */
             $transaction->update(['meta' => $payload]);
 
