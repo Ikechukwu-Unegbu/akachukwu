@@ -139,7 +139,7 @@ class PalmPayService
                 'balance_before'   =>  $balance_before,
                 'balance_after'    =>  $balance_after
             ];
-            dd($transactionData);
+            
             $transaction = PalmPayTransaction::create($transactionData);
 
             /** Prepare API Payload */
