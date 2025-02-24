@@ -111,7 +111,7 @@ class PalmPayService
             
             /** Perform Wallet Deduction from the user's balance if they have enough funds */
             $balance_before = $user->account_balance;
-            $user->decrement('account_balance', $amount);
+            $user->decrement('account_balance', $amount+$fee);
             $balance_after = $user->account_balance;
 
             /** Check for duplicate transactions using IdempotencyCheck */
