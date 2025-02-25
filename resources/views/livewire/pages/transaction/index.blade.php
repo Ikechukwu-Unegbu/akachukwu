@@ -34,9 +34,21 @@
                     <i class="fas {{ $transaction->icon }} text-blue-500 text-xl"></i>
                     <div>
                         <p class="font-semibold">{{ $transaction->title }} ({{ Str::upper($transaction->utility) }})</p>
-                        @if ($transaction->type !== 'funding')
+                        {{--@if ($transaction->type !== 'funding')
                         <p class="text-sm text-gray-500">{{ Str::title($transaction->type) }}: {{ $transaction->subscribed_to }}</p>
+                        @endif--}}
+                        @if ($transaction->type !== 'funding')
+                            @if ($transaction->type === 'user')
+                                <p class="text-sm text-gray-500">
+                                    User: {{ \App\Models\User::find($transaction->subscribed_to)?->name ?? 'Unknown User' }}
+                                </p>
+                            @else
+                                <p class="text-sm text-gray-500">
+                                    {{ Str::title($transaction->type) }}: {{ $transaction->subscribed_to }}
+                                </p>
+                            @endif
                         @endif
+
                         @if ($transaction->type === 'funding')
                             <a class="text-vastel_blue text-sm">{{ $transaction->transaction_id }}</a>
                         @endif

@@ -40,7 +40,7 @@
       <!-- Username -->
       <div class="border border-gray-300 rounded-lg mb-4 p-2">
         <label class="block text-sm font-medium text-gray-700" for="username">Username</label>
-        <input type="text" id="username" name="username" value="{{Auth::user()->username}}" class="w-full px-3 py-2 outline-none focus:ring-0 border-none ">
+        <input type="text" id="username" disabled name="username" value="{{Auth::user()->username}}" class="w-full px-3 py-2 outline-none focus:ring-0 border-none ">
       </div>
 
       <!-- Email -->
