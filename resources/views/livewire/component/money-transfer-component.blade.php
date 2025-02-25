@@ -240,7 +240,7 @@
                                         <img src="{{ auth()->user()->profilePicture }}" alt="Payment Icon"
                                             class="w-4 h-4 text-gray-400">
                                     </div>
-                                    <p class="text-gray-900 dark:text-white">Balance
+                                    <p class="text-gray-900 dark:text-white">Total Amount
                                         (₦{{ number_format($amount + $transactionFee, 2) }})</p>
                                 </div>
                                 <span class="text-blue-600 dark:text-blue-400">&#10003;</span>
