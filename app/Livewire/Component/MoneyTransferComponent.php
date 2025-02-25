@@ -2,9 +2,10 @@
 
 namespace App\Livewire\Component;
 
+use App\Models\Bank;
 use App\Models\User;
 use Livewire\Component;
-use App\Models\Bank;
+use App\Models\SiteSetting;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Money\PalmPayService;
@@ -31,7 +32,7 @@ class MoneyTransferComponent extends Component
     public $initiatePreviewTransaction = false;
     public $initiateTransactionPin = false;
     public $remark;
-    public $transactionFee = 20.0;
+    public $transactionFee;
     public $pin = [];
     public $handleMethodAction = ['method' => 'handleVerifyAccountNumber', 'action' => 'Proceed'];
     public $transferMethods = [1 => 'Vastel User', 2 => 'Bank Transfer'];
@@ -48,6 +49,7 @@ class MoneyTransferComponent extends Component
     public function mount()
     {
         $this->pin = array_fill(1, 4, '');
+        $this->transactionFee = optional(SiteSetting::find(1))->transfer_charges ?? 50;
     }
 
     public function handleVerifyRecipient()
@@ -166,7 +168,7 @@ class MoneyTransferComponent extends Component
             'amount' => [
                 'required',
                 'numeric',
-                'min:50',
+                'min:100',
                 function ($attribute, $value, $fail) {
                     $user = auth()->user();
                     if ($value > $user->account_balance) {

@@ -2,8 +2,10 @@
 
 namespace App\Services\Money;
 
+use Carbon\Carbon;
 use App\Models\User;
 use App\Helpers\ApiHelper;
+use App\Models\SiteSetting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
@@ -105,22 +107,35 @@ class PalmPayService
         try {
             DB::beginTransaction();
             /** Lock the user record to prevent double spending */
-            $user = User::where('id', $userId)->lockForUpdate()->firstOrFail();            
-            if ($user->account_balance < $amount+$fee)
+            $user = User::where('id', $userId)->lockForUpdate()->firstOrFail();
+            $totalAmount = $amount+$fee;
+
+            if (!self::minimumTransaction($totalAmount)) {
+                return ApiHelper::sendError([], "The amount is below the minimum transfer limit.");
+            }
+
+            if (!self::dailyTransactionLimit($totalAmount, $user->id)) {
+                return ApiHelper::sendError([], "You have exceeded your daily transaction limit.");
+            }
+
+            if ($user->account_balance < $totalAmount) {
                 return ApiHelper::sendError('Insufficient balance', "Insufficient balance in your wallet to complete this transaction. Please top up and try again");
+            }
             
             /** Perform Wallet Deduction from the user's balance if they have enough funds */
             $balance_before = $user->account_balance;
-            $user->decrement('account_balance', $amount+$fee);
+            $user->decrement('account_balance', $totalAmount);
             $balance_after = $user->account_balance;
 
             /** Check for duplicate transactions using IdempotencyCheck */
-            if (self::initiateIdempotencyCheck($userId, $accountName, $accountNo, $bankCode)) 
+            if (self::initiateIdempotencyCheck($userId, $accountName, $accountNo, $bankCode)) {
                 return ApiHelper::sendError([], "Transaction is already pending or recently completed. Please wait!");
+            }
 
             /**  Handle duplicate transactions */
-            if (self::initiateLimiter($userId))
+            if (self::initiateLimiter($userId)) {
                 return ApiHelper::sendError([], "Please Wait a moment. Last transaction still processing.");
+            }
 
             /** Create Transaction */
             $transactionData = [
@@ -151,7 +166,7 @@ class PalmPayService
                 "payeeName"         => $transaction->account_name,
                 "payeeBankCode"     => $transaction->bank_code,
                 "payeeBankAccNo"    => $transaction->account_number,
-                "amount"            => intval(round($transaction->amount, 2) * 100),
+                "amount"            => intval(round($totalAmount, 2) * 100),
                 "currency"          => config('palmpay.country_code'),
                 "notifyUrl"         => route('webhook.palmpay'),
                 "remark"            => $transaction->remark
@@ -373,5 +388,30 @@ class PalmPayService
         $referenceId = Str::random($length);
         $referenceId = preg_replace('/[^a-zA-Z0-9_-]/', '', $referenceId);
         return $referenceId;
+    }
+
+    private static function minimumTransaction($amount) : bool
+    {
+        $siteSetting = SiteSetting::find(1);
+        if ($siteSetting && $siteSetting->minimum_transfer > $amount) {
+            return false;
+        }
+        return true;
+    }
+
+    private static function dailyTransactionLimit($amount, $userId)
+    {
+        $settings = SiteSetting::first();
+        $dailyLimit = $settings->maximum_transfer;
+
+        $totalSpentToday = PalmPayTransaction::where('user_id', $userId)
+            ->whereDate('created_at', Carbon::today())
+            ->sum('amount');
+
+        if (($totalSpentToday + $amount) > $dailyLimit) {
+            return false;
+        }
+
+        return true;
     }
 }
