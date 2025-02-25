@@ -58,8 +58,27 @@
               <input type="text" class="form-control" value="{{$setting->total_users}}" id="total_users" name="total_users" >
             </div>
             <div class="mb-3">
+              <label for="money_transfer_status" class="form-label">Vastel Money Transfer</label>
+              <select class="form-select" id="money_transfer_status" required="" name="money_transfer_status">
+                <option value="1" @selected($setting->money_transfer_status === 1)>Activate</option>
+                <option value="0" @selected($setting->money_transfer_status === 0)>Deactivate</option>
+              </select>
+            </div>
+            <div class="mb-3">
               <label for="airtime_limit" class="form-label">Airtime Purchase Limit</label>
               <input type="number" class="form-control" value="{{$setting->airtime_limit}}" id="airtime_limit" name="airtime_limit">
+            </div>
+            <div class="mb-3">
+              <label for="transfer_charges" class="form-label">Money Transfer Charges</label>
+              <input type="number" class="form-control" value="{{$setting->transfer_charges}}" id="transfer_charges" name="transfer_charges">
+            </div>
+            <div class="mb-3">
+              <label for="minimum_transfer" class="form-label">Minimum Transfer Amount</label>
+              <input type="number" class="form-control" value="{{$setting->minimum_transfer}}" id="minimum_transfer" name="minimum_transfer">
+            </div>
+            <div class="mb-3">
+              <label for="maximum_transfer" class="form-label">Maximum Daily Transfer</label>
+              <input type="number" class="form-control" value="{{$setting->maximum_transfer}}" id="maximum_transfer" name="maximum_transfer">
             </div>
             <div class="mb-3">
               <label for="name" class="form-label">Name</label>

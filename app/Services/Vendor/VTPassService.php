@@ -3,6 +3,7 @@
 namespace App\Services\Vendor;
 
 use Carbon\Carbon;
+use App\Models\User;
 use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
@@ -11,6 +12,7 @@ use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
 use App\Models\Data\DataNetwork;
 use App\Models\Utility\CablePlan;
+use Illuminate\Support\Facades\DB;
 use App\Helpers\Admin\VendorHelper;
 use App\Models\Utility\Electricity;
 use App\Services\CalculateDiscount;
@@ -20,14 +22,13 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Models\Education\ResultChecker;
 use App\Models\Utility\CableTransaction;
+use App\Services\Airtime\AirtimeService;
 use App\Models\Utility\AirtimeTransaction;
+use App\Services\Referrals\ReferralService;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
 use App\Models\Education\ResultCheckerTransaction;
-use App\Models\User;
-use App\Services\Referrals\ReferralService;
-use Illuminate\Support\Facades\DB;
 
 class VTPassService
 {
@@ -193,6 +194,12 @@ class VTPassService
     public static function airtime($networkId, $amount, $mobileNumber)
     {
         try {
+            
+            $checkLimit = AirtimeService::checkAirtimeLimit($amount);
+            if ($checkLimit !== true) {
+                return $checkLimit;
+            }
+
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
             
 

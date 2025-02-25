@@ -67,14 +67,11 @@
 
     <ol class="list-group list-group-numbered" style="margin-top: 20px">
         @php
-            // List of all virtual accounts
-            $virtualAccountService = ['120001' => '9PSB', '035' => 'WEMA', '50515' => 'MONIEPOINT'];
-
             // Get the user's existing virtual account bank codes
             $userBankCodes = $user->virtualAccounts->pluck('bank_code')->toArray();
 
             // Filter out the virtual accounts the user does not have
-            $missingAccounts = array_diff_key($virtualAccountService, array_flip($userBankCodes));
+            $missingAccounts = array_diff_key($virtualAccountServices, array_flip($userBankCodes));
         @endphp
         @foreach ($missingAccounts as $bankCode => $bankName)
         <li class="list-group-item d-flex justify-content-between align-items-start">
@@ -101,7 +98,7 @@
                             aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Are you sure you want to create an account <strong> from {{ $bankName }} </strong> f?
+                        Are you sure you want to create an account <strong> from {{ $bankName }} </strong>?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
