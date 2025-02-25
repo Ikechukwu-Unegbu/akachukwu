@@ -158,41 +158,41 @@ class PalmPayService
             $transaction = PalmPayTransaction::create($transactionData);
 
             /** Prepare API Payload */
-            // $payload = [
-            //     "requestTime"       => round(microtime(true) * 1000),
-            //     "version"           => "V1.1",
-            //     "nonceStr"          => $transaction->transaction_id,
-            //     "orderId"           => $transaction->reference_id,
-            //     "payeeName"         => $transaction->account_name,
-            //     "payeeBankCode"     => $transaction->bank_code,
-            //     "payeeBankAccNo"    => $transaction->account_number,
-            //     "amount"            => intval(round($totalAmount, 2) * 100),
-            //     "currency"          => config('palmpay.country_code'),
-            //     "notifyUrl"         => route('webhook.palmpay'),
-            //     "remark"            => $transaction->remark
-            // ];
+            $payload = [
+                "requestTime"       => round(microtime(true) * 1000),
+                "version"           => "V1.1",
+                "nonceStr"          => $transaction->transaction_id,
+                "orderId"           => $transaction->reference_id,
+                "payeeName"         => $transaction->account_name,
+                "payeeBankCode"     => $transaction->bank_code,
+                "payeeBankAccNo"    => $transaction->account_number,
+                "amount"            => intval(round($totalAmount, 2) * 100),
+                "currency"          => config('palmpay.country_code'),
+                "notifyUrl"         => route('webhook.palmpay'),
+                "remark"            => $transaction->remark
+            ];
             
-            // /** Store API Payload */
-            // $transaction->update(['meta' => $payload]);
+            /** Store API Payload */
+            $transaction->update(['meta' => $payload]);
 
-            // $response = self::processEndpoint(self::BANK_TRANSFER_URL, $payload);
+            $response = self::processEndpoint(self::BANK_TRANSFER_URL, $payload);
             
-            // if (property_exists($response, 'data') && $response->data?->message === 'success') {
-            //     $transaction->update([
-            //         'status'          => $response->data->status,
-            //         'session_id'      => $response->data->sessionId,
-            //         'order_no'        => $response->data->orderNo,
-            //         'transfer_status' => self::ORDER_STATUS_PAYING,
-            //         'api_response'    => json_encode($response),
-            //         'api_status'      => 'successful'
-            //     ]);
+            if (property_exists($response, 'data') && $response->data?->message === 'success') {
+                $transaction->update([
+                    'status'          => $response->data->status,
+                    'session_id'      => $response->data->sessionId,
+                    'order_no'        => $response->data->orderNo,
+                    'transfer_status' => self::ORDER_STATUS_PAYING,
+                    'api_response'    => json_encode($response),
+                    'api_status'      => 'successful'
+                ]);
 
-            //     DB::commit();
-            //     return ApiHelper::sendResponse((array) $response->data, "Bank transfer successfully initiated.");
-            // }
+                DB::commit();
+                return ApiHelper::sendResponse((array) $response->data, "Bank transfer successfully initiated.");
+            }
 
-            // DB::commit();
-            // self::causer($response, 'Transaction Failed');
+            DB::commit();
+            self::causer($response, 'Transaction Failed');
             return ApiHelper::sendError([], "Unable to perform bank transfer at this time. Please try again later.");
         } catch (\Throwable $th) {
             DB::rollBack();
