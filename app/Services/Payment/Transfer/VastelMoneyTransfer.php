@@ -47,10 +47,14 @@ class VastelMoneyTransfer{
         if (!$this->isMoneyTransferAvailable()) {
             return ApiHelper::sendError([], 'Service Not Available!');
         }
-        
-        DB::beginTransaction();
-
+                
         try {
+
+            DB::beginTransaction();
+
+            /** Random Delay */
+            self::randomDelay();
+            
             // Lock the sender's account for update
             $sender = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
@@ -149,6 +153,12 @@ class VastelMoneyTransfer{
         );
   
         return $duplicateTransaction;
+    }
+
+    private static function randomDelay()
+    {
+        $delay = rand(1, 10);
+        sleep($delay);
     }
 }
 
