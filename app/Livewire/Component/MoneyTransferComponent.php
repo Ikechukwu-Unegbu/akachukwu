@@ -139,6 +139,12 @@ class MoneyTransferComponent extends Component
             'bank'           =>  ['required', 'exists:banks,id']
         ]);
 
+        if (!auth()->user()->isKycDone()) {
+            $this->dispatch('success-toastr', ['message' => 'To use service, please complete your KYC by providing your BVN or NIN.']);
+            session()->flash('error', 'To use service, please complete your KYC by providing your BVN or NIN.');
+            return $this->redirectRoute('restrained');
+        }
+
         $this->account_verification = false;
         $this->bankDetails = Bank::find($this->bank);
         $palmPayService = PalmPayService::queryBankAccount($this->bankDetails->code, $this->account_number);
