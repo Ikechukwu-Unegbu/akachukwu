@@ -106,20 +106,17 @@ class PalmPayService
     {
         try {
             DB::beginTransaction();
+            /** Random Delay */
+            self::randomDelay();
+
             /** Lock the user record to prevent double spending */
             $user = User::where('id', $userId)->lockForUpdate()->firstOrFail();
             $totalAmount = $amount+$fee;
 
-            if (!self::minimumTransaction($totalAmount)) {
-                return ApiHelper::sendError([], "The amount is below the minimum transfer limit.");
-            }
-
-            if (!self::dailyTransactionLimit($totalAmount, $user->id)) {
-                return ApiHelper::sendError([], "You have exceeded your daily transaction limit.");
-            }
-
-            if ($user->account_balance < $totalAmount) {
-                return ApiHelper::sendError('Insufficient balance', "Insufficient balance in your wallet to complete this transaction. Please top up and try again");
+           // Perform all validations
+            $validationResponse = self::validateTransaction($user, $totalAmount);
+            if ($validationResponse) {
+                return $validationResponse;
             }
             
             /** Perform Wallet Deduction from the user's balance if they have enough funds */
@@ -413,5 +410,32 @@ class PalmPayService
         }
 
         return true;
+    }
+
+    protected static function validateTransaction(User $user, float $totalAmount)
+    {
+        if (!$user->isKycDone()) {
+            return ApiHelper::sendError([], "To continue enjoying our services, please complete your KYC by providing your BVN or NIN.");
+        }
+
+        if (!self::minimumTransaction($totalAmount)) {
+            return ApiHelper::sendError([], "The amount is below the minimum transfer limit.");
+        }
+
+        if (!self::dailyTransactionLimit($totalAmount, $user->id)) {
+            return ApiHelper::sendError([], "You have exceeded your daily transaction limit.");
+        }
+
+        if ($user->account_balance < $totalAmount) {
+            return ApiHelper::sendError('Insufficient balance', "Insufficient balance in your wallet to complete this transaction. Please top up and try again");
+        }
+
+        return null;
+    }
+
+    private static function randomDelay()
+    {
+        $delay = rand(1, 10);
+        sleep($delay);
     }
 }

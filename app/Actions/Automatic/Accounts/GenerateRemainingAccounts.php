@@ -39,10 +39,16 @@ class GenerateRemainingAccounts{
                     $response = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $code);
                 }
                 // dd('wasnt ok');
-                if($code == "035" || $code == "50515"){
+                if($code == "100033" || $code == "50515"){
                     $monifyGateway = PaymentGateway::where('name', 'Monnify')->first();
                     $virtualAccountFactory = VirtualAccountServiceFactory::make($monifyGateway);
                     $response = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $code);
+                }
+
+                if ($code == "100033"){
+                    $palmPayGateway = PaymentGateway::where('name', 'Palmpay')->first();
+                    $virtualAccountFactory = VirtualAccountServiceFactory::make($palmPayGateway);
+                    $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $code);
                 }
             }
         }
