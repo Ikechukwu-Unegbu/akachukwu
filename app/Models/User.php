@@ -622,7 +622,7 @@ class User extends Authenticatable
                     ->select([
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status', 
                         'api_status as vendor_status', DB::raw('"bank" as subscribed_to'), 'reference_id as plan_name', 
-                        DB::raw('"funding" as type'), DB::raw('"Palmpay" as utility'), DB::raw('"fa-bank" as icon'), 
+                        DB::raw('"funding" as type'), DB::raw('"Palmpay" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
                         DB::raw('"Wallet Topup" as title'), 'created_at'
                     ])
             );
