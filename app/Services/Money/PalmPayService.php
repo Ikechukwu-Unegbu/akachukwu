@@ -156,8 +156,8 @@ class PalmPayService
             $payload = [
                 "requestTime"       => round(microtime(true) * 1000),
                 "version"           => "V1.1",
-                "nonceStr"          => $transaction->reference_id,
-                "orderId"           => $transaction->trx_ref,
+                "nonceStr"          => $transaction->trx_ref,
+                "orderId"           => $transaction->reference_id,
                 "payeeName"         => $accountName,
                 "payeeBankCode"     => $transaction->bank_code,
                 "payeeBankAccNo"    => $transaction->account_number,
