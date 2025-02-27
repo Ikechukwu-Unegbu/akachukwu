@@ -88,7 +88,7 @@ class PalmPayService
           
             if (isset($response->data) && isset($response->data->Status)) {
                 if ($response->data->Status === 'Success') {
-                    return ApiHelper::sendResponse((array) $response->data, "Account verification successful."); 
+                    return ApiHelper::sendResponse((array) $response->data, "Account verified successfully."); 
                 }
                 if ($response->data->Status === 'Failed') {
                     return ApiHelper::sendError($response->data->errorMessage, "Account verification failed. Please check the details or try again later.");
@@ -159,8 +159,8 @@ class PalmPayService
                 "nonceStr"          => $transaction->trx_ref,
                 "orderId"           => $transaction->reference_id,
                 "payeeName"         => $accountName,
-                "payeeBankCode"     => $bankCode,
-                "payeeBankAccNo"    => $accountNo,
+                "payeeBankCode"     => $transaction->bank_code,
+                "payeeBankAccNo"    => $transaction->account_number,
                 "amount"            => intval(round($totalAmount, 2) * 100),
                 "currency"          => config('palmpay.country_code'),
                 "notifyUrl"         => route('webhook.palmpay'),
