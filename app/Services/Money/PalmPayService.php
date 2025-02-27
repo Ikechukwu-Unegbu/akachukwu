@@ -159,12 +159,12 @@ class PalmPayService
                 "nonceStr"          => $transaction->trx_ref,
                 "orderId"           => $transaction->reference_id,
                 "payeeName"         => $accountName,
-                "payeeBankCode"     => $transaction->bank_code,
-                "payeeBankAccNo"    => $transaction->account_number,
+                "payeeBankCode"     => $bankCode,
+                "payeeBankAccNo"    => $accountNo,
                 "amount"            => intval(round($totalAmount, 2) * 100),
                 "currency"          => config('palmpay.country_code'),
                 "notifyUrl"         => route('webhook.palmpay'),
-                "remark"            => $transaction->remark
+                "remark"            => $transaction->narration
             ];
             
             /** Store API Payload */
