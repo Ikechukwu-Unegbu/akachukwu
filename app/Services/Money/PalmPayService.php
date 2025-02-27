@@ -146,6 +146,8 @@ class PalmPayService
                 'account_number'        =>  $accountNo,
                 'sender_balance_before' =>  $balance_before,
                 'sender_balance_after'  =>  $balance_after,
+                'recipient_balance_before' =>  0.00,
+                'recipient_balance_after'  =>  0.00,
                 'transfer_status'       =>  self::ORDER_STATUS_UNPAID,
                 'reference_id'          =>  GeneralHelpers::generateUniqueRef('money_transfers')
             ]);            
