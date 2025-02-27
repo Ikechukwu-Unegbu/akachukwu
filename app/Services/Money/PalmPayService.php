@@ -164,7 +164,7 @@ class PalmPayService
                 "amount"            => intval(round($amount, 2) * 100),
                 "currency"          => config('palmpay.country_code'),
                 // "notifyUrl"         => route('webhook.palmpay'),
-                "remark"            => $transaction->narration
+                "remark"            => $transaction->narration ?? 'NA'
             ];
             
             /** Store API Payload */
