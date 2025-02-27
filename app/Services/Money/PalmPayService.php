@@ -3,13 +3,16 @@
 namespace App\Services\Money;
 
 use Carbon\Carbon;
+use App\Models\Bank;
 use App\Models\User;
 use App\Helpers\ApiHelper;
 use App\Models\SiteSetting;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\MoneyTransfer;
 use App\Models\PaymentGateway;
 use App\Models\VirtualAccount;
+use App\Helpers\GeneralHelpers;
 use App\Models\PalmPayTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -27,11 +30,10 @@ class PalmPayService
     protected CONST QUERY_ACCOUNT_URL    = "api/v2/payment/merchant/payout/queryBankAccount";
     protected CONST BANK_TRANSFER_URL    = "api/v2/merchant/payment/payout";
     protected CONST VIRTUAL_ACCOUNT_URL  = "api/v2/virtual/account/label/create";
-    protected CONST ORDER_STATUS_UNPAID  = "unpaid";
-    protected CONST ORDER_STATUS_PAYING  = "paying";
-    protected CONST ORDER_STATUS_SUCCESS = "success";
-    protected CONST ORDER_STATUS_FAIL    = "fail";
-    protected CONST ORDER_CLOSE_FAIL     = "close";
+    protected CONST ORDER_STATUS_UNPAID  = "pending";
+    protected CONST ORDER_STATUS_PAYING  = "processing";
+    protected CONST ORDER_STATUS_SUCCESS = "successful";
+    protected CONST ORDER_STATUS_FAIL    = "failed";
 
     protected CONST BANK_CODE = 100033;
     protected CONST BANK_NAME = 'PalmPay';
@@ -86,7 +88,7 @@ class PalmPayService
           
             if (isset($response->data) && isset($response->data->Status)) {
                 if ($response->data->Status === 'Success') {
-                    return ApiHelper::sendResponse((array) $response->data, "Account verification successful."); 
+                    return ApiHelper::sendResponse((array) $response->data, "Account verified successfully."); 
                 }
                 if ($response->data->Status === 'Failed') {
                     return ApiHelper::sendError($response->data->errorMessage, "Account verification failed. Please check the details or try again later.");
@@ -125,7 +127,7 @@ class PalmPayService
             $balance_after = $user->account_balance;
 
             /** Check for duplicate transactions using IdempotencyCheck */
-            if (self::initiateIdempotencyCheck($userId, $accountName, $accountNo, $bankCode)) {
+            if (self::initiateIdempotencyCheck($userId, $accountNo, $bankCode)) {
                 return ApiHelper::sendError([], "Transaction is already pending or recently completed. Please wait!");
             }
 
@@ -135,38 +137,34 @@ class PalmPayService
             }
 
             /** Create Transaction */
-            $transactionData = [
-                'user_id'          =>  $userId,
-                'amount'           =>  $amount,
-                'fee'              =>  $fee,
-                'account_name'     =>  $accountName,
-                'account_number'   =>  $accountNo,
-                'bank_code'        =>  $bankCode,
-                'bank_id'          =>  $bankId,
-                'remark'           =>  $remark,
-                'currency'         =>  config('palmpay.country_code'),
-                'status'           =>  0,
-                'transfer_status'  => self::ORDER_STATUS_UNPAID,
-                'api_status'       => 'processing',
-                'balance_before'   =>  $balance_before,
-                'balance_after'    =>  $balance_after
-            ];
-            
-            $transaction = PalmPayTransaction::create($transactionData);
+            $transaction = MoneyTransfer::create([
+                'trx_ref'       =>  self::generateUniqueTransactionId(),
+                'amount'        =>  $amount,
+                'narration'     =>  $remark,
+                'bank_code'     =>  $bankCode,
+                'bank_name'     =>  Bank::where('code', $bankCode)->first()?->name ?? '',
+                'account_number'        =>  $accountNo,
+                'sender_balance_before' =>  $balance_before,
+                'sender_balance_after'  =>  $balance_after,
+                'recipient_balance_before' =>  0.00,
+                'recipient_balance_after'  =>  0.00,
+                'transfer_status'       =>  self::ORDER_STATUS_UNPAID,
+                'reference_id'          =>  self::generateUniqueReferenceId()
+            ]);
 
             /** Prepare API Payload */
             $payload = [
                 "requestTime"       => round(microtime(true) * 1000),
                 "version"           => "V1.1",
-                "nonceStr"          => $transaction->transaction_id,
+                "nonceStr"          => $transaction->trx_ref,
                 "orderId"           => $transaction->reference_id,
-                "payeeName"         => $transaction->account_name,
+                "payeeName"         => $accountName,
                 "payeeBankCode"     => $transaction->bank_code,
                 "payeeBankAccNo"    => $transaction->account_number,
-                "amount"            => intval(round($totalAmount, 2) * 100),
+                "amount"            => intval(round($amount, 2) * 100),
                 "currency"          => config('palmpay.country_code'),
-                "notifyUrl"         => route('webhook.palmpay'),
-                "remark"            => $transaction->remark
+                // "notifyUrl"         => route('webhook.palmpay'),
+                "remark"            => $transaction->narration ?? 'NA'
             ];
             
             /** Store API Payload */
@@ -177,11 +175,8 @@ class PalmPayService
             if (property_exists($response, 'data') && $response->data?->message === 'success') {
                 $transaction->update([
                     'status'          => $response->data->status,
-                    'session_id'      => $response->data->sessionId,
-                    'order_no'        => $response->data->orderNo,
                     'transfer_status' => self::ORDER_STATUS_PAYING,
                     'api_response'    => json_encode($response),
-                    'api_status'      => 'successful'
                 ]);
 
                 DB::commit();
@@ -198,6 +193,21 @@ class PalmPayService
         }
     }
 
+    private static function generateUniqueReferenceId(): string
+    {
+        return Str::slug(date('YmdHi').'-palmpay-'.Str::random(10).Str::random(4));
+    }
+
+    private static function generateUniqueTransactionId(): string
+    {
+        $vendorCode = 'VST';
+        $transactionNumber = Auth::id();
+        $timestamp = date('YmdHis');
+        $randomDigits = Str::random(6);
+
+        return "{$vendorCode}|{$transactionNumber}|{$timestamp}|{$randomDigits}";
+    }
+
     public static function webhook(Request $request)
     {
         // Verify the webhook signature
@@ -210,7 +220,65 @@ class PalmPayService
         ];
 
         self::storePayload($webhook);
-        return;
+
+        try {
+
+            $accountReference = $request->accountReference;
+            $headers = $request->headers->all();
+            $paymentReference = $request->orderNo;
+            $transactionReference = $request->sessionId;
+            $amountPaid = $request->orderAmount / 100;
+
+            if (PalmPayTransaction::where('reference_id', $paymentReference)->where('status', true)->exists()) {
+                return response()->json(['message' => 'Payment Already Processed'], 403);
+            }
+    
+            if ($request->appId === $headers['appid'][0] && $request->sign === $headers['sign'][0]) {
+                $virtualAccount = VirtualAccount::where('reference', $accountReference)->first();
+
+                if ($virtualAccount) {
+                    $user = $virtualAccount->user;
+
+                    $transaction = PalmPayTransaction::updateOrCreate([
+                        'reference_id'  => $paymentReference,
+                        'trx_ref'       => $transactionReference,
+                        'user_id'       => $user->id,
+                    ], [
+                        'amount'        => $amountPaid,
+                        'currency'      => config('app.currency', 'NGN'),
+                        'redirect_url'  => config('app.url'),
+                        'meta'          => json_encode($webhook)
+                    ]);
+
+                    $user->setAccountBalance($amountPaid);
+                    $transaction->success();
+
+                    return response()->json([
+                        'status'   =>    true,
+                        'error'    =>    NULL,
+                        'message'  =>    "Transaction successful",
+                        'response' =>    $transaction
+                    ], 200)->getData();
+                }
+            }
+    
+            return response()->json([
+                'status'   =>    false,
+                'error'    =>    "User not found",
+                'message'  =>    "Transaction not successful",
+                'response' =>    []
+            ], 200)->getData();
+
+        } catch (\Throwable $th) {
+            $errors = [
+                'status'   =>    false,
+                'error'    =>    "Server Error",
+                'message'  =>    $th->getMessage(),
+                'response' =>    []
+            ];
+            Log::error($errors);
+            return response()->json($errors, 401)->getData();
+        }
     }
 
     public static function storePayload($payload)
@@ -363,17 +431,16 @@ class PalmPayService
         return false;
     }
 
-    protected static function initiateIdempotencyCheck($userId, $accountName, $accountNo, $bankCode)
+    protected static function initiateIdempotencyCheck($userId, $accountNo, $bankCode)
     {
         $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
-            PalmPayTransaction::class, 
+            MoneyTransfer::class, 
             [
                 'user_id'        => $userId, 
-                'account_name'   => $accountName, 
                 'account_number' => $accountNo,
                 'bank_code'      => $bankCode,
             ],
-            'api_status',
+            'transfer_status',
             ['successful', 'failed', 'pending']
         );
   
