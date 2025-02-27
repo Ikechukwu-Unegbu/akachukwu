@@ -163,7 +163,7 @@ class PalmPayService
                 "payeeBankAccNo"    => $transaction->account_number,
                 "amount"            => intval(round($amount, 2) * 100),
                 "currency"          => config('palmpay.country_code'),
-                "notifyUrl"         => route('webhook.palmpay'),
+                // "notifyUrl"         => route('webhook.palmpay'),
                 "remark"            => $transaction->narration
             ];
             
