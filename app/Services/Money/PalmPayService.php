@@ -149,8 +149,8 @@ class PalmPayService
                 'recipient_balance_before' =>  0.00,
                 'recipient_balance_after'  =>  0.00,
                 'transfer_status'       =>  self::ORDER_STATUS_UNPAID,
-                'reference_id'          =>  GeneralHelpers::generateUniqueRef('money_transfers')
-            ]);            
+                'reference_id'          =>  self::generateUniqueReferenceId()
+            ]);
 
             /** Prepare API Payload */
             $payload = [
@@ -191,6 +191,11 @@ class PalmPayService
             self::causer($th->getMessage(), 'Bank Transfer');
             return ApiHelper::sendError("Server Error!", "An error occurred while processing the transaction. Please try again later.");
         }
+    }
+
+    private static function generateUniqueReferenceId(): string
+    {
+        return Str::slug(date('YmdHi').'-palmpay-'.Str::random(10).Str::random(4));
     }
 
     private static function generateUniqueTransactionId(): string
