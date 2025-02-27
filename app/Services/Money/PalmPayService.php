@@ -128,7 +128,7 @@ class PalmPayService
             $balance_after = $user->account_balance;
 
             /** Check for duplicate transactions using IdempotencyCheck */
-            if (self::initiateIdempotencyCheck($userId, $accountName, $accountNo, $bankCode)) {
+            if (self::initiateIdempotencyCheck($userId, $accountNo, $bankCode)) {
                 return ApiHelper::sendError([], "Transaction is already pending or recently completed. Please wait!");
             }
 
@@ -147,7 +147,7 @@ class PalmPayService
                 'account_number'        =>  $accountNo,
                 'sender_balance_before' =>  $balance_before,
                 'sender_balance_after'  =>  $balance_after,
-                'transfer_status'       => self::ORDER_STATUS_UNPAID,
+                'transfer_status'       =>  self::ORDER_STATUS_UNPAID,
                 'reference_id'          =>  GeneralHelpers::generateUniqueRef('money_transfers')
             ]);            
 
@@ -174,11 +174,8 @@ class PalmPayService
             if (property_exists($response, 'data') && $response->data?->message === 'success') {
                 $transaction->update([
                     'status'          => $response->data->status,
-                    // 'session_id'      => $response->data->sessionId,
-                    // 'order_no'        => $response->data->orderNo,
                     'transfer_status' => self::ORDER_STATUS_PAYING,
                     'api_response'    => json_encode($response),
-                    // 'api_status'      => 'successful'
                 ]);
 
                 DB::commit();
@@ -428,17 +425,16 @@ class PalmPayService
         return false;
     }
 
-    protected static function initiateIdempotencyCheck($userId, $accountName, $accountNo, $bankCode)
+    protected static function initiateIdempotencyCheck($userId, $accountNo, $bankCode)
     {
         $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
-            PalmPayTransaction::class, 
+            MoneyTransfer::class, 
             [
                 'user_id'        => $userId, 
-                'account_name'   => $accountName, 
                 'account_number' => $accountNo,
                 'bank_code'      => $bankCode,
             ],
-            'api_status',
+            'transfer_status',
             ['successful', 'failed', 'pending']
         );
   
