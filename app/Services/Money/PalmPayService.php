@@ -157,7 +157,7 @@ class PalmPayService
                 "version"           => "V1.1",
                 "nonceStr"          => $transaction->transaction_id,
                 "orderId"           => $transaction->reference_id,
-                "payeeName"         => $transaction->account_name,
+                "payeeName"         => $accountName,
                 "payeeBankCode"     => $transaction->bank_code,
                 "payeeBankAccNo"    => $transaction->account_number,
                 "amount"            => intval(round($totalAmount, 2) * 100),
