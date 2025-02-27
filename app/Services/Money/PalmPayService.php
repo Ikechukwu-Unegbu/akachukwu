@@ -30,11 +30,10 @@ class PalmPayService
     protected CONST QUERY_ACCOUNT_URL    = "api/v2/payment/merchant/payout/queryBankAccount";
     protected CONST BANK_TRANSFER_URL    = "api/v2/merchant/payment/payout";
     protected CONST VIRTUAL_ACCOUNT_URL  = "api/v2/virtual/account/label/create";
-    protected CONST ORDER_STATUS_UNPAID  = "unpaid";
-    protected CONST ORDER_STATUS_PAYING  = "paying";
-    protected CONST ORDER_STATUS_SUCCESS = "success";
-    protected CONST ORDER_STATUS_FAIL    = "fail";
-    protected CONST ORDER_CLOSE_FAIL     = "close";
+    protected CONST ORDER_STATUS_UNPAID  = "pending";
+    protected CONST ORDER_STATUS_PAYING  = "processing";
+    protected CONST ORDER_STATUS_SUCCESS = "successful";
+    protected CONST ORDER_STATUS_FAIL    = "failed";
 
     protected CONST BANK_CODE = 100033;
     protected CONST BANK_NAME = 'PalmPay';
