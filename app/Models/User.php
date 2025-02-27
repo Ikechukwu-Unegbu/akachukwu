@@ -620,7 +620,7 @@ class User extends Authenticatable
             ->unionAll(
                 DB::table('palm_pay_transactions')
                     ->select([
-                        'id', 'transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status', 
+                        'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status', 
                         'api_status as vendor_status', DB::raw('"bank" as subscribed_to'), 'reference_id as plan_name', 
                         DB::raw('"funding" as type'), DB::raw('"bank transfer" as utility'), DB::raw('"fa-bank" as icon'), 
                         DB::raw('"Wallet Topup" as title'), 'created_at'
