@@ -11,7 +11,6 @@ class PalmPayTransaction extends Model
 {
     use PaymentStatusTrait, RecordsBalanceChanges;
     protected $statusField = 'api_status';
-
     protected $guarded = ['id'];
    
     public function user() : BelongsTo
