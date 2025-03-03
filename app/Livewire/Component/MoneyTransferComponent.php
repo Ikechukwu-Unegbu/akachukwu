@@ -70,7 +70,7 @@ class MoneyTransferComponent extends Component
     public function handleMoneyTransfer()
     {
         $this->validate([
-            'amount' => 'required|numeric|min:50',
+            'amount' => 'required|numeric|min:50|regex:/^\d+(\.\d{1,2})?$/',
         ], [
             'amount.gte' => 'The amount must be above 50.',
         ]);
@@ -99,9 +99,22 @@ class MoneyTransferComponent extends Component
     {
         $this->recipient = "";
         $this->error_msg = "";
-        $this->transferMethod = "";
+        $this->transferMethod = false;
         $this->transactionStatus = false;
         $this->transactionStatusModal = false;
+        $this->account_number = '';
+        $this->account_name = '';
+        $this->initiateBankTransfer = true;
+        $this->initiatePreviewTransaction = false;
+        $this->initiateTransactionPin = false;
+        $this->bankDetails = '';
+        $this->bank = '';
+        $this->transferMethod = '';
+        $this->amount = (float) '';
+        $this->remark = '';
+        $this->handleMethodAction = ['method' => 'handleVerifyAccountNumber', 'action' => 'Proceed'];
+        $this->initiateTransferAmount = false;
+        $this->pin = array_fill(1, 4, '');
         return true;
     }
 
@@ -174,6 +187,7 @@ class MoneyTransferComponent extends Component
             'amount' => [
                 'required',
                 'numeric',
+                'regex:/^\d+(\.\d{1,2})?$/',
                 'min:100',
                 function ($attribute, $value, $fail) {
                     $user = auth()->user();
@@ -223,6 +237,22 @@ class MoneyTransferComponent extends Component
 
     protected function handleBankTransferProcess()
     {
+        $this->validate([
+            'amount' => [
+                'required',
+                'numeric',
+                'regex:/^\d+(\.\d{1,2})?$/',
+                'min:100',
+                function ($attribute, $value, $fail) {
+                    $user = auth()->user();
+                    if ($value > $user->account_balance) {
+                        $fail("The {$attribute} exceeds your available balance of ₦" . number_format($user->account_balance, 2));
+                    }
+                }
+            ],
+            'remark' => 'nullable|string|min:5|max:50'
+        ]);
+        
         $process = PalmPayService::processBankTransfer(
             $this->account_name,
             $this->account_number,

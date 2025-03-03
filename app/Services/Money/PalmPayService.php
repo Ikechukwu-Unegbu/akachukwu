@@ -60,7 +60,6 @@ class PalmPayService
     protected static function processEndpoint(string $url, array $payload)
     {
         try {
-
             $signatures  = self::generateSign($payload, config('palmpay.private_key'));
 
             $response = Http::withHeaders(self::header($signatures))->post(self::getUrl(). $url, $payload);
@@ -85,7 +84,7 @@ class PalmPayService
             ];
 
             $response = self::processEndpoint(self::QUERY_ACCOUNT_URL, $data);
-          
+
             if (isset($response->data) && isset($response->data->Status)) {
                 if ($response->data->Status === 'Success') {
                     return ApiHelper::sendResponse((array) $response->data, "Account verified successfully."); 
@@ -346,7 +345,7 @@ class PalmPayService
                     "payment_id"     => PaymentGateway::where('name', 'Palmpay')->first()?->id
                 ]);
                 
-                return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
+                return ApiHelper::sendResponse([], "Virtual Account Created Successfully.");
             }
 
             self::causer($response, 'Palmpay Virtul Account');
@@ -376,6 +375,7 @@ class PalmPayService
     
         // Step 3: Sign the MD5 hash with SHA1 and RSA
         $privateKey = "-----BEGIN RSA PRIVATE KEY-----\n" . chunk_split($privateKey, 64, "\n") . "-----END RSA PRIVATE KEY-----";
+        
         openssl_sign($md5Str, $signature, $privateKey, OPENSSL_ALGO_SHA1);
         $sign = base64_encode($signature);
     

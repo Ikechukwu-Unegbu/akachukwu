@@ -167,21 +167,27 @@
                         <div class="bg-indigo-50 text-black font-semibold text-center py-2 px-4 rounded-full my-3">
                             <div class="flex items-center space-x-4">
                                 <div class="w-12 h-12 bg-indigo-50 rounded-full flex items-center justify-center">
-                                    <img src="{{ $bankDetails->image }}" alt="Profile"
-                                        class="w-7 h-7 text-gray-400" />
+                                    <img src="{{ $bankDetails->image }}" alt="Profile" class="w-7 h-7 text-gray-400" />
                                 </div>
                                 <div>
-                                    <p class="font-semibold text-gray-900 dark:text-white">{{ $account_name }}</p>
-                                    <p class="text-gray-500 dark:text-gray-400">{{ $account_number }}
-                                        {{ $bankDetails->name }}</p>
+                                    <p class="font-semibold text-gray-900 dark:text-black">{{ $account_name }}</p>
+                                    <p class="text-gray-500 dark:text-black">
+                                        {{ $account_number . ' ' . $bankDetails->name }}
+                                    </p>    
                                 </div>
                             </div>
                         </div>
 
-                        <div class="relative z-0 mb-6 w-full group mt-10">
-                            <input type="number" id="amount"
+                        <div class="relative z-0 mb-6 w-full group mt-10" x-data="{ amount: @entangle('amount').defer }">
+                            <input 
+                                type="text" 
+                                id="amount" 
+                                x-model="amount"
                                 class="block py-2.5 px-0 w-full text-sm text-gray-900 dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                                placeholder="Enter Amount" wire:model="amount" />
+                                placeholder="Enter Amount" 
+                                wire:model.debounce.500ms="amount" 
+                                @input="amount = amount.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1'); if (amount.includes('.')) { let parts = amount.split('.'); if (parts[1] && parts[1].length > 2) { amount = parts[0] + '.' + parts[1].slice(0,2); } }"
+                                />
                             <label for="amount"
                                 class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-white duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                             </label>
@@ -189,7 +195,6 @@
                                 <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
                             @enderror
                         </div>
-
                         <div class="relative z-0 mb-6 w-full group mt-10">
                             <input type="text" id="remark"
                                 class="block py-2.5 px-0 w-full text-sm text-gray-900 dark:text-white bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -241,7 +246,8 @@
                                             class="w-4 h-4 text-gray-400">
                                     </div>
                                     <p class="text-gray-900 dark:text-white">Total Amount
-                                        (₦{{ number_format($amount + $transactionFee, 2) }})</p>
+                                        (₦{{ number_format($amount + $transactionFee, 2) }})
+                                    </p>
                                 </div>
                                 <span class="text-blue-600 dark:text-blue-400">&#10003;</span>
                             </div>
@@ -291,17 +297,27 @@
                     </div>
                     @endif
                   
-                    <div class="text-center p-6 {{ ($transactionStatusModal) ? 'hidden' : '' }}">
+                    <div class="text-center p-6 {{ ($transactionStatusModal) ? 'hidden' : '' }} {{ ($initiateTransactionPin || $transactionStatusModal || $initiatePreviewTransaction || $initiateTransferAmount) ? 'flex items-center space-x-4' : '' }}">
                         <div wire:loading wire:target="handleInitiateTransactionPin" class="dark:text-white">
                             <p ><i class="fa fa-circle-notch fa-spin"></i> Processing...</p>
                         </div>
+                        @if ($initiateTransactionPin || $transactionStatusModal || $initiatePreviewTransaction || $initiateTransferAmount)
+                        <button 
+                            wire:loading.attr="disabled"
+                            @click="$wire.handleCloseTransferMoneyModal"
+                            type="button"
+                            class="w-full text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600  dark:focus:ring-red-800">
+                              <i class="fa fa-times-circle"></i>  Cancel
+                        </button>   
+                        @endif
 
                         <button wire:loading.attr="disabled"
                             @if ($handleMethodAction['method'] === 'handleInitiateTransactionPin') wire:loading.remove @endif
                             wire:target="{{ $handleMethodAction['method'] }}" type="submit"
                             class="w-full text-white bg-vastel_blue hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-vastel_blue dark:focus:ring-blue-800">
-                            <span wire:loading.remove
-                                wire:target="{{ $handleMethodAction['method'] }}">{{ $handleMethodAction['action'] }}</span>
+                            <span wire:loading.remove wire:target="{{ $handleMethodAction['method'] }}">
+                                {{ $handleMethodAction['action'] }}
+                            </span>
                             <span wire:loading wire:target="{{ $handleMethodAction['method'] }}">
                                 <i class="fa fa-circle-notch fa-spin text-sm"></i>
                             </span>
