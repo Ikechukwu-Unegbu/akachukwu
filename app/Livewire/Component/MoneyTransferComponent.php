@@ -13,7 +13,6 @@ use App\Services\Account\UserPinService;
 use Illuminate\Validation\ValidationException;
 use App\Services\Payment\Transfer\VastelMoneyTransfer;
 use App\Http\Requests\MoneyTransfer\InitiateTransferRequest;
-use App\Services\Money\PalmPayMoneyTransferService;
 
 class MoneyTransferComponent extends Component
 {
@@ -42,26 +41,17 @@ class MoneyTransferComponent extends Component
     public $transactionStatus = false;
     public $transactionStatusModal = false;
 
-    /**
-     * Constructor to initialize the VastelMoneyTransfer service.
-     */
     public function __construct()
     {
         $this->vastelMoneyTransfer = app(VastelMoneyTransfer::class);
     }
 
-    /**
-     * Mount the component and initialize default values.
-     */
     public function mount()
     {
         $this->pin = array_fill(1, 4, '');
         $this->transactionFee = optional(SiteSetting::find(1))->transfer_charges ?? 50;
     }
 
-    /**
-     * Verifies the recipient's username or email using the VastelMoneyTransfer service.
-     */
     public function handleVerifyRecipient()
     {
         $this->validate();
@@ -77,9 +67,6 @@ class MoneyTransferComponent extends Component
         return;
     }
 
-    /**
-     * Handles the money transfer process, ensuring validation and transaction execution.
-     */
     public function handleMoneyTransfer()
     {
         $this->validate([
@@ -108,9 +95,6 @@ class MoneyTransferComponent extends Component
         return true;
     }
 
-    /**
-     * Resets transfer-related properties and closes the transaction modal.
-     */
     public function handleCloseTransferMoneyModal()
     {
         $this->recipient = "";
@@ -134,22 +118,12 @@ class MoneyTransferComponent extends Component
         return true;
     }
 
-    /**
-     * Sets the selected transfer method.
-     *
-     * @param int $method
-     */
     public function selectedTransferMethod($method)
     {
         $this->transferMethod = $method;
         return true;
     }
 
-    /**
-     * Sets the selected bank and resets verification status.
-     *
-     * @param int $id
-     */
     public function selectedBank($id)
     {
         $this->handleMethodAction = ['method' => 'handleVerifyAccountNumber', 'action' => 'Proceed'];
@@ -165,18 +139,12 @@ class MoneyTransferComponent extends Component
         $this->bank = "";
     }
 
-     /**
-     * Handles account number verification.
-     */
     public function handleVerifyAccountNumber()
     {
         $this->queryBankAccount();
         return;
     }
 
-    /**
-     * Queries the bank account details using PalmPayService.
-     */
     protected function queryBankAccount()
     {
         $this->validate([
@@ -192,7 +160,7 @@ class MoneyTransferComponent extends Component
 
         $this->account_verification = false;
         $this->bankDetails = Bank::find($this->bank);
-        $palmPayService = PalmPayMoneyTransferService::queryBankAccount($this->bankDetails->code, $this->account_number);
+        $palmPayService = PalmPayService::queryBankAccount($this->bankDetails->code, $this->account_number);
 
         if (!$palmPayService->status) {
             $this->dispatch('error-toastr', ['message' => $palmPayService?->message]);
@@ -206,9 +174,6 @@ class MoneyTransferComponent extends Component
         return;
     }
 
-    /**
-     * Updates Form action to use handleInitiateTransferDetail
-     */
     public function handleInitiateTransferAmount()
     {
         $this->initiateTransferAmount = true;
@@ -216,9 +181,6 @@ class MoneyTransferComponent extends Component
         $this->handleMethodAction = ['method' => 'handleInitiateTransferDetail', 'action' => 'Confirm'];
     }
 
-    /**
-     * Process and validates amount & remark
-     */
     public function handleInitiateTransferDetail()
     {
         $this->validate([
@@ -242,9 +204,6 @@ class MoneyTransferComponent extends Component
         $this->initiatePreviewTransaction = true;
     }
 
-    /**
-     * Updates form action to display or preview transaction before sending
-     */
     public function handleInitiatePreviewTransaction()
     {
         $this->handleMethodAction = ['method' => 'handleInitiateTransactionPin', 'action' => 'Pay'];
@@ -252,17 +211,11 @@ class MoneyTransferComponent extends Component
         $this->initiateTransactionPin = true;
     }
 
-    /**
-     * Updates inputed PIN.
-     */
     public function updatePin($index, $value)
     {
         $this->pin[$index] = $value;
     }
 
-    /**
-     * Validates and processes the transaction PIN.
-     */
     public function handleInitiateTransactionPin()
     {
         if (!is_array($this->pin)) {
@@ -282,9 +235,6 @@ class MoneyTransferComponent extends Component
         return $this->handleBankTransferProcess();
     }
 
-     /**
-     * Handles the bank transfer process using PalmPayService.
-     */
     protected function handleBankTransferProcess()
     {
         $this->validate([
@@ -303,7 +253,7 @@ class MoneyTransferComponent extends Component
             'remark' => 'nullable|string|min:5|max:50'
         ]);
         
-        $process = PalmPayMoneyTransferService::processBankTransfer(
+        $process = PalmPayService::processBankTransfer(
             $this->account_name,
             $this->account_number,
             $this->bankDetails->code,
