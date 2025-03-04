@@ -3,7 +3,7 @@
 namespace App\Services\Payment;
 
 use App\Models\PaymentGateway;
-use App\Services\Money\PalmPayService;
+use App\Services\Money\BasePalmPayService;
 
 class VirtualAccountServiceFactory 
 {
@@ -15,7 +15,7 @@ class VirtualAccountServiceFactory
             case 'Payvessel':
                 return new PayVesselService();
             case 'Palmpay':
-                return new PalmPayService();
+                return new BasePalmPayService();
             default:
                 throw new \Exception('Invalid gateway name.');
         }
