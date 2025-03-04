@@ -47,14 +47,6 @@ class PaymentGatewaySeeder extends Seeder
                 'contract_code'  =>  null,
                 'account_number' =>  null,
                 'status'         =>  false,
-            ],
-             [
-                'name'           =>  'Palmpay',
-                'key'            =>  '',
-                'public_key'     =>  '',
-                'contract_code'  =>  null,
-                'account_number' =>  null,
-                'status'         =>  false,
             ]
         ]);
 

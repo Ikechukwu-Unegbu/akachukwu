@@ -78,7 +78,7 @@ class KycForm extends Component
     public function render()
     {
         return view('livewire.profile.kyc-form', [
-            'banks'  => Bank::where('type', 'monnify')->where('status', true)->orderBy('name')->get()
+            'banks'  => Bank::orderBy('name')->get()
         ]);
     }
 }
