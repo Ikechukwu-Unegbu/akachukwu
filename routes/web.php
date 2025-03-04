@@ -130,9 +130,8 @@ Route::middleware(['auth', 'impersonate'])->group(function () {
 
 Route::post('update-password', [SettingsController::class, 'updatePassword'])->name('update.password');
 
-// Route::get('/process-palmpay', function () {
-//     return \App\Services\Money\PalmPayService::createSpecificVirtualAccount(auth()->user());
-// });
+//Blogs
+
 
 
 require __DIR__ . '/auth.php';

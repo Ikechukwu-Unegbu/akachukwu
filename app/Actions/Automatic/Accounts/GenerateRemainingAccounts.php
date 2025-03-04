@@ -10,21 +10,9 @@ use App\Services\Payment\VirtualAccountServiceFactory;
 
 class GenerateRemainingAccounts{
 
-    // public $expectedBankCodes = ["120001", "035", "50515"]; //9PSB, Wema, Moniepoint
-    public $expectedBankCodes = ["120001", "50515", "100033"]; //9PSB, Moniepoint, Palmpay
+    public $expectedBankCodes = ["120001", "035", "50515"]; //9PSB, Wema, Moniepoint
 
-    // public static $virtualAccountService = ["120001" => "9PSB", "035" => "WEMA", "50515" => "MONIEPOINT"];
-    public static $virtualAccountService = [
-        "120001" => "9PSB", 
-        "50515" => "MONIEPOINT", 
-        "100033" => "PALMPAY"
-    ];
-
-    protected static $virtualAccountProviders = [
-        "120001" => "Payvessel", 
-        "50515" => "Monnify", 
-        "100033" => "Palmpay"
-    ];
+    public static $virtualAccountService = ["120001" => "9PSB", "035" => "WEMA", "50515" => "MONIEPOINT"];
 
     public function generateRemaingingAccounts():void
     {
@@ -39,16 +27,10 @@ class GenerateRemainingAccounts{
                     $response = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $code);
                 }
                 // dd('wasnt ok');
-                if($code == "100033" || $code == "50515"){
+                if($code == "035" || $code == "50515"){
                     $monifyGateway = PaymentGateway::where('name', 'Monnify')->first();
                     $virtualAccountFactory = VirtualAccountServiceFactory::make($monifyGateway);
                     $response = $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $code);
-                }
-
-                if ($code == "100033"){
-                    $palmPayGateway = PaymentGateway::where('name', 'Palmpay')->first();
-                    $virtualAccountFactory = VirtualAccountServiceFactory::make($palmPayGateway);
-                    $virtualAccountFactory::createSpecificVirtualAccount(auth()->user(), null, $code);
                 }
             }
         }
@@ -84,32 +66,29 @@ class GenerateRemainingAccounts{
     public function generateSpecificAccount($user, $bankCode)
     {
         if (!$this->checkKyc($user)) {
-            return ApiHelper::sendError("Error", "User KYC not completed");
-        }
-
-        $providerName = $this->getProviderNameByBankCode($bankCode);
-
-        if (!$providerName) {
-            return ApiHelper::sendError("Server Error", "Provider Not Found!");
+            $errorResponse = [
+                'error'    =>    "Error",
+                'message'  =>    "User KYC not completed",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
 
         if ($this->isUserAccountLessThanThree($user->id)) {
-            $gateway = PaymentGateway::where('name', $providerName)->first();
-
-            if (!$gateway) {
-                return ApiHelper::sendError("Server Error", "Provider Not Found!");
+            if ($bankCode == "120001") {
+                $payVessleGateway = PaymentGateway::where('name', 'Payvessel')->first();
+                $virtualAccountFactory = VirtualAccountServiceFactory::make($payVessleGateway);
+                $virtualAccountFactoryResponse = $virtualAccountFactory::createSpecificVirtualAccount($user, null, $bankCode);
+                return $virtualAccountFactoryResponse;
             }
 
-            $virtualAccountFactory = VirtualAccountServiceFactory::make($gateway);
-            return $virtualAccountFactory::createSpecificVirtualAccount($user, null, $bankCode);
+            if ($bankCode == "035" || $bankCode == "50515") {
+                $monifyGateway = PaymentGateway::where('name', 'Monnify')->first();
+                $virtualAccountFactory = VirtualAccountServiceFactory::make($monifyGateway);
+                $virtualAccountFactoryResponse = $virtualAccountFactory::createSpecificVirtualAccount($user, null, $bankCode);
+                return $virtualAccountFactoryResponse;
+            }
         }
 
         return false;
-    }
-
-    private function getProviderNameByBankCode($bankCode)
-    {
-        $providerMappings = self::$virtualAccountProviders;
-        return $providerMappings[$bankCode] ?? null;
     }
 }
