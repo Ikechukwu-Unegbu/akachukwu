@@ -1,0 +1,2168 @@
+[
+    {
+        "bankCode": "dyy10000001",
+        "bankName": "3line Card management Limite",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090270",
+        "bankName": "AB MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "070010",
+        "bankName": "ABBEY MORTGAGE BANK",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/164974345130816-country.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090260",
+        "bankName": "ABOVE ONLY MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090197",
+        "bankName": "ABU MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090424",
+        "bankName": "Abucoop Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000014",
+        "bankName": "Access Bank",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/ACCESS+BANK+NIGERIA.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/ACCESS_BANK_NIGERIA.png"
+    },
+    {
+        "bankCode": "000005",
+        "bankName": "Access Bank (Diamond)",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.ap-southeast-1.amazonaws.com\/activity\/161544259440420ACCESS%2BBANK%2BNIGERIA.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/DIAMOND_BANK_PLC.png"
+    },
+    {
+        "bankCode": "323",
+        "bankName": "ACCESS MOBILE",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/ACCESS+MOBILE.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/ACCESS_MOBILE.png"
+    },
+    {
+        "bankCode": "090134",
+        "bankName": "ACCION MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090483",
+        "bankName": "Ada MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090160",
+        "bankName": "ADDOSSER MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090268",
+        "bankName": "ADEYEMI COLLEGE STAFF MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090155",
+        "bankName": "ADVANS LA FAYETTE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090292",
+        "bankName": "Afekhafe MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "014",
+        "bankName": "AFRIBANK NIGERIA PLC",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/AFRIBANK+NIGERIA+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/AFRIBANK_NIGERIA_PLC.png"
+    },
+    {
+        "bankCode": "100028",
+        "bankName": "AG MORTGAGE BANK PLC",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090371",
+        "bankName": "AGOSASA MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090133",
+        "bankName": "AL-BARKAH MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090259",
+        "bankName": "ALEKUN MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090297",
+        "bankName": "ALERT MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090277",
+        "bankName": "ALHAYAT MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090131",
+        "bankName": "ALLWORKERS MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090169",
+        "bankName": "ALPHAKAPITAL MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090489",
+        "bankName": "Alvana Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090394",
+        "bankName": "Amac Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090180",
+        "bankName": "AMJU MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090116",
+        "bankName": "AMML MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090476",
+        "bankName": "Anchorage MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090469",
+        "bankName": "Aniocha MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090143",
+        "bankName": "APEKS MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090376",
+        "bankName": "APPLE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090282",
+        "bankName": "ARISE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090001",
+        "bankName": "Aso Savings and Loans",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/Aso+Savings+and+Loans.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/Aso_Savings_and_Loans.png"
+    },
+    {
+        "bankCode": "090287",
+        "bankName": "Assets Matrix MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090473",
+        "bankName": "ASSETS Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090172",
+        "bankName": "ASTRAPOLARIS MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090451",
+        "bankName": "ATBU Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090264",
+        "bankName": "AUCHI MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090478",
+        "bankName": "Avuenegbe MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090188",
+        "bankName": "BAINES CREDIT MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090181",
+        "bankName": "Balogun Fulani Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090326",
+        "bankName": "BALOGUN GAMBARI MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090425",
+        "bankName": "Banex Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090316",
+        "bankName": "BAYERO MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090127",
+        "bankName": "BC KASH MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090413",
+        "bankName": "Benysta Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090336",
+        "bankName": "BIPC MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090743",
+        "bankName": "BLOOMS",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/173043039207214-6ff0746ebd3be2ebb6ae06cd43a72d0f.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/17304303944566-17212139386536-%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87.png"
+    },
+    {
+        "bankCode": "090431",
+        "bankName": "Bluewhales Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090117",
+        "bankName": "BOCTRUST MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090444",
+        "bankName": "BOI MF BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090494",
+        "bankName": "Boji Boji Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090395",
+        "bankName": "Borgu MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090176",
+        "bankName": "BOSAK MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090148",
+        "bankName": "BOWEN MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "070015",
+        "bankName": "Brent Mortgage Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090293",
+        "bankName": "BRETHREN MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090393",
+        "bankName": "Bridgeway Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090308",
+        "bankName": "BRIGHTWAY MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090406",
+        "bankName": "Business Support Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090472",
+        "bankName": "CARETAKER Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090360",
+        "bankName": "CASHCONNECT MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090498",
+        "bankName": "Catland Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100005",
+        "bankName": "Cellulant",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090154",
+        "bankName": "CEMCS MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "NOT find in NIP",
+        "bankName": "Chams Mobile",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090397",
+        "bankName": "Chanelle BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090470",
+        "bankName": "Changan RTS Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090416",
+        "bankName": "Chibueze Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090141",
+        "bankName": "CHIKUM MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090490",
+        "bankName": "Chukwunenye Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090480",
+        "bankName": "Cintrust MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090144",
+        "bankName": "CIT MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000009",
+        "bankName": "Citibank Nigeria",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/Citibank+Nigeria.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/Citibank_Nigeria.png"
+    },
+    {
+        "bankCode": "090343",
+        "bankName": "Citizen Trust Microfinance BANK Ltd",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090254",
+        "bankName": "CoalCamp Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090374",
+        "bankName": "COASTLINE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090130",
+        "bankName": "CONSUMER MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100032",
+        "bankName": "Contec Global",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090365",
+        "bankName": "Corestep MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "060001",
+        "bankName": "Coronation",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "070006",
+        "bankName": "COVENANT MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090159",
+        "bankName": "CREDIT AFRIQUE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090391",
+        "bankName": "Davodani Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090167",
+        "bankName": "DAYLIGHT MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "dyy100000021",
+        "bankName": "dyy_test6",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "dyy_1002",
+        "bankName": "dyy_test6",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16594937494858-lQLPJxaNkzxoSprMlsyWsBik_IGhnSEiAukF5HIAdQA_150_150.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16594937536129-lQLPJxaNkzxoSprMlsyWsBik_IGhnSEiAukF5HIAdQA_150_150.png"
+    },
+    {
+        "bankCode": "dyy100000020",
+        "bankName": "dyy_test6",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090156",
+        "bankName": "E-BARCS MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090294",
+        "bankName": "EAGLE FLIGHT MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100021",
+        "bankName": "Eartholeum",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090427",
+        "bankName": "EBSU MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "307",
+        "bankName": "Ecobank Mobile",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/Ecobank+Mobile.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/Ecobank_Mobile.png"
+    },
+    {
+        "bankCode": "000010",
+        "bankName": "ECOBANK NIGERIA PLC1",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16681619563944-ECOBANK%2BNIGERIA%2BPLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/ECOBANK_NIGERIA_PLC.png"
+    },
+    {
+        "bankCode": "100008",
+        "bankName": "Ecobank Xpress Account",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090310",
+        "bankName": "EDFIN MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090389",
+        "bankName": "EK-Reliable Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090097",
+        "bankName": "EKONDO MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090273",
+        "bankName": "EMERALDS MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090114",
+        "bankName": "EMPIRETRUST MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000019",
+        "bankName": "ENTERPRISE BANK LIMITED",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/ENTERPRISE+BANK+LIMITED.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/ENTERPRISE_BANK_LIMITED.png"
+    },
+    {
+        "bankCode": "090189",
+        "bankName": "ESAN MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090166",
+        "bankName": "ESO-E MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100006",
+        "bankName": "eTranzact",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090304",
+        "bankName": "EVANGEL MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090332",
+        "bankName": "EVERGREEN MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090328",
+        "bankName": "EYOWO MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "faker001",
+        "bankName": "faker_001",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "faker008",
+        "bankName": "faker003",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16601260553471-lQLPJxaNkzxoSprMlsyWsBik_IGhnSEiAukF5HIAdQA_150_150.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16601260650829-lQLPJxaNkzxoSprMlsyWsBik_IGhnSEiAukF5HIAdQA_150_150.png"
+    },
+    {
+        "bankCode": "090179",
+        "bankName": "FAST Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "309",
+        "bankName": "FBN MOBILE",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/FBN+MOBILE.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/FBN_MOBILE.png"
+    },
+    {
+        "bankCode": "060002",
+        "bankName": "FBNQuest MERCHANT BANK",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "100031",
+        "bankName": "FCMB Easy Account",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090409",
+        "bankName": "FCMB MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090290",
+        "bankName": "FCT MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090398",
+        "bankName": "Federal Polytechnic Nekede Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090318",
+        "bankName": "FEDERAL UNIVERSITY DUTSE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090298",
+        "bankName": "FEDERALPOLY NASARAWAMFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090482",
+        "bankName": "Fedeth MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100001",
+        "bankName": "FET",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090153",
+        "bankName": "FFS MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000007",
+        "bankName": "Fidelity Bank",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/FIDELITY+BANK+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/FIDELITY_BANK_PLC.png"
+    },
+    {
+        "bankCode": "100019",
+        "bankName": "Fidelity Mobile",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090126",
+        "bankName": "FIDFUND MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090111",
+        "bankName": "FINATRUST MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090400",
+        "bankName": "Finca Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090366",
+        "bankName": "Firmus MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "110004",
+        "bankName": "First Apple Limited",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "000016",
+        "bankName": "First Bank of Nigeria",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/FIRST+BANK+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16601117550677-FIRST_BANK_PLC.png"
+    },
+    {
+        "bankCode": "000003",
+        "bankName": "FIRST CITY MONUMENT BANK PLC",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/FIRST+CITY+MONUMENT+BANK+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/FIRST_CITY_MONUMENT_BANK_PLC.png"
+    },
+    {
+        "bankCode": "070014",
+        "bankName": "First Generation Mortgage Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090479",
+        "bankName": "First Heritage MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090163",
+        "bankName": "FIRST MULTIPLE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090285",
+        "bankName": "FIRST OPTION MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090164",
+        "bankName": "FIRST ROYAL MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100014",
+        "bankName": "FIRSTMONIE WALLET",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "666001",
+        "bankName": "Flexi Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/172181718692110-fbBank.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/17212139386536-%E8%83%8C%E6%99%AF%E5%9B%BE%E7%89%87.png"
+    },
+    {
+        "bankCode": "110002",
+        "bankName": "Flutterwave Technology solutions Limited",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "100016",
+        "bankName": "FortisMobile",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090486",
+        "bankName": "Fortress Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "400001",
+        "bankName": "FSDH Merchant Bank",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/FSDH+Merchant+Bank.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/FSDH_Merchant_Bank.png"
+    },
+    {
+        "bankCode": "090145",
+        "bankName": "FULL RANGE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090438",
+        "bankName": "Futminna Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090158",
+        "bankName": "FUTO MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090484",
+        "bankName": "Garki MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090168",
+        "bankName": "GASHUA MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "070009",
+        "bankName": "GATEWAY MORTGAGE BANK",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090475",
+        "bankName": "Giant Stride MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090411",
+        "bankName": "GiGinya Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090186",
+        "bankName": "Girei MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000027",
+        "bankName": "Globus Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090278",
+        "bankName": "GLORY MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090408",
+        "bankName": "GMB Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100022",
+        "bankName": "GoMoney",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090467",
+        "bankName": "Good Neighbours Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090495",
+        "bankName": "Goodnews Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090122",
+        "bankName": "GOWANS MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090335",
+        "bankName": "Grant Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090178",
+        "bankName": "GREENBANK MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090269",
+        "bankName": "GREENVILLE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090195",
+        "bankName": "GROOMING MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000013",
+        "bankName": "GTBank",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/GTBANK+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/GTBANK_PLC.png"
+    },
+    {
+        "bankCode": "100009",
+        "bankName": "GTBank Mobile Money",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/GTBank+Mobile+Money.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/GTBank_Mobile_Money.png"
+    },
+    {
+        "bankCode": "090385",
+        "bankName": "GTI Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090147",
+        "bankName": "HACKMAN MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "070017",
+        "bankName": "Haggai Mortgage Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090291",
+        "bankName": "HALA MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090121",
+        "bankName": "HASAL MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090363",
+        "bankName": "Headway MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100017",
+        "bankName": "Hedonmark",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "000020",
+        "bankName": "HERITAGE BANK",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/HERITAGE+BANK.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/HERITAGE_BANK.png"
+    },
+    {
+        "bankCode": "090418",
+        "bankName": "Highland Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090118",
+        "bankName": "IBILE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090324",
+        "bankName": "IKENNE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090279",
+        "bankName": "IKIRE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090370",
+        "bankName": "ILASAN MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090430",
+        "bankName": "Ilora Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090258",
+        "bankName": "IMO MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090417",
+        "bankName": "Imowo Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100024",
+        "bankName": "Imperial Homes Mortgage Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090157",
+        "bankName": "INFINITY MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "070016",
+        "bankName": "Infinity trust Mortgage Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "100029",
+        "bankName": "Innovectives Kesh",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090434",
+        "bankName": "Insight Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100027",
+        "bankName": "Intellifin",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090386",
+        "bankName": "Interland MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "110010",
+        "bankName": "Interswitch Financial Inclusion Services (IFIS)",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "110003",
+        "bankName": "Interswitch Limited",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090493",
+        "bankName": "Iperu Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090149",
+        "bankName": "IRL MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090377",
+        "bankName": "ISALEOYO MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090428",
+        "bankName": "Ishie Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090421",
+        "bankName": "Izon Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000006",
+        "bankName": "Jaiz Bank",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/JAIZ+BANK.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/JAIZ_BANK.png"
+    },
+    {
+        "bankCode": "090352",
+        "bankName": "Jessefield Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090003",
+        "bankName": "JUBILEELIFE",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090320",
+        "bankName": "KADPOLY MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090191",
+        "bankName": "KCMB MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100015",
+        "bankName": "Kegow",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "000002",
+        "bankName": "Keystone Bank",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/KEYSTONE+BANK+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/KEYSTONE_BANK_PLC.png"
+    },
+    {
+        "bankCode": "090487",
+        "bankName": "Kingdom College Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090299",
+        "bankName": "KONTAGORA MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090380",
+        "bankName": "KREDI MONEY MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090267",
+        "bankName": "Kuda MFB",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16637480622231-163186251436519-Kuda.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16637480833544-163186251436519-Kuda.png"
+    },
+    {
+        "bankCode": "090422",
+        "bankName": "Landgold Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090177",
+        "bankName": "LAPO MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090271",
+        "bankName": "LAVENDER MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "070012",
+        "bankName": "LBIC Mortgage Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090372",
+        "bankName": "LEGEND MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090420",
+        "bankName": "LETSHEGO MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090477",
+        "bankName": "Light Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090435",
+        "bankName": "Links Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090265",
+        "bankName": "LOVONUS MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "NOT find in NIP",
+        "bankName": "M-Kudi",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090323",
+        "bankName": "MAINLAND MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090171",
+        "bankName": "MAINSTREET MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090465",
+        "bankName": "Maintrust MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090174",
+        "bankName": "MALACHY MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090383",
+        "bankName": "MANNY MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090410",
+        "bankName": "Maritime Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090423",
+        "bankName": "Mautech Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090321",
+        "bankName": "MAYFAIR MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090280",
+        "bankName": "MEGAPRAISE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090432",
+        "bankName": "Memphis Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090275",
+        "bankName": "MERIDIAN MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090136",
+        "bankName": "MICROCRED MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090113",
+        "bankName": "MICROVIS MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090192",
+        "bankName": "Midland MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100011",
+        "bankName": "Mkudi",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090362",
+        "bankName": "MOLUSI MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090462",
+        "bankName": "Monarch Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100020",
+        "bankName": "MoneyBox",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090129",
+        "bankName": "MONEYTRUST MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090405",
+        "bankName": "Moniepoint",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090392",
+        "bankName": "Mozfin Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090190",
+        "bankName": "MUTUAL BENEFITS MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090151",
+        "bankName": "MUTUAL TRUST MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090152",
+        "bankName": "NARGATA MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090263",
+        "bankName": "NAVY MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090128",
+        "bankName": "NDIORAH MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090329",
+        "bankName": "NEPTUNE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090378",
+        "bankName": "NEW GOLDEN PASTURES MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090205",
+        "bankName": "NEWDAWN MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "999999",
+        "bankName": "NIP Virtual Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090283",
+        "bankName": "NNEW WOMEN MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "060003",
+        "bankName": "NOVA MB",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "070001",
+        "bankName": "NPF MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090491",
+        "bankName": "Nsuk Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090364",
+        "bankName": "NUTURE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090399",
+        "bankName": "Nwannegadi MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090333",
+        "bankName": "OCHE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090119",
+        "bankName": "OHAFIA MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090161",
+        "bankName": "OKPOGA MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090272",
+        "bankName": "OLABISI ONABANJO UNIVERSITY MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090468",
+        "bankName": "OLOFIN OWENA Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090404",
+        "bankName": "Olowolagba Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090471",
+        "bankName": "OLUCHUKWU Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090295",
+        "bankName": "OMIYE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "070007",
+        "bankName": "Omoluabi Mortgage Bank Plc",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "100026",
+        "bankName": "ONE FINANCE",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "100004",
+        "bankName": "Opay",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/PAYCOM.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/PAYCOM.png"
+    },
+    {
+        "bankCode": "355555",
+        "bankName": "OPAY",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/163816677708018-Send%20Money.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16381667811312-Send%20Money.png"
+    },
+    {
+        "bankCode": "090492",
+        "bankName": "Oraukwu Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090396",
+        "bankName": "Oscotech MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "100002",
+        "bankName": "Paga",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "070008",
+        "bankName": "PAGE FINANCIALS",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "100033",
+        "bankName": "PalmPay",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/168439431362616-lQLPJwY7GhPDOZZQULDdDKrjTMfEsgQ94XoTAGQA_80_80.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/168439431645613-lQLPJwY7GhPDOZZQULDdDKrjTMfEsgQ94XoTAGQA_80_80.png"
+    },
+    {
+        "bankCode": "526",
+        "bankName": "Parallex Bank",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/Parallex+Bank.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/Parallex_Bank.png"
+    },
+    {
+        "bankCode": "090004",
+        "bankName": "PARRALEX",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090317",
+        "bankName": "PATRICK GOLD",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "110001",
+        "bankName": "PayAttitude Online",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "110006",
+        "bankName": "Paystack Payments Limited",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090402",
+        "bankName": "Peace Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090137",
+        "bankName": "PECAN TRUST MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090196",
+        "bankName": "PENNYWISE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090135",
+        "bankName": "PERSONAL TRUST MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090165",
+        "bankName": "PETRA MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "314159",
+        "bankName": "PI314159",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16681597471981-PAYCOM.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/166815975002719-PAYCOM%20%281%29.png"
+    },
+    {
+        "bankCode": "090289",
+        "bankName": "PILLAR MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "070013",
+        "bankName": "PLATINUM MORTGAGE BANK",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "000008",
+        "bankName": "Polaris Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/SKYE_BANK_PLC.png"
+    },
+    {
+        "bankCode": "090296",
+        "bankName": "POLYUWANNA MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090412",
+        "bankName": "Preeminent Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090274",
+        "bankName": "PRESTIGE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090481",
+        "bankName": "Prisco Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090499",
+        "bankName": "Pristine Divitis Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000023",
+        "bankName": "Providus Bank",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/Providus+Bank.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/Providus_Bank.png"
+    },
+    {
+        "bankCode": "090303",
+        "bankName": "PURPLEMONEY MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090261",
+        "bankName": "QUICKFUND MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090170",
+        "bankName": "RAHAMA MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000024",
+        "bankName": "Rand Merchant Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "100003",
+        "bankName": "ReadyCash",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "070011",
+        "bankName": "Refuge Mortgage Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090125",
+        "bankName": "REGENT MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090463",
+        "bankName": "Rehoboth Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090173",
+        "bankName": "RELIANCE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090198",
+        "bankName": "RENMONEY MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090322",
+        "bankName": "REPHIDIM MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090132",
+        "bankName": "RICHWAY MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090433",
+        "bankName": "RIGO Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090443",
+        "bankName": "RIMA Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090138",
+        "bankName": "ROYAL EXCHANGE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090286",
+        "bankName": "Safe Haven MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090140",
+        "bankName": "SAGAMU MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090112",
+        "bankName": "SEED CAPITAL MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090369",
+        "bankName": "SEEDVEST MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090401",
+        "bankName": "Shepherd Trust Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000012",
+        "bankName": "Stanbic IBTC Bank",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/STANBIC+IBTC+BANK+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/STANBIC_IBTC_BANK_PLC.png"
+    },
+    {
+        "bankCode": "100007",
+        "bankName": "Stanbic Mobile",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/Stanbic+Mobile.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/Stanbic_Mobile.png"
+    },
+    {
+        "bankCode": "000021",
+        "bankName": "STANDARD CHARTERED BANK NIGERIA LIMITED",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/STANDARD+CHARTERED+BANK+NIGERIA+LIMITED.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/STANDARD_CHARTERED_BANK_NIGERIA_LIMITED.png"
+    },
+    {
+        "bankCode": "090182",
+        "bankName": "Standard MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090162",
+        "bankName": "STANFORD MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090262",
+        "bankName": "STELLAS MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000001",
+        "bankName": "Sterling Bank",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/STERLING+BANK+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/STERLING_BANK_PLC.png"
+    },
+    {
+        "bankCode": "090305",
+        "bankName": "SULSAP MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090302",
+        "bankName": "Sunbeam Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000022",
+        "bankName": "SUNTRUST BANK",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "100023",
+        "bankName": "TagPay",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "000026",
+        "bankName": "Taj Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090115",
+        "bankName": "TCF",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "110007",
+        "bankName": "Team APT",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "NOT find in NIP",
+        "bankName": "Teasy Mobile",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "100010",
+        "bankName": "TeasyMobile",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "1999999",
+        "bankName": "Test AAA",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.ap-southeast-1.amazonaws.com\/activity\/161545633828717react.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.ap-southeast-1.amazonaws.com\/activity\/16154563407111DIAMOND_BANK_PLC.png"
+    },
+    {
+        "bankCode": "999044",
+        "bankName": "TEST PION BANK",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "888888",
+        "bankName": "test04171",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16817342102745-161544259440420ACCESS%2BBANK%2BNIGERIA.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/168173421959915-DIAMOND_BANK_PLC.png"
+    },
+    {
+        "bankCode": "000333",
+        "bankName": "testbank1",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16397270492728-%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20200623182652.jpg",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16397270538249-ussd.png"
+    },
+    {
+        "bankCode": "test",
+        "bankName": "testend",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/17301072383872-%E6%8A%80%E6%9C%AF%E4%B8%93%E5%AE%B6.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/173010724479716-%E6%8A%80%E6%9C%AF%E4%B8%93%E5%AE%B6.png"
+    },
+    {
+        "bankCode": "090373",
+        "bankName": "TF MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000025",
+        "bankName": "TITAN TRUST BANK",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "090146",
+        "bankName": "TRIDENT MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090327",
+        "bankName": "TRUST MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090123",
+        "bankName": "TRUSTBANC J6 MICROFINANCE BANK LIMITED",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090276",
+        "bankName": "TRUSTFUND MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090315",
+        "bankName": "U AND C MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090331",
+        "bankName": "UNAAB MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090266",
+        "bankName": "UNIBEN MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090193",
+        "bankName": "UNICAL MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090464",
+        "bankName": "Unimaid Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000018",
+        "bankName": "Union Bank Of Nigeria",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/UNION+BANK+OF+NIGERIA+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/UNION_BANK_OF_NIGERIA_PLC.png"
+    },
+    {
+        "bankCode": "033",
+        "bankName": "UNITED BANK FOR AFRICA PLC",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/UNITED+BANK+FOR+AFRICA+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/UNITED_BANK_FOR_AFRICA_PLC.png"
+    },
+    {
+        "bankCode": "000011",
+        "bankName": "UNITY BANK PLC",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/UNITY+BANK+PLC.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/UNITY_BANK_PLC.png"
+    },
+    {
+        "bankCode": "090338",
+        "bankName": "UniUyo Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090251",
+        "bankName": "UNN MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090453",
+        "bankName": "Uzondu MF BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090474",
+        "bankName": "Verdant Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090150",
+        "bankName": "VIRTUE MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090139",
+        "bankName": "VISA MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "NOT find in NIP",
+        "bankName": "Visual ICT",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "100012",
+        "bankName": "VTNetworks",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    },
+    {
+        "bankCode": "000017",
+        "bankName": "Wema Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16681583776478-PAYCOM.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/166815836982216-PAYCOM%20%281%29.png"
+    },
+    {
+        "bankCode": "090120",
+        "bankName": "WETLAND MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090419",
+        "bankName": "WinView BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090124",
+        "bankName": "XSLNCE MICROFINANCE BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090466",
+        "bankName": "YCT Microfinance BANK",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090142",
+        "bankName": "YES MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "090252",
+        "bankName": "Yobe MFB",
+        "bankUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b0f5ef8e2c7c7ec480.png",
+        "bgUrl": "https:\/\/transsnet-app-images-prod.s3.eu-west-1.amazonaws.com\/20220405\/624c18b2f5ef8e2c7c7ec481.png"
+    },
+    {
+        "bankCode": "000015",
+        "bankName": "Zenith Bank",
+        "bankUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/16824120068660-105.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-dev.s3.amazonaws.com\/activity\/168241200943810-720.png"
+    },
+    {
+        "bankCode": "100018",
+        "bankName": "ZENITH Mobile",
+        "bankUrl": "https:\/\/s3-ap-southeast-1.amazonaws.com\/transsnet-android-upload-dev\/bankicon\/ZENITH+Mobile.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/ZENITH_Mobile.png"
+    },
+    {
+        "bankCode": "100025",
+        "bankName": "Zinternet - KongaPay",
+        "bankUrl": "https:\/\/transsnet-android-upload-image-prod.s3.eu-west-1.amazonaws.com\/activity\/163186527212215-bank%20account.png",
+        "bgUrl": "https:\/\/transsnet-android-upload-image-prod.s3-eu-west-1.amazonaws.com\/bankbg\/ng\/default-bank-bg.png"
+    }
+]

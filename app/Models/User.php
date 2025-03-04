@@ -174,7 +174,7 @@ class User extends Authenticatable
         if (isset($nameParts[1])) {
             $alias .= substr($nameParts[1], 0, 1);
         }
-        return "https://via.placeholder.com/90/FF0000/FFFFFF/?text={$alias}";
+        return "https://placehold.co/90/FF0000/FFFFFF/?text={$alias}";
         // $firstLetter = strtoupper(substr($this->username, 0, 1));
         // return "https://via.placeholder.com/50/3498db/FFFFFF/?text={$firstLetter}";
     }
@@ -614,6 +614,15 @@ class User extends Authenticatable
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status', 
                         'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name', 
                         DB::raw('"funding" as type'), DB::raw('"vastel" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
+                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                    ])
+            )
+            ->unionAll(
+                DB::table('palm_pay_transactions')
+                    ->select([
+                        'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status', 
+                        'api_status as vendor_status', DB::raw('"bank" as subscribed_to'), 'reference_id as plan_name', 
+                        DB::raw('"funding" as type'), DB::raw('"Palmpay" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
                         DB::raw('"Wallet Topup" as title'), 'created_at'
                     ])
             );

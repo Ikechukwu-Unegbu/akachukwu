@@ -12,15 +12,13 @@ use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
 
 class UserAccountNumbersCard extends Component
 {
-
-
     public User $user;
 
-    public $virtualAccountService;
+    public $virtualAccountServices = [];
 
     public function mount()
     {
-        $this->virtualAccountService = GenerateRemainingAccounts::$virtualAccountService;
+        $this->virtualAccountServices = GenerateRemainingAccounts::$virtualAccountService;
     }
 
 

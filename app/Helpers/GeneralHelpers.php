@@ -86,7 +86,9 @@ class GeneralHelpers{
         }
     }
 
-
-    
-
+    public static function randomDelay($seconds = 10) : void
+    {
+        $delay = rand(1, $seconds);
+        sleep($delay);
+    }
 }
