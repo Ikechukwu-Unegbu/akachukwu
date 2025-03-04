@@ -240,8 +240,10 @@
                             <div
                                 class="flex items-center justify-between p-3 bg-gray-100 dark:bg-gray-800 rounded-lg cursor-pointer">
                                 <div class="flex items-center space-x-3">
-                                    <div class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
-                                       <i class="fa fa-wallet dark:text-white"></i>
+                                    <div
+                                        class="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                                        <img src="{{ auth()->user()->profilePicture }}" alt="Payment Icon"
+                                            class="w-4 h-4 text-gray-400">
                                     </div>
                                     <p class="text-gray-900 dark:text-white">Total Amount
                                         (₦{{ number_format($amount + $transactionFee, 2) }})
@@ -294,38 +296,32 @@
                         </div>
                     </div>
                     @endif
-                    <div class="text-center p-6 {{ ($transactionStatusModal) ? 'hidden' : '' }}">
-                        <div>
-                            <div wire:loading wire:target="handleInitiateTransactionPin" class="dark:text-white">
-                                <p ><i class="fa fa-circle-notch fa-spin"></i> Processing...</p>
-                            </div>
+                  
+                    <div class="text-center p-6 {{ ($transactionStatusModal) ? 'hidden' : '' }} {{ ($initiateTransactionPin || $transactionStatusModal || $initiatePreviewTransaction || $initiateTransferAmount) ? 'flex items-center space-x-4' : '' }}">
+                        <div wire:loading wire:target="handleInitiateTransactionPin" class="dark:text-white">
+                            <p ><i class="fa fa-circle-notch fa-spin"></i> Processing...</p>
                         </div>
-                      
-                        <div class="{{ ($initiateTransactionPin || $transactionStatusModal || $initiatePreviewTransaction || $initiateTransferAmount) ? 'flex items-center space-x-4' : '' }}">
-                            @if ($initiateTransactionPin || $transactionStatusModal || $initiatePreviewTransaction || $initiateTransferAmount)
-                            <button 
-                                @if ($handleMethodAction['method'] === 'handleInitiateTransactionPin') wire:loading.remove @endif
-                                wire:target="handleInitiateTransactionPin"
-                                wire:loading.attr="disabled"
-                                @click="$wire.handleCloseTransferMoneyModal"
-                                type="button"
-                                class="w-full text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600  dark:focus:ring-red-800">
-                                  <i class="fa fa-times-circle"></i>  Cancel
-                            </button>
-                            @endif
-    
-                            <button wire:loading.attr="disabled"
-                                @if ($handleMethodAction['method'] === 'handleInitiateTransactionPin') wire:loading.remove @endif
-                                wire:target="{{ $handleMethodAction['method'] }}" type="submit"
-                                class="w-full text-white bg-vastel_blue hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-vastel_blue dark:focus:ring-blue-800">
-                                <span wire:loading.remove wire:target="{{ $handleMethodAction['method'] }}">
-                                    {{ $handleMethodAction['action'] }}
-                                </span>
-                                <span wire:loading wire:target="{{ $handleMethodAction['method'] }}">
-                                    <i class="fa fa-circle-notch fa-spin text-sm"></i>
-                                </span>
-                            </button>                        
-                        </div>
+                        @if ($initiateTransactionPin || $transactionStatusModal || $initiatePreviewTransaction || $initiateTransferAmount)
+                        <button 
+                            wire:loading.attr="disabled"
+                            @click="$wire.handleCloseTransferMoneyModal"
+                            type="button"
+                            class="w-full text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600  dark:focus:ring-red-800">
+                              <i class="fa fa-times-circle"></i>  Cancel
+                        </button>   
+                        @endif
+
+                        <button wire:loading.attr="disabled"
+                            @if ($handleMethodAction['method'] === 'handleInitiateTransactionPin') wire:loading.remove @endif
+                            wire:target="{{ $handleMethodAction['method'] }}" type="submit"
+                            class="w-full text-white bg-vastel_blue hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-vastel_blue dark:focus:ring-blue-800">
+                            <span wire:loading.remove wire:target="{{ $handleMethodAction['method'] }}">
+                                {{ $handleMethodAction['action'] }}
+                            </span>
+                            <span wire:loading wire:target="{{ $handleMethodAction['method'] }}">
+                                <i class="fa fa-circle-notch fa-spin text-sm"></i>
+                            </span>
+                        </button>                        
                     </div>
                 </form>
             @endif
