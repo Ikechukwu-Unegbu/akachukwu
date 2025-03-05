@@ -38,16 +38,18 @@
                         <p class="text-sm text-gray-500">{{ Str::title($transaction->type) }}: {{ $transaction->subscribed_to }}</p>
                         @endif--}}
                         @if ($transaction->type !== 'funding')
-                            @if ($transaction->type === 'user')
-                                <p class="text-sm text-gray-500">
-                                    User: {{ \App\Models\User::find($transaction->subscribed_to)?->name ?? 'Unknown User' }}
-                                </p>
-                            @else
-                                <p class="text-sm text-gray-500">
-                                    {{ Str::title($transaction->type) }}: {{ $transaction->subscribed_to }}
-                                </p>
-                            @endif
+                            @php
+                                $moneyTransfer = \App\Models\MoneyTransfer::find($transaction->id);
+                                $subscribedTo = \App\Models\User::find($transaction->subscribed_to)?->name
+                                    ?? ($moneyTransfer && $moneyTransfer->account_number 
+                                        ? $moneyTransfer->account_number . " (" . $moneyTransfer->bank_name . ")" 
+                                        : $transaction->subscribed_to);
+                            @endphp
+                            <p class="text-sm text-gray-500">
+                                {{ Str::title($transaction->type) }}: {{ $subscribedTo }}
+                            </p>
                         @endif
+                    
 
                         @if ($transaction->type === 'funding')
                             <a class="text-vastel_blue text-sm">{{ $transaction->transaction_id }}</a>
