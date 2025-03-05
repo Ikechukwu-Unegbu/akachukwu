@@ -146,7 +146,13 @@
                                 </th>
                                 <td> <a href="{{route('admin.hr.user.show', [$transaction->user_name])}}">{{ $transaction->user_name }}</a> </td>
                                 <td>₦{{ $transaction->amount }}</td>
-                                <td>{{ Str::replace('_', ' ', Str::title($transaction->utility)) }}</td>
+                                <td>
+                                    @if ($transaction->utility === 'money_transfer')
+                                        {{ $transaction->type === 'external' ? 'Bank' : 'Intra' }} Transfer
+                                    @else
+                                    {{ Str::replace('_', ' ', Str::title($transaction->utility)) }}
+                                    @endif
+                                </td>
                                 <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $transaction->status === 1 ? 'success' : ($transaction->status === 0 ? 'danger' : 'warning') }}">

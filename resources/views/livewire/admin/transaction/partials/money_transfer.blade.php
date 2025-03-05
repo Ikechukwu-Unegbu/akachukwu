@@ -38,6 +38,7 @@
             <div class="col-lg-8 col-md-8">{{ $transactionDetails?->sender_balance_after ? "₦ {$transactionDetails?->sender_balance_after}" : 'N/A' }}</div>
         </div>
         <hr />
+        @if ($transactionDetails->type === 'internal')
         <div class="row">
             <div class="col-lg-4 col-md-4 label ">Recipient</div>
             <div class="col-lg-8 col-md-8">{{ $transactionDetails?->receiver->name }}</div>
@@ -49,6 +50,21 @@
         <div class="row">
             <div class="col-lg-4 col-md-4 label ">Recipient (BA)</div>
             <div class="col-lg-8 col-md-8">{{ $transactionDetails?->recipient_balance_after ? "₦ {$transactionDetails?->recipient_balance_after}" : 'N/A' }}</div>
-        </div>       
+        </div>
+        @endif
+        @if ($transactionDetails->type === 'external')
+        <div class="row">
+            <div class="col-lg-4 col-md-4 label ">Bank</div>
+            <div class="col-lg-8 col-md-8">{{ $transactionDetails?->bank_name }}</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 label ">Account No.</div>
+            <div class="col-lg-8 col-md-8">{{ $transactionDetails?->account_number }}</div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 label ">Amount</div>
+            <div class="col-lg-8 col-md-8">₦{{ number_format($transactionDetails?->amount, 2) }}</div>
+        </div>
+        @endif
     </div>
 </div>

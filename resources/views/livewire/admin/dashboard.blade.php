@@ -60,6 +60,12 @@
                     <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-12">
                         <x-admin.dashboard-card title="Resellers" :data=$resellers_count icon="bi-people" />
                     </div>
+                     <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-12">
+                        <x-admin.dashboard-card title="Intra Transfer" currency="₦" :data=$vastel_transfer_count icon="bi-cash" />
+                    </div>
+                     <div class="col-sm-4 col-md-4 col-lg-4 col-xl-4 col-12">
+                        <x-admin.dashboard-card title="Bank Transfer" currency="₦" :data=$bank_transfer_count icon="bi-cash" />
+                    </div>
 
                     {{-- @foreach ($vendors as $vendor)
                         @foreach ($vendor->balances as $balance)

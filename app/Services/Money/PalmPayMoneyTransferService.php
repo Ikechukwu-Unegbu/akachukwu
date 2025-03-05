@@ -114,7 +114,7 @@ class PalmPayMoneyTransferService extends BasePalmPayService
             if (property_exists($response, 'data') && $response->data?->message === 'success') {
                 $transaction->update([
                     'status'          => $response->data->status,
-                    'transfer_status' => static::ORDER_STATUS_PAYING,
+                    'transfer_status' => static::ORDER_STATUS_SUCCESS,
                     'api_response'    => json_encode($response),
                 ]);
 

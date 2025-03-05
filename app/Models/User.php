@@ -538,15 +538,30 @@ class User extends Authenticatable
                         END as utility'),
                         DB::raw('IF(user_id = ' . (int)$userId . ' OR recipient = ' . (int)$userId . ', recipient, user_id) as subscribed_to'),
                         DB::raw('"Transfer" as plan_name'), 
-                        DB::raw('"user" as type'), 
+                        // DB::raw('"user" as type'), 
+                        DB::raw('CASE 
+                            WHEN type = "internal" THEN "User" 
+                            WHEN type = "external" THEN "Account No." 
+                            ELSE "N/A" 
+                        END as type'),
                         // DB::raw('"transfer" as utility'), 
                         DB::raw('CASE 
                             WHEN user_id = ' . (int)$userId . ' THEN "Transfer" 
                             WHEN recipient = ' . (int)$userId . ' THEN "Receive" 
                             ELSE "N/A" 
                         END as utility'),
-                        DB::raw('"fa-exchange-alt" as icon'), 
-                        DB::raw('"Money Transfer" as title'), 
+                        // DB::raw('"fa-exchange-alt" as icon'), 
+                        DB::raw('CASE 
+                            WHEN type = "internal" THEN "fa-exchange-alt" 
+                            WHEN type = "external" THEN "fa-bank"
+                            ELSE "N/A" 
+                        END as icon'),
+                        // DB::raw('"Money Transfer" as title'), 
+                        DB::raw('CASE 
+                            WHEN type = "internal" THEN "Intra" 
+                            WHEN type = "external" THEN "Bank" 
+                            ELSE "N/A" 
+                        END as title'),
                         'created_at'
                     ])
                     // ->where(function ($query) use ($userId) {
