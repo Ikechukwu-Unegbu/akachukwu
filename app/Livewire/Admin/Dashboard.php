@@ -4,6 +4,7 @@ namespace App\Livewire\Admin;
 
 use App\Models\Data\DataTransaction;
 use App\Models\Education\ResultCheckerTransaction;
+use App\Models\MoneyTransfer;
 use App\Models\User;
 use App\Models\Utility\AirtimeTransaction;
 use App\Models\Utility\CableTransaction;
@@ -73,7 +74,9 @@ class Dashboard extends Component
             'electricity_sale'      =>    ElectricityTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
             'resellers_count'       =>    User::whereUserLevel('reseller')->count(),
             'result_checker_count'  =>    ResultCheckerTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
-            'vendors'               =>    Vendor::with('balances')->get()
+            'vendors'               =>    Vendor::with('balances')->get(),
+            'vastel_transfer_count' =>    MoneyTransfer::where('type', 'internal')->whereDate('created_at', now()->toDateString())->sum('amount'),
+            'bank_transfer_count'   =>    MoneyTransfer::where('type', 'external')->whereDate('created_at', now()->toDateString())->sum('amount'),
         ]);
     }
 }

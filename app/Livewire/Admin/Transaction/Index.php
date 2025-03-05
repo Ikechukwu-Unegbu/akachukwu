@@ -23,6 +23,7 @@ use App\Models\Payment\PayVesselTransaction;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Vendor\QueryVendorTransaction;
 use App\Models\Education\ResultCheckerTransaction;
+use App\Models\PalmPayTransaction;
 
 class Index extends Component
 {
@@ -223,7 +224,8 @@ class Index extends Component
             'monnify'        =>  MonnifyTransaction::class,
             'payvessel'      =>  PayVesselTransaction::class,
             'vastel'         =>  VastelTransaction::class,
-            'money_transfer' => MoneyTransfer::class
+            'money_transfer' => MoneyTransfer::class,
+            'palmpay'        =>  PalmPayTransaction::class
         ];
 
         // Check if the provided type exists in the mapping
@@ -272,7 +274,7 @@ class Index extends Component
                 UNION ALL
                 SELECT id, reference_id as transaction_id, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM vastel_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, user_id, amount, status, transfer_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "money_transfer" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM money_transfers
+                SELECT id, reference_id as transaction_id, user_id, amount, status, transfer_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, type, "money_transfer" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM money_transfers 
             ) as transactions
         '))->join('users', 'transactions.user_id', '=', 'users.id')
             ->select('transactions.*', 'users.username as user_name')
