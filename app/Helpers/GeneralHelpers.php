@@ -1,11 +1,13 @@
 <?php 
 namespace App\Helpers;
 
-use App\Models\Referral;
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Referral;
+use App\Models\SiteSetting;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class GeneralHelpers{
         /**
@@ -90,5 +92,26 @@ class GeneralHelpers{
     {
         $delay = rand(1, $seconds);
         sleep($delay);
+    }
+
+    public static function minimumTransaction($amount) : bool
+    {
+        $siteSetting = SiteSetting::find(1);
+        if ($siteSetting && $siteSetting->minimum_transfer > $amount) {
+            return false;
+        }
+        return true;
+    }
+
+    public static function dailyTransactionLimit($model, $amount, $userId)
+    {
+        $settings = SiteSetting::first();
+        $dailyLimit = $settings->maximum_transfer;
+
+        $totalSpentToday = $model::where('user_id', $userId)
+            ->whereDate('created_at', Carbon::today())
+            ->sum('amount');
+
+        return ($totalSpentToday + $amount) <= $dailyLimit;
     }
 }

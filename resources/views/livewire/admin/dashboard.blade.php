@@ -267,7 +267,7 @@
 
         <!-- links end -->
 
-        <div class="card">
+        <div class="card" wire:ignore>
             <div class="card-body">
                 <div>
                     <canvas id="usersChart"></canvas>
@@ -276,10 +276,8 @@
         </div>
     </section>
 </div>
-@push('title') Dashboard @endpush
 @push('scripts')
 <script src="{{ asset('admin-pages/js/chart.js') }}"></script>
-
 <script>
     var __yMonths =  {{ Js::from($months) }};
     var __xMonthlyUsersData =  {{ Js::from($registeredUser) }};
@@ -305,3 +303,4 @@
     );
 </script>
 @endpush
+@push('title') Dashboard @endpush

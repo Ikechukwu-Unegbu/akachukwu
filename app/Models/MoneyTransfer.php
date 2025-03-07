@@ -27,4 +27,17 @@ class MoneyTransfer extends Model
         return $this->belongsTo(User::class, 'recipient');
     }
 
+    public function scopeSearch($query, $search)
+    {
+        return $query->when($search, function ($query, $search) {
+            $query->where('transaction_id', 'LIKE', "%{$search}%")
+                ->where('trx_ref', 'LIKE', "%{$search}%")
+                ->orWhereHas(['sender', 'receiver'], function ($userQuery) use ($search) {
+                    $userQuery->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('username', 'LIKE', "%{$search}%")
+                            ->orWhere('phone', 'LIKE', "%{$search}%")
+                            ->orWhere('email', 'LIKE', "%{$search}%");
+                });
+        });
+    }
 }

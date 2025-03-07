@@ -61,7 +61,7 @@
                 </form>
             </div>
         </div>
-        @if ($status === 'pending')
+        {{-- @if ($status === 'pending')
             <div class="card mt-4">
                 <div class="card-body p-3">
                     <button class="btn btn-primary w-25" data-bs-toggle="modal"
@@ -97,7 +97,7 @@
                     </div>
                 </div>
             </div>
-        @endif
+        @endif --}}
         <div class="card">
             <div class="card-header">
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage"
@@ -136,13 +136,13 @@
                         @forelse ($transactions as $transaction)
                             <tr>
                                 <th scope="row">
-                                    @if ($status === 'pending')
+                                    {{-- @if ($status === 'pending')
                                         <div class="form-check">
                                             <input class="form-check-input form-check-lg" type="checkbox" wire:model="selectedUser.{{ $transaction->utility }}.{{ $transaction->transaction_id }}">
                                         </div>
                                     @else
-                                        {{ $loop->index + $transactions->firstItem() }}
-                                    @endif
+                                    @endif --}}
+                                    {{ $loop->index + $transactions->firstItem() }}☻
                                 </th>
                                 <td> <a href="{{route('admin.hr.user.show', [$transaction->user_name])}}">{{ $transaction->user_name }}</a> </td>
                                 <td>₦{{ $transaction->amount }}</td>

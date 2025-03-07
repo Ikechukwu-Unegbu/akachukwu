@@ -6,14 +6,16 @@ use App\Models\Bank;
 use App\Models\User;
 use Livewire\Component;
 use App\Models\SiteSetting;
+use App\Models\MoneyTransfer;
+use App\Helpers\GeneralHelpers;
 use Livewire\Attributes\Validate;
 use Illuminate\Support\Facades\Auth;
 use App\Services\Money\PalmPayService;
 use App\Services\Account\UserPinService;
 use Illuminate\Validation\ValidationException;
+use App\Services\Money\PalmPayMoneyTransferService;
 use App\Services\Payment\Transfer\VastelMoneyTransfer;
 use App\Http\Requests\MoneyTransfer\InitiateTransferRequest;
-use App\Services\Money\PalmPayMoneyTransferService;
 
 class MoneyTransferComponent extends Component
 {
@@ -41,7 +43,7 @@ class MoneyTransferComponent extends Component
     public $vastelTransactionStatus = false;
     public $transactionStatus = false;
     public $transactionStatusModal = false;
-
+    public $settings;
     /**
      * Constructor to initialize the VastelMoneyTransfer service.
      */
@@ -57,6 +59,7 @@ class MoneyTransferComponent extends Component
     {
         $this->pin = array_fill(1, 4, '');
         $this->transactionFee = optional(SiteSetting::find(1))->transfer_charges ?? 50;
+        $this->settings =  SiteSetting::find(1);
     }
 
     /**
@@ -83,9 +86,25 @@ class MoneyTransferComponent extends Component
     public function handleMoneyTransfer()
     {
         $this->validate([
-            'amount' => 'required|numeric|min:50|regex:/^\d+(\.\d{1,2})?$/',
-        ], [
-            'amount.gte' => 'The amount must be above 50.',
+            'amount' => [
+                'required',
+                'numeric',
+                'regex:/^\d+(\.\d{1,2})?$/',
+                function ($attribute, $value, $fail) {
+                    $user = auth()->user();
+                    if ($value > $user->account_balance) {
+                        $fail("The {$attribute} exceeds your available balance of ₦" . number_format($user->account_balance, 2));
+                    }
+
+                    if (!GeneralHelpers::minimumTransaction($value)) {
+                        $fail("The minimum transfer amount is ₦" . number_format($this->settings->minimum_transfer, 2));
+                    }
+
+                    if (!GeneralHelpers::dailyTransactionLimit(MoneyTransfer::class, $value, Auth::id())) {
+                        $fail("You have exceeded your daily transaction limit.");
+                    }
+                }
+            ],
         ]);
 
         $data = [
@@ -165,7 +184,7 @@ class MoneyTransferComponent extends Component
         $this->bank = "";
     }
 
-     /**
+    /**
      * Handles account number verification.
      */
     public function handleVerifyAccountNumber()
@@ -231,6 +250,14 @@ class MoneyTransferComponent extends Component
                     $user = auth()->user();
                     if ($value > $user->account_balance) {
                         $fail("The {$attribute} exceeds your available balance of ₦" . number_format($user->account_balance, 2));
+                    }
+
+                    if (!GeneralHelpers::minimumTransaction($value)) {
+                        $fail("The minimum transfer amount is ₦" . number_format($this->settings->minimum_transfer, 2));
+                    }
+
+                    if (!GeneralHelpers::dailyTransactionLimit(MoneyTransfer::class, $value, Auth::id())) {
+                        $fail("You have exceeded your daily transaction limit.");
                     }
                 }
             ],

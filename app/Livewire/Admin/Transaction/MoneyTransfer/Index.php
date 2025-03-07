@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Livewire\Admin\Transaction\Electricity;
+namespace App\Livewire\Admin\Transaction\MoneyTransfer;
 
+use App\Models\MoneyTransfer;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
-use App\Services\CalculateDiscount;
-use App\Models\Utility\ElectricityTransaction;
 
 class Index extends Component
 {
@@ -22,7 +21,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->authorize('view electricity transaction');
+        $this->authorize('view money transaction');
     }
 
     public function performReimbursement()
@@ -33,8 +32,9 @@ class Index extends Component
 
         return DB::transaction(function () {
             foreach (array_keys(array_filter($this->transactions)) as $key => $value) {
-                $transaction = ElectricityTransaction::where('id', $value)->first();
-                $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
+                $transaction = MoneyTransfer::findOrFail($value);
+
+                $amount = $transaction->amount+$transaction->charges;
 
                 $user = User::where('id', $transaction->user_id)->lockForUpdate()->first();
 
@@ -50,27 +50,34 @@ class Index extends Component
             $this->dispatch('success-toastr', ['message' => "Transaction {$message} Successfully"]);
             session()->flash('success', "Transaction {$message} Successfully");
             $this->redirect(url()->previous());
-        });        
+        });
     }
 
     private function debited($transaction, $user, $amount) : void
     {
         $user->account_balance -= $amount;
         $user->save();
-        $transaction->debit();
+        $transaction->update([
+            'status'            =>  0,
+            'transfer_status'   =>  'failed'
+        ]);
     }
 
     private function refunded($transaction, $user, $amount) : void
     {
         $user->account_balance += $amount;
         $user->save();
-        $transaction->refund();
+        $transaction->update([
+            'status'            =>  2,
+            'transfer_status'   =>  'refunded',
+            'balance_after_refund' => $amount,
+        ]);
     }
-    
+
     public function render()
     {
-        return view('livewire.admin.transaction.electricity.index', [
-            'electricity_transactions' => ElectricityTransaction::with('user')->search($this->search)->latest('created_at')->paginate($this->perPage)
+        return view('livewire.admin.transaction.money-transfer.index', [
+            'money_transactions' =>  MoneyTransfer::with(['sender', 'receiver'])->search($this->search)->latest('created_at')->paginate($this->perPage)
         ]);
     }
 }
