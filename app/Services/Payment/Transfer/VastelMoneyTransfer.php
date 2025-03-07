@@ -44,17 +44,18 @@ class VastelMoneyTransfer{
 
     public function transfer(array $data)
     {
-        if (!$this->isMoneyTransferAvailable()) {
-            return ApiHelper::sendError([], 'Service Not Available!');
-        }
-                
         try {
+            /** Random Delay */
+            GeneralHelpers::randomDelay();
+
+            /** Perform all validations */
+            $validationResponse = $this->validateTransaction(Auth::user(), $data['amount']);
+            if ($validationResponse) {
+                return $validationResponse;
+            }
 
             DB::beginTransaction();
 
-            /** Random Delay */
-            self::randomDelay();
-            
             // Lock the sender's account for update
             $sender = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
@@ -155,10 +156,21 @@ class VastelMoneyTransfer{
         return $duplicateTransaction;
     }
 
-    private static function randomDelay()
+    private function validateTransaction(User $user, float $totalAmount)
     {
-        $delay = rand(1, 10);
-        sleep($delay);
+        if (!$this->isMoneyTransferAvailable()) {
+            return ApiHelper::sendError([], 'Service Not Available!');
+        }
+
+        if (!GeneralHelpers::minimumTransaction($totalAmount)) {
+            return ApiHelper::sendError([], "The amount is below the minimum transfer limit.");
+        }
+
+        if (!GeneralHelpers::dailyTransactionLimit(MoneyTransfer::class, $totalAmount, $user->id)) {
+            return ApiHelper::sendError([], "You have exceeded your daily transaction limit.");
+        }
+
+        return null;
     }
 }
 

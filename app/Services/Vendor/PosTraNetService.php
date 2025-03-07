@@ -123,8 +123,8 @@ class PosTraNetService
                         'user_id' => Auth::id(), 
                         'vendor_id' => (int) self::$vendor->id, 
                         'network_id' => (int) $network->network_id, 
-                        'mobile_number' => $mobileNumber,
-                        'amount' => number_format($amount, 2, '.', '')
+                        // 'mobile_number' => $mobileNumber,
+                        // 'amount' => number_format($amount, 2, '.', '')
                     ],
                 );
                 

@@ -59,10 +59,17 @@
                                 {{-- <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Noteworthy technology acquisitions 2021</h5>
                             <p class="font-normal text-gray-700 dark:text-gray-400">Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.</p> --}}
                             </div>
-                            <div class="mt-2">
+                            <div class="mt-2"  x-data="{ amount: @entangle('amount').defer }">
                                 <label for="" class="dark:text-white mb-3">Enter Amount</label>
-                                <input type="number" placeholder="Enter Amount" id="amount_input" wire:model="amount"
-                                    class="w-full p-2 border-none rounded-lg shadow focus:ring-vastel_blue focus:border-vastel_blue dark:bg-gray-700 dark:border-white dark:placeholder-white dark:text-white">
+                                <input 
+                                    type="text" 
+                                    placeholder="Enter Amount" 
+                                    id="amount_input" 
+                                    x-model="amount"
+                                    class="w-full p-2 border-none rounded-lg shadow focus:ring-vastel_blue focus:border-vastel_blue dark:bg-gray-700 dark:border-white dark:placeholder-white dark:text-white"
+                                    wire:model.debounce.500ms="amount" 
+                                    @input="amount = amount.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1'); if (amount.includes('.')) { let parts = amount.split('.'); if (parts[1] && parts[1].length > 2) { amount = parts[0] + '.' + parts[1].slice(0,2); } }"
+                                    >
                                 @error('amount')
                                     <span
                                         class="text-red-500 text-sm font-bold flex justify-center">{{ $message }}</span>

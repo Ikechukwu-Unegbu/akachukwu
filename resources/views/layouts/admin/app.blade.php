@@ -39,6 +39,7 @@
     </style>
     <livewire:scripts />
     <livewire:styles />
+    @stack('styles')
 </head>
 
 <body>

@@ -14,7 +14,9 @@ use App\Services\Vendor\GladTidingService;
 use App\Services\Vendor\PosTraNetService;
 use App\Services\Vendor\VTPassService;
 use Livewire\Component;
+use Livewire\Attributes\Lazy;
 
+#[Lazy]
 class Dashboard extends Component
 {
     public $registeredUser = [];
@@ -36,6 +38,15 @@ class Dashboard extends Component
 
         $this->allVendorBalance();
         
+    }
+
+    public function updated()
+    {
+        // Send updated chart data to JavaScript after Livewire update
+        $this->dispatch('updateChart', [
+            'months' => $this->months,
+            'registeredUser' => $this->registeredUser
+        ]);
     }
 
     public function allVendorBalance()
@@ -62,6 +73,11 @@ class Dashboard extends Component
         $this->gladBalance = ($gladBalance?->status) ? $gladBalance->response : 'N/A';
         $this->total_wallet = \App\Models\User::sum('account_balance');
 
+    }
+
+    public function placeholder()
+    {
+        return view('livewire.component.placeholder');
     }
 
     public function render()

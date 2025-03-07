@@ -181,42 +181,17 @@ class BasePalmPayService
         return $referenceId;
     }
 
-    private static function minimumTransaction($amount) : bool
-    {
-        $siteSetting = SiteSetting::find(1);
-        if ($siteSetting && $siteSetting->minimum_transfer > $amount) {
-            return false;
-        }
-        return true;
-    }
-
-    private static function dailyTransactionLimit($amount, $userId)
-    {
-        $settings = SiteSetting::first();
-        $dailyLimit = $settings->maximum_transfer;
-
-        $totalSpentToday = PalmPayTransaction::where('user_id', $userId)
-            ->whereDate('created_at', Carbon::today())
-            ->sum('amount');
-
-        if (($totalSpentToday + $amount) > $dailyLimit) {
-            return false;
-        }
-
-        return true;
-    }
-
     protected static function validateTransaction(User $user, float $totalAmount)
     {
         if (!$user->isKycDone()) {
             return ApiHelper::sendError([], "To continue enjoying our services, please complete your KYC by providing your BVN or NIN.");
         }
 
-        if (!self::minimumTransaction($totalAmount)) {
+        if (!GeneralHelpers::minimumTransaction($totalAmount)) {
             return ApiHelper::sendError([], "The amount is below the minimum transfer limit.");
         }
 
-        if (!self::dailyTransactionLimit($totalAmount, $user->id)) {
+        if (!GeneralHelpers::dailyTransactionLimit(MoneyTransfer::class, $totalAmount, $user->id)) {
             return ApiHelper::sendError([], "You have exceeded your daily transaction limit.");
         }
 

@@ -8,6 +8,7 @@ use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SystemUser\BlacklistController;
 use App\Http\Controllers\SystemUser\DashboardController;
+use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemUser\UserCrdDbtController;
@@ -70,7 +71,7 @@ Route::group(['prefix' => 'admin'], function () {
     
     Route::group(['middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
         ## Dashboard Route
-        Route::get('dashboard', App\Livewire\Admin\Dashboard::class)->name('admin.dashboard');
+        Route::get('dashboard', AdminDashboardController::class)->name('admin.dashboard');
 
         ## Utility Routes
         ## Utility - Data Routes 
@@ -131,6 +132,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('transaction/resellers/{reseller:id}/delete', App\Livewire\Admin\Transaction\Reseller\Delete::class)->name('admin.transaction.reseller.delete');
 
         Route::get('transaction/query-vendors', App\Livewire\Admin\Transaction\QueryTransaction::class)->name('admin.transaction.query-vendor');
+
+        ## Transaction - Money Transfer
+        Route::get('transaction/money-transfer', App\Livewire\Admin\Transaction\MoneyTransfer\Index::class)->name('admin.transaction.money-transfer');
+        Route::get('transaction/money-transfer/{moneyTransfer:id}/show', App\Livewire\Admin\Transaction\MoneyTransfer\Show::class)->name('admin.transaction.money-transfer.show');
 
         ## API Routes
         ## API - Vendor

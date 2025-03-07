@@ -2,8 +2,11 @@
 
 namespace App\Livewire\Admin\Transaction\Airtime;
 
+use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
+use App\Services\CalculateDiscount;
 use App\Models\Utility\AirtimeTransaction;
 
 class Index extends Component
@@ -28,34 +31,40 @@ class Index extends Component
             return $this->dispatch('error-toastr', ['message' => "No transactions selected. Please choose at least one transaction to proceed with the reimbursement."]);
         }
 
-        if ($this->action === 'debit') {
-
+        return DB::transaction(function () {
             foreach (array_keys(array_filter($this->transactions)) as $key => $value) {
                 $transaction = AirtimeTransaction::where('id', $value)->first();    
-                $amount = $transaction->amount;
-                $transaction->user->setTransaction($amount);
-                $transaction->debit();
+                $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
+
+                $user = User::where('id', $transaction->user_id)->lockForUpdate()->first();
+
+                if ($this->action === 'debit')
+                    $this->debited($transaction, $user, $amount);   
+
+                if ($this->action === 'refund') 
+                    $this->refunded($transaction, $user, $amount);
             }
 
-            $this->dispatch('success-toastr', ['message' => 'Transaction Debited Successfully']);
-            session()->flash('success', 'Transaction Debited Successfully');
+            $message = ($this->action === 'debit') ? 'Debited' : ($this->action === 'refund' ? 'Refunded' : '');
+
+            $this->dispatch('success-toastr', ['message' => "Transaction {$message} Successfully"]);
+            session()->flash('success', "Transaction {$message} Successfully");
             $this->redirect(url()->previous());
-        }
+        });        
+    }
 
-        if ($this->action === 'refund') {
+    private function debited($transaction, $user, $amount) : void
+    {
+        $user->account_balance -= $amount;
+        $user->save();
+        $transaction->debit();
+    }
 
-            foreach (array_keys(array_filter($this->transactions)) as $key => $value) {
-                $transaction = AirtimeTransaction::where('id', $value)->first();    
-                $amount = $transaction->amount;
-                $transaction->user->setAccountBalance($amount);
-                $transaction->refund();
-            }
-
-            $this->dispatch('success-toastr', ['message' => 'Transaction Refunded Successfully']);
-            session()->flash('success', 'Transaction Refunded Successfully');
-            $this->redirect(url()->previous());
-        }       
-        
+    private function refunded($transaction, $user, $amount) : void
+    {
+        $user->account_balance += $amount;
+        $user->save();
+        $transaction->refund();
     }
 
     public function render()
