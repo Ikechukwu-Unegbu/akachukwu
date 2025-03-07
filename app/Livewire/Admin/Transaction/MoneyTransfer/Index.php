@@ -21,7 +21,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->authorize('view money transaction');
+        // $this->authorize('view money transaction');
     }
 
     public function performReimbursement()

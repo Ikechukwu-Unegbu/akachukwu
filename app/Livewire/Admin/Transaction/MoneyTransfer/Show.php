@@ -13,7 +13,7 @@ class Show extends Component
     public function mount(MoneyTransfer $moneyTransfer)
     {
         $this->moneyTransfer = $moneyTransfer;
-        $this->authorize('view money transaction');
+        // $this->authorize('view money transaction');
     }
 
     public function render()
