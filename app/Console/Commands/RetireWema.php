@@ -33,17 +33,19 @@ class RetireWema extends Command
         VirtualAccount::where('bank_name', 'Wema bank')->delete();
 
         $this->info('Creating palmpay now.');
-        User::whereDoesntHave('virtualAccounts', function ($query) {
-            $query->where('bank_name', 'Palmpay');
-        })->chunk(20, function ($users) {
-            foreach ($users as $user) {
-                // Process each user
-                // Example: Log or perform an action
-                $palmpayBase = new BasePalmPayService();
-                $palmpayBase->createSpecificVirtualAccount($user);
-                $this->info(' a chunk is done');
-            }
-        });
+        if(app()->environment() == 'production'){
+            User::whereDoesntHave('virtualAccounts', function ($query) {
+                $query->where('bank_name', 'Palmpay');
+            })->chunk(50, function ($users) {
+                foreach ($users as $user) {
+                    // Process each user
+                    // Example: Log or perform an action
+                    $palmpayBase = new BasePalmPayService();
+                    $palmpayBase->createSpecificVirtualAccount($user);
+                    $this->info(' a chunk is done');
+                }
+            });
+        }
         $this->info('all done');
 
     }
