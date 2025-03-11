@@ -43,6 +43,8 @@ class RetireWema extends Command
                     $palmpayBase = new BasePalmPayService();
                     $palmpayBase->createSpecificVirtualAccount($user);
                     $this->info(' a chunk is done');
+
+                    sleep(5);
                 }
             });
         }
