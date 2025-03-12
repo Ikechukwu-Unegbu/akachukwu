@@ -211,6 +211,8 @@ class BasePalmPayService
             } elseif (!empty($user->bvn)) {
                 $kycType = 'bvn';
                 $kyc = $user->bvn;
+            }else{
+                return false;
             }
 
             ## Example Payload
