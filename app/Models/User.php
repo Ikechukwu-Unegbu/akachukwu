@@ -674,6 +674,10 @@ class User extends Authenticatable
         return !is_null($this->nin) || !is_null($this->bvn);
     }
 
+    public function scopeIsKYCValidated($query)
+    {
+        return $query->whereNotNull('nin')->orWhereNotNull('bvn');
+    }
     
 
 }

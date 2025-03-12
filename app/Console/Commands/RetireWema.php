@@ -36,13 +36,15 @@ class RetireWema extends Command
         if(app()->environment() == 'production'){
             User::whereDoesntHave('virtualAccounts', function ($query) {
                 $query->where('bank_name', 'Palmpay');
-            })->chunk(50, function ($users) {
+            })
+            ->isKYCValidated()
+            ->chunk(50, function ($users) {
                 foreach ($users as $user) {
                     // Process each user
                     // Example: Log or perform an action
                     $palmpayBase = new BasePalmPayService();
                     $palmpayBase->createSpecificVirtualAccount($user);
-                    $this->info(' a chunk is done');
+                    $this->info(" a chunk is done");
 
                     sleep(5);
                 }

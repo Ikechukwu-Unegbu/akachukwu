@@ -136,7 +136,7 @@ class BasePalmPayService
     protected static function causer($error, $attempt = null) : void
     {
         $log =  [
-            'username' => Auth::user()->username, 
+            'username' => Auth::user()->username ?? '', 
             'Attempts' => ($attempt) ? $attempt : 'Account No. Verification (PalmPay)', 
             'Error' => $error, 
             'dateTime' => date('d-M-Y H:i:s A')
