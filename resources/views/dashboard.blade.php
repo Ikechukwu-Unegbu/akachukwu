@@ -89,9 +89,13 @@
                         <div>
                         <p class="font-semibold">
                             @if (Str::title($transaction->utility) === 'Transfer')
-                                {{-- Perform actions specific to "Transfer" --}}
-                                @if($transaction->user_id == Auth::user()->id)
-                                <span class="text-red">Transfer</span>
+                                @php
+                                    $moneyTransfer = \App\Models\MoneyTransfer::find($transaction->id);
+                                @endphp
+                                @if($moneyTransfer->user_id == Auth::user()->id)
+                                <span class="text-red">
+                                    {{ $moneyTransfer->type === 'external' ? 'Bank' : 'Intra' }} Transfer
+                                </span>
                                 @else 
                                 <span class="text-green">Recieved</span>
                                 @endif 
