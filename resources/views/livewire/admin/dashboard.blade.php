@@ -1,5 +1,9 @@
 <div>
-<style>
+<div wire:loading wire:target="filterByDate" wire:loading.class="d-block">
+    @include('livewire.component.placeholder')
+</div>
+<div wire:loading.remove>
+    <style>
         .card-custom {
             border: 1px solid #ddd;
             border-radius: 10px;
@@ -26,16 +30,22 @@
             color: #007bff;
         }
     </style>
+</div>
     <div class="pagetitle">
         <h1>Dashboard</h1>
-        <nav>
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
-                <li class="breadcrumb-item active">Dashboard</li>
-            </ol>
-        </nav>
+        <div class="d-flex justify-content-between align-items-center">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url('/') }}">Home</a></li>
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+            </nav>
+            <div class="form-group">
+                <input type="date" class="form-control form-control-lg" wire:model.live="filterByDate">
+            </div>
+        </div>
     </div>
-    <section class="section dashboard">
+    <section class="section dashboard" wire:loading.remove>
         <div class="row">
             <div class="col-lg-12">
                 <div class="row">

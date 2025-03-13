@@ -26,6 +26,8 @@ class Dashboard extends Component
     public $postranetBlance;
     public $total_wallet;
 
+    public $filterByDate;
+
     public function mount()
     {
         $months = [];
@@ -38,6 +40,7 @@ class Dashboard extends Component
 
         $this->allVendorBalance();
         
+        // $this->filterByDate = now()->toDateString();
     }
 
     public function updated()
@@ -47,6 +50,11 @@ class Dashboard extends Component
             'months' => $this->months,
             'registeredUser' => $this->registeredUser
         ]);
+    }
+
+    public function updatedFilterByDate()
+    {
+        $this->filterByDate = $this->filterByDate ?: now()->toDateString();
     }
 
     public function allVendorBalance()
@@ -83,16 +91,18 @@ class Dashboard extends Component
     public function render()
     {
         return view('livewire.admin.dashboard', [
-            'customers_count'       =>    User::whereRole('user')->count(),
-            'airtime_sale'          =>    AirtimeTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
-            'data_sale'             =>    DataTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
-            'cable_sale'            =>    CableTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
-            'electricity_sale'      =>    ElectricityTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
+            'customers_count'       =>    User::when($this->filterByDate, function ($query, $filterByDate) {
+                return $query->whereDate('created_at', $filterByDate);
+            })->whereRole('user')->count(),
+            'airtime_sale'          =>    AirtimeTransaction::whereStatus(true)->whereDate('created_at', $this->filterByDate ?? now()->toDateString())->sum('amount'),
+            'data_sale'             =>    DataTransaction::whereStatus(true)->whereDate('created_at', $this->filterByDate ?? now()->toDateString())->sum('amount'),
+            'cable_sale'            =>    CableTransaction::whereStatus(true)->whereDate('created_at', $this->filterByDate ?? now()->toDateString())->sum('amount'),
+            'electricity_sale'      =>    ElectricityTransaction::whereStatus(true)->whereDate('created_at', $this->filterByDate ?? now()->toDateString())->sum('amount'),
             'resellers_count'       =>    User::whereUserLevel('reseller')->count(),
-            'result_checker_count'  =>    ResultCheckerTransaction::whereStatus(true)->whereDate('created_at', now()->toDateString())->sum('amount'),
+            'result_checker_count'  =>    ResultCheckerTransaction::whereStatus(true)->whereDate('created_at', $this->filterByDate ?? now()->toDateString())->sum('amount'),
             'vendors'               =>    Vendor::with('balances')->get(),
-            'vastel_transfer_count' =>    MoneyTransfer::where('type', 'internal')->whereDate('created_at', now()->toDateString())->sum('amount'),
-            'bank_transfer_count'   =>    MoneyTransfer::where('type', 'external')->whereDate('created_at', now()->toDateString())->sum('amount'),
+            'vastel_transfer_count' =>    MoneyTransfer::where('type', 'internal')->whereDate('created_at', $this->filterByDate ?? now()->toDateString())->sum('amount'),
+            'bank_transfer_count'   =>    MoneyTransfer::where('type', 'external')->whereDate('created_at', $this->filterByDate ?? now()->toDateString())->sum('amount'),
         ]);
     }
 }
