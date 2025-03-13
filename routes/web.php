@@ -20,6 +20,8 @@ use App\Http\Controllers\V1\SettingsController;
 use App\Http\Controllers\V1\TransactionController;
 use App\Models\Data\DataPlan;
 use App\Models\User;
+use App\Notifications\WelcomeEmail;
+use Illuminate\Support\Facades\Notification;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,9 @@ use App\Models\User;
 */
 
 Route::get('/ref', function(){
+    $user = User::find(1);
+    
+    Notification::sendNow($user, new WelcomeEmail('345678',$user));
    return view('email');
 });
 
