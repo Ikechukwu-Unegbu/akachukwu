@@ -33,10 +33,7 @@ use App\Models\User;
 */
 
 Route::get('/ref', function(){
-    $user = User::find(1);
-    // $plan = DataPlan::find(1);
-    return $user->getReferredUsersWithEarnings();
-    // return $plan->datanetwork;
+   return view('email');
 });
 
 
