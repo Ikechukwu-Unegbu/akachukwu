@@ -83,6 +83,12 @@
                             <div class="col-lg-3 col-md-4 label ">NIN</div>
                             <div class="col-lg-9 col-md-8">{{ $user->nin}}</div>
                         </div>
+                        @if($user->blocked !== null)
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 label ">blocked At: </div>
+                            <div class="col-lg-9 col-md-8">{{ $user->}}</div>
+                        </div>
+                        @endif 
                     </div>
                 </div>
 
