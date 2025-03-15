@@ -44,12 +44,7 @@ class WelcomeEmail extends Notification
                 'otp' => $this->otp,
             ]
         )->with('message', $this);
-        // return (new MailMessage)
-        //             ->greeting('Hi '.$this->user->name.'!!')
-        //             ->line('Your Vastel Account is ready. Thank you for using Vastel')
-        //             // ->action('Notification Action', url('/'))
-        //             ->line('Your OTP is: '. $this->otp)
-        //             ->line('Once again, thank you for using our application!');
+       
     }
 
     /**

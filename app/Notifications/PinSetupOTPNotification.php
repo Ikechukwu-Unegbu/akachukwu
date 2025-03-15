@@ -41,13 +41,12 @@ class PinSetupOTPNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->subject("OTP Request")
-            ->greeting('Hello ' . $this->user?->name . '!')
-            ->line('You requested to ' . ($this->type === 'pin_reset' ? 'reset your PIN' : 'set up your PIN') . ' for your Vastel account.')
-            ->line('Your One-Time Password (OTP) is: **' . $this->otp . '**')
-            ->line('This OTP is valid for 10 minutes. Please do not share it with anyone for your account security.')
-            ->line('If you did not request this action, please ignore this message or contact our support team.')
-            ->line('Thank you for choosing Vastel!');
+        ->view('emails.pin', [
+            'user' => $this->user,
+            'otp' => $this->otp,
+            'type' => $this->type,
+        ])
+        ->subject("OTP Request");
     }
 
     /**

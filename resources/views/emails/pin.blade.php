@@ -17,31 +17,34 @@
         
         <!-- Main Content -->
         <div style="padding: 24px; color: #1f2937;">
-            <h1 style="font-size: 20px; font-weight: 600; text-align: center; color: #0018A8; margin-bottom: 16px;">
-                Welcome to Vastel
-            </h1>
             
-            <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-                Hi {{ $user->name }}!!
-            </p>
+        
+        <h1 style="font-size: 20px; color: #0018A8; text-align: center; margin-bottom: 16px;">
+            Hello {{ $user->name }}!
+        </h1>
 
-            <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-                Your Vastel Account is ready. Thank you for using Vastel! We’re thrilled to have you on board. With our app, you can easily buy airtime, subscribe to internet services, cable TV, and educational services, send money — all at your fingertips!
-            </p>
+        <!-- Message Content -->
+        <p style="font-size: 14px; line-height: 1.6; color: #333333; margin-bottom: 16px;">
+            You requested to 
+            <strong>{{ $type === 'pin_reset' ? 'reset your PIN' : 'set up your PIN' }}</strong> 
+            for your Vastel account.
+        </p>
 
-            <p style="font-size: 14px; font-weight: 600; color: #0018A8; text-align: center;">
-                Your OTP is: <span style="font-size: 16px; font-weight: bold;">{{ $otp }}</span>
-            </p>
+        <p style="font-size: 14px; font-weight: bold; color: #0018A8; text-align: center; margin-bottom: 16px;">
+            Your One-Time Password (OTP) is:
+        </p>
 
-            <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-                To get started, download the app and explore the various services we offer. If you have any questions, our support team is just a tap away.
-            </p>
+        <p style="font-size: 18px; font-weight: bold; color: #ff0000; text-align: center; background-color: #f8f9fa; padding: 10px; border-radius: 4px;">
+            {{ $otp }}
+        </p>
 
-            <p style="font-size: 14px; font-weight: 600; margin-bottom: 16px;">
-                Once again, thank you for using our application!
-            </p>
+        <p style="font-size: 14px; line-height: 1.6; color: #333333; margin-bottom: 16px;">
+            This OTP is valid for <strong>10 minutes</strong>. Please do not share it with anyone for your account security.
+        </p>
 
-            <p style="font-size: 14px;">Best Regards,<br>The Vastel Team</p>
+        <p style="font-size: 14px; line-height: 1.6; color: #333333; margin-bottom: 16px;">
+            If you did not request this action, please ignore this message or contact our support team.
+        </p>
         </div>
 
         
