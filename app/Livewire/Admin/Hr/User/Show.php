@@ -10,10 +10,10 @@ class Show extends Component
 {
     public $user;
 
-    public function mount(User $user)
+    public function mount( $user)
     {
-        $this->user = $user;
-        $this->authorize('view users');    
+        $this->user = User::withTrashed()->where('username', $user)->first();
+        $this->authorize('view users'); 
     }
 
     public function blockUser()
@@ -22,6 +22,15 @@ class Show extends Component
         $user->blocked_by_admin = true;
         $user->save();
         Session::flash('blocked', 'This user has been blocked');
+        $this->mount($user);
+    }
+
+    public function softDelete()
+    {
+        $user = User::find($this->user->id);
+        $user->deleted_at = now();
+        $user->save();
+        Session::flash('blocked', 'This user has been deleted');
         $this->mount($user);
     }
 

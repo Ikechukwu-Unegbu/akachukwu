@@ -53,6 +53,16 @@ class User extends Authenticatable
         'nin',
     ];
 
+    public function isBlocked()
+    {
+        return $this->blocked_by_admin;
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->isBlocked() ? null : parent::getAuthIdentifier();
+    }
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

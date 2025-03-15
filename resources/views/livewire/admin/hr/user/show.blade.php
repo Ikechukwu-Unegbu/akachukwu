@@ -26,6 +26,10 @@
                         Unblock User
                     </button>
                     @endif 
+                    <button type="button"  class="btn btn-danger mt-5" data-bs-toggle="modal" data-bs-target="#soft-delete">
+                        @if($user->deleted_at != null)
+                        Already Soft Deleted @else Soft Delete This User @endif
+                    </button>
                 </div>
                 <livewire:component.user-account-numbers-card :user="$user"/>
             </div>
@@ -83,12 +87,12 @@
                             <div class="col-lg-3 col-md-4 label ">NIN</div>
                             <div class="col-lg-9 col-md-8">{{ $user->nin}}</div>
                         </div>
-                        @if($user->blocked !== null)
+                
                         <div class="row">
-                            <div class="col-lg-3 col-md-4 label ">blocked At: </div>
-                            <div class="col-lg-9 col-md-8">{{ $user->}}</div>
+                            <div class="col-lg-3 col-md-4 label ">Deleted At: </div>
+                            <div class="col-lg-9 col-md-8">{{ $user->deleted_at}}</div>
                         </div>
-                        @endif 
+              
                     </div>
                 </div>
 
@@ -184,6 +188,9 @@
         </div>
     </div>
 
+
+    <!--  -->
+
     <div class="modal fade" id="unblock_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -202,6 +209,24 @@
         </div>
     </div>
 <!-- end of modal -->
+
+<div class="modal fade" id="soft-delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">About to Soft Delete User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h3 class="text-center text-danger">Are you sure you want to soft delete this user?</h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+                <button type="button" wire:click="softDelete"  data-bs-dismiss="modal"  class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
