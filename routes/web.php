@@ -38,7 +38,7 @@ Route::get('/ref', function(){
     $user = User::find(1);
     
     Notification::sendNow($user, new WelcomeEmail('345678',$user));
-   return view('email');
+   return view('emails.welcome');
 });
 
 

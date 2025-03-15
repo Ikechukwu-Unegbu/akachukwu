@@ -39,8 +39,11 @@ class WelcomeEmail extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)->view(
-            'email'
-        );
+            'emails.welcome', [
+                'user' => $this->user,
+                'otp' => $this->otp,
+            ]
+        )->with('message', $this);
         // return (new MailMessage)
         //             ->greeting('Hi '.$this->user->name.'!!')
         //             ->line('Your Vastel Account is ready. Thank you for using Vastel')
