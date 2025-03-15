@@ -16,7 +16,7 @@
                     <span class="text-red-500 text-sm font-bold flex justify-center">{{ $message }}</span>
                 @enderror
                 <div class="flex justify-center">
-                    <a href="#" wire:click='resend' class="text-sm text-white hover:text-red-300">
+                    <a href="#" wire:click='resend' class="text-sm text-red hover:text-red-300">
                         <span wire:loading.remove wire:target="resend">Resend OTP</span>
                         <span wire:loading wire:target="resend">
                             Please wait...

@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Otp;
 
+use App\Notifications\PinSetupOTPNotification;
 use Livewire\Component;
 use App\Services\OTPService;
 use Livewire\Attributes\Rule;
@@ -48,7 +49,7 @@ class Verify extends Component
         try {
             $user = auth()->user();
             $otp = $otpService->generateOTP($user);
-            Notification::sendNow($user, new WelcomeEmail($otp, $user));
+            Notification::sendNow($user, new PinSetupOTPNotification($user, $otp, 'pin_reset'));
             return ($otp) ?
                 $this->dispatch('success-toastr', ['message' => 'OTP sent successfully.']) :
                 $this->dispatch('error-toastr', ['message' => 'Opps! Unable to send OTP. Please try again later.']);
