@@ -25,6 +25,7 @@ use App\Services\Airtime\AirtimeService;
 use App\Models\Utility\AirtimeTransaction;
 use App\Services\Referrals\ReferralService;
 use App\Actions\Idempotency\IdempotencyCheck;
+use App\Helpers\GeneralHelpers;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
@@ -108,8 +109,8 @@ class PosTraNetService
                 $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
                 $discount = $network->airtime_discount;
 
+                GeneralHelpers::randomDelay();
 
-                sleep(random_int(1, 5));
                 if(Auth::check()){
                     if(Auth::user()->account_balance < $amount){
                         return ApiHelper::sendError('Insufficient balance', "You dont have enough money for this transaction.");
@@ -151,24 +152,15 @@ class PosTraNetService
                 
                  // If the user is a reseller, apply any discounts
                  $discountedAmount = $amount;
+                
                  if (auth()->user()->isReseller()) {
                     $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'airtime');
                 }
                 // Apply any other discounts (if applicable)
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
-
                 // Deduct the amount from the user's balance if they have enough funds
-                if ($user->account_balance >= $amount) {
-                    $user->account_balance -= $discountedAmount;  // Deduct the amount
-                    $user->save();  // Save the updated balance
-                } else {
-                    // Insufficient funds
-                    $errorResponse = [
-                        'error' => 'Insufficient Balance.',
-                        'message' => 'Your account balance is insufficient to complete this transaction.'
-                    ];
-                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-                }
+                $user->account_balance -= $discountedAmount;  // Deduct the amount
+                $user->save();  // Save the updated balance
 
                 // Send the request to the API for airtime purchase
                 $data = [
@@ -186,7 +178,7 @@ class PosTraNetService
                 self::storeApiResponse($transaction, $response);
 
                
-                self::$authUser->transaction($amount);
+                // self::$authUser->transaction($amount);
 
                 // Handle the response from the API
                 if (isset($response->error)) {

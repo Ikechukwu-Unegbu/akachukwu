@@ -100,6 +100,8 @@
                     </div>
                 </div>
 
+                <input type="text" name="honey_field" style="display:none;">
+
                 <button type="submit"  id="submitButton" class="w-full bg-vastel_blue text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                     Continue
                 </button>

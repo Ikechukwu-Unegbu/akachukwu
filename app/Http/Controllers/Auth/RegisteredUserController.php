@@ -72,7 +72,10 @@ class RegisteredUserController extends Controller
             'referral_code' => ['nullable', 'string']
         ]);
 
-
+        if ($request->filled('honey_field')) {
+            return back()->withErrors(['error' => 'Bot detected']);
+        }
+        
         return DB::transaction(function () use ($request) {
             $user = User::create([
                 'name' => $request->first_name . ' ' . $request->last_name,
