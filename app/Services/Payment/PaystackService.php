@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use App\Exceptions\PaymentInitialisationError;
+use App\Helpers\GeneralHelpers;
 use App\Services\Account\AccountBalanceService;
 use App\Models\Payment\Paystack as PaymentPaystack;
 
@@ -27,7 +28,7 @@ class PaystackService implements Payment
         $transaction = PaymentPaystack::create([
             'user_id'       =>  $user->id,
             'reference_id'  => $this->generateUniqueId(),
-            'amount'        => $amount,
+            'amount'        => GeneralHelpers::calculateWalletFunding($amount),
             'currency'      => config('app.currency', 'NGN'),
             'redirect_url'  => $redirectURL,
             'meta'          => json_encode($meta)

@@ -189,8 +189,15 @@
                     <h5 class="font-medium">Get Started with Virtual Accounts</h5>
                     <p class="mb-4">Complete your KYC to access virtual accounts for quick and easy transfers.</p> 
                     <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
-                    @endif  
+                    @endif
 
+                    <div class="card-funding-notice text-red-600" style="margin-top: 10px; font-size: 14px;">
+                        <p>
+                            Please note: A <strong>{{ $settings->card_charges }}% charge</strong> will be applied to all card funding transactions.
+                        </p>
+                    </div>
+
+                    @if ($settings->card_funding_status)
                     <div class="flex items-center justify-center py-4">
                         <span class="text-sm text-gray-500">OR</span>
                     </div>
@@ -200,6 +207,7 @@
                             <button class="ml-3 text-sm font-medium text-indigo-600">Top-up with Card</button>
                         </div>
                     </a>
+                    @endif
                 </div>
             </div>
         </div>

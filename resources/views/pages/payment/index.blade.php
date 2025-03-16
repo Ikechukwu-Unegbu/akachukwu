@@ -42,11 +42,18 @@
                     @endforeach
                 </div>
             </div>
+            
 
             <button type="submit"
                 class="w-full bg-vastel_blue text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
                 <span wire:loading.remove wire:target='validateForm'>Proceed</span>
             </button>
+
+            <div class="card-funding-notice text-red-600" style="margin-top: 10px; font-size: 14px;">
+                <p>
+                    Please note: A <strong>{{ $settings->card_charges }}% charge</strong> will be applied to all card funding transactions.
+                </p>
+            </div>
 
             @if (count($accounts))
                 <div class="mt-6">
