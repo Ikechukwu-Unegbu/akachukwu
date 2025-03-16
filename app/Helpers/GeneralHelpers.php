@@ -114,4 +114,17 @@ class GeneralHelpers{
 
         return ($totalSpentToday + $amount) <= $dailyLimit;
     }
+
+    public static function calculateWalletFunding($fundedAmount)
+    {
+        $siteSettings = SiteSetting::first();
+        
+        $chargePercentage = $siteSettings->card_charges ?? 0.0;
+    
+        $serviceCharge = ($fundedAmount * $chargePercentage) / 100;
+    
+        $totalAmountToPay = $fundedAmount + $serviceCharge;
+    
+        return $totalAmountToPay;
+    }    
 }

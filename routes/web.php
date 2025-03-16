@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Blog\BlogPageController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\TestController;
 use App\Http\Controllers\PagesController;
@@ -68,9 +69,7 @@ Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate'])
     Route::get('/data', [DataController::class, 'index'])->name('data.index');
     Route::get('/electricity', [ElectricityController::class, 'index'])->name('electricity.index');
     Route::get('/cable-tv', [TVController::class, 'index'])->name('cable.index');
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
 
     Route::get('/services', function () {
         return view('pages.utilities.services');
