@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use App\Models\Data\DataPlan;
 use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
+use App\Helpers\GeneralHelpers;
 use App\Models\Data\DataNetwork;
 use App\Models\Utility\CablePlan;
 use Illuminate\Support\Facades\DB;
@@ -207,7 +208,8 @@ class VTPassService
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
              
-
+                GeneralHelpers::randomDelay();
+                
                 // Retrieve network details
                 $network = DataNetwork::whereVendorId(self::$vendor->id)
                     ->whereNetworkId($networkId)
@@ -235,7 +237,6 @@ class VTPassService
                 }
 
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
-
                 // Deduct the amount from the user's account balance
                 $user->account_balance -= $discountedAmount;
                 $user->save();

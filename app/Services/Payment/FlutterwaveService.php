@@ -5,6 +5,7 @@ namespace App\Services\Payment;
 use Exception;
 use Illuminate\Support\Str;
 use App\Models\PaymentGateway;
+use App\Helpers\GeneralHelpers;
 use Illuminate\Support\Collection;
 use App\Interfaces\Payment\Payment;
 use App\Models\Payment\Flutterwave;
@@ -26,7 +27,7 @@ class FlutterwaveService implements Payment
         $transaction = Flutterwave::create([
             'user_id'       => $user->id,
             'reference_id'  => $this->generateUniqueId(),
-            'amount'        => $amount,
+            'amount'        => GeneralHelpers::calculateWalletFunding($amount),
             'currency'      => config('app.currency', 'NGN'),
             'redirect_url'  => $redirectURL,
             'meta'          => json_encode($meta)

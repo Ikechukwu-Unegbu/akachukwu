@@ -60,8 +60,8 @@
             <div class="mb-3">
               <label for="money_transfer_status" class="form-label">Vastel Money Transfer</label>
               <select class="form-select" id="money_transfer_status" required="" name="money_transfer_status">
-                <option value="1" @selected($setting->money_transfer_status === 1)>Activate</option>
-                <option value="0" @selected($setting->money_transfer_status === 0)>Deactivate</option>
+                <option value="1" @selected($setting->money_transfer_status === 1)>Activated</option>
+                <option value="0" @selected($setting->money_transfer_status === 0)>Deactivated</option>
               </select>
             </div>
             <div class="mb-3">
@@ -79,6 +79,17 @@
             <div class="mb-3">
               <label for="maximum_transfer" class="form-label">Maximum Daily Transfer</label>
               <input type="number" class="form-control" value="{{$setting->maximum_transfer}}" id="maximum_transfer" name="maximum_transfer">
+            </div>
+            <div class="mb-3">
+              <label for="card_charges" class="form-label">Percent Charge on Card Funding</label>
+              <input type="text" class="form-control" value="{{$setting->card_charges}}" id="card_charges" name="card_charges">
+            </div>
+            <div class="mb-3">
+              <label for="card_funding_status" class="form-label">Card Funding Status</label>
+              <select class="form-select" id="card_funding_status" required="" name="card_funding_status">
+                <option value="1" @selected($setting->card_funding_status === 1)>Activated</option>
+                <option value="0" @selected($setting->card_funding_status === 0)>Deactivated</option>
+              </select>
             </div>
             <div class="mb-3">
               <label for="name" class="form-label">Name</label>

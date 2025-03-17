@@ -5,25 +5,26 @@ namespace App\Services\Payment;
 use Exception;
 use App\Models\User;
 use App\Helpers\ApiHelper;
+use App\Models\Compliance;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\MoneyTransfer;
 use App\Models\PaymentGateway;
 use App\Models\VirtualAccount;
+use App\Helpers\GeneralHelpers;
 use Illuminate\Support\Collection;
 use App\Interfaces\Payment\Payment;
+use App\Services\ComplianceService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use function Laravel\Prompts\warning;
+
 use Illuminate\Support\Facades\Storage;
 use App\Models\Payment\MonnifyTransaction;
 use App\Services\Account\AccountBalanceService;
-
 use App\Services\Payment\VirtualAccountServiceFactory;
 use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
-use App\Models\Compliance;
-use App\Services\ComplianceService;
 
 class MonnifyService implements Payment
 {
@@ -66,7 +67,7 @@ class MonnifyService implements Payment
             $transaction = MonnifyTransaction::create([
                 'user_id'       => $user->id,
                 'reference_id'  => $this->generateUniqueId(),
-                'amount'        => $amount,
+                'amount'        => GeneralHelpers::calculateWalletFunding($amount),
                 'currency'      => config('app.currency', 'NGN'),
                 'redirect_url'  => $redirectURL,
                 'meta'          => json_encode($meta)
