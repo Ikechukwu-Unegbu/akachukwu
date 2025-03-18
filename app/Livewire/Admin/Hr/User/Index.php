@@ -55,6 +55,7 @@ class Index extends Component
         }
 
         $users = $query
+            ->withTrashed()
             ->whereRole('user')
             ->orderBy('account_balance', 'desc')
             ->latest()
