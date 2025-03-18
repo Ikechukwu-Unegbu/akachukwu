@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
-use NotificationChannels\OneSignal\OneSignalMessage;
 use App\Notifications\UtilitySubscriptionNotification;
 
 class OneSignalNotificationService
@@ -22,9 +21,9 @@ class OneSignalNotificationService
      */
     public function sendToUser(User $user, string $subject, string $message, ?string $link = null, ?string $icon = null)
     {
-        $oneSignalMessage = $this->buildOneSignalMessage($subject, $message, $link, $icon);
-
-        Notification::send($user, new UtilitySubscriptionNotification($oneSignalMessage));
+        $link = $link ?? '/';
+        $icon = url(self::ICON);
+        Notification::send($user, new UtilitySubscriptionNotification($subject, $message, $link, $icon));
     }
 
     /**

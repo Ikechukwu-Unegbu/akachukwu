@@ -14,20 +14,30 @@ class UtilitySubscriptionNotification extends Notification
 {
     use Queueable;
 
-    protected $oneSignalMessage;
+    protected $subject;
+    protected $message;
+    protected $link;
+    protected $icon;
 
-    public function __construct(OneSignalMessage $oneSignalMessage)
+   public function __construct(string $subject, string $message, ?string $link = null, ?string $icon = null)
     {
-        $this->oneSignalMessage = $oneSignalMessage;
+        $this->subject = $subject;
+        $this->message = $message;
+        $this->link = $link;
+        $this->icon = $icon;
     }
 
      public function via($notifiable)
     {
-        return ['OneSignal'];
+        return [OneSignalChannel::class];
     }
 
     public function toOneSignal($notifiable)
     {
-        return $this->oneSignalMessage;
+        return OneSignalMessage::create()
+            ->setSubject($this->subject)
+            ->setBody($this->message)
+            ->setUrl($this->link)
+            ->setIcon($this->icon);
     }
 }
