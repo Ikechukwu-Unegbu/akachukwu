@@ -88,23 +88,25 @@
     
                 <a href="{{ route('dashboard') }}"
                     class="flex flex-col items-center  w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}">
-                    <i class="fas fa-home text-xl"></i>
+                    <i class="fas fa-home fa-3x"></i>
+                     <!-- <img class="h-[3rem] w-[3rem]" src="{{asset('images/home.svg')}}" alt=""> -->
                     <span class="ml-2 hidden lg:inline">Dashboard</span>
                 </a>
 
                 <a href="{{route('services')}}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs(['services', 'airtime.*', 'data.*', 'electricity.*', 'cable.*']) ? 'active' : '' }}">
-                    <!-- <i class="fas fa-chart-bar text-xl"></i> -->
-                    <i class="fa-solid fa-cubes-stacked text-xl"></i>
+                    <!-- <img class="h-[3rem] w-[3rem]" src="{{asset('images/other-services.svg')}}" alt=""> -->
+                    <i class="fa-solid fa-cubes-stacked fa-3x"></i>
                     <span class="ml-2 hidden lg:inline">Services</span>
                 </a>
                 <a href="{{ route('transactions') }}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ request()->routeIs('transactions') ? 'active' : '' }}">
-                    <i class="fas fa-exchange-alt text-xl"></i>
+                <!-- <img class="h-[3rem] w-[3rem]" src="{{asset('images/bank.svg')}}" alt=""> -->
+                <i class="fa-solid fa-arrow-right-arrow-left fa-3x"></i>
                     <span class="ml-2 hidden lg:inline">Transactions</span>
                 </a>
 
                 <a href="{{ route('settings.index') }}" class="flex flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'settings.credentials' ? 'active' : '' }}">
 
-                    <i class="fas fa-cog text-xl"></i>
+                    <i class="fas fa-cog  fa-3x"></i>
                     <span class="ml-2 hidden lg:inline">Settings</span>
                 </a>
                 <a href="javascript:void(0)" class="flex mb-[3rem] flex-col items-center w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2"
@@ -114,7 +116,7 @@
                         style="display: none;">
                         @csrf
                     </form>
-                    <i class="fas fa-sign-out-alt text-xl"></i>
+                    <img class="h-[3rem] w-[3rem]" src="{{asset('images/logout.svg')}}" alt="">
                     <span class=" hidden lg:inline">Logout</span>
                 </a>
                 @if (Auth::check() && Auth::user()->isImpersonating())
@@ -137,7 +139,7 @@
                 <div class="">
                     <h1 class="text-2xl hidden md:inline  font-bold">Hi @if(Auth::check()) , {{ auth()->user()->name }} @endif</h1>
                     <div class="flex flex-row-reverse items-center justify-center md:hidden">
-                        <img src="{{asset('images/clear-log.svg')}}" class="w-[3rem] h-[3rem]" alt="">
+                        <img class="h-[3rem] w-[3rem]" src="{{asset('images/clear-log.svg')}}" class="w-[3rem] h-[3rem]" alt="">
                         <button data-drawer-target="drawer-example" data-drawer-show="drawer-example" aria-controls="drawer-example" type="button" class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" >
                             <span class="sr-only">Open main menu</span>
                             <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
@@ -203,17 +205,19 @@
 
         <nav class="flex flex-col text-blue-800 space-y-2 p-4">
             <a href="/" class="flex items-center space-x-2 hover:vastel_blue">
-                <i class="fas fa-home"></i>
+                <i class="fas  fa-home"></i>
                 <span>Home</span>   
             </a>
         
             <a href="{{route('services')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fa-solid fa-cubes-stacked"></i>
+                <!-- <img class="h-[3rem] w-[3rem]" src="{{asset('images/other-services.svg')}}" alt=""> -->
                 <span>Services</span>
             </a>
         
             <a href="{{route('dashboard')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fas fa-tachometer-alt"></i>
+                 <!-- <img class="h-[3rem] w-[3rem]" src="{{asset('images/home.svg')}}" alt=""> -->
                 <span>Dashboard</span>
             </a>
 
@@ -223,12 +227,12 @@
             </a>
 
             <a href="{{route('faq')}}" class="flex items-center space-x-2 hover:vastel_blue">
-            <i class="fa-solid fa-circle-question"></i>
+            <i class="fa-solid fa-circle-question "></i>
                 <span>FAQ</span>
             </a>
 
             <a href="{{route('pages.about')}}" class="flex items-center space-x-2 hover:vastel_blue">
-                <i class="fa-solid fa-address-card"></i>
+                <i class="fa-solid fa-address-card "></i>
                 <span>About</span>
             </a>
 
