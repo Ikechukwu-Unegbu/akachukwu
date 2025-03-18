@@ -2,26 +2,32 @@
 
 namespace App\Http\Controllers\V1\API\Auth;
 
-use App\Helpers\GeneralHelpers;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Notifications\WelcomeEmail;
 use App\Services\OTPService;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Notification;
+use Illuminate\Http\Request;
+use App\Helpers\GeneralHelpers;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\DB;
+use App\Notifications\WelcomeEmail;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Repositories\UserDeviceRepository;
+use Illuminate\Support\Facades\Notification;
+use App\Services\OneSignalNotificationService;
 use Illuminate\Validation\ValidationException;
+use App\Notifications\RegistrationOSNotification;
 
 
 class RegisterUserController extends Controller
 {
+    public $userDeviceRepository;
+    public $notificationService;
 
-    public function __construct(public OTPService $otpService)
+    public function __construct(public OTPService $otpService, UserDeviceRepository $userDeviceRepository)
     {
-        
+        $this->userDeviceRepository = $userDeviceRepository;
+        $this->notificationService = new OneSignalNotificationService();
     }
 
     public function register(Request $request)
@@ -39,7 +45,6 @@ class RegisterUserController extends Controller
             throw ValidationException::withMessages($validator->errors()->toArray());
         }
 
-   
         return DB::transaction(function()use($request){
             $user = User::create([
                 'name' => $request->name,
@@ -53,6 +58,12 @@ class RegisterUserController extends Controller
             GeneralHelpers::checkReferrer($request, $user);
 
             Notification::sendNow($user, new WelcomeEmail($otp, $user));
+
+            if ($request->os_player_id) {
+                $this->userDeviceRepository->updateOrCreate(['os_player_id' => $request->os_player_id]);
+            }
+
+            $this->notificationService->sendToUser($user, "Welcome to Vastel {$user->username}!", 'Your Vastel Account is ready. Thank you for using Vastel!');
 
             return response()->json([
                 'message'=>'Account Created.',
