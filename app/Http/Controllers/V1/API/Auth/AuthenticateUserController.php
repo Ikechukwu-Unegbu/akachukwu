@@ -8,12 +8,23 @@ use Illuminate\Http\Request;
 use App\Notifications\WelcomeEmail;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Repositories\UserDeviceRepository;
 use App\Services\V1\User\UserProfileService;
 use Illuminate\Support\Facades\Notification;
+use App\Services\OneSignalNotificationService;
 use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
 
 class AuthenticateUserController extends Controller
 {
+    public $userDeviceRepository;
+    public $notificationService;
+
+    public function __construct(UserDeviceRepository $userDeviceRepository)
+    {
+        $this->userDeviceRepository = $userDeviceRepository;
+        $this->notificationService = new OneSignalNotificationService();
+    }
+
     public function login(Request $request, UserProfileService $service)
     {
         $request->validate([
@@ -39,6 +50,12 @@ class AuthenticateUserController extends Controller
             $token = $request->user()->createToken('token-name')->plainTextToken;
 
             (new GenerateRemainingAccounts)->generateRemaingingAccounts();
+
+            if ($request->os_player_id) {
+                $this->userDeviceRepository->updateOrCreate(['os_player_id' => $request->os_player_id]);
+            }
+
+            $this->notificationService->sendToUser($user, "Welcome Back {$user->username}!", 'Logged In Successfully');
             
             return response()->json([
                 'token' => $token, 

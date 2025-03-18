@@ -9,19 +9,23 @@ use App\Models\Data\DataVendor;
 use App\Models\Utility\CablePlan;
 use App\Http\Controllers\Controller;
 use App\Services\Cable\CableService;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\ResolvesVendorService;
 use App\Http\Requests\V1\Api\IUCApiRequest;
 use App\Http\Requests\V1\Api\CableApiRequest;
+use App\Services\OneSignalNotificationService;
 
 class CableApiController extends Controller
 {
     use ResolvesVendorService;
     
     protected $vendor;
+    protected $notificationService;
     
-    public function __construct()
+    public function __construct(OneSignalNotificationService $notificationService)
     {
         $this->vendor = $this->getVendorService('cable');
+        $this->notificationService = $notificationService;
     }
 
     public function index()
@@ -38,7 +42,6 @@ class CableApiController extends Controller
 
     public function plan(Request $request)
     {
-       
         $request->validate([
             'cable_id'  =>  'required'
         ]);
@@ -85,6 +88,14 @@ class CableApiController extends Controller
         }
 
         $cableService = CableService::create($this->vendor->id, $request->cable_id, $request->cable_plan_id, $request->iuc_number, $request->card_owner);
+
+        $user = Auth::user();
+
+        $subject = ($cableService->status) ? "Cable Purchase Successful" : "Cable Purchase Failed";
+        $message = ($cableService->status) ? "Your cable purchase of ₦{$cable_plan->amount} was successful." : "Your cable purchase of ₦{$cable_plan->amount} was not successful.";
+
+        $this->notificationService->sendToUser($user, $subject, $message);
+
         return $cableService;
     }
     

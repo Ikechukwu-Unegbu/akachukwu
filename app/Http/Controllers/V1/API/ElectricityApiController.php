@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\Electricity;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\ResolvesVendorService;
 use App\Http\Requests\V1\Api\MeterApiRequest;
+use App\Services\OneSignalNotificationService;
 use App\Services\Electricity\ElectricityService;
 use App\Http\Requests\V1\Api\ElectricityApiRequest;
 
@@ -17,10 +19,12 @@ class ElectricityApiController extends Controller
     use ResolvesVendorService;
     
     protected $vendor;
-    
-    public function __construct()
+    protected $notificationService;
+
+    public function __construct(OneSignalNotificationService $notificationService)
     {
         $this->vendor = $this->getVendorService('electricity');
+        $this->notificationService = $notificationService;
     }
 
 
@@ -57,6 +61,14 @@ class ElectricityApiController extends Controller
         }
 
         $electricityTransaction = ElectricityService::create($this->vendor?->id, $request->disco_id, $request->meter_number, $request->meter_type, $request->amount, $request->owner_name, $request->phone_number, $request->owner_address);
+        
+        $user = Auth::user();
+
+        $subject = ($electricityTransaction->status) ? "Bill Purchase Successful" : "Bill Purchase Failed";
+        $message = ($electricityTransaction->status) ? "Your bill purchase of ₦{$request->amount} was successful." : "Your bill purchase of ₦{$request->amount} was not successful.";
+
+        $this->notificationService->sendToUser($user, $subject, $message);
+        
         return $electricityTransaction;
     }
 }
