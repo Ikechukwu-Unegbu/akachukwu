@@ -6,12 +6,8 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use NotificationChannels\OneSignal\OneSignalChannel;
 
-use NotificationChannels\OneSignal\OneSignalMessage;
-use NotificationChannels\OneSignal\OneSignalWebButton;
-
-class LoginNotification extends Notification
+class DataPurchaseNotification extends Notification
 {
     use Queueable;
 
@@ -28,16 +24,20 @@ class LoginNotification extends Notification
      *
      * @return array<int, string>
      */
-    public function via($notifiable):array
+    public function via(object $notifiable): array
     {
-        return [OneSignalChannel::class];
+        return ['mail'];
     }
 
-    public function toOneSignal($notifiable)
+    /**
+     * Get the mail representation of the notification.
+     */
+    public function toMail(object $notifiable): MailMessage
     {
-        return OneSignalMessage::create()
-            ->setSubject("Your account was approved!")
-            ->setBody("Click here to see details.");
+        return (new MailMessage)
+                    ->line('The introduction to the notification.')
+                    ->action('Notification Action', url('/'))
+                    ->line('Thank you for using our application!');
     }
 
     /**
