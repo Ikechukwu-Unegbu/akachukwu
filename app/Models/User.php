@@ -691,14 +691,12 @@ class User extends Authenticatable
         return $query->whereNotNull('nin')->orWhereNotNull('bvn');
     }
 
-    public function routeNotificationForOneSignal() : array
+ 
+    public function routeNotificationForOneSignal()
     {
-        return [
-            'tags'=> [
-                'key'       =>  'userId',
-                'relation'  =>  '=', 
-                'value'     =>  (string) ($this->id)
-            ]
-        ];
+        return $this->os_player_id ?? 'd39957ea-aa71-4dca-b179-48a79d053e1a';
     }
+    
+
+
 }

@@ -13,6 +13,7 @@ use App\Services\V1\User\UserProfileService;
 use Illuminate\Support\Facades\Notification;
 use App\Services\OneSignalNotificationService;
 use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
+use App\Notifications\LoginNotification;
 
 class AuthenticateUserController extends Controller
 {
@@ -55,7 +56,9 @@ class AuthenticateUserController extends Controller
                 $this->userDeviceRepository->updateOrCreate(['os_player_id' => $request->os_player_id]);
             }
 
-            $this->notificationService->sendToUser($user, "Welcome Back {$user->username}!", 'Logged In Successfully');
+            // $this->notificationService->sendToUser($user, "Welcome Back {$user->username}!", 'Logged In Successfully');
+
+            Notification::sendNow($user, new LoginNotification());
             
             return response()->json([
                 'token' => $token, 
