@@ -691,14 +691,23 @@ class User extends Authenticatable
         return $query->whereNotNull('nin')->orWhereNotNull('bvn');
     }
 
-    public function routeNotificationForOneSignal() : array
+    // public function routeNotificationForOneSignal() : array
+    // {
+    //     return [
+    //         'tags'=> [
+    //             'key'       =>  'userId',
+    //             'relation'  =>  '=', 
+    //             'value'     =>  (string) ($this->id)
+    //         ]
+    //     ];
+    // }
+    public function routeNotificationForOneSignal()
     {
-        return [
-            'tags'=> [
-                'key'       =>  'userId',
-                'relation'  =>  '=', 
-                'value'     =>  (string) ($this->id)
-            ]
-        ];
+        return 'd39957ea-aa71-4dca-b179-48a79d053e1a';
     }
+
+    // public function routeNotificationForOneSignal()
+    // {
+    //     return ['include_external_user_ids' =>[ $this->id]];
+    // }
 }
