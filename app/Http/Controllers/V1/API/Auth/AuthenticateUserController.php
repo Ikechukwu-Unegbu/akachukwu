@@ -2,28 +2,29 @@
 
 namespace App\Http\Controllers\V1\API\Auth;
 
+use Throwable;
 use App\Models\User;
 use App\Services\OTPService;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\Throw_;
 use App\Notifications\WelcomeEmail;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Notifications\LoginNotification;
 use App\Repositories\UserDeviceRepository;
 use App\Services\V1\User\UserProfileService;
 use Illuminate\Support\Facades\Notification;
 use App\Services\OneSignalNotificationService;
 use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
-use App\Notifications\LoginNotification;
 
 class AuthenticateUserController extends Controller
 {
     public $userDeviceRepository;
-    public $notificationService;
 
     public function __construct(UserDeviceRepository $userDeviceRepository)
     {
         $this->userDeviceRepository = $userDeviceRepository;
-        $this->notificationService = new OneSignalNotificationService();
     }
 
     public function login(Request $request, UserProfileService $service)
@@ -56,10 +57,12 @@ class AuthenticateUserController extends Controller
                 $this->userDeviceRepository->updateOrCreate(['os_player_id' => $request->os_player_id]);
             }
 
-            // $this->notificationService->sendToUser($user, "Welcome Back {$user->username}!", 'Logged In Successfully');
+            try {
+                $user->notify(new LoginNotification($user->username));
+            } catch (Throwable $th) {
+                Log::error('Failed to login notification: ' . $th->getMessage());
+            }
 
-            Notification::sendNow($user, new LoginNotification());
-            
             return response()->json([
                 'token' => $token, 
                 'status' => 'success', 

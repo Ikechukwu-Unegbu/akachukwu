@@ -14,20 +14,14 @@ use NotificationChannels\OneSignal\OneSignalWebButton;
 class LoginNotification extends Notification
 {
     use Queueable;
-
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct()
+    
+    protected $username;
+    
+    public function __construct($username)
     {
-        //
+        $this->username = $username;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
     public function via($notifiable):array
     {
         return [OneSignalChannel::class];
@@ -35,9 +29,12 @@ class LoginNotification extends Notification
 
     public function toOneSignal($notifiable)
     {
+        $subject = "👋 Welcome back, {$this->username}!";
+        $body = "You have successfully logged in to your account at " . now()->format('h:i A, M d, Y') . ". If this wasn't you, please contact support immediately.";
         return OneSignalMessage::create()
-            ->setSubject("Your account was approved!")
-            ->setBody("Click here to see details.");
+            ->setSubject($subject)
+            ->setBody($body)
+            ->setIcon('https://vastel.dev/images/vastel-logo.svg'); 
     }
 
     /**
