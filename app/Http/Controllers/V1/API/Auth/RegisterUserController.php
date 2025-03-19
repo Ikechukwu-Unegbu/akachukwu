@@ -60,7 +60,7 @@ class RegisterUserController extends Controller
             Notification::sendNow($user, new WelcomeEmail($otp, $user));
 
             if ($request->os_player_id) {
-                $this->userDeviceRepository->updateOrCreate(['os_player_id' => $request->os_player_id]);
+                $this->userDeviceRepository->updateOrCreate($user, ['os_player_id' => $request->os_player_id]);
             }
 
             $this->notificationService->sendToUser($user, "Welcome to Vastel {$user->username}!", 'Your Vastel Account is ready. Thank you for using Vastel!');

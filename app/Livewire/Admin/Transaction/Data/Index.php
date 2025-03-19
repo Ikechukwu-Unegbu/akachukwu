@@ -7,8 +7,11 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use App\Services\CalculateDiscount;
+use Illuminate\Support\Facades\Log;
 use App\Models\Data\DataTransaction;
+use App\Notifications\CreditNofitication;
 use App\Services\Referrals\ReferralService;
+use App\Notifications\FundDeductionNotification;
 
 class Index extends Component
 {
@@ -59,6 +62,12 @@ class Index extends Component
         $user->account_balance -= $amount;
         $user->save();
         $transaction->debit();
+
+        try {
+            $user->notify(new FundDeductionNotification('Data', $amount, $user->account_balance));
+        } catch (\Throwable $th) {
+            Log::error('Failed to debit user account notification: ' . $th->getMessage());
+        }
     }
 
     private function refunded($transaction, $user, $amount) : void
@@ -67,6 +76,12 @@ class Index extends Component
         $user->save();
         (new ReferralService)->reverseRferrerpay($transaction);
         $transaction->refund();
+        
+        try {
+            $user->notify(new CreditNofitication('Data', $amount, $user->account_balance));
+        } catch (\Throwable $th) {
+            Log::error('Failed to refund user account notification: ' . $th->getMessage());
+        }
     }
 
     public function render()

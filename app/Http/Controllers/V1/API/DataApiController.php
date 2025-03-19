@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\API;
 use Illuminate\Http\Request;
 use App\Models\Data\DataPlan;
 use App\Models\Data\DataType;
+use App\Helpers\GeneralHelpers;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use Illuminate\Validation\Rules;
@@ -16,17 +17,16 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\V1\Api\DataApiRequest;
 use App\Services\OneSignalNotificationService;
 use Illuminate\Validation\ValidationException;
+use App\Notifications\DataPurchaseNotification;
 
 class DataApiController extends Controller
 {
     use ResolvesVendorService;
     protected $vendor;
-    protected $notificationService;
     
-    public function __construct(OneSignalNotificationService $notificationService)
+    public function __construct()
     {
         $this->vendor = $this->getVendorService('data');
-        $this->notificationService = $notificationService;
     }
 
     public function index(Request $request)
@@ -122,12 +122,12 @@ class DataApiController extends Controller
                 $request->phone_number
             );
 
-            $user = Auth::user();
-
-            $subject = ($dataTransaction->status) ? "Data Purchase Successful" : "Data Purchase Failed";
-            $message = ($dataTransaction->status) ? "Your data purchase of ₦{$plan->first()->amount} was successful." : "Your data purchase of ₦{$plan->first()->amount} was not successful.";
-
-            $this->notificationService->sendToUser($user, $subject, $message);
+            GeneralHelpers::sendOneSignalTransactionNotification(
+                $dataTransaction, 
+                $dataTransaction->message, 
+                $plan->first()->amount, 
+                DataPurchaseNotification::class
+            );
 
             return $dataTransaction;
 

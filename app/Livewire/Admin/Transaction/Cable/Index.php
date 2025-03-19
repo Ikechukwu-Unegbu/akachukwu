@@ -7,7 +7,10 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 use App\Services\CalculateDiscount;
+use Illuminate\Support\Facades\Log;
 use App\Models\Utility\CableTransaction;
+use App\Notifications\CreditNofitication;
+use App\Notifications\FundDeductionNotification;
 
 class Index extends Component
 {
@@ -58,6 +61,12 @@ class Index extends Component
         $user->account_balance -= $amount;
         $user->save();
         $transaction->debit();
+
+        try {
+            $user->notify(new FundDeductionNotification('Cable', $amount, $user->account_balance));
+        } catch (\Throwable $th) {
+            Log::error('Failed to debit user account notification: ' . $th->getMessage());
+        }
     }
 
     private function refunded($transaction, $user, $amount) : void
@@ -65,6 +74,12 @@ class Index extends Component
         $user->account_balance += $amount;
         $user->save();
         $transaction->refund();
+
+        try {
+            $user->notify(new CreditNofitication('Cable', $amount, $user->account_balance));
+        } catch (\Throwable $th) {
+            Log::error('Failed to refund user account notification: ' . $th->getMessage());
+        }
     }
     
     public function render()

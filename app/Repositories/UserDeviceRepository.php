@@ -11,10 +11,9 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class UserDeviceRepository
 {
-    public function updateOrCreate($input)
+    public function updateOrCreate($user, $input)
     {
         try {
-            $user = User::find(Auth::id());
             if ( ! $user->os_player_id) {
                 $user->update([
                     'os_player_id' => $input['os_player_id'],

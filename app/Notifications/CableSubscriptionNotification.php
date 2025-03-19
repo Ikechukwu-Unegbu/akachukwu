@@ -3,52 +3,40 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use NotificationChannels\OneSignal\OneSignalChannel;
+use NotificationChannels\OneSignal\OneSignalMessage;
 
 class CableSubscriptionNotification extends Notification
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     */
-    public function __construct()
+    protected CONST ICON = "https://vastel.dev/images/vastel-logo.svg";
+    protected $status;
+    protected $amount;
+    protected $message;
+
+    public function __construct($status, $message, $amount)
     {
-        //
+        $this->status = $status;
+        $this->amount = $amount;
+        $this->message = $message;
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
+    public function via($notifiable)
     {
-        return ['mail'];
+        return [OneSignalChannel::class];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): MailMessage
+    public function toOneSignal($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
-    }
+        $subject = $this->status
+        ? "🎉 Cable Purchase was successful!"
+        : "❌ Cable Purchase failed!";
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toArray(object $notifiable): array
-    {
-        return [
-            //
-        ];
+        return OneSignalMessage::create()
+            ->setSubject($subject)
+            ->setBody($this->message)
+            ->icon(self::ICON);
     }
 }

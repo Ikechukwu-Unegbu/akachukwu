@@ -5,6 +5,7 @@ namespace App\Http\Controllers\V1\API;
 use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
 use App\Models\Utility\Cable;
+use App\Helpers\GeneralHelpers;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\CablePlan;
 use App\Http\Controllers\Controller;
@@ -14,18 +15,17 @@ use App\Traits\ResolvesVendorService;
 use App\Http\Requests\V1\Api\IUCApiRequest;
 use App\Http\Requests\V1\Api\CableApiRequest;
 use App\Services\OneSignalNotificationService;
+use App\Notifications\CableSubscriptionNotification;
 
 class CableApiController extends Controller
 {
     use ResolvesVendorService;
     
     protected $vendor;
-    protected $notificationService;
     
-    public function __construct(OneSignalNotificationService $notificationService)
+    public function __construct()
     {
         $this->vendor = $this->getVendorService('cable');
-        $this->notificationService = $notificationService;
     }
 
     public function index()
@@ -89,12 +89,12 @@ class CableApiController extends Controller
 
         $cableService = CableService::create($this->vendor->id, $request->cable_id, $request->cable_plan_id, $request->iuc_number, $request->card_owner);
 
-        $user = Auth::user();
-
-        $subject = ($cableService->status) ? "Cable Purchase Successful" : "Cable Purchase Failed";
-        $message = ($cableService->status) ? "Your cable purchase of ₦{$cable_plan->amount} was successful." : "Your cable purchase of ₦{$cable_plan->amount} was not successful.";
-
-        $this->notificationService->sendToUser($user, $subject, $message);
+        GeneralHelpers::sendOneSignalTransactionNotification(
+            $cableService, 
+            $cableService->message, 
+            $cable_plan->amount, 
+            CableSubscriptionNotification::class
+        );
 
         return $cableService;
     }

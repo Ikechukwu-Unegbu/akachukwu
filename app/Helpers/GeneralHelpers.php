@@ -7,6 +7,8 @@ use App\Models\Referral;
 use App\Models\SiteSetting;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class GeneralHelpers{
@@ -127,4 +129,29 @@ class GeneralHelpers{
     
         return $totalAmountToPay;
     }    
+
+    public static function sendOneSignalTransactionNotification($service, $message, $amount, string $notificationClass): bool
+    {
+        try {
+            $user = User::find(Auth::id());
+
+            if (!$user) {
+                Log::error('Failed to send notification: User not found');
+                return false;
+            }
+
+            if (!class_exists($notificationClass)) {
+                Log::error("Notification class {$notificationClass} does not exist");
+                return false;
+            }
+
+            $status = $service->response->status ?? false;
+
+            $user->notify(new $notificationClass($status, $message, $amount));
+            return true;
+        } catch (\Exception $e) {
+            Log::error('Failed to send notification: ' . $e->getMessage());
+            return false;
+        }
+    }
 }
