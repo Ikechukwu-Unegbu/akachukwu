@@ -5,13 +5,17 @@ namespace App\Http\Controllers\V1\API;
 use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
 use App\Models\Utility\Cable;
+use App\Helpers\GeneralHelpers;
 use App\Models\Data\DataVendor;
 use App\Models\Utility\CablePlan;
 use App\Http\Controllers\Controller;
 use App\Services\Cable\CableService;
+use Illuminate\Support\Facades\Auth;
 use App\Traits\ResolvesVendorService;
 use App\Http\Requests\V1\Api\IUCApiRequest;
 use App\Http\Requests\V1\Api\CableApiRequest;
+use App\Services\OneSignalNotificationService;
+use App\Notifications\CableSubscriptionNotification;
 
 class CableApiController extends Controller
 {
@@ -38,7 +42,6 @@ class CableApiController extends Controller
 
     public function plan(Request $request)
     {
-       
         $request->validate([
             'cable_id'  =>  'required'
         ]);
@@ -85,6 +88,14 @@ class CableApiController extends Controller
         }
 
         $cableService = CableService::create($this->vendor->id, $request->cable_id, $request->cable_plan_id, $request->iuc_number, $request->card_owner);
+
+        GeneralHelpers::sendOneSignalTransactionNotification(
+            $cableService, 
+            $cableService->message, 
+            $cable_plan->amount, 
+            CableSubscriptionNotification::class
+        );
+
         return $cableService;
     }
     

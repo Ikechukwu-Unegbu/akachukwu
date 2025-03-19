@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\V1\API;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Helpers\GeneralHelpers;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
+use App\Http\Controllers\Controller;
 use App\Services\Airtime\AirtimeService;
-use App\Models\Utility\AirtimeTransaction;
-use App\Services\Account\AccountBalanceService;
+use App\Services\OneSignalNotificationService;
 use App\Http\Requests\V1\Api\AirtimeApiRequest;
-use App\Models\User;
-use App\Models\Utility\Airtime;
-use Illuminate\Support\Facades\Auth;
+use App\Notifications\AirtimePurchaseNotification;
 
 class AirtimeApiController extends Controller
 {
@@ -40,6 +37,13 @@ class AirtimeApiController extends Controller
                 $request->network_id,
                 $request->amount,
                 $request->phone_number
+            );
+            
+            GeneralHelpers::sendOneSignalTransactionNotification(
+                $airtimeService, 
+                $airtimeService->message, 
+                $request->amount, 
+                AirtimePurchaseNotification::class
             );
 
             return $airtimeService;

@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers\V1\API;
 
-use App\Helpers\ApiHelper;
-use App\Helpers\GeneralHelpers;
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\Account\AccountBalanceService;
+use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
+use App\Helpers\GeneralHelpers;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Services\Payment\Transfer\VastelMoneyTransfer;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Account\AccountBalanceService;
+use App\Notifications\MoneyTransferNotification;
+use App\Services\Payment\Transfer\VastelMoneyTransfer;
 
 class TransferController extends Controller
 {
@@ -42,7 +44,18 @@ class TransferController extends Controller
             if (isset($verifyRecipient->status) && !$verifyRecipient->status) {
                 return $verifyRecipient;
             }
-            return $vastelTransfer->transfer($request->all());
+
+            $user = User::find(Auth::id());
+
+            $vastelTransferService =  $vastelTransfer->transfer($request->all());
+
+            try {
+                $user->notify(new MoneyTransferNotification($request->amount, 'intra', $vastelTransferService->status, $recipient->username, $user->account_balance));
+            } catch (\Throwable $th) {
+                Log::error($th->getMessage());
+            }
+
+            return $vastelTransferService;
 
             // $accountBalanceService = new AccountBalanceService(Auth::user());
             // return $accountBalanceService->getAccountBalance();

@@ -7,20 +7,20 @@ use Illuminate\Notifications\Notification;
 use NotificationChannels\OneSignal\OneSignalChannel;
 use NotificationChannels\OneSignal\OneSignalMessage;
 
-class CreditNofitication extends Notification
+class DataPurchaseNotification extends Notification
 {
     use Queueable;
 
     protected CONST ICON = "https://vastel.dev/images/vastel-logo.svg";
-    protected $utility;
-    protected $balance;
+    protected $status;
     protected $amount;
+    protected $message;
 
-    public function __construct($utility, $amount, $balance)
+    public function __construct($status, $message, $amount)
     {
-        $this->utility = $utility;
+        $this->status = $status;
         $this->amount = $amount;
-        $this->balance = $balance;
+        $this->message = $message;
     }
 
     public function via($notifiable)
@@ -30,12 +30,13 @@ class CreditNofitication extends Notification
 
     public function toOneSignal($notifiable)
     {
-        $subject = "💰 Refund Processed!";
-        $message = "Your wallet has been refunded with ₦". number_format($this->amount) ." for {$this->utility} purchase. Your new balance is #" . number_format($this->balance) . ". Thank you for using Vastel App!";
+        $subject = $this->status
+        ? "🎉 Data Purchase was successful!"
+        : "❌ Data Purchase failed!";
 
         return OneSignalMessage::create()
             ->setSubject($subject)
-            ->setBody($message)
+            ->setBody($this->message)
             ->icon(self::ICON);
     }
 }

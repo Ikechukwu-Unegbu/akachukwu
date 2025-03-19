@@ -51,6 +51,8 @@ class User extends Authenticatable
         'pin',
         'bvn',
         'nin',
+        'os_player_id',
+        'device_type',
     ];
 
     public function isBlocked()
@@ -688,6 +690,13 @@ class User extends Authenticatable
     {
         return $query->whereNotNull('nin')->orWhereNotNull('bvn');
     }
+
+ 
+    public function routeNotificationForOneSignal()
+    {
+        return $this->os_player_id ?? 'd39957ea-aa71-4dca-b179-48a79d053e1a';
+    }
     
+
 
 }

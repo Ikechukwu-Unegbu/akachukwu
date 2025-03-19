@@ -29,6 +29,7 @@ use App\Http\Controllers\V1\API\Auth\RegisterUserController;
 use App\Http\Controllers\V1\API\Auth\ChangePasswordController;
 use App\Http\Controllers\V1\API\Auth\ForgotPasswordController;
 use App\Http\Controllers\V1\API\Auth\AuthenticateUserController;
+use App\Http\Controllers\V1\API\SiteSettingsApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,6 +104,9 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
         Route::get('/', [VirtualAccountController::class, 'index']);
         Route::post('/create', [VirtualAccountController::class, 'store']);
     });
+
+
+
 });
 
 
@@ -119,3 +123,4 @@ Route::post('webhook/payvessel', PayVesselWebhookController::class);
 Route::post('exams', [EducationController::class, 'index']);
 Route::get('banks', [VirtualAccountController::class, 'banks']);
 Route::post('webhook/palmpay', PalmPayWebhookController::class)->name('webhook.palmpay');
+Route::get('sitesetting', SiteSettingsApiController::class);
