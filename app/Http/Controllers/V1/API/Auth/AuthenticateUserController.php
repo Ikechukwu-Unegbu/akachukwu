@@ -54,7 +54,7 @@ class AuthenticateUserController extends Controller
             (new GenerateRemainingAccounts)->generateRemaingingAccounts();
 
             if ($request->os_player_id) {
-                $this->userDeviceRepository->updateOrCreate(['os_player_id' => $request->os_player_id]);
+                $this->userDeviceRepository->updateOrCreate($user, ['os_player_id' => $request->os_player_id]);
             }
 
             try {
