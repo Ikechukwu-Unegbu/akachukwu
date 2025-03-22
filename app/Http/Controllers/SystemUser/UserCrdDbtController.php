@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\SystemUser;
 
-use App\Helpers\GeneralHelpers;
-use App\Http\Controllers\Controller;
-use App\Models\Payment\VastelTransaction;
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Notifications\AdminTopupNotification;
-use App\Notifications\FundDeductionNotification;
-use App\Services\Account\AccountBalanceService;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use App\Helpers\GeneralHelpers;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Models\Payment\VastelTransaction;
+use App\Notifications\AdminTopupNotification;
+use App\Services\Account\AccountBalanceService;
+use App\Notifications\AdminDebitUserNotification;
 
 // use Illuminate\Notifications\Notifiable;
 
@@ -68,7 +68,7 @@ class UserCrdDbtController extends Controller
             $vastelTransaction->save();
             $vastelTransaction->success();
             $balanceService->transaction($validatedData['amount']);
-            $user->notify(new FundDeductionNotification($validatedData));
+            $user->notify(new AdminDebitUserNotification($validatedData));
             $vastelTransaction->update(['balance_after' => $user->account_balance]);
 
         }
