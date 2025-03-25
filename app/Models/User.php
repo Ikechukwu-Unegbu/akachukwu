@@ -637,14 +637,13 @@ class User extends Authenticatable
             )
             ->unionAll(
                 DB::table('vastel_transactions')
-                ->whereRaw('record = 1')
-                    ->whereRaw(auth()->user()->role !== 'admin' ? 'user_id = ?' : '1=1', [auth()->id()])
                     ->select([
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status', 
                         'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name', 
                         DB::raw('"funding" as type'), DB::raw('"vastel" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
                         DB::raw('"Wallet Topup" as title'), 'created_at'
                     ])
+                    ->whereRaw(auth()->user()->role === 'user' ? 'record = 1' : 'record IN (0,1)')
             )
             ->unionAll(
                 DB::table('palm_pay_transactions')
