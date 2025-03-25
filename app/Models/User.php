@@ -105,16 +105,18 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function setAccountBalance($amount)
+    public function setAccountBalance($amount) : void
     {
-        $this->account_balance = $this->account_balance + $amount;
-        $this->save();
+        $user = $this->lockForUpdate()->first();
+        $user->account_balance += $amount;
+        $user->save();
     }
 
     public function setTransaction($amount)
     {
-        $this->account_balance = $this->account_balance - $amount;
-        $this->save();
+        $user = $this->lockForUpdate()->first();
+        $user->account_balance -= $amount;
+        $user->save();
     }
 
     public function dashboard()
