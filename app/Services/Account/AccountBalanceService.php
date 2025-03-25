@@ -62,17 +62,21 @@ class AccountBalanceService
         return false;
     }
 
-    public function initiateRefund($amount, $transaction) : bool
+    public function initiateRefund($user, $amount, $transaction) : bool
     {
-        $this->user->setAccountBalance($amount);
+        // $this->user->setAccountBalance($amount);
+        $user->account_balance += $amount;
+        $user->save();
         $transaction->balanceAfterRefund($amount);
         $transaction->refund();
         return true;
     }
 
-    public function initiateDebit($amount, $transaction) : bool
+    public function initiateDebit($user, $amount, $transaction) : bool
     {
-        $this->user->setAccountBalance($amount);
+        // $this->user->setAccountBalance($amount);
+        $user->account_balance -= $amount;
+        $user->save();
         $transaction->debit();
         return true;
     }

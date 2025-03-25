@@ -144,7 +144,7 @@ class GladTidingService
                 // Handle API response
                 if (isset($response->error)) {
                     // Refund user if API transaction fails
-                    self::$authUser->initiateRefund($discountedAmount, $transaction);
+                    self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
                     $errorResponse = [
                         'error'   => 'API Error',
                         'message' => 'An error occurred during the airtime request. Please try again later.',
@@ -273,7 +273,7 @@ class GladTidingService
                 // Handle API response
                 if (isset($response->error)) {
                     // Refund user if API transaction fails
-                    self::$authUser->initiateRefund($discountedAmount, $transaction);
+                    self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
                     $errorResponse = [
                         'error'   => 'Insufficient Balance From API',
                         'message' => 'An error occurred during bill payment request. Please try again later.',
@@ -396,7 +396,7 @@ class GladTidingService
                 // Handle API response
                 if (isset($response->error)) {
                     // Refund the user if the API call fails
-                    self::$authUser->initiateRefund($amount, $transaction);
+                    self::$authUser->initiateRefund($user, $amount, $transaction);
                     $errorResponse = [
                         'error'   => 'Insufficient Balance From API.',
                         'message' => "An error occurred during cable payment request. Please try again later.",
@@ -515,7 +515,7 @@ class GladTidingService
                 // Handle API response
                 if (isset($response->error)) {
                     // Refund the user on failure
-                    self::$authUser->initiateRefund($discountedAmount, $transaction);
+                    self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
                     $errorResponse = [
                         'error'   => 'Insufficient Balance From API',
                         'message' => "An error occurred during Data request. Please try again later.",

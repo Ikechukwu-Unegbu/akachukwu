@@ -49,7 +49,7 @@ class UserCrdDbtController extends Controller
             $vastelTransaction->save();
             $vastelTransaction->success();
             $user->setAccountBalance($validatedData['amount']);
-            $vastelTransaction->update(['balance_after' => $user->account_balance+$validatedData['amount']]);
+            $vastelTransaction->update(['balance_after' => $user->account_balance]);
             $user->notify(new AdminTopupNotification($validatedData));
         }
 
@@ -76,7 +76,7 @@ class UserCrdDbtController extends Controller
             $user->setTransaction($validatedData['amount']);            
             $user->notify(new AdminDebitUserNotification($validatedData));
 
-            $vastelTransaction->update(['balance_after' => $user->account_balance+$validatedData['amount']]);
+            $vastelTransaction->update(['balance_after' => $user->account_balance]);
 
         }
             Session::flash('success', 'Action Successful.');
