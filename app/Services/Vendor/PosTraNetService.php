@@ -183,7 +183,7 @@ class PosTraNetService
                 // Handle the response from the API
                 if (isset($response->error)) {
                     // Handle API wallet balance issues
-                    self::$authUser->initiateRefund($amount, $transaction);
+                    self::$authUser->initiateRefund($user, $amount, $transaction);
                     $errorResponse = [
                         'error' => 'Insufficient Balance From API.',
                         'message' => "An error occurred during the Airtime request. Please try again later."
@@ -312,7 +312,7 @@ class PosTraNetService
                 self::storeApiResponse($transaction, $response);
     
                 if (isset($response->error)) {
-                    self::$authUser->initiateRefund($discountedAmount, $transaction);
+                    self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
                     $errorResponse = [
                         'error' => 'Insufficient Balance From API.',
                         'message' => "An error occurred during bill payment request. Please try again later."
@@ -427,7 +427,7 @@ class PosTraNetService
                 }
 
                 if (isset($response->error)) {
-                    self::$authUser->initiateRefund($discountedAmount, $transaction);
+                    self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
                     $errorResponse = [
                         'error'   => 'Insufficient Balance From API.',
                         'message' => "An error occurred during cable payment request. Please try again later."
@@ -559,7 +559,9 @@ class PosTraNetService
                 }
                 
                 // Deduct the amount from the user's account balance
-                self::$authUser->transaction($discountedAmount);
+                // self::$authUser->transaction($discountedAmount);
+                $user->account_balance -= $discountedAmount;
+                $user->save();
 
                 // External API request and response processing (same as in your code)
                 $data = [
@@ -574,7 +576,7 @@ class PosTraNetService
              
                 if (isset($response->error)) {
                     // Insufficient API Wallet Balance Error
-                    self::$authUser->initiateRefund($discountedAmount, $transaction);
+                    self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
                     $errorResponse = [
                         'error'   => 'Insufficient Balance From API.',
                         'message' => "An error occurred during Data request. Please try again later."

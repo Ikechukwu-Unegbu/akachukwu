@@ -373,7 +373,7 @@ class VTPassService
 
     //         if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
     //             // Insufficient API Wallet Balance Error
-    //             self::$authUser->initiateRefund($amount, $transaction);
+    //             self::$authUser->initiateRefund($user, $amount, $transaction);
     //             $errorResponse = [
     //                 'error'   => 'Insufficient Balance From API.',
     //                 'message' => "An error occurred during Data request. Please try again later."
@@ -489,7 +489,7 @@ class VTPassService
                     $status = $response->content->transactions->status;
 
                     if ($status === 'failed') {
-                        self::$authUser->initiateRefund($discountedAmount, $transaction);
+                        self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
 
                         $errorResponse = [
                             'error'   => 'API Error',
@@ -603,7 +603,7 @@ class VTPassService
 
     //         if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
     //             // Insufficient API Wallet Balance Error
-    //             self::$authUser->initiateRefund($amount, $transaction);
+    //             self::$authUser->initiateRefund($user, $amount, $transaction);
     //             $errorResponse = [
     //                 'error'     =>  'Insufficient Account Balance.',
     //                 'message'   =>  "An error occurred during bill payment request. Please try again later."
@@ -721,7 +721,7 @@ class VTPassService
                     $status = $response->content->transactions->status;
 
                     if ($status === 'failed') {
-                        self::$authUser->initiateRefund($finalAmount, $transaction);
+                        self::$authUser->initiateRefund($user, $finalAmount, $transaction);
 
                         $errorResponse = [
                             'error'   => 'API Error',
@@ -863,7 +863,7 @@ class VTPassService
 
     //         if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
     //             // Insufficient API Wallet Balance Error
-    //             self::$authUser->initiateRefund($amount, $transaction);
+    //             self::$authUser->initiateRefund($user, $amount, $transaction);
     //             $errorResponse = [
     //                 'error'     =>  'Insufficient Account Balance.',
     //                 'message'   =>  "An error occurred during cable payment request. Please try again later."
@@ -975,7 +975,7 @@ class VTPassService
                     $status = $response->content->transactions->status;
 
                     if ($status === 'failed') {
-                        self::$authUser->initiateRefund($finalAmount, $transaction);
+                        self::$authUser->initiateRefund($user, $finalAmount, $transaction);
 
                         $errorResponse = [
                             'error'   => 'API Error',

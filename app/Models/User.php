@@ -107,16 +107,14 @@ class User extends Authenticatable
 
     public function setAccountBalance($amount) : void
     {
-        $user = self::lockForUpdate()->find($this->id);
-        $user->account_balance += $amount;
-        $user->save();
+        $this->account_balance += $amount;
+        $this->save();
     }
 
     public function setTransaction($amount) : void
     {
-        $user = self::lockForUpdate()->find($this->id);
-        $user->account_balance -= $amount;
-        $user->save();
+        $this->account_balance -= $amount;
+        $this->save();
     }
 
     public function dashboard()
@@ -639,12 +637,14 @@ class User extends Authenticatable
             )
             ->unionAll(
                 DB::table('vastel_transactions')
+                ->whereRaw('record = 1')
+                    ->whereRaw(auth()->user()->role !== 'admin' ? 'user_id = ?' : '1=1', [auth()->id()])
                     ->select([
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status', 
                         'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name', 
                         DB::raw('"funding" as type'), DB::raw('"vastel" as utility'), DB::raw('"fa-exchange-alt" as icon'), 
                         DB::raw('"Wallet Topup" as title'), 'created_at'
-                    ])->whereRaw('record = 1')
+                    ])
             )
             ->unionAll(
                 DB::table('palm_pay_transactions')
