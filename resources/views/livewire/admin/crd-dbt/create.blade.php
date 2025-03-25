@@ -56,6 +56,15 @@
                 </select>
             </div>
 
+            <!-- Dropdown -->
+            <div class="mb-3">
+                <label for="dropdownSelect" class="form-label">Off-record vs On-record</label>
+                <select name="record" class="form-select" id="dropdownSelect">
+                    <option value="1" {{ old('record') === '1' ? 'selected' : (!old('record') ? 'selected' : '') }}>On Record</option>
+                    <option value="0" {{ old('record') === '1' ? 'selected' : '' }}>Off Record</option>
+                </select>
+            </div>
+
             <button type="submit" id="submitButton" class="btn btn-primary float-right">Submit</button>
         </form>
 
