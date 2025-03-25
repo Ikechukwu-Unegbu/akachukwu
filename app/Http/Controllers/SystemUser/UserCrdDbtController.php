@@ -22,17 +22,20 @@ class UserCrdDbtController extends Controller
 
     public function store(Request $request)
     {
-       return DB::transaction(function()use($request){
+
         $validatedData = $request->validate([
             'amount' => 'required|numeric',
             'action' => 'required|string',
             'reason' => 'required|string',
-            'username' => 'required|string'
+            'username' => 'required|string',
+            'record'  =>    'required|boolean'
         ]);
-        $user = User::where('username', $validatedData['username'])->first();
+
+       return DB::transaction(function() use($request, $validatedData) {
+        
+        $user = User::where('username', $validatedData['username'])->firstOrFail();
+
         if ($validatedData['action'] == 'credit') {
-            
-            
             $vastelTransaction = new VastelTransaction();
             $vastelTransaction->admin_id = Auth::user()->id;
             $vastelTransaction->user_id = $user->id;
@@ -41,19 +44,21 @@ class UserCrdDbtController extends Controller
             $vastelTransaction->type = true;
             $vastelTransaction->currency = 'NGN';
             $vastelTransaction->status = true;
+            $vastelTransaction->record = $validatedData['record'];
             $vastelTransaction->balance_before =  $user->account_balance;
             $vastelTransaction->save();
             $vastelTransaction->success();
-
             $user->setAccountBalance($validatedData['amount']);
-            $vastelTransaction->update(['balance_after' => $user->account_balance]);
+            $vastelTransaction->update(['balance_after' => $user->account_balance+$validatedData['amount']]);
             $user->notify(new AdminTopupNotification($validatedData));
         }
+
+
         if ($validatedData['action'] == 'debit') {            
             $balanceService = new AccountBalanceService($user);
             $balanceUpto = $balanceService->verifyAccountBalance($validatedData['amount']);
             if (!$balanceUpto) {
-                return redirect()->back()->withErrors(['balanceUpto' => 'This user doesnt have upto this amount.']);
+                return redirect()->back()->withErrors(['balanceUpto' => "This user doesn't have upto this amount."]);
             }
 
             $vastelTransaction = new VastelTransaction();
@@ -64,16 +69,18 @@ class UserCrdDbtController extends Controller
             $vastelTransaction->type = false;
             $vastelTransaction->currency = 'NGN';
             $vastelTransaction->status = true;
+            $vastelTransaction->record = $validatedData['record'];
             $vastelTransaction->balance_before =  $user->account_balance;
             $vastelTransaction->save();
             $vastelTransaction->success();
-            $balanceService->transaction($validatedData['amount']);
+            $user->setTransaction($validatedData['amount']);            
             $user->notify(new AdminDebitUserNotification($validatedData));
-            $vastelTransaction->update(['balance_after' => $user->account_balance]);
+
+            $vastelTransaction->update(['balance_after' => $user->account_balance+$validatedData['amount']]);
 
         }
-        Session::flash('success', 'Action Successfull.');
-        return redirect()->back();
+            Session::flash('success', 'Action Successful.');
+            return redirect()->back();
        });
     }
 
