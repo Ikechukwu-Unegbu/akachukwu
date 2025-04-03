@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\API\BankTransferApiController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -105,8 +106,10 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
         Route::post('/create', [VirtualAccountController::class, 'store']);
     });
 
-
-
+    Route::prefix('bank')->group(function() {
+        Route::post('query-account-number', [BankTransferApiController::class, 'queryAccountNumber']);
+        Route::post('process-transaction', [BankTransferApiController::class, 'processTransfer']);
+    });
 });
 
 
@@ -124,3 +127,4 @@ Route::post('exams', [EducationController::class, 'index']);
 Route::get('banks', [VirtualAccountController::class, 'banks']);
 Route::post('webhook/palmpay', PalmPayWebhookController::class)->name('webhook.palmpay');
 Route::get('sitesetting', SiteSettingsApiController::class);
+Route::get('bank-list', [BankTransferApiController::class, 'banks']);
