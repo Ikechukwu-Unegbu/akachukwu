@@ -119,7 +119,7 @@ class PalmPayMoneyTransferService extends BasePalmPayService
                 ]);
 
                 DB::commit();
-                return ApiHelper::sendResponse((array) $response->data, "Bank transfer successfully initiated.");
+                return ApiHelper::sendResponse($transaction, "Bank transfer successfully initiated.");
             }
 
             DB::commit();
