@@ -540,7 +540,7 @@ meter_type: *Prepaid* = 1 & *Postpaid* = 2
         "message": "KYC updated & BVN linked to your account successfully."
     }
 
-## Virtual Account Endpoint
+## Money Transfer (Bank) Endpoint
      GET /api/bank-list HTTP/1.1
     Content-Type: application/json
     Example Response : {
