@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Hr\User;
 use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use Illuminate\Support\Facades\Password;
 
 class Show extends Component
 {
@@ -52,6 +53,25 @@ class Show extends Component
         $this->mount($user->username);
     }
 
+    public function sendPasswordResetLink()
+    {
+        if (!$this->user || !$this->user->email) {
+            $this->dispatch('error-toastr', ['message' => "User does not have a valid email address."]);
+            return;
+        }
+
+        $status = Password::sendResetLink(['email' => $this->user->email]);
+        $user = User::find($this->user->id);
+
+        $user->pin = null;
+        $user->save();
+
+        if ($status === Password::RESET_LINK_SENT) {
+            $this->dispatch('success-toastr', ['message' => "Password reset link sent to user."]);
+        } else {
+            $this->dispatch('error-toastr', ['message' => "Failed to send password reset link."]);
+        }
+    }
 
     public function render()
     {

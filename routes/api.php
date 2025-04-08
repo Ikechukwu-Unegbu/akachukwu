@@ -92,7 +92,7 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
 
     Route::get('/transactions', [TransactionsApiController::class, 'index']);
     Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
-
+    
     Route::post('/transfer', TransferController::class);
 
     //notification
