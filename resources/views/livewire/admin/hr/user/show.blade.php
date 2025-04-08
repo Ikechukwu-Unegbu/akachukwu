@@ -30,6 +30,11 @@
                         @if($user->deleted_at != null)
                         Already Soft Deleted @else Soft Delete This User @endif
                     </button>
+
+
+                    <button type="button"  class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#reset-email">
+                      Send Password Reset Email
+                    </button>
                 </div>
                 <livewire:component.user-account-numbers-card :user="$user"/>
             </div>
@@ -189,8 +194,6 @@
     </div>
 
 
-    <!--  -->
-
     <div class="modal fade" id="unblock_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -210,24 +213,48 @@
     </div>
 <!-- end of modal -->
 
-<div class="modal fade" id="soft-delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="soft-delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+           
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">About to Soft Delete User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h3 class="text-center text-danger">Are you sure you want to soft delete this user?</h3>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
+                        <button type="button" wire:click="softDelete"  data-bs-dismiss="modal"  class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+     
+    </div>
+
+
+    <div class="modal fade" id="reset-email" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">About to Soft Delete User</h5>
+                <h5 class="modal-title" id="exampleModalLabel">About Send Password Reset Email</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h3 class="text-center text-danger">Are you sure you want to soft delete this user?</h3>
+                <h3 class="text-center text-success">Are you sure you want to send password Reset link?</h3>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
-                <button type="button" wire:click="softDelete"  data-bs-dismiss="modal"  class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button"  wire:click="sendPasswordResetLink" data-bs-dismiss="modal" class="btn btn-success">Yes, Send</button>
             </div>
             </div>
         </div>
     </div>
+   
+
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', () => {
     const tableId = 'userTable';
