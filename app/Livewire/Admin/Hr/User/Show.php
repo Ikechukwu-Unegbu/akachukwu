@@ -19,36 +19,44 @@ class Show extends Component
 
     public function blockUser()
     {
-        $user = User::find($this->user->id);
+        $user = User::withTrashed()->find($this->user->id);
         $user->blocked_by_admin = true;
         $user->save();
-        Session::flash('blocked', 'This user has been blocked');
-        $this->mount($user);
+        $this->dispatch('success-toastr', ['message' => "This user has been blocked"]);
+        $this->mount($user->username);
     }
 
     public function softDelete()
     {
-        $user = User::find($this->user->id);
-        $user->deleted_at = now();
+        $user = User::withTrashed()->find($this->user->id);
+    
+        if ($user->deleted_at) {
+            $user->deleted_at = null;
+            $message = "This user has been restored.";
+        } else {
+            $user->deleted_at = now();
+            $message = "This user has been deleted.";
+        }
+    
         $user->save();
-        Session::flash('blocked', 'This user has been deleted');
-        $this->mount($user);
+        $this->dispatch('success-toastr', ['message' => $message]);
+        $this->mount($user->username);
     }
 
 
     public function unBlockUser()
     {
-        $user = User::find($this->user->id);
+        $user = User::withTrashed()->find($this->user->id);
         $user->blocked_by_admin = false;
         $user->save();
-        Session::flash('blocked', 'This user has been unblocked.');
-        $this->mount($user);
+        $this->dispatch('success-toastr', ['message' => "This user has been unblocked"]);
+        $this->mount($user->username);
     }
 
     public function sendPasswordResetLink()
     {
         if (!$this->user || !$this->user->email) {
-            Session::flash('error', 'User does not have a valid email address.');
+            $this->dispatch('error-toastr', ['message' => "User does not have a valid email address."]);
             return;
         }
 
@@ -59,16 +67,16 @@ class Show extends Component
         $user->save();
 
         if ($status === Password::RESET_LINK_SENT) {
-            Session::flash('success', 'Password reset link sent to user.');
+            $this->dispatch('success-toastr', ['message' => "Password reset link sent to user."]);
         } else {
-            Session::flash('error', 'Failed to send password reset link.');
+            $this->dispatch('error-toastr', ['message' => "Failed to send password reset link."]);
         }
     }
 
     public function render()
     {
         return view('livewire.admin.hr.user.show', [
-            'walletHistories' => $this->user->walletHistories()->get()->take(10)
+            'walletHistories' => $this->user?->walletHistories()?->get()?->take(10)
         ]);
     }
 }
