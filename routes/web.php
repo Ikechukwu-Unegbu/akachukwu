@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Blog\BlogPageController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MtnDevController;
 use Illuminate\Support\Facades\Route;
 use  App\Http\Controllers\TestController;
 use App\Http\Controllers\PagesController;
@@ -134,6 +135,9 @@ Route::post('update-password', [SettingsController::class, 'updatePassword'])->n
 // Route::get('/process-palmpay', function () {
 //     return \App\Services\Money\PalmPayService::createSpecificVirtualAccount(auth()->user());
 // });
+
+
+Route::get('/mtn/subscription-plans', [MtnDevController::class, 'listSubscriptionPlans']);
 
 
 require __DIR__ . '/auth.php';
