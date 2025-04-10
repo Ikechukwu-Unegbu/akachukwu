@@ -2,16 +2,17 @@
 
 namespace App\Models\Payment;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
+use App\Traits\HasStatusText;
 use App\Traits\PaymentStatusTrait;
 use App\Traits\RecordsBalanceChanges;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Flutterwave extends Model
 {
-    use PaymentStatusTrait, RecordsBalanceChanges;
+    use PaymentStatusTrait, RecordsBalanceChanges, HasStatusText;
     protected $statusField = 'api_status';
     protected $table = 'flutterwave_transactions';
     protected $guarded = [];

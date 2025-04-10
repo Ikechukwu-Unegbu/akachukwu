@@ -4,6 +4,7 @@ namespace App\Models\Utility;
 
 use App\Models\User;
 use Illuminate\Support\Str;
+use App\Traits\HasStatusText;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use Spatie\Activitylog\LogOptions;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AirtimeTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges; 
+    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText; 
     protected $throttleActionName = 'airtime_purchase';
     protected $guarded = [];
     protected $fillable = [

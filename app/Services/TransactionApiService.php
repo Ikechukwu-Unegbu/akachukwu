@@ -8,6 +8,7 @@ use App\Models\Payment\Flutterwave;
 use App\Models\Payment\MonnifyTransaction;
 use App\Models\Payment\Paystack;
 use App\Models\Payment\PayVesselTransaction;
+use App\Models\Payment\VastelTransaction;
 use App\Models\Utility\AirtimeTransaction;
 use App\Models\Utility\CableTransaction;
 use App\Models\Utility\ElectricityTransaction;
@@ -51,25 +52,25 @@ class TransactionApiService{
     {
         $userId = auth()->user()->id;
         $query = DB::table(DB::raw('(
-            SELECT id, transaction_id, user_id, amount, status, "data" as type, created_at FROM data_transactions
+            SELECT id, transaction_id, user_id, amount, status, "data" as type, vendor_status as text_status, created_at FROM data_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "airtime" as type, created_at FROM airtime_transactions
+            SELECT id, transaction_id, user_id, amount, status, "airtime" as type, vendor_status as text_status, created_at FROM airtime_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "cable" as type, created_at FROM cable_transactions
+            SELECT id, transaction_id, user_id, amount, status, "cable" as type, vendor_status as text_status, created_at FROM cable_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "electricity" as type, created_at FROM electricity_transactions
+            SELECT id, transaction_id, user_id, amount, status, "electricity" as type, vendor_status as text_status, created_at FROM electricity_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "education" as type, created_at FROM result_checker_transactions
+            SELECT id, transaction_id, user_id, amount, status, "education" as type, vendor_status as text_status, created_at FROM result_checker_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "vastel" as type, created_at FROM vastel_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as type, api_status as text_status, created_at FROM vastel_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, created_at FROM monnify_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, api_status as text_status, created_at FROM monnify_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, created_at FROM pay_vessel_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, api_status as text_status, created_at FROM pay_vessel_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, created_at FROM paystack_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, api_status as text_status, created_at FROM paystack_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, created_at FROM flutterwave_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, api_status as text_status, created_at FROM flutterwave_transactions
         ) as transactions'))
         ->join('users', 'transactions.user_id', '=', 'users.id')
         ->select('transactions.*', 'users.name as user_name')
@@ -156,12 +157,27 @@ class TransactionApiService{
                 $idColumn = 'reference_id';
                 break;
 
+            case 'credit':
+                $model = VastelTransaction::class;
+                $idColumn = 'reference_id';
+                break;
+
+            case 'debit':
+                $model = VastelTransaction::class;
+                $idColumn = 'reference_id';
+                break;
+
             default:
                 return ApiHelper::sendError(['invalid transaction type'], 'invalid transaction type');
         }
 
         // Query the model with the appropriate ID column
         $query = $model::where($idColumn, $id);
+
+        if (in_array($type, ['credit', 'debit'])) {
+            if ($type === 'credit') $query->where('type', true);
+            if ($type === 'debit') $query->where('type', false);
+        }
 
         // Include related data for specific types
         if (in_array($type, ['data', 'airtime'])) {
@@ -171,7 +187,7 @@ class TransactionApiService{
         $transaction = $query->first();
 
         if (!$transaction) {
-            return ApiHelper::sendError(['transaction not found'], 'transaction not found');
+            return false;
         }
 
         $transaction = $transaction->toArray();
@@ -179,7 +195,4 @@ class TransactionApiService{
 
         return $transaction;
     }
-
-
-
 }

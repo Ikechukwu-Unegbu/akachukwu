@@ -691,7 +691,11 @@ class User extends Authenticatable
     {
         return $query->whereNotNull('nin')->orWhereNotNull('bvn');
     }
-
+    
+    public function scopeIsKYCNotValidated($query)
+    {
+        return $query->whereNull('nin')->whereNull('bvn');
+    }
  
     public function routeNotificationForOneSignal()
     {

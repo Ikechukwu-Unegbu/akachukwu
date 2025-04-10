@@ -154,4 +154,9 @@ class GeneralHelpers{
             return false;
         }
     }
+
+    public static function totalUsersCount()
+    {
+        return User::count();
+    }
 }
