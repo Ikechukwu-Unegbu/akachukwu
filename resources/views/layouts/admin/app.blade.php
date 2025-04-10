@@ -49,7 +49,7 @@
         @include('layouts.admin.sidebar')
     @endauth
 
-    <main @auth id="main" class="main" @endauth>
+    <main @auth id="main" class="main" @endauth style="min-height: 100vh">
       {{ $slot ?? '' }}
       @yield('content')
     </main><!-- End #main -->

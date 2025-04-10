@@ -200,6 +200,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('blacklist', [BlacklistController::class, 'index'])->name('admin.blacklist');
         Route::post('blacklist', [BlacklistController::class, 'store'])->name('admin.blacklist.store');
         Route::post('blacklist/{id}', [BlacklistController::class, 'destroy'])->name('admin.blacklist.remove');
+
+        Route::get('module-control', App\Livewire\Admin\ModuleControl\Index::class)->name('admin.module-control.index');
     });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');
