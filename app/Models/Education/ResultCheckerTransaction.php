@@ -4,6 +4,7 @@ namespace App\Models\Education;
 
 use App\Models\User;
 use Illuminate\Support\Str;
+use App\Traits\HasStatusText;
 use App\Models\Data\DataVendor;
 use Spatie\Activitylog\LogOptions;
 use App\Traits\RecordsBalanceChanges;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ResultCheckerTransaction extends Model
 {
-    use LogsActivity, HasFactory, TransactionStatusTrait, RecordsBalanceChanges; 
+    use LogsActivity, HasFactory, TransactionStatusTrait, RecordsBalanceChanges, HasStatusText; 
     
     protected $guarded = [];
 

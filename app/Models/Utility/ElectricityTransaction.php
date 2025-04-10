@@ -4,6 +4,7 @@ namespace App\Models\Utility;
 
 use App\Models\User;
 use Illuminate\Support\Str;
+use App\Traits\HasStatusText;
 use App\Models\Data\DataVendor;
 use Spatie\Activitylog\LogOptions;
 use App\Traits\RecordsBalanceChanges;
@@ -17,7 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ElectricityTransaction extends Model
 {
-    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges;
+    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText;
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',
