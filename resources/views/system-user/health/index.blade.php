@@ -180,6 +180,95 @@
                     </div>
                 </div>
 
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">KYC Verification Status</h5>
+                            @php
+                                $percentage = $kycHealthService->percentageKycCompleted();
+                                $colorClass = 'bg-danger';
+                                if ($percentage > 30 && $percentage <= 60) {
+                                    $colorClass = 'bg-warning';
+                                } elseif ($percentage > 60) {
+                                    $colorClass = 'bg-success';
+                                }
+                            @endphp
+                            
+                            <div class="progress mb-3" style="height: 25px;">
+                                <div class="progress-bar progress-bar-striped {{ $colorClass }}" 
+                                     role="progressbar" 
+                                     style="width: {{ $percentage }}%" 
+                                     aria-valuenow="{{ $percentage }}" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100">
+                                    <span class="h6">{{ $percentage }}% Completed</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted">0% (Not Started)</small>
+                                <small class="text-muted">50% (Halfway)</small>
+                                <small class="text-muted">100% (Fully Verified)</small>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <div class="d-flex justify-content-between">
+                                    <span>Verified Users:</span>
+                                    <strong>{{ $kycHealthService->hasCompletedKyc() }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Total Users:</span>
+                                    <strong>{{ $totalUsersCount }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">PalmPay Account Status</h5>
+                            @php
+                                $percentage = $palmPayHealthService->percentageHasPalyPayAccount();
+                                $colorClass = 'bg-danger';
+                                if ($percentage > 30 && $percentage <= 60) {
+                                    $colorClass = 'bg-warning';
+                                } elseif ($percentage > 60) {
+                                    $colorClass = 'bg-success';
+                                }
+                            @endphp
+                            
+                            <div class="progress mb-3" style="height: 25px;">
+                                <div class="progress-bar progress-bar-striped {{ $colorClass }}" 
+                                     role="progressbar" 
+                                     style="width: {{ $percentage }}%" 
+                                     aria-valuenow="{{ $percentage }}" 
+                                     aria-valuemin="0" 
+                                     aria-valuemax="100">
+                                    <span class="h6">{{ $percentage }}% Completed</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted">0% (Not Started)</small>
+                                <small class="text-muted">50% (Halfway)</small>
+                                <small class="text-muted">100% (Fully Verified)</small>
+                            </div>
+                            
+                            <div class="mt-3">
+                                <div class="d-flex justify-content-between">
+                                    <span>Total Accounts:</span>
+                                    <strong>{{ $palmPayHealthService->hasPalyPayAccount() }}</strong>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <span>Total Users:</span>
+                                    <strong>{{ $totalUsersCount }}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Recent Logs -->
                 <div class="col-lg-6">
                     <div class="card shadow-sm">
