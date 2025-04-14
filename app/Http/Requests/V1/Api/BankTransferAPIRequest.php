@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\V1\Api;
 
+use App\Models\SiteSetting;
 use App\Models\MoneyTransfer;
 use App\Helpers\GeneralHelpers;
 use Illuminate\Support\Facades\Auth;
@@ -35,12 +36,14 @@ class BankTransferAPIRequest extends FormRequest
                 'min:100',
                 function ($attribute, $value, $fail) {
                     $user = auth()->user();
+                    $settings = SiteSetting::first();
+
                     if ($value > $user->account_balance) {
                         $fail("The {$attribute} exceeds your available balance of ₦" . number_format($user->account_balance, 2));
                     }
 
                     if (!GeneralHelpers::minimumTransaction($value)) {
-                        $fail("The minimum transfer amount is ₦" . number_format($this->settings->minimum_transfer, 2));
+                        $fail("The minimum transfer amount is ₦" . number_format($settings->minimum_transfer, 2));
                     }
 
                     if (!GeneralHelpers::dailyTransactionLimit(MoneyTransfer::class, $value, $user->id)) {
