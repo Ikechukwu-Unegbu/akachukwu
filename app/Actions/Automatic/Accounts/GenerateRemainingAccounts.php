@@ -11,7 +11,11 @@ use App\Services\Payment\VirtualAccountServiceFactory;
 class GenerateRemainingAccounts{
 
     // public $expectedBankCodes = ["120001", "035", "50515"]; //9PSB, Wema, Moniepoint
-    public $expectedBankCodes = ["120001", "50515", "100033"]; //9PSB, Moniepoint, Palmpay
+    public $expectedBankCodes = [
+        // "120001", 
+        "50515", 
+        "100033"
+    ]; //9PSB, Moniepoint, Palmpay
 
     // public static $virtualAccountService = ["120001" => "9PSB", "035" => "WEMA", "50515" => "MONIEPOINT"];
     public static $virtualAccountService = [
