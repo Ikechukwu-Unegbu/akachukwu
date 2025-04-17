@@ -142,7 +142,7 @@
                                         </div>
                                     @else
                                     @endif --}}
-                                    {{ $loop->index + $transactions->firstItem() }}☻
+                                    {{ $loop->index + $transactions->firstItem() }}
                                 </th>
                                 <td> <a href="{{route('admin.hr.user.show', [$transaction->user_name])}}">{{ $transaction->user_name }}</a> </td>
                                 <td>₦{{ $transaction->amount }}</td>

@@ -127,6 +127,9 @@
       @can('view role')
       <x-admin.dropdown-item title="Site Settings" link="{{ route('admin.site.settings') }}" />
       @endcan
+      @can('view role')
+      <x-admin.dropdown-item title="Module Control" link="{{ route('admin.module-control.index') }}" />
+      @endcan
       {{-- <x-admin.dropdown-item title="Pofile" link="{{ route('admin.settings.profile') }}" /> --}}
     </x-admin.dropdown>
     @endif
