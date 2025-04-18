@@ -3,6 +3,7 @@
 namespace App\Models\Data;
 
 use App\Models\User;
+use App\Traits\HasTransactionType;
 use Illuminate\Support\Str;
 use App\Traits\HasStatusText;
 use Spatie\Activitylog\LogOptions;
@@ -17,8 +18,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DataTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText; 
-    protected $throttleActionName = 'data_purchase'; 
+    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText, HasTransactionType;
+    protected $throttleActionName = 'data_purchase';
+    protected $addsToBalance = false;
     protected $guarded = [];
 
     protected $fillable = [
@@ -41,9 +43,9 @@ class DataTransaction extends Model
         'api_response',
         'status',
         'discount'
-    
+
     ];
-    
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
@@ -82,7 +84,7 @@ class DataTransaction extends Model
     }
 
 
-    
+
     public function vendor() : BelongsTo
     {
         return $this->belongsTo(DataVendor::class);

@@ -3,6 +3,7 @@
 namespace App\Models\Education;
 
 use App\Models\User;
+use App\Traits\HasTransactionType;
 use Illuminate\Support\Str;
 use App\Traits\HasStatusText;
 use App\Models\Data\DataVendor;
@@ -16,8 +17,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ResultCheckerTransaction extends Model
 {
-    use LogsActivity, HasFactory, TransactionStatusTrait, RecordsBalanceChanges, HasStatusText; 
-    
+    use LogsActivity, HasFactory, TransactionStatusTrait, RecordsBalanceChanges, HasStatusText, HasTransactionType;
+    protected $addsToBalance = false;
+
     protected $guarded = [];
 
     public function getActivitylogOptions(): LogOptions

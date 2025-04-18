@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Traits\HasStatusText;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
+use App\Traits\HasTransactionType;
 use Spatie\Activitylog\LogOptions;
 use App\Traits\RecordsBalanceChanges;
 use App\Traits\ThrottlesTransactions;
@@ -19,8 +20,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AirtimeTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText; 
+    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText, HasTransactionType;
     protected $throttleActionName = 'airtime_purchase';
+    protected $addsToBalance = false;
+
+    protected $appends = ['transaction_type'];
+
     protected $guarded = [];
     protected $fillable = [
         'transaction_id',
@@ -42,7 +47,7 @@ class AirtimeTransaction extends Model
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly([ 
+        ->logOnly([
         'transaction_id',
         'user_id',
         'vendor_id',
