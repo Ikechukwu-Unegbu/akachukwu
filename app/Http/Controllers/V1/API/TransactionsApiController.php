@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Auth;
 
 class TransactionsApiController extends Controller
 {
-    
-   
+
+
     public function index()
     {
 
@@ -28,11 +28,11 @@ class TransactionsApiController extends Controller
         $startDate = request()->input('startDate');
         $perPage= request()->input('perpage');
 
-        $result = TransactionApiService::fetchTransactions($category, $startDate, $endDate, $perPage); 
+        $result = TransactionApiService::fetchTransactions($category, $startDate, $endDate, $perPage);
         return response()->json($result);
     }
 
-  
+
 
     public function show($id)
     {
@@ -44,10 +44,10 @@ class TransactionsApiController extends Controller
         $transaction = TransactionApiService::getSingleTransaction($type, $id);
         if (!$transaction) {
             return ApiHelper::sendError(['transaction not found'], 'transaction not found');
+        } elseif (isset($transaction->status) && !$transaction->status) {
+            return $transaction;
         }
 
         return ApiHelper::sendResponse($transaction, 'Transaction fetched');
     }
-
-
 }

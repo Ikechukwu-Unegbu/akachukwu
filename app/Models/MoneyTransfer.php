@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Traits\HasTransactionType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class MoneyTransfer extends Model
 {
-    protected $guarded = [];
-
+    use HasTransactionType;
+        protected $guarded = [];
+    protected $addsToBalance = false;
     protected static function boot()
     {
         parent::boot();

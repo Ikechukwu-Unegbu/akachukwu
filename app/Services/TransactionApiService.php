@@ -1,9 +1,10 @@
-<?php 
+<?php
 namespace App\Services;
 
 use App\Helpers\ApiHelper;
 use App\Models\Data\DataTransaction;
 use App\Models\Education\ResultCheckerTransaction;
+use App\Models\MoneyTransfer;
 use App\Models\Payment\Flutterwave;
 use App\Models\Payment\MonnifyTransaction;
 use App\Models\Payment\Paystack;
@@ -17,11 +18,11 @@ use Illuminate\Support\Facades\DB;
 
 class TransactionApiService{
 
- 
+
 
     public static function getServiceModelTransactionOld($model, $userId, $startDate = null, $endDate = null)
     {
-          
+
         $electricityTransactions = $model::select('transaction_id', 'status', 'amount', 'created_at')
         ->where('user_id', $userId)
         ->orderBy('created_at', 'desc')
@@ -46,32 +47,35 @@ class TransactionApiService{
             return $transactions;
     }
 
-   
+
 
     public static function fetchTransactions($type = null, $startDate = null, $endDate = null)
     {
         $userId = auth()->user()->id;
         $query = DB::table(DB::raw('(
-            SELECT id, transaction_id, user_id, amount, status, "data" as type, vendor_status as text_status, created_at FROM data_transactions
+            SELECT id, transaction_id, user_id, amount, status, "data" as type, vendor_status as text_status, "debit" as transaction_type, created_at FROM data_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "airtime" as type, vendor_status as text_status, created_at FROM airtime_transactions
+            SELECT id, transaction_id, user_id, amount, status, "airtime" as type, vendor_status as text_status, "debit" as transaction_type, created_at FROM airtime_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "cable" as type, vendor_status as text_status, created_at FROM cable_transactions
+            SELECT id, transaction_id, user_id, amount, status, "cable" as type, vendor_status as text_status, "debit" as transaction_type, created_at FROM cable_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "electricity" as type, vendor_status as text_status, created_at FROM electricity_transactions
+            SELECT id, transaction_id, user_id, amount, status, "electricity" as type, vendor_status as text_status, "debit" as transaction_type, created_at FROM electricity_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "education" as type, vendor_status as text_status, created_at FROM result_checker_transactions
+            SELECT id, transaction_id, user_id, amount, status, "education" as type, vendor_status as text_status, "debit" as transaction_type, created_at FROM result_checker_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as type, api_status as text_status, created_at FROM vastel_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as type, api_status as text_status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as transaction_type, created_at FROM vastel_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, api_status as text_status, created_at FROM monnify_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, api_status as text_status, "credit" as transaction_type, created_at FROM monnify_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, api_status as text_status, created_at FROM pay_vessel_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, api_status as text_status, "credit" as transaction_type, created_at FROM pay_vessel_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, api_status as text_status, created_at FROM paystack_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, api_status as text_status, "credit" as transaction_type, created_at FROM paystack_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, api_status as text_status, created_at FROM flutterwave_transactions
-        ) as transactions'))
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, api_status as text_status, "credit" as transaction_type, created_at FROM flutterwave_transactions
+            UNION ALL
+            SELECT id, reference_id as transaction_id,  user_id, amount, status, "money_transfer" as type, transfer_status as text_status,  "debit" as transaction_type, created_at
+                FROM money_transfers
+            ) as transactions'))
         ->join('users', 'transactions.user_id', '=', 'users.id')
         ->select('transactions.*', 'users.name as user_name')
         ->where('transactions.user_id', $userId) // Filter by logged-in user
@@ -92,7 +96,7 @@ class TransactionApiService{
 
     }
 
- 
+
     public static function getModelByCategory($category)
     {
         $models = [
@@ -101,13 +105,14 @@ class TransactionApiService{
             'data' => DataTransaction::class,
             'result_checker' => ResultCheckerTransaction::class,
             'cable' => CableTransaction::class,
+            'money_transfer' => MoneyTransfer::class,
         ];
 
         return $models[strtolower($category)] ?? null;
     }
 
 
-   
+
 
     public static function getSingleTransaction($type, $id)
     {
@@ -164,6 +169,11 @@ class TransactionApiService{
 
             case 'debit':
                 $model = VastelTransaction::class;
+                $idColumn = 'reference_id';
+                break;
+
+            case 'money_transfer':
+                $model = MoneyTransfer::class;
                 $idColumn = 'reference_id';
                 break;
 
