@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\V1\API\AnnouncementApiController;
 use App\Http\Controllers\V1\API\BankTransferApiController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -65,7 +66,7 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
 
     //image uload
     Route::post('/upload-avatar',[FileUploadController::class, 'store']);
-    
+
     //fetch logos
     Route::get('logo', [AppAssetsController::class, 'getSpecifiedColumn']);
 
@@ -93,14 +94,14 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
 
     Route::get('/transactions', [TransactionsApiController::class, 'index']);
     Route::get('/transactions/{id}', [TransactionsApiController::class, 'show']);
-    
+
     Route::post('/transfer', TransferController::class);
 
     //notification
     Route::get('/notifications', [NotificationsController::class, 'index']);
     Route::get('/referrer', [ReferralController::class, 'index']);
     Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_wallet']);
-    
+
     Route::prefix('virtual-accounts')->group(function () {
         Route::get('/', [VirtualAccountController::class, 'index']);
         Route::post('/create', [VirtualAccountController::class, 'store']);
@@ -110,6 +111,8 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
         Route::post('query-account-number', [BankTransferApiController::class, 'queryAccountNumber']);
         Route::post('process-transaction', [BankTransferApiController::class, 'processTransfer']);
     });
+
+    Route::get('announcements', [AnnouncementApiController::class, 'show']);
 });
 
 
