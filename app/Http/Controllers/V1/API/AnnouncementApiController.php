@@ -20,6 +20,6 @@ class AnnouncementApiController extends Controller
     {
         $announcements = $this->announcementService->getActiveAnnouncements();
 
-        return ApiHelper::sendResponse($announcements, 'Announcement Fetched Successfully');
+        return ApiHelper::sendResponse($announcements, 'Announcements Fetched Successfully');
     }
 }
