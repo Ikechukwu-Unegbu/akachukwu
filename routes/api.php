@@ -105,6 +105,7 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
     Route::prefix('virtual-accounts')->group(function () {
         Route::get('/', [VirtualAccountController::class, 'index']);
         Route::post('/create', [VirtualAccountController::class, 'store']);
+        Route::post('/generate', [VirtualAccountController::class, 'createSpecificVirtualAccount']);
     });
 
     Route::prefix('bank')->group(function() {
