@@ -1,7 +1,7 @@
 @extends('layouts.new-guest')
 @section('head')
 <title>Vastel | Dashboard</title>
-@endsection 
+@endsection
 @section('body')
     <!-- Wallet Balance -->
     <div class="px-[2rem] bg-white  shadow-xl p-6 mb-8">
@@ -16,7 +16,7 @@
                     class="bg-vastel_blue shadow-lg text-white px-4 py-[0.7rem] rounded-[5px] flex items-center justify-center w-[8.8rem] ">
                     <i class="fas fa-plus mr-2"></i> Add Money
                 </button>
-                <button 
+                <button
                      data-modal-target="transfer-modal" data-modal-toggle="transfer-modal"
                     class="bg-vastel_blue shadow-lg text-white px-4 py-[0.7rem] rounded-[5px] flex items-center justify-center w-[8.8rem] ">
                     <i class="fas fa-exchange-alt mr-2"></i> Transfer
@@ -85,7 +85,7 @@
             @forelse (auth()->user()->checkUserTransactionHistories(10, auth()->id()) as $transaction)
             @php
                 $parts = explode(' ', class_basename($transaction));
-                
+
                 $lastPart = end($parts);
             @endphp
                 <div class="flex items-center justify-between">
@@ -101,9 +101,9 @@
                                 <span class="text-red">
                                     {{ $moneyTransfer->type === 'external' ? 'Bank' : 'Intra' }} Transfer
                                 </span>
-                                @else 
+                                @else
                                 <span class="text-green">Recieved</span>
-                                @endif 
+                                @endif
                             @else
                                 {{-- Default behavior --}}
                                 {{ Str::title($transaction->utility) }}
@@ -159,9 +159,9 @@
 
                     @php $count = 0 @endphp
                     @forelse (auth()->user()->virtualAccounts()->get() as $key => $account)
-                        @if ($loop->first) 
+                        @if ($loop->first)
                         <h5 class="text-sm font-medium text-gray-600">Virtual accounts</h5>
-                        <p class="mb-4 text-xs text-gray-500">Make a transfer to any of the accounts</p> 
+                        <p class="mb-4 text-xs text-gray-500">Make a transfer to any of the accounts</p>
                         @endif
                         <!-- Account {{ ++$count }} -->
                         <div class="flex items-center justify-between p-4 mb-3 bg-gray-100 rounded-lg">
@@ -186,23 +186,23 @@
                         </div>
                         @empty
                             <h5 class="text-sm font-medium text-gray-600">Get Started with Virtual Accounts</h5>
-                            <p class="mb-4 text-xs text-gray-500">Complete your KYC to access virtual accounts for quick and easy transfers.</p> 
+                            <p class="mb-4 text-xs text-gray-500">Complete your KYC to access virtual accounts for quick and easy transfers.</p>
                             <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
                     @endforelse
 
                     @else
                     <h5 class="font-medium">Get Started with Virtual Accounts</h5>
-                    <p class="mb-4">Complete your KYC to access virtual accounts for quick and easy transfers.</p> 
+                    <p class="mb-4">Complete your KYC to access virtual accounts for quick and easy transfers.</p>
                     <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
                     @endif
 
                     <div class="card-funding-notice text-red-600" style="margin-top: 10px; font-size: 14px;">
                         <p>
-                            Please note: A <strong>{{ $settings->card_charges }}% charge</strong> will be applied to all card funding transactions.
+                            Please note: A <strong>{{ $settings?->card_charges }}% charge</strong> will be applied to all card funding transactions.
                         </p>
                     </div>
 
-                    @if ($settings->card_funding_status)
+                    @if ($settings?->card_funding_status)
                     <div class="flex items-center justify-center py-4">
                         <span class="text-sm text-gray-500">OR</span>
                     </div>
@@ -216,7 +216,7 @@
                 </div>
             </div>
         </div>
-       
+
     </div>
 
     <livewire:component.global.announcement-modal/>
