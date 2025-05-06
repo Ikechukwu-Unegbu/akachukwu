@@ -144,3 +144,4 @@ require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/feature.php';
 require __DIR__ . '/savings.php';
+require __DIR__ . '/logger.php';
