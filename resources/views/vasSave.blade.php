@@ -8,8 +8,11 @@
 @section('body')
 <section class="lg:px-[2rem] px-4">
     <div class="text-[#0018A8] lg:text-lg  lg:flex gap-4 hidden ">
-        <span class="font-bold"> < </span> 
-        <span>Back</span>
+        <span class="flex justify-center items-center"> <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.875 12.0416L1.33333 6.49992L6.875 0.958252" stroke="#0018A8" stroke-width="1.58333" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+             </span> 
+           <span class="flex justify-center items-center">Back</span>
      </div>
 <section class="lg:border border-[#00000038] lg:my-8 lg:py-5  mt-8 py-4 lg:w-6/12  ">
     <section class="p-6">

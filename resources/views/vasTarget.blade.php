@@ -1,115 +1,3 @@
-{{-- 
-
-
-@extends('layouts.new-guest')
-@section('head')
-<title>VASTel | vasTarget</title>
-@endsection
-@section('body')
-<section class="lg:px-[2rem] px-4">
-    <div class="text-[#0018A8] lg:text-lg  lg:flex gap-4 hidden ">
-        <span class="font-bold"> < </span> 
-        <span>Back</span>
-     </div>
-
-     <section class="lg:border border-[#00000038] lg:my-8 lg:py-5  mt-8 py-4 lg:w-6/12  ">
-        <section class="p-6">
-            <h3 class="text-[#000000] text-lgs">Reach your financial goals with ease</h3>
-            <label for="" class="block mt-5">
-                <h4 class=" mb-2 text-[#333333]">How much are you aiming for?</h4>
-                <div class="relative">
-                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-lg">₦</span>
-                    <input 
-                        type="text" 
-                        placeholder="100~99,000" 
-                        class="pl-7 w-full border border-[#B0B0B080] focus:outline-none"
-                    >
-                </div>
-            </label>
-
-            <label for="Target name" class="block mt-5">
-                <h4 class=" mb-2 text-[#333333]">Target name (Optional)</h4>
-                <div class="relative">
-                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-lg">₦</span>
-                    <input 
-                        type="text" 
-                        placeholder="Please enter" 
-                        class="pl-7 w-full border border-[#B0B0B080] focus:outline-none"
-                    >
-                </div>
-            </label>
-
-            <label for="Set Start Date" class="block mt-5">
-                <h4 class=" mb-2 text-[#333333]">Set Start Date</h4>
-                <div class="relative">
-                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-lg">₦</span>
-                    <input 
-                        type="date" 
-                        placeholder="Set Start Date" 
-                        class="pl-7 w-full border border-[#B0B0B080] focus:outline-none"
-                    >
-                </div>
-            </label>
-
-            <label for="Set Maturity Date" class="block mt-5">
-                <h4 class=" mb-2 text-[#333333]">Set Maturity Date</h4>
-                <div class="relative">
-                    <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-lg">₦</span>
-                    <input 
-                        type="date" 
-                        placeholder="Set Maturity Date" 
-                        class="pl-7 w-full border border-[#B0B0B080] focus:outline-none"
-                    >
-                </div>
-            </label>
-
-            <label for="saving-frequency" class="mt-5 block">
-                <h4 class="mb-2 text-[#333333]">How will you prefer to save?</h4>
-                <select 
-                  id="saving-frequency" 
-                  name="saving-frequency" 
-                  class="w-full border border-[#B0B0B080] px-3 py-2 rounded-md text-gray-700 bg-white"
-                >
-                  <option value="" disabled selected class="text-[#8A8A8A] text-sm">Daily</option>
-                  <option value="daily">Daily</option>
-                  <option value="weekly">Weekly</option>
-                  <option value="bi-weekly">Bi-weekly</option>
-                  <option value="monthly">Monthly</option>
-                </select>
-              </label>
-
-              <label for="saving-frequency" class="mt-5 block">
-                <h4 class="mb-2 text-[#333333]">Time</h4>
-                <select 
-                  id="saving-frequency" 
-                  name="saving-frequency" 
-                  class="w-full border border-[#B0B0B080] px-3 py-2 rounded-md text-gray-700 bg-white"
-                >
-                  <option value="" disabled selected class="text-[#8A8A8A] text-sm">Select a time </option>
-                  <option value="daily">morning </option>
-                  <option value="weekly">afternoon</option>
-                  <option value="bi-weekly">night</option>
-                </select>
-              </label>
-
-
-              <div class="justify-center flex items-center mt-6">
-                <button class="bg-[#B0B7E4] text-white px-28 rounded-lg py-2 text-sm ">Deposit</button>
-              </div>
-
-              
-
-
-        </section>
-     </section>
-     
-
-    
-</section>
-
-   
-    
-@endsection --}}
 
 
 
@@ -122,8 +10,11 @@
 @section('body')
 <section class="lg:px-[2rem] px-4">
     <div class="text-[#0018A8] lg:text-lg  lg:flex gap-4 hidden ">
-        <span class="font-bold"> < </span> 
-        <span>Back</span>
+        <span class="flex justify-center items-center"> <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.875 12.0416L1.33333 6.49992L6.875 0.958252" stroke="#0018A8" stroke-width="1.58333" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+             </span> 
+           <span class="flex justify-center items-center">Back</span>
     </div>
 
     <section class="lg:border border-[#00000038] lg:my-8 lg:py-5  mt-8 py-4 lg:w-6/12">

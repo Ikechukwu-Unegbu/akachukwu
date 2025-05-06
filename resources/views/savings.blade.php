@@ -8,8 +8,11 @@
 @section('body')
 <section class="lg:px-[2rem] px-4">
     <div class="text-[#0018A8] lg:text-lg  lg:flex gap-4 hidden ">
-       <span class="font-bold"> < </span> 
-       <span>Back</span>
+       <span class="flex justify-center items-center"> <svg width="8" height="13" viewBox="0 0 8 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6.875 12.0416L1.33333 6.49992L6.875 0.958252" stroke="#0018A8" stroke-width="1.58333" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+         </span> 
+       <span class="flex justify-center items-center">Back</span>
     </div>
 {{-- <section class="border-2 border-[#00000038]  mt-16 py-8 mr-30   ">
         <section class=" flex justify-between  ml-8 ]">
@@ -113,9 +116,14 @@
         <div class="rounded-2xl bg-[#E6E6E65C] p-3 w-full  border-2 border-[#E6E8F6C9] mb-4">
             <div class="flex justify-between">
                 <h4 class="text-[#0018A8] text-lg font-semibold">VasSave</h4>
-                <span class="text-[#333333] font-semibold">
+                <span class="text-[#333333] flex gap-2 font-semibold">
                     <span class="bg-[#E6E8F6D9] px-2 rounded-full">17%p.a</span>
-                    <a href="{{ route('vasSave') }}" class="w-fit font-bold -mt-1">></a>
+                    <a href="{{ route('vasSave') }}" class="items-center flex justify-center">
+                        <svg width="7" height="11" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 0.833415L5.66667 5.50008L1 10.1667" stroke="black" stroke-width="1.58333" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            
+                    </a>
                 </span>
             </div>
             <p class="text-[#333333] bg-[#E6E8F6D9] pl-2 rounded-xl py-1 mt-3 text-sm  ">Save whenever you want, withdraw anytime</p>
@@ -124,9 +132,14 @@
         <div class="rounded-2xl bg-[#E6E6E65C] p-3 w-full  border-2 border-[#E6E8F6C9] mb-4">
             <div class="flex justify-between">
                 <h4 class="text-[#0018A8] text-lg font-semibold">VasTarget</h4>
-                <span class="text-[#333333] font-semibold">
+                <span class="text-[#333333] flex gap-2 font-semibold">
                     <span class="bg-[#E6E8F6D9] px-2 rounded-full">20%p.a</span>
-                    <a href="{{ route('vasTarget') }}" class="w-fit font-bold -mt-1">></a>
+                    <a href="{{ route('vasTarget') }}" class="items-center flex justify-center">
+                        <svg width="7" height="11" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 0.833415L5.66667 5.50008L1 10.1667" stroke="black" stroke-width="1.58333" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            
+                    </a>
                 </span>
             </div>
             <p class="text-[#333333] bg-[#E6E8F6D9] pl-2 rounded-xl py-1 mt-3 text-sm">Save towards a specific goal over time</p>
@@ -135,9 +148,14 @@
         <div class="rounded-2xl bg-[#E6E6E65C] p-3 w-full  border-2 border-[#E6E8F6C9]">
             <div class="flex justify-between">
                 <h4 class="text-[#0018A8] text-lg font-semibold">VasFixed</h4>
-                <span class="text-[#333333] font-semibold">
+                <span class="text-[#333333] flex gap-2 font-semibold">
                     <span class="bg-[#E6E8F6D9] px-2 rounded-full">30%p.a</span>
-                    <a href="#" class="w-fit font-bold -mt-1">></a>
+                    <a href="#" class="items-center flex justify-center">
+                        <svg width="7" height="11" viewBox="0 0 7 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 0.833415L5.66667 5.50008L1 10.1667" stroke="black" stroke-width="1.58333" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            
+                    </a>
                 </span>
             </div>
             <p class="text-[#333333] bg-[#E6E8F6D9] pl-2 rounded-xl py-1 mt-3 text-sm">Lock funds for a set period and earn higher return</p>
