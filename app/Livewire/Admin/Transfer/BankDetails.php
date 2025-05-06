@@ -6,7 +6,7 @@ use App\Models\MoneyTransfer;
 use App\Services\Payment\Transfer\VastelMoneyTransfer;
 use Livewire\Component;
 
-class InAppDetails extends Component
+class BankDetails extends Component
 {
     public $transfer;
     public $action = '';
@@ -146,6 +146,6 @@ class InAppDetails extends Component
 
     public function render()
     {
-        return view('livewire.admin.transfer.in-app-details');
+        return view('livewire.admin.transfer.bank-details');
     }
 }

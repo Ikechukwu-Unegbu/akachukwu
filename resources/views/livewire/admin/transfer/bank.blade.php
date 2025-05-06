@@ -16,21 +16,39 @@
             <div class="card">
                 <div class="card-body p-4">
                     <div class="row mb-4">
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-md-3 mb-3">
                             <label class="form-label">From Date</label>
                             <input type="date" wire:model.live="dateFrom" class="form-control">
                         </div>
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-md-3 mb-3">
                             <label class="form-label">To Date</label>
                             <input type="date" wire:model.live="dateTo" class="form-control">
                         </div>
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-md-3 mb-3">
                             <label class="form-label">Amount From</label>
                             <input type="number" wire:model.live="amountFrom" placeholder="Min amount" class="form-control">
                         </div>
-                        <div class="col-12 col-md-3">
+                        <div class="col-12 col-md-3 mb-3">
                             <label class="form-label">Amount To</label>
                             <input type="number" wire:model.live="amountTo" placeholder="Max amount" class="form-control">
+                        </div>
+                        <div class="col-12 col-md-3 mb-3">
+                            <label class="form-label">Bank</label>
+                            <select name="bank" id="bank" class="form-select" wire:model.live="bank">
+                                <option value=""></option>
+                                @foreach ($banks as $__bank)
+                                    <option value="{{ $__bank->code }}">{{ $__bank->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-3 mb-3">
+                            <label class="form-label">Status</label>
+                            <select name="status" id="status" class="form-select" wire:model.live="status">
+                                <option value=""></option>
+                                @foreach ($statuses as $_status)
+                                    <option value="{{ $_status }}">{{ Str::title($_status) }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                     <div class="float-end">
@@ -70,12 +88,12 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('admin.transfer.in-app.details', $transfer->reference_id) }}"  class="btn btn-primary btn-sm">View</a>
+                                    <a href="{{ route('admin.transfer.bank.details', $transfer->reference_id) }}"  class="btn btn-primary btn-sm">View</a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="7" class="text-center">No Records Found!</td>
+                                <td colspan="8" class="text-center">No Records Found!</td>
                             </tr>
                         @endforelse
                     </x-admin.table-body>

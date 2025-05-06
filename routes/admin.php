@@ -207,6 +207,7 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('in-app', \App\Livewire\Admin\Transfer\InApp::class)->name('in-app');
             Route::get('in-app/{transfer:reference_id}/show', \App\Livewire\Admin\Transfer\InAppDetails::class)->name('in-app.details');
             Route::get('bank', \App\Livewire\Admin\Transfer\Bank::class)->name('bank');
+            Route::get('bank/{transfer:reference_id}/show', \App\Livewire\Admin\Transfer\BankDetails::class)->name('bank.details');
         });
     });
 

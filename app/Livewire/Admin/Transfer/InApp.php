@@ -76,7 +76,7 @@ class InApp extends Component
         $transfers = $query->paginate($this->perPage);
 
         return view('livewire.admin.transfer.in-app', [
-            'transfers' => $transfers
+            'transfers' => $transfers,
         ]);
     }
 }

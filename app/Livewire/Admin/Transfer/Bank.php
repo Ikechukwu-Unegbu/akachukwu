@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Transfer;
 
+use App\Models\Bank as ModelBank;
 use Livewire\Component;
 use Livewire\WithPagination;
 use App\Models\MoneyTransfer;
@@ -20,7 +21,13 @@ class Bank extends Component
     public $amountFrom = '';
     public $amountTo = '';
     public $selectedTransfer = null;
-    public $adminNotes = '';
+
+    public $bank;
+    public $status;
+
+    public $statuses = [
+        'successful', 'processing', 'pending', 'failed', 'refunded', 'negative'
+    ];
 
 
     protected $queryString = [
@@ -30,6 +37,8 @@ class Bank extends Component
         'dateTo' => ['except' => ''],
         'amountFrom' => ['except' => ''],
         'amountTo' => ['except' => ''],
+        'bank' => ['except' => ''],
+        'status' => ['except' => ''],
     ];
 
     public function selectTransfer($transferId)
@@ -42,11 +51,12 @@ class Bank extends Component
     {
         $this->reset([
             'search',
-            'statusFilter',
+            'status',
             'dateFrom',
             'dateTo',
             'amountFrom',
             'amountTo',
+            'bank'
         ]);
     }
 
@@ -56,8 +66,8 @@ class Bank extends Component
             ->with(['sender', 'receiver'])
             ->search($this->search)
             ->isExternal()
-            ->when($this->statusFilter, function ($q) {
-                return $q->where('transfer_status', $this->statusFilter);
+            ->when($this->status, function ($q) {
+                return $q->where('transfer_status', $this->status);
             })
             ->when($this->dateFrom, function ($q) {
                 return $q->whereDate('created_at', '>=', $this->dateFrom);
@@ -71,13 +81,17 @@ class Bank extends Component
             ->when($this->amountTo, function ($q) {
                 return $q->where('amount', '<=', $this->amountTo);
             })
+            ->when($this->bank, function ($q) {
+                return $q->where('bank_code',  $this->bank);
+            })
             ->orderBy('created_at', 'desc');
 
         $transfers = $query->paginate($this->perPage);
 
 
         return view('livewire.admin.transfer.bank', [
-            'transfers' => $transfers
+            'transfers' => $transfers,
+            'banks'    =>   ModelBank::isPalmPay()->orderBy('name')->get()
         ]);
     }
 }
