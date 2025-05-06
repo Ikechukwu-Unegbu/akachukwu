@@ -1,7 +1,8 @@
 @extends('layouts.new-guest')
 @section('head')
-    <title>VASTel | savings</title>
+    <title>VASTel | vasTarget</title>
 @endsection
+
 @section('body')
     <section class="lg:px-[2rem] px-4">
         <div class="text-[#0018A8] lg:text-lg  lg:flex gap-4 hidden ">
@@ -15,83 +16,119 @@
         </div>
         <section class="lg:border border-[#00000038] lg:my-8 lg:py-5  mt-8 py-4 lg:w-6/12">
             <section class="p-6">
+                <div class="bg-[#0018A8] rounded-3xl text-white  p-4 ">
 
-                <div class="flex gap-6 border border-[#00000038] rounded-2xl bg-[#E6E6E640] p-4">
-                    <div>
-                        <img src="/images/house.png" alt="">
+                    <div class="flex flex-col">
+
+                        <span class="text-[11px] text-[#E6E6E6]">VasSave 17% p.a</span>
+                        <p class="font-semibold mt-1 text-3xl">₦500,000</p>
+
                     </div>
-                    <div class="flex flex-col gap-1 flex-1">
-                        <p class="font-semibold text-[16px] text-[#333333]">House rent</p>
 
-                        <div class="flex text-[#333333] text-sm w-full gap-4">
-                            <div class="flex flex-col items-start">
-                                <span class="font-semibold text-sm leading-none">₦0</span>
-                                <span class="text-[12px] leading-none whitespace-nowrap mt-1">Saved</span>
-                            </div>
-                            <div class="flex flex-col items-start ml-1">
-                                <span class="font-semibold text-sm leading-none">₦30k</span>
-                                <span class="text-[12px] leading-none whitespace-nowrap mt-1 ">Total Target</span>
-                            </div>
-                            <div class="flex flex-col items-start ml-1">
-                                <span class="font-semibold text-sm leading-none">20</span>
-                                <span class="text-[12px] leading-none whitespace-nowrap mt-1 ">Days Left</span>
-                            </div>
+                    <div class="pt-3 flex justify-between lg:hidden">
+                        <span class="text-white text-[15px]">Next Free Withdraw</span>
+                        <div class="flex gap-1">
+                            <span class="text-white flex justify-center items-center text-[15px]">30 Jun 2025</span>
+                            <svg class="flex justify-center items-center" width="23" height="24" viewBox="0 0 23 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M9.60223 6.25L8.25098 7.60125L12.6401 12L8.25098 16.3988L9.60223 17.75L15.3522 12L9.60223 6.25Z"
+                                    fill="white" />
+                            </svg>
+
+
                         </div>
 
+                    </div>
+                    <div>
+                        <button
+                            class="flex justify-center text-center items-center gap-2 text-[#3346B9] bg-white mt-4 rounded-lg w-full py-2">
 
-                        <!-- Progress bar and percentage -->
-                        <div class="flex items-center gap-2 mt-2">
-                            <hr class="flex-1 border-2 bg-[#0000003B]">
-                            <span class="text-sm text-[#333333] font-medium">0%</span>
+                            <svg class="flex justify-center items-center" width="18" height="18" viewBox="0 0 18 18"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M9 3V15M15 9L3 9" stroke="#3346B9" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                            <span class="flex justify-center items-center text-sm font-semibold"> Add Money
+                            </span>
+
+                        </button>
+                    </div>
+
+                    <div class="py-3 flex justify-between lg:hidden">
+                        <span class="text-white text-[15px]">Next Free Withdraw</span>
+                        <div class="flex gap-1">
+                            <span class="text-white flex justify-center items-center text-[15px]">30 Jun 2025</span>
+                            <svg class="flex justify-center items-center" width="23" height="24" viewBox="0 0 23 24"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M9.60223 6.25L8.25098 7.60125L12.6401 12L8.25098 16.3988L9.60223 17.75L15.3522 12L9.60223 6.25Z"
+                                    fill="white" />
+                            </svg>
+
+
                         </div>
+
                     </div>
                 </div>
 
 
-
-                <section class="flex justify-center items-center my-14">
-                    <div class="grid lg:grid-cols-3 grid-cols-2 gap-4">
-                        <div
-                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
-                            <span>Start Date</span>
-                            <span class="font-semibold">3rd Apr 2025</span>
-                        </div>
-
-                        <div
-                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
-                            <span>Withdrawal Date</span>
-                            <span class="font-semibold">4th May 2025</span>
-                        </div>
-
-                        <div
-                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
-                            <span>Frequency</span>
-                            <span class="font-semibold">₦1,000 daily</span>
-                        </div>
-
-                        <div
-                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
-                            <span>Target</span>
-                            <span class="font-semibold">₦30,000</span>
-                        </div>
-
-                        <div
-                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
-                            <span>Interest Per Annum</span>
-                            <span class="font-semibold">13%</span>
-                        </div>
-
-                        <div
-                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
-                            <span>Days Left</span>
-                            <span class="font-semibold">20</span>
-                        </div>
+            </section>
+            <section class="lg:px-8">
+                <div class="mt-8 flex justify-between items-center">
+                    <div>
+                        <p class="text-[#646464] font-semibold text-lg">AutoSave Deposit</p>
+                        <span id="autosave-status" class="text-[#D8D8D8] text-xs">Turn off Autosave</span>
                     </div>
-                </section>
+
+                    <button id="toggle-autosave"
+                        class="relative w-12 h-6 rounded-full bg-white border border-[#B0B0B080] focus:outline-none transition-colors duration-300">
+                        <span id="toggle-knob"
+                            class="absolute left-0.5 top-0.5 w-5 h-5 bg-blue-700 rounded-full transition-all duration-400">
+                        </span>
+                    </button>
+                </div>
+
+                <script>
+                    const button = document.getElementById('toggle-autosave');
+                    const knob = document.getElementById('toggle-knob');
+                    const status = document.getElementById('autosave-status');
+
+                    let isOn = false;
+
+                    button.addEventListener('click', () => {
+                        isOn = !isOn;
+
+                        if (isOn) {
+                            // ON state
+                            button.classList.remove('bg-white');
+                            button.classList.add('bg-blue-700');
+
+                            knob.classList.remove('bg-blue-700', 'left-0.5');
+                            knob.classList.add('bg-white', 'left-6');
+
+                            status.textContent = 'Autosave is On';
+                        } else {
+                            // OFF state
+                            button.classList.remove('bg-blue-700');
+                            button.classList.add('bg-white');
+
+                            knob.classList.remove('bg-white', 'left-6');
+                            knob.classList.add('bg-blue-700', 'left-0.5');
+
+                            status.textContent = 'Turn off Autosave';
+                        }
+                    });
+                </script>
 
 
-                <span class=" font-semibold text-[16px]">Qiuck Links</span>
 
+
+
+            </section>
+
+
+            <div class="lg:px-8">
                 <div class="flex gap-8 justify-center items-center py-6">
                     <div class="flex flex-col gap-1">
                         <div class="flex justify-center items-center rounded-2xl bg-[#D9D9D963] w-12 h-12">
@@ -144,6 +181,10 @@
                 </div>
 
 
+            </div>
+
+
+            <div class="lg:px-8">
                 <section class=mt-7>
                     <h4 class=" font-semibold text-[16px]">Recent Activities</h4>
                     <div
@@ -160,7 +201,8 @@
                         class="pt-6 pb-3 flex justify-between border-b-[#00000021] border border-l-0 border-r-0 border-t-0">
                         <div class="ml-4">
                             <p class="font-semibold text-sm">Interest</p>
-                            <span class="text-[#B0B7E4]  text-xs">2024-03-23 <span class="ml-2"> 05:13:53 </span> </span>
+                            <span class="text-[#B0B7E4]  text-xs">2024-03-23 <span class="ml-2"> 05:13:53 </span>
+                            </span>
                         </div>
                         <span class="text-[#12B76A]  text-sm">+₦2.52</span>
                     </div>
@@ -169,18 +211,18 @@
                     <div class="pt-6 pb-3 flex justify-between ">
                         <div class="ml-4">
                             <p class="font-semibold text-sm">AutoSave Deposit</p>
-                            <span class="text-[#B0B7E4]  text-xs">2024-03-23 <span class="ml-2"> 05:13:53 </span> </span>
+                            <span class="text-[#B0B7E4]  text-xs">2024-03-23 <span class="ml-2"> 05:13:53 </span>
+                            </span>
                         </div>
                         <span class="text-[#12B76A]  text-sm">+₦500</span>
                     </div>
 
                 </section>
 
-            </section>
+
+            </div>
+
 
         </section>
-
-
-
     </section>
 @endsection

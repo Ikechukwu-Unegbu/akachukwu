@@ -63,6 +63,14 @@ Route::get('vasTargetDashboard', function () {
 
 
 
+Route::get('vassavedashboard', function () {
+    return view('vassavedashboard');
+})->name('vassavedashboard');
+
+
+
+
+
 
 Route::get('restrained', function () {
     return view('errors.restrained');
