@@ -27,15 +27,15 @@
                   <div class="flex text-[#333333] text-sm w-full gap-4">
                     <div class="flex flex-col items-start">
                       <span class="font-semibold text-sm leading-none">₦0</span>
-                      <span class="text-[12px] ">Saved</span>
+                      <span class="text-[12px] leading-none whitespace-nowrap mt-1">Saved</span>
                     </div>
                     <div class="flex flex-col items-start ml-1">
                       <span class="font-semibold text-sm leading-none">₦30k</span>
-                      <span class="text-[12px] ">Total Target</span>
+                      <span class="text-[12px] leading-none whitespace-nowrap mt-1 ">Total Target</span>
                     </div>
                     <div class="flex flex-col items-start ml-1">
                       <span class="font-semibold text-sm leading-none">20</span>
-                      <span class="text-[12px] ">Days Left</span>
+                      <span class="text-[12px] leading-none whitespace-nowrap mt-1 ">Days Left</span>
                     </div>
                   </div>
                   
@@ -92,7 +92,7 @@
               </div>
               </section> --}}
               <section class="flex justify-center items-center my-14">
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid lg:grid-cols-3 grid-cols-2 gap-4">
                   <div class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
                     <span>Start Date</span>
                     <span class="font-semibold">3rd Apr 2025</span>
@@ -172,7 +172,7 @@
               
 
               <section class=mt-7>
-                <h4 class="text-sm font-semibold">Recent Activities</h4>
+                <h4 class=" font-semibold text-[16px]">Recent Activities</h4>
                 <div class="pt-6 pb-3 flex justify-between border-b-[#00000021] border border-l-0 border-r-0 border-t-0">
                     <div class="ml-4">
                         <p class="font-semibold text-sm">AutoSave Deposit</p>
