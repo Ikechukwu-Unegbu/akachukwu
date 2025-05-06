@@ -34,7 +34,7 @@ return new class extends Migration
     public function updateCharges() : void
     {
         $settings = SiteSetting::first();
-        if ($settings->transfer_charges) {
+        if ($settings?->transfer_charges) {
             MoneyTransfer::query()->update(['charges' => $settings->transfer_charges]);
         }
     }
