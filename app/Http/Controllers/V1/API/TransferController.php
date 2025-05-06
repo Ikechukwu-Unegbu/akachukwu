@@ -25,10 +25,10 @@ class TransferController extends Controller
     }
 
     public function __invoke(Request $request)
-    {      
+    {
         $validator = Validator::make($request->all(), [
-            'recipient'=>'required|string', 
-            'amount'=>'required', 
+            'recipient'=>'required|string',
+            'amount'=>'required',
             'type'=>'required'
         ]);
 
@@ -36,7 +36,7 @@ class TransferController extends Controller
             return ApiHelper::sendError($validator->errors(), 'Failed validation');
         }
 
-    
+
         if($request->type=='vastel'){
             $vastelTransfer = new VastelMoneyTransfer(Auth::user());
             $recipient = $vastelTransfer->getRecipient($request->recipient);
@@ -65,9 +65,9 @@ class TransferController extends Controller
             // if(!$this->vastelTransfer->getRecipient($request->recipient)){
             //     return ApiHelper::sendError(['No such user'], 'Unknown user');
             // }
-            // $this->vastelTransfer->transfer($request->all(), $accountBalanceService);    
+            // $this->vastelTransfer->transfer($request->all(), $accountBalanceService);
             // return  ApiHelper::sendResponse([], 'Transaction successful');
         }
-          
+
     }
 }

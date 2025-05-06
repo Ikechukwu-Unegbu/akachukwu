@@ -21,12 +21,12 @@ class MoneyTransfer extends Model
 
     public function sender()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id')->withTrashed();
     }
 
     public function receiver()
     {
-        return $this->belongsTo(User::class, 'recipient');
+        return $this->belongsTo(User::class, 'recipient')->withTrashed();
     }
 
     public function scopeSearch($query, $search)
@@ -41,5 +41,15 @@ class MoneyTransfer extends Model
                             ->orWhere('email', 'LIKE', "%{$search}%");
                 });
         });
+    }
+
+    public function scopeIsInternal($query)
+    {
+        return $query->where('type', 'internal');
+    }
+
+    public function scopeIsExternal($query)
+    {
+        return $query->where('type', 'external');
     }
 }

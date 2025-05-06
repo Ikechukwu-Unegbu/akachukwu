@@ -70,7 +70,7 @@ class MoneyTransferComponent extends Component
         $this->validate();
         $this->error_msg = "";
         $recipient = $this->vastelMoneyTransfer->getRecipient($this->username);
-        $verifyRecipient = $this->vastelMoneyTransfer->verifyRecipient($recipient);
+        $verifyRecipient = $this->vastelMoneyTransfer->verifyRecipient($recipient, auth()->id());
         if ($verifyRecipient?->status) {
             $this->dispatch('success-toastr', ['message' => $verifyRecipient?->message]);
             $this->recipient = User::find($verifyRecipient->response->id);
@@ -295,9 +295,9 @@ class MoneyTransferComponent extends Component
         if (!is_array($this->pin)) {
             $pin = (array) $this->pin;
         }
-        
+
         $pin = implode('', $this->pin);
-        
+
         $userPinService = UserPinService::validatePin(Auth::user(), $pin);
 
         if (!$userPinService) {
@@ -329,7 +329,7 @@ class MoneyTransferComponent extends Component
             ],
             'remark' => 'nullable|string|min:5|max:50'
         ]);
-        
+
         $process = PalmPayMoneyTransferService::processBankTransfer(
             $this->account_name,
             $this->account_number,
@@ -340,7 +340,7 @@ class MoneyTransferComponent extends Component
             $this->remark,
             auth()->id()
         );
-        
+
         if ($process?->status) {
             $this->bank = "";
             $this->dispatch('success-toastr', ['message' => $process?->message]);
@@ -349,9 +349,9 @@ class MoneyTransferComponent extends Component
             $this->transactionStatusModal = true;
             $this->transactionStatus = true;
             sleep(5);
-            return $this->redirect(url()->previous());            
+            return $this->redirect(url()->previous());
         }
-        
+
         $this->initiateTransactionPin = false;
         $this->transactionStatusModal = true;
         $this->transactionStatus = false;

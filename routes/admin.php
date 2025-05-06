@@ -68,16 +68,16 @@ Route::group(['prefix' => 'admin'], function () {
 
 
 
-    
+
     Route::group(['middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
         ## Dashboard Route
         Route::get('dashboard', AdminDashboardController::class)->name('admin.dashboard');
 
         ## Utility Routes
-        ## Utility - Data Routes 
+        ## Utility - Data Routes
         Route::get('utility/airtime', App\Livewire\Admin\Utility\Airtime\Index::class)->name('admin.utility.airtime');
         Route::get('utility/airtime/vendor/{vendor:id}/discounts', App\Livewire\Admin\Utility\Airtime\Discount::class)->name('admin.utility.airtime.discount');
-        ## Utility - Data Routes 
+        ## Utility - Data Routes
         Route::get('utility/data', App\Livewire\Admin\Utility\Data\Index::class)->name('admin.utility.data');
         Route::get('utility/data/vendor/{vendor:id}/discounts', App\Livewire\Admin\Utility\Data\Discount::class)->name('admin.utility.data.discount');
         Route::get('utility/data/vendor/{vendor:id}/network/{network:id}/edit', App\Livewire\Admin\Utility\Data\Edit::class)->name('admin.utility.data.network.edit');
@@ -102,7 +102,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('utility/electricity/vendor/{vendor:id}/electricity/{electricity:id}/edit', App\Livewire\Admin\Utility\Electricity\Edit::class)->name('admin.utility.electricity.edit');
         Route::post('utility/electricity/vendor/{vendor:id}/electricity/{electricity:id}/edit', [App\Livewire\Admin\Utility\Electricity\Edit::class, 'update'])->name('admin.utility.electricity.update');
 
-    
+
         ## Transaction Routes
         Route::get('transaction', App\Livewire\Admin\Transaction\Index::class)->name('admin.transaction');
         ## Transaction - Airtime
@@ -193,7 +193,7 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('education/result-checker', App\Livewire\Admin\Education\ResultChecker\Index::class)->name('admin.education.result-checker');
         Route::get('education/result-checker/vendor/{vendor:id}/exam/{exam:id}/edit', App\Livewire\Admin\Education\ResultChecker\Edit::class)->name('admin.education.result-checker.edit');
-    
+
         Route::get('wallet/user/{user:username}', App\Livewire\Admin\Wallet\Index::class)->name('admin.wallet.history');
 
         //blacklist
@@ -202,7 +202,14 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('blacklist/{id}', [BlacklistController::class, 'destroy'])->name('admin.blacklist.remove');
 
         Route::get('module-control', App\Livewire\Admin\ModuleControl\Index::class)->name('admin.module-control.index');
+
+        Route::prefix('transfers')->as('admin.transfer.')->group(function() {
+            Route::get('in-app', \App\Livewire\Admin\Transfer\InApp::class)->name('in-app');
+            Route::get('in-app/{transfer:reference_id}/show', \App\Livewire\Admin\Transfer\InAppDetails::class)->name('in-app.details');
+            Route::get('bank', \App\Livewire\Admin\Transfer\Bank::class)->name('bank');
+        });
     });
+
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');
 });
