@@ -43,6 +43,43 @@ Route::get('/ref', function(){
    return view('emails.welcome');
 });
 
+Route::get('savings', function () {
+    return view('savings');
+})->name('savings');
+
+Route::get('vasSave', function () {
+    return view('vasSave');
+})->name('vasSave');
+
+
+Route::get('vasTarget', function () {
+    return view('vasTarget');
+})->name('vasTarget');
+
+
+Route::get('vasTargetDashboard', function () {
+    return view('vasTargetDashboard');
+})->name('vasTargetDashboard');
+
+
+Route::get('vasfixeddashboard', function () {
+    return view('vasfixeddashboard');
+})->name('vasfixeddashboard');
+
+Route::get('vastargetcreateplan', function () {
+    return view('vastargetcreateplan');
+})->name('vastargetcreateplan');
+
+
+
+Route::get('vassavedashboard', function () {
+    return view('vassavedashboard');
+})->name('vassavedashboard');
+
+
+
+
+
 
 Route::get('restrained', function () {
     return view('errors.restrained');
