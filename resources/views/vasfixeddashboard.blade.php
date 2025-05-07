@@ -162,9 +162,24 @@
 
             </div>
             <div class="flex justify-center items-center py-8">
-                <button class="text-white px-20 rounded-2xl py-3 bg-[#0018A8] font-bold mt-2">Create a Plan</button>
+                {{-- <button class="text-white px-20 rounded-2xl py-3 bg-[#0018A8] font-bold mt-2">Create a Plan</button> --}}
+                <button onclick="openModal()" class="text-white px-20 rounded-2xl py-3 bg-[#0018A8] font-bold mt-2">
+                    Create a Plan
+                </button>
 
             </div>
         </section>
     </section>
+    <script>
+        function openModal() {
+            document.getElementById('createPlanModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('createPlanModal').classList.add('hidden');
+        }
+    </script>
+
+    @include('components.create-plan-modal')
+    @include('components.view-plan-modal')
 @endsection
