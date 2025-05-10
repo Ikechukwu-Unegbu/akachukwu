@@ -6,9 +6,11 @@ use App\Http\Controllers\Blog\FaqController;
 use App\Http\Controllers\Blog\MediaController;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SystemUser\BankTransferController;
 use App\Http\Controllers\SystemUser\BlacklistController;
 use App\Http\Controllers\SystemUser\DashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\SystemUser\InAppTransferController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemUser\UserCrdDbtController;
@@ -204,10 +206,16 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('module-control', App\Livewire\Admin\ModuleControl\Index::class)->name('admin.module-control.index');
 
         Route::prefix('transfers')->as('admin.transfer.')->group(function() {
-            Route::get('in-app', \App\Livewire\Admin\Transfer\InApp::class)->name('in-app');
-            Route::get('in-app/{transfer:reference_id}/show', \App\Livewire\Admin\Transfer\InAppDetails::class)->name('in-app.details');
-            Route::get('bank', \App\Livewire\Admin\Transfer\Bank::class)->name('bank');
-            Route::get('bank/{transfer:reference_id}/show', \App\Livewire\Admin\Transfer\BankDetails::class)->name('bank.details');
+            Route::get('in-app', [InAppTransferController::class, 'index'])->name('in-app');
+            Route::get('in-app/{transfer:reference_id}/show', [InAppTransferController::class, 'show'])->name('in-app.details');
+            Route::post('in-app/{transfer}', [InAppTransferController::class, 'update'])->name('in-app.update');
+
+
+            Route::get('bank', [BankTransferController::class, 'index'])->name('bank');
+            Route::get('bank/{transfer:reference_id}/show', [BankTransferController::class, 'show'])->name('bank.details');
+            Route::post('bank/{transfer}', [BankTransferController::class, 'update'])->name('bank.details.update');
+
+            // Route::get('bank/{transfer:reference_id}/show', \App\Livewire\Admin\Transfer\BankDetails::class)->name('bank.details');
         });
     });
 
