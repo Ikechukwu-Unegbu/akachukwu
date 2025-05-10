@@ -61,6 +61,12 @@ Route::get('vasTargetDashboard', function () {
     return view('vasTargetDashboard');
 })->name('vasTargetDashboard');
 
+Route::get('vasFixed', function () {
+    return view('vasFixed');
+})->name('vasFixed');
+
+
+
 
 Route::get('vasfixeddashboard', function () {
     return view('vasfixeddashboard');

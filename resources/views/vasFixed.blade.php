@@ -170,16 +170,4 @@
             </div>
         </section>
     </section>
-    <script>
-        function openModal() {
-            document.getElementById('createPlanModal').classList.remove('hidden');
-        }
-
-        function closeModal() {
-            document.getElementById('createPlanModal').classList.add('hidden');
-        }
-    </script>
-
-    @include('components.create-plan-modal')
-    @include('components.view-plan-modal')
 @endsection
