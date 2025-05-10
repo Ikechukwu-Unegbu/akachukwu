@@ -32,14 +32,22 @@ class MoneyTransfer extends Model
     public function scopeSearch($query, $search)
     {
         return $query->when($search, function ($query, $search) {
-            $query->where('transaction_id', 'LIKE', "%{$search}%")
-                ->where('trx_ref', 'LIKE', "%{$search}%")
-                ->orWhereHas(['sender', 'receiver'], function ($userQuery) use ($search) {
-                    $userQuery->where('name', 'LIKE', "%{$search}%")
-                            ->orWhere('username', 'LIKE', "%{$search}%")
-                            ->orWhere('phone', 'LIKE', "%{$search}%")
-                            ->orWhere('email', 'LIKE', "%{$search}%");
-                });
+            $query->where(function($q) use ($search) {
+                $q->where('reference_id', 'LIKE', "%{$search}%")
+                  ->orWhere('trx_ref', 'LIKE', "%{$search}%")
+                  ->orWhereHas('sender', function ($userQuery) use ($search) {
+                      $userQuery->where('name', 'LIKE', "%{$search}%")
+                                ->orWhere('username', 'LIKE', "%{$search}%")
+                                ->orWhere('phone', 'LIKE', "%{$search}%")
+                                ->orWhere('email', 'LIKE', "%{$search}%");
+                  })
+                  ->orWhereHas('receiver', function ($userQuery) use ($search) {
+                      $userQuery->where('name', 'LIKE', "%{$search}%")
+                                ->orWhere('username', 'LIKE', "%{$search}%")
+                                ->orWhere('phone', 'LIKE', "%{$search}%")
+                                ->orWhere('email', 'LIKE', "%{$search}%");
+                  });
+            });
         });
     }
 

@@ -144,6 +144,29 @@ class VastelMoneyTransfer{
         }
     }
 
+    public function reverseBankTransfer(MoneyTransfer $transfer)
+    {
+        try {
+            DB::beginTransaction();
+
+            $sender = User::where('id', $transfer->sender->id)->lockForUpdate()->firstOrFail();
+            $transfer->update(['sender_balance_before' => $sender->account_balance]);
+
+            $senderAccount = (new AccountBalanceService($transfer->sender))->updateAccountBalance($transfer->amount);
+            $sender = User::where('id', $transfer->sender->id)->firstOrFail();
+
+            $transfer->update(['sender_balance_after' => $sender->account_balance]);
+
+            DB::commit();
+
+            return ApiHelper::sendResponse($transfer->sender, "The amount of {$transfer->amount} has been successfully reversed to {$transfer->sender->name}.");
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error($th->getMessage());
+            return ApiHelper::sendError([], 'Oops! Unable to complete the operation. Please try again later.');
+        }
+    }
+
     public function recordInternalTransfer(array $data,User $recipient)
     {
         MoneyTransfer::create([
