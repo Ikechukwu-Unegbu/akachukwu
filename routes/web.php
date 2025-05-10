@@ -62,6 +62,23 @@ Route::get('vasTargetDashboard', function () {
 })->name('vasTargetDashboard');
 
 
+Route::get('vasfixeddashboard', function () {
+    return view('vasfixeddashboard');
+})->name('vasfixeddashboard');
+
+Route::get('vastargetcreateplan', function () {
+    return view('vastargetcreateplan');
+})->name('vastargetcreateplan');
+
+
+
+Route::get('vassavedashboard', function () {
+    return view('vassavedashboard');
+})->name('vassavedashboard');
+
+
+
+
 
 
 Route::get('restrained', function () {
