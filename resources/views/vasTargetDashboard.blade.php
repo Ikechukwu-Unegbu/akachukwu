@@ -1,0 +1,186 @@
+@extends('layouts.new-guest')
+@section('head')
+    <title>VASTel | savings</title>
+@endsection
+@section('body')
+    <section class="lg:px-[2rem] px-4">
+        <div class="text-[#0018A8] lg:text-lg  lg:flex gap-4 hidden ">
+            <span class="flex justify-center items-center"> <svg width="8" height="13" viewBox="0 0 8 13" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M6.875 12.0416L1.33333 6.49992L6.875 0.958252" stroke="#0018A8" stroke-width="1.58333"
+                        stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </span>
+            <span class="flex justify-center items-center">Back</span>
+        </div>
+        <section class="lg:border border-[#00000038] lg:my-8 lg:py-5  mt-8 py-4 lg:w-6/12">
+            <section class="p-6">
+
+                <div class="flex gap-6 border border-[#00000038] rounded-2xl bg-[#E6E6E640] p-4">
+                    <div>
+                        <img src="/images/house.png" alt="">
+                    </div>
+                    <div class="flex flex-col gap-1 flex-1">
+                        <p class="font-semibold text-[16px] text-[#333333]">House rent</p>
+
+                        <div class="flex text-[#333333] text-sm w-full gap-4">
+                            <div class="flex flex-col items-start">
+                                <span class="font-semibold text-sm leading-none">₦0</span>
+                                <span class="text-[12px] leading-none whitespace-nowrap mt-1">Saved</span>
+                            </div>
+                            <div class="flex flex-col items-start ml-1">
+                                <span class="font-semibold text-sm leading-none">₦30k</span>
+                                <span class="text-[12px] leading-none whitespace-nowrap mt-1 ">Total Target</span>
+                            </div>
+                            <div class="flex flex-col items-start ml-1">
+                                <span class="font-semibold text-sm leading-none">20</span>
+                                <span class="text-[12px] leading-none whitespace-nowrap mt-1 ">Days Left</span>
+                            </div>
+                        </div>
+
+
+                        <!-- Progress bar and percentage -->
+                        <div class="flex items-center gap-2 mt-2">
+                            <hr class="flex-1 border-2 bg-[#0000003B]">
+                            <span class="text-sm text-[#333333] font-medium">0%</span>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <section class="flex justify-center items-center my-14">
+                    <div class="grid lg:grid-cols-3 grid-cols-2 gap-4">
+                        <div
+                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
+                            <span>Start Date</span>
+                            <span class="font-semibold">3rd Apr 2025</span>
+                        </div>
+
+                        <div
+                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
+                            <span>Withdrawal Date</span>
+                            <span class="font-semibold">4th May 2025</span>
+                        </div>
+
+                        <div
+                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
+                            <span>Frequency</span>
+                            <span class="font-semibold">₦1,000 daily</span>
+                        </div>
+
+                        <div
+                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
+                            <span>Target</span>
+                            <span class="font-semibold">₦30,000</span>
+                        </div>
+
+                        <div
+                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
+                            <span>Interest Per Annum</span>
+                            <span class="font-semibold">13%</span>
+                        </div>
+
+                        <div
+                            class="flex flex-col justify-center rounded-xl border border-[#00000036] w-[150px] h-[60px] px-3 py-3 text-sm text-[#333333]">
+                            <span>Days Left</span>
+                            <span class="font-semibold">20</span>
+                        </div>
+                    </div>
+                </section>
+
+
+                <span class=" font-semibold text-[16px]">Qiuck Links</span>
+
+                <div class="flex gap-8 justify-center items-center py-6">
+                    <div class="flex flex-col gap-1">
+                        <div class="flex justify-center items-center rounded-2xl bg-[#D9D9D963] w-12 h-12">
+                            <svg width="21" height="29" viewBox="0 0 21 29" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M3 28.25C2.3125 28.25 1.72396 28.0052 1.23438 27.5156C0.744792 27.026 0.5 26.4375 0.5 25.75V12C0.5 11.3125 0.744792 10.724 1.23438 10.2344C1.72396 9.74479 2.3125 9.5 3 9.5H6.75V12H3V25.75H18V12H14.25V9.5H18C18.6875 9.5 19.276 9.74479 19.7656 10.2344C20.2552 10.724 20.5 11.3125 20.5 12V25.75C20.5 26.4375 20.2552 27.026 19.7656 27.5156C19.276 28.0052 18.6875 28.25 18 28.25H3ZM9.25 19.5V5.53125L7.25 7.53125L5.5 5.75L10.5 0.75L15.5 5.75L13.75 7.53125L11.75 5.53125V19.5H9.25Z"
+                                    fill="#3346B9" />
+                            </svg>
+
+
+
+                        </div>
+                        <span class="text-[#3346B9] text-[12px]">Withdraw</span>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <div class="flex justify-center items-center rounded-2xl bg-[#D9D9D963] w-12 h-12">
+                            <svg width="21" height="21" viewBox="0 0 21 21" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M4.875 9.25C3.66667 9.25 2.63542 8.82292 1.78125 7.96875C0.927083 7.11458 0.5 6.08333 0.5 4.875C0.5 3.66667 0.927083 2.63542 1.78125 1.78125C2.63542 0.927083 3.66667 0.5 4.875 0.5C6.08333 0.5 7.11458 0.927083 7.96875 1.78125C8.82292 2.63542 9.25 3.66667 9.25 4.875C9.25 6.08333 8.82292 7.11458 7.96875 7.96875C7.11458 8.82292 6.08333 9.25 4.875 9.25ZM4.875 6.75C5.39583 6.75 5.83854 6.56771 6.20312 6.20312C6.56771 5.83854 6.75 5.39583 6.75 4.875C6.75 4.35417 6.56771 3.91146 6.20312 3.54688C5.83854 3.18229 5.39583 3 4.875 3C4.35417 3 3.91146 3.18229 3.54688 3.54688C3.18229 3.91146 3 4.35417 3 4.875C3 5.39583 3.18229 5.83854 3.54688 6.20312C3.91146 6.56771 4.35417 6.75 4.875 6.75ZM16.125 20.5C14.9167 20.5 13.8854 20.0729 13.0313 19.2188C12.1771 18.3646 11.75 17.3333 11.75 16.125C11.75 14.9167 12.1771 13.8854 13.0313 13.0313C13.8854 12.1771 14.9167 11.75 16.125 11.75C17.3333 11.75 18.3646 12.1771 19.2188 13.0313C20.0729 13.8854 20.5 14.9167 20.5 16.125C20.5 17.3333 20.0729 18.3646 19.2188 19.2188C18.3646 20.0729 17.3333 20.5 16.125 20.5ZM16.125 18C16.6458 18 17.0885 17.8177 17.4531 17.4531C17.8177 17.0885 18 16.6458 18 16.125C18 15.6042 17.8177 15.1615 17.4531 14.7969C17.0885 14.4323 16.6458 14.25 16.125 14.25C15.6042 14.25 15.1615 14.4323 14.7969 14.7969C14.4323 15.1615 14.25 15.6042 14.25 16.125C14.25 16.6458 14.4323 17.0885 14.7969 17.4531C15.1615 17.8177 15.6042 18 16.125 18ZM2.25 20.5L0.5 18.75L18.75 0.5L20.5 2.25L2.25 20.5Z"
+                                    fill="#3346B9" />
+                            </svg>
+
+
+
+
+                        </div>
+                        <span class="text-[#3346B9] text-[12px]">Interest</span>
+                    </div>
+
+
+                    <div class="flex flex-col gap-1">
+                        <div class="flex justify-center items-center rounded-2xl bg-[#D9D9D963] w-12 h-12">
+                            <svg width="30" height="29" viewBox="0 0 30 29" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M15 28.625L10.8125 24.5H5V18.6875L0.875 14.5L5 10.3125V4.5H10.8125L15 0.375L19.1875 4.5H25V10.3125L29.125 14.5L25 18.6875V24.5H19.1875L15 28.625ZM15 20.75C16.7292 20.75 18.2031 20.1406 19.4219 18.9219C20.6406 17.7031 21.25 16.2292 21.25 14.5C21.25 12.7708 20.6406 11.2969 19.4219 10.0781C18.2031 8.85938 16.7292 8.25 15 8.25C13.2708 8.25 11.7969 8.85938 10.5781 10.0781C9.35938 11.2969 8.75 12.7708 8.75 14.5C8.75 16.2292 9.35938 17.7031 10.5781 18.9219C11.7969 20.1406 13.2708 20.75 15 20.75ZM15 18.25C13.9583 18.25 13.0729 17.8854 12.3438 17.1562C11.6146 16.4271 11.25 15.5417 11.25 14.5C11.25 13.4583 11.6146 12.5729 12.3438 11.8438C13.0729 11.1146 13.9583 10.75 15 10.75C16.0417 10.75 16.9271 11.1146 17.6562 11.8438C18.3854 12.5729 18.75 13.4583 18.75 14.5C18.75 15.5417 18.3854 16.4271 17.6562 17.1562C16.9271 17.8854 16.0417 18.25 15 18.25ZM15 25.125L18.125 22H22.5V17.625L25.625 14.5L22.5 11.375V7H18.125L15 3.875L11.875 7H7.5V11.375L4.375 14.5L7.5 17.625V22H11.875L15 25.125Z"
+                                    fill="#3346B9" />
+                            </svg>
+
+
+
+
+
+                        </div>
+                        <span class="text-[#3346B9] text-[12px]">Settings</span>
+                    </div>
+                </div>
+
+
+                <section class=mt-7>
+                    <h4 class=" font-semibold text-[16px]">Recent Activities</h4>
+                    <div
+                        class="pt-6 pb-3 flex justify-between border-b-[#00000021] border border-l-0 border-r-0 border-t-0">
+                        <div class="ml-4">
+                            <p class="font-semibold text-sm">AutoSave Deposit</p>
+                            <span class="text-[#B0B7E4]  text-xs">2024-03-23 <span class="ml-2"> 05:13:53 </span> </span>
+                        </div>
+                        <span class="text-[#12B76A]  text-sm">+₦500</span>
+                    </div>
+
+
+                    <div
+                        class="pt-6 pb-3 flex justify-between border-b-[#00000021] border border-l-0 border-r-0 border-t-0">
+                        <div class="ml-4">
+                            <p class="font-semibold text-sm">Interest</p>
+                            <span class="text-[#B0B7E4]  text-xs">2024-03-23 <span class="ml-2"> 05:13:53 </span> </span>
+                        </div>
+                        <span class="text-[#12B76A]  text-sm">+₦2.52</span>
+                    </div>
+
+
+                    <div class="pt-6 pb-3 flex justify-between ">
+                        <div class="ml-4">
+                            <p class="font-semibold text-sm">AutoSave Deposit</p>
+                            <span class="text-[#B0B7E4]  text-xs">2024-03-23 <span class="ml-2"> 05:13:53 </span> </span>
+                        </div>
+                        <span class="text-[#12B76A]  text-sm">+₦500</span>
+                    </div>
+
+                </section>
+
+            </section>
+
+        </section>
+
+
+
+    </section>
+@endsection
