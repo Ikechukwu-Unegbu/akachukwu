@@ -81,6 +81,11 @@
                 <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
             @enderror
         </div>
+
+        <!-- schedule fields -->
+        <h1>Schedule fields</h1>
+
+        <!-- end schedule fields -->
         @if ($network && $networks->where('network_id', $network)->first()?->airtime_discount > 0)
         <div class="text-red-500 font-semibold pb-7 mt-3">
             Amount to Pay (₦{{ $calculatedDiscount }}) {{ $network ? $networks->where('network_id', $network)->first()?->airtime_discount . '% Discount' : '' }}

@@ -133,6 +133,10 @@
             @enderror
         </div>
 
+        <!-- schedule fields -->
+        <h1>Put Schedule fields here</h1>
+        <!-- end schedule fields -->
+
         @if ($network && $networks->where('network_id', $network)->first()?->data_discount > 0)
         <div class="text-red-500 font-semibold pb-7 mt-3">
             Amount to Pay (₦{{ number_format($calculatedDiscount, 2) }}) {{ $network ? $networks->where('network_id', $network)->first()?->data_discount . '% Discount' : '' }}
