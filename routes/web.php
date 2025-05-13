@@ -48,6 +48,19 @@ Route::get('restrained', function () {
     return view('errors.restrained');
 })->name('restrained');
 
+
+Route::get('leaderboard', function () {
+    return view('/leaderboard');
+})->name('leaderboard');
+
+Route::get('referral', function () {
+    return view('/referral');
+})->name('referral');
+
+
+
+
+
 Route::middleware(['testing'])->group(function () {
     Route::get('/', function () {
         return view('pages.home.home');
