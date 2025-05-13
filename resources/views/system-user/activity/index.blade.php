@@ -161,9 +161,9 @@ $logs = collect([
 @endphp
 
     <!-- Filters -->
-    <div class="card shadow-sm mb-4">
+    <div class="card shadow-sm py-8 mb-4" style="padding-top:1rem; padding-bottom:1rem;">
         <div class="card-body">
-            <form class="row g-3">
+            <form class="row g-3 py-8">
                 <div class="col-md-3">
                     <label for="activityType" class="form-label">Activity Type</label>
                     <select class="form-select" id="activityType">
@@ -198,9 +198,9 @@ $logs = collect([
                         <th>Date</th>
                         <th>User</th>
                         <th>Activity</th>
-                        <th>Balance Before/After</th>
+                        <th>Bal B4/After</th>
                         <th>Status</th>
-                        <th>Actor</th>
+                        <!-- <th>Actor</th> -->
                         <th>Location</th>
                         <th>Device</th>
                         <th>Tags</th>
@@ -225,9 +225,9 @@ $logs = collect([
                         <td>
                             <span class="badge bg-success">Success</span>
                         </td>
-                        <td>
+                        <!-- <td>
                             <span class="badge bg-info text-dark">User</span>
-                        </td>
+                        </td> -->
                         <td>
                             Lagos, NG<br>
                             <small>MTN NG</small>
