@@ -9,6 +9,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SystemUser\BlacklistController;
 use App\Http\Controllers\SystemUser\DashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\SystemUser\ScheduledTransactionController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemUser\UserCrdDbtController;
@@ -211,7 +212,9 @@ Route::group(['prefix' => 'admin'], function () {
         });
     });
 
-
+    Route::prefix('scheduled-transactions')->as('admin.scheduled.')->group(function() {
+        Route::get('/', [ScheduledTransactionController::class, 'index'])->name('index');
+    });
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');
 });
 
