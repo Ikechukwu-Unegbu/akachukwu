@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SystemUser;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Models\Data\DataTransaction;
 use App\Models\Utility\CableTransaction;
@@ -28,7 +29,7 @@ class ScheduledTransactionController extends Controller
             ->appends($request->query());
 
         $productTypes = array_keys($this->transactionModels);
-        $statuses = ['successful', 'processing', 'pending', 'failed'];
+        $statuses = ['successful', 'processing', 'pending', 'refunded', 'failed'];
 
         return view('system-user.scheduled-transactions.index', compact(
             'transactions',
@@ -41,51 +42,63 @@ class ScheduledTransactionController extends Controller
     {
         $query = null;
 
-        // Initialize with the first model's query
-        foreach ($this->transactionModels as $type => $model) {
+        if ($request->filled('product_type') && isset($this->transactionModels[$request->product_type])) {
+            $typesToQuery = [$request->product_type];
+        } else {
+            $typesToQuery = array_keys($this->transactionModels);
+        }
+
+        foreach ($typesToQuery as $type) {
+            $model = $this->transactionModels[$type];
+
             $modelQuery = $model::query()
-                ->selectRaw("'$type' as product_type, id, transaction_id, user_id,
-                            amount, balance_before, balance_after,
-                            status, vendor_status, created_at, updated_at");
+                ->select([
+                    DB::raw("'$type' as product_type"),
+                    'id',
+                    'transaction_id',
+                    'user_id',
+                    'amount',
+                    'balance_before',
+                    'balance_after',
+                    'status',
+                    'vendor_status',
+                    'created_at',
+                    'updated_at'
+                ]);
 
-            if (!$query) {
-                $query = $modelQuery;
-            } else {
-                $query->unionAll($modelQuery);
+            if ($request->filled('status')) {
+                $modelQuery->where('vendor_status', $request->status);
             }
-        }
 
-        // Apply filters
-        if ($request->filled('product_type')) {
-            $query->where('product_type', $request->product_type);
-        }
+            if ($request->filled('date_from')) {
+                $modelQuery->where('created_at', '>=', Carbon::parse($request->date_from));
+            }
 
-        if ($request->filled('status')) {
-            $query->where('vendor_status', $request->status);
-        }
+            if ($request->filled('date_to')) {
+                $modelQuery->where('created_at', '<=', Carbon::parse($request->date_to));
+            }
 
-        if ($request->filled('date_from')) {
-            $query->where('created_at', '>=', Carbon::parse($request->date_from));
-        }
+            if ($request->filled('search')) {
+                $search = $request->search;
+                $modelQuery->where(function ($q) use ($search, $type) {
+                    $q->where('transaction_id', 'like', "%$search%")
+                        ->when(in_array($type, ['airtime', 'data']), function ($q) use ($search) {
+                            $q->orWhere('mobile_number', 'like', "%$search%");
+                        })
+                        ->orWhereHas('user', function ($q) use ($search) {
+                            $q->where('name', 'like', "%$search%")
+                                ->orWhere('email', 'like', "%$search%")
+                                ->orWhere('username', 'like', "%$search%");
+                        });
+                });
+            }
 
-        if ($request->filled('date_to')) {
-            $query->where('created_at', '<=', Carbon::parse($request->date_to));
-        }
-
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('transaction_id', 'like', "%$search%")
-                    ->orWhere('mobile_number', 'like', "%$search%")
-                    ->orWhereHas('user', function ($q) use ($search) {
-                        $q->where('name', 'like', "%$search%")
-                            ->orWhere('email', 'like', "%$search%");
-                    });
-            });
+            $query = $query ? $query->unionAll($modelQuery) : $modelQuery;
         }
 
         return $query;
     }
+
 
     public function show($type, $id)
     {
@@ -95,7 +108,7 @@ class ScheduledTransactionController extends Controller
 
         $transaction = $this->transactionModels[$type]::findOrFail($id);
 
-        return view('admin.scheduled-transactions.show', [
+        return view('system-user.scheduled-transactions.show', [
             'transaction' => $transaction,
             'productType' => $type
         ]);

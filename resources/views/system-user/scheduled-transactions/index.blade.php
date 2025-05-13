@@ -70,7 +70,7 @@
                                 <th>User</th>
                                 <th>Product</th>
                                 <th>Amount</th>
-                                <th>Mobile Number</th>
+                                {{-- <th>Mobile Number</th> --}}
                                 <th>Status</th>
                                 <th>Date</th>
                                 <th>Actions</th>
@@ -82,10 +82,10 @@
                                     <td>{{ $loop->iteration + ($transactions->currentPage() - 1) * $transactions->perPage() }}
                                     </td>
                                     <td>{{ $transaction->transaction_id }}</td>
-                                    <td>{{ $transaction->user->name ?? 'N/A' }}</td>
+                                    <td>{{ $transaction->user->username ?? 'N/A' }}</td>
                                     <td>{{ ucfirst($transaction->product_type) }}</td>
                                     <td>₦{{ number_format($transaction->amount, 2) }}</td>
-                                    <td>{{ $transaction->mobile_number }}</td>
+                                    {{-- <td>{{ $transaction->mobile_number ?? 'N/A' }}</td> --}}
                                     <td>
                                         <span
                                             class="badge
@@ -97,11 +97,11 @@
                                     </td>
                                     <td>{{ $transaction->created_at->format('M d, Y h:i A') }}</td>
                                     <td>
-                                        {{-- <a href="{{ route('admin.scheduled-transactions.show', [$transaction->product_type, $transaction->id]) }}"
-                                            class="btn btn-sm btn-info">
+                                        <a href="{{ route('admin.scheduled.show', [$transaction->product_type, $transaction->id]) }}"
+                                            class="btn btn-sm btn-primary">
                                             View
                                         </a>
-                                        @if ($transaction->vendor_status == 'failed')
+                                        {{--@if ($transaction->vendor_status == 'failed')
                                             <a href="{{ route('admin.scheduled-transactions.retry', [$transaction->product_type, $transaction->id]) }}"
                                                 class="btn btn-sm btn-warning">
                                                 Retry
