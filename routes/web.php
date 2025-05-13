@@ -43,6 +43,43 @@ Route::get('/ref', function(){
    return view('emails.welcome');
 });
 
+Route::get('savings', function () {
+    return view('savings');
+})->name('savings');
+
+Route::get('vasSave', function () {
+    return view('vasSave');
+})->name('vasSave');
+
+
+Route::get('vasTarget', function () {
+    return view('vasTarget');
+})->name('vasTarget');
+
+
+Route::get('vasTargetDashboard', function () {
+    return view('vasTargetDashboard');
+})->name('vasTargetDashboard');
+
+
+Route::get('vasfixeddashboard', function () {
+    return view('vasfixeddashboard');
+})->name('vasfixeddashboard');
+
+Route::get('vastargetcreateplan', function () {
+    return view('vastargetcreateplan');
+})->name('vastargetcreateplan');
+
+
+
+Route::get('vassavedashboard', function () {
+    return view('vassavedashboard');
+})->name('vassavedashboard');
+
+
+
+
+
 
 Route::get('restrained', function () {
     return view('errors.restrained');
@@ -156,3 +193,5 @@ Route::get('/mtn/subscription-plans', [MtnDevController::class, 'listSubscriptio
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
 require __DIR__ . '/feature.php';
+require __DIR__ . '/savings.php';
+require __DIR__ . '/logger.php';

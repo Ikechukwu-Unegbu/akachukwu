@@ -87,7 +87,7 @@ class VastelMoneyTransfer{
             $recipient = User::where('id', $queryRecipient->id)->firstOrFail();
 
             $this->recordInternalTransfer($data, $recipient);
-            
+
             DB::commit();
 
             return ApiHelper::sendResponse($recipient, "The amount of {$data['amount']} has been successfully transferred to {$recipient->name}.");
@@ -99,12 +99,80 @@ class VastelMoneyTransfer{
         }
     }
 
+    public function retry(MoneyTransfer $transfer)
+    {
+        try {
+            DB::beginTransaction();
+            $recipient = User::where('id', $transfer->receiver->id)->lockForUpdate()->firstOrFail();
+            $transfer->update(['recipient_balance_before' => $recipient->account_balance]);
+            $recipientAccount = (new AccountBalanceService($transfer->receiver))->updateAccountBalance($transfer->amount);
+            $recipient = User::where('id', $transfer->receiver->id)->firstOrFail();
+            $transfer->update(['recipient_balance_after' => $recipient->account_balance]);
+            DB::commit();
+
+            return ApiHelper::sendResponse($transfer->receiver, "The amount of {$transfer->amount} has been successfully transferred to {$transfer->receiver->name}.");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return ApiHelper::sendError([], 'Oops! Unable to complete the operation. Please try again later.');
+        }
+    }
+
+    public function reverse(MoneyTransfer $transfer)
+    {
+        try {
+            DB::beginTransaction();
+            $sender = User::where('id', $transfer->sender->id)->lockForUpdate()->firstOrFail();
+            $recipient = User::where('id', $transfer->receiver->id)->lockForUpdate()->firstOrFail();
+
+            $transfer->update(['recipient_balance_before' => $recipient->account_balance, 'sender_balance_before' => $sender->account_balance]);
+
+            $recipientAccount = (new AccountBalanceService($transfer->receiver))->transaction($transfer->amount);
+            $senderAccount = (new AccountBalanceService($transfer->sender))->updateAccountBalance($transfer->amount);
+
+            $recipient = User::where('id', $transfer->receiver->id)->firstOrFail();
+            $sender = User::where('id', $transfer->sender->id)->firstOrFail();
+
+            $transfer->update(['recipient_balance_after' => $recipient->account_balance, 'sender_balance_after' => $sender->account_balance]);
+            DB::commit();
+
+            return ApiHelper::sendResponse($transfer->sender, "The amount of {$transfer->amount} has been successfully reversed to {$transfer->sender->name}.");
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e->getMessage());
+            return ApiHelper::sendError([], 'Oops! Unable to complete the operation. Please try again later.');
+        }
+    }
+
+    public function reverseBankTransfer(MoneyTransfer $transfer)
+    {
+        try {
+            DB::beginTransaction();
+
+            $sender = User::where('id', $transfer->sender->id)->lockForUpdate()->firstOrFail();
+            $transfer->update(['sender_balance_before' => $sender->account_balance]);
+
+            $senderAccount = (new AccountBalanceService($transfer->sender))->updateAccountBalance($transfer->amount);
+            $sender = User::where('id', $transfer->sender->id)->firstOrFail();
+
+            $transfer->update(['sender_balance_after' => $sender->account_balance]);
+
+            DB::commit();
+
+            return ApiHelper::sendResponse($transfer->sender, "The amount of {$transfer->amount} has been successfully reversed to {$transfer->sender->name}.");
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error($th->getMessage());
+            return ApiHelper::sendError([], 'Oops! Unable to complete the operation. Please try again later.');
+        }
+    }
+
     public function recordInternalTransfer(array $data,User $recipient)
     {
         MoneyTransfer::create([
-            'user_id'=>Auth::user()->id, 
+            'user_id'=>Auth::user()->id,
             'recipient'=>$recipient->id,
-            'amount'=>$data['amount'], 
+            'amount'=>$data['amount'],
             'status'=>true,
             'transfer_status'=> 'successful',
             'type'=>'internal',
@@ -120,7 +188,6 @@ class VastelMoneyTransfer{
     {
         if ($recipient && $recipient?->id === Auth::id()) {
             return ApiHelper::sendError([], 'You cannot transfer funds to your own account.');
-            return;
         }
 
         if ($recipient && $recipient?->id !== Auth::id()) {
@@ -131,14 +198,14 @@ class VastelMoneyTransfer{
     }
 
     private function initiateLimiter($userId) : bool
-    {        
+    {
         $rateLimitKey = "money-transfer-{$userId}";
 
         if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
-            RateLimiter::availableIn($rateLimitKey);           
+            RateLimiter::availableIn($rateLimitKey);
             return true;
         }
-    
+
         RateLimiter::hit($rateLimitKey, 60);
 
         return false;
@@ -147,12 +214,12 @@ class VastelMoneyTransfer{
     private function initiateIdempotencyCheck($userId)
     {
         $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
-            MoneyTransfer::class, 
+            MoneyTransfer::class,
             ['user_id'   => $userId],
             'transfer_status',
             ['successful', 'failed', 'pending']
         );
-  
+
         return $duplicateTransaction;
     }
 
