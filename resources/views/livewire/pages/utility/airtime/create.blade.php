@@ -135,12 +135,6 @@
             </div>
         </div>
 
-        @push('scripts')
-            <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-        @endpush
-
-
-
         @if ($network && $networks->where('network_id', $network)->first()?->airtime_discount > 0)
             <div class="text-red-500 font-semibold pb-7 mt-3">
                 Amount to Pay (₦{{ $calculatedDiscount }})
