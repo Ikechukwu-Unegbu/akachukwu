@@ -141,7 +141,7 @@
         </div>
 
         <!-- Wrapper with Alpine.js data -->
-        <div x-data="{ showSchedule: false }">
+        {{-- <div x-data="{ showSchedule: false }">
             <!-- Toggle Section -->
             <div class="flex justify-between mt-3">
                 <div>
@@ -184,7 +184,7 @@
                     </div>
                 </label>
             </div>
-        </div>
+        </div> --}}
 
         @if ($network && $networks->where('network_id', $network)->first()?->data_discount > 0)
             <div class="text-red-500 font-semibold pb-7 mt-3">
