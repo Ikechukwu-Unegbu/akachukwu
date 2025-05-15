@@ -127,8 +127,24 @@ class GeneralHelpers{
     
         $totalAmountToPay = $fundedAmount + $serviceCharge;
     
-        return $totalAmountToPay;
-    }    
+        return self::customRoundDown($totalAmountToPay);
+    }
+
+    public static function customRoundDown(float $number): float
+    {
+        return floor($number * 100) / 100;
+    }
+    
+    public static function calculateWithCharge($amount) 
+    {
+        $siteSettings = SiteSetting::first();        
+        $chargePercentage = $siteSettings->card_charges ?? 0.0;
+    
+        $serviceCharge = ($amount * $chargePercentage) / 100;
+        $totalAmount = $amount + $serviceCharge;
+        
+        return self::customRoundDown($totalAmount);
+    }
 
     public static function sendOneSignalTransactionNotification($service, $message, $amount, string $notificationClass): bool
     {

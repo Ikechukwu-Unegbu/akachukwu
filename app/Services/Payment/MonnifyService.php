@@ -67,7 +67,7 @@ class MonnifyService implements Payment
             $transaction = MonnifyTransaction::create([
                 'user_id'       => $user->id,
                 'reference_id'  => $this->generateUniqueId(),
-                'amount'        => GeneralHelpers::calculateWalletFunding($amount),
+                'amount'        => $amount,
                 'currency'      => config('app.currency', 'NGN'),
                 'redirect_url'  => $redirectURL,
                 'meta'          => json_encode($meta)
@@ -77,7 +77,7 @@ class MonnifyService implements Payment
                 'Accept' => 'application/json',
                 'Authorization' => 'bearer ' . $this->token(),
             ])->post(self::getUrl() . 'api/v1/merchant/transactions/init-transaction', [
-                'amount'                =>   $transaction->amount,
+                'amount'                =>   GeneralHelpers::calculateWalletFunding($transaction->amount),
                 'customerName'          =>   $user->name,
                 'customerEmail'         =>   $user->email,
                 'paymentReference'      =>   $transaction->reference_id,
@@ -511,18 +511,20 @@ class MonnifyService implements Payment
                         return response()->json(['message' => 'Payment Already Processed'], 200);
                     }
 
+                    $amountWithCharge = GeneralHelpers::calculateWithCharge($amountPaid);
+
                     $transaction = MonnifyTransaction::updateOrCreate([
                         'reference_id'  => $paymentReference,
                         'trx_ref'       => $transactionReference,
                         'user_id'       => $user->id,
                     ], [
-                        'amount'        => $amountPaid,
+                        'amount'        => $amountWithCharge,
                         'currency'      => config('app.currency', 'NGN'),
                         'redirect_url'  => config('app.url'),
                         'meta'          => json_encode($payload)
                     ]);
                     
-                    $user->setAccountBalance($amountPaid);
+                    $user->setAccountBalance($amountWithCharge);
                     
                     $transaction->success();
 
