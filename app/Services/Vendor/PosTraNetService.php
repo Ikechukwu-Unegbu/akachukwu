@@ -92,12 +92,12 @@ class PosTraNetService
         }
     }
 
- 
+
 
     public static function airtime($networkId, $amount, $mobileNumber)
     {
         try {
-            
+
             $checkLimit = AirtimeService::checkAirtimeLimit($amount);
             if ($checkLimit !== true) {
                 return $checkLimit;
@@ -105,7 +105,7 @@ class PosTraNetService
 
             // Start a database transaction to ensure atomicity
             return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
-               
+
                 $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
                 $discount = $network->airtime_discount;
 
@@ -117,18 +117,18 @@ class PosTraNetService
                     }
                 }
 
-              
+
                 $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
-                    AirtimeTransaction::class, 
+                    AirtimeTransaction::class,
                     [
-                        'user_id' => Auth::id(), 
-                        'vendor_id' => (int) self::$vendor->id, 
-                        'network_id' => (int) $network->network_id, 
+                        'user_id' => Auth::id(),
+                        'vendor_id' => (int) self::$vendor->id,
+                        'network_id' => (int) $network->network_id,
                         // 'mobile_number' => $mobileNumber,
                         // 'amount' => number_format($amount, 2, '.', '')
                     ],
                 );
-                
+
                 // Handle duplicate transactions
                 if ($duplicateTransaction) {
                     return ApiHelper::sendError($duplicateTransaction, "Transaction is already pending or recently completed. Please wait.");
@@ -149,10 +149,10 @@ class PosTraNetService
                     'balance_after' => $user->account_balance,
                     'discount' => $discount
                 ]);
-                
+
                  // If the user is a reseller, apply any discounts
                  $discountedAmount = $amount;
-                
+
                  if (auth()->user()->isReseller()) {
                     $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'airtime');
                 }
@@ -177,7 +177,7 @@ class PosTraNetService
                 // Store the API response in the transaction
                 self::storeApiResponse($transaction, $response);
 
-               
+
                 // self::$authUser->transaction($amount);
 
                 // Handle the response from the API
@@ -242,7 +242,7 @@ class PosTraNetService
     {
         try {
             return DB::transaction(function () use ($discoId, $meterNumber, $meterType, $amount, $customerName, $customerMobile, $customerAddress) {
-    
+
                 if ($amount < 500) {
                     $errorResponse = [
                         'error' => 'Minimum account error',
@@ -250,18 +250,18 @@ class PosTraNetService
                     ];
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
-    
+
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
-    
+
                 $verifyAccountBalance = self::verifyAccountBalance($amount);
                 if (!$verifyAccountBalance->status) {
                     return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
                 }
-    
+
                 $vendor = self::$vendor;
                 $electricity = Electricity::whereVendorId($vendor->id)->whereDiscoId($discoId)->first();
                 $discount = $electricity->discount;
-    
+
                 $transaction = ElectricityTransaction::create([
                     'user_id' => Auth::id(),
                     'vendor_id' => $vendor->id,
@@ -285,7 +285,7 @@ class PosTraNetService
                 }
 
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
-    
+
                 // Deduct the amount from the user's account balance
                 if ($user->account_balance >= $amount) {
                     $user->account_balance -= $discountedAmount;
@@ -297,7 +297,7 @@ class PosTraNetService
                     ];
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
-    
+
                 $data = [
                     'disco_name' => $transaction->disco_id,
                     'meter_number' => $transaction->meter_number,
@@ -307,10 +307,10 @@ class PosTraNetService
                     'customer_name' => $transaction->customer_name,
                     'customer_address' => $transaction->customer_address
                 ];
-    
+
                 $response = self::url(self::ELECTRICITY_URL, $data);
                 self::storeApiResponse($transaction, $response);
-    
+
                 if (isset($response->error)) {
                     self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
                     $errorResponse = [
@@ -320,7 +320,7 @@ class PosTraNetService
                     Log::error($response->error);
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
-    
+
                 if (isset($response->Status) && $response->Status == 'successful') {
                     $transaction->update([
                         // 'balance_after' => self::$authUser->getAccountBalance(),
@@ -329,10 +329,10 @@ class PosTraNetService
                     ]);
                     self::$authUser->initiateSuccess($discountedAmount, $transaction);
                     BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
-    
+
                     return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
                 }
-    
+
                 if (isset($response->Status) && $response->Status == 'failed') {
                     $errorResponse = [
                         'error' => 'API response Error',
@@ -341,14 +341,14 @@ class PosTraNetService
                     self::$authUser->initiatePending($discountedAmount, $transaction);
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
-    
+
                 $errorResponse = [
                     'error' => 'Server Error',
                     'message' => "Oops! Unable to perform transaction. Please try again later."
                 ];
-    
+
                 self::$authUser->initiatePending($discountedAmount, $transaction);
-    
+
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             });
         } catch (\Throwable $th) {
@@ -360,7 +360,7 @@ class PosTraNetService
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
     }
-    
+
 
     public static function cable($cableId, $cablePlan, $iucNumber, $customer)
     {
@@ -480,13 +480,13 @@ class PosTraNetService
     }
 
 
-   
+
     public static function data($networkId, $typeId, $dataId, $mobileNumber)
     {
         try {
             // Start a database transaction to ensure atomicity
             return DB::transaction(function () use ($networkId, $typeId, $dataId, $mobileNumber) {
-                
+
                 // Retrieve vendor, network, plan, and type (same logic as before)
                 $vendor = self::$vendor;
                 $network = DataNetwork::whereVendorId($vendor->id)->whereNetworkId($networkId)->first();
@@ -498,16 +498,16 @@ class PosTraNetService
 
                 // Check for duplicate transactions using IdempotencyCheck
                 $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
-                    DataTransaction::class, 
+                    DataTransaction::class,
                     [
-                        'user_id' => Auth::id(), 
-                        'vendor_id' => (int) self::$vendor->id, 
-                        'network_id' => (int) $network->network_id, 
+                        'user_id' => Auth::id(),
+                        'vendor_id' => (int) self::$vendor->id,
+                        'network_id' => (int) $network->network_id,
                         'mobile_number' => $mobileNumber,
                         'plan_amount' => number_format($plan->amount, 2, '.', '')
                     ],
                 );
-                
+
                 // Handle duplicate transactions
                 if ($duplicateTransaction) {
                     return ApiHelper::sendError($duplicateTransaction, "Transaction is already pending or recently completed. Please wait.");
@@ -535,7 +535,7 @@ class PosTraNetService
 
                 // Deduct the amount from the user's account balance
                 $amount = $plan->amount;
-                
+
                 // Get Discount assign to data
                 $discount = $network->data_discount;
 
@@ -555,9 +555,9 @@ class PosTraNetService
                         'status'  => false,
                         'error' => 'Insufficient Account Balance.',
                         'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your wallet to continue."
-                    ], 401)->getData(); 
+                    ], 401)->getData();
                 }
-                
+
                 // Deduct the amount from the user's account balance
                 // self::$authUser->transaction($discountedAmount);
                 $user->account_balance -= $discountedAmount;
@@ -573,7 +573,7 @@ class PosTraNetService
 
                 $response = self::url(self::DATA_URL, $data);
                 self::storeApiResponse($transaction, $response);
-             
+
                 if (isset($response->error)) {
                     // Insufficient API Wallet Balance Error
                     self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
@@ -597,7 +597,7 @@ class PosTraNetService
 
                     // Complete success processing
                     self::$authUser->initiateSuccess($discountedAmount, $transaction);
-                    
+
                     (new ReferralService)->payReferrerForData(Auth::user(), $plan, $type, $transaction);
 
                     return ApiHelper::sendResponse($transaction, "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobileNumber}.");
@@ -613,7 +613,7 @@ class PosTraNetService
             });  // End of DB transaction
         } catch (\Throwable $th) {
             // Log and handle errors
-            Log::error($th->getMessage());
+            Log::error($th);
             $errorResponse = [
                 'error' => 'Network Connection Error',
                 'message' => 'Unable to make payment. Please check your network connection.',
@@ -866,5 +866,5 @@ class PosTraNetService
             return response()->json(['status' => false, 'result' => [], 'msg' => 'Unable to query transaction. Please try again later.'])->getData();
         }
     }
-    
+
 }
