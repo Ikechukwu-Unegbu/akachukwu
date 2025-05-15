@@ -568,7 +568,7 @@ class PosTraNetService
                 ];
 
                 $response = self::url(self::DATA_URL, $data);
-                self::storeApiResponse($transaction, $response);
+                // self::storeApiResponse($transaction, $response);
 
                 if (isset($response->error)) {
                     // Insufficient API Wallet Balance Error
