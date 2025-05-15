@@ -529,7 +529,7 @@ class PosTraNetService
                     'plan_amount' => $plan->amount,
                     'discount' => $network->data_discount,
                 ]);
-
+                Log::info((array) $transaction);
                 // Deduct the amount from the user's account balance
                 $amount = $plan->amount;
 
@@ -567,7 +567,7 @@ class PosTraNetService
                     'Ported_number' => true
                 ];
 
-                Log::info($data);
+
 
                 $response = self::url(self::DATA_URL, $data);
                 self::storeApiResponse($transaction, $response);
