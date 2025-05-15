@@ -27,7 +27,7 @@ class FlutterwaveService implements Payment
         $transaction = Flutterwave::create([
             'user_id'       => $user->id,
             'reference_id'  => $this->generateUniqueId(),
-            'amount'        => GeneralHelpers::calculateWalletFunding($amount),
+            'amount'        => $amount,
             'currency'      => config('app.currency', 'NGN'),
             'redirect_url'  => $redirectURL,
             'meta'          => json_encode($meta)
@@ -40,7 +40,7 @@ class FlutterwaveService implements Payment
                 'Authorization' => config('services.flutterwave.secret-key', $this->secret_key()),
             ])->post('https://api.flutterwave.com/v3/payments', [
                 'tx_ref' => $transaction->reference_id,
-                'amount' => $transaction->amount,
+                'amount' => GeneralHelpers::calculateWalletFunding($transaction->amount),
                 'currency' => $transaction->currency,
                 'redirect_url' => $transaction->redirect_url,
                 'meta' => $meta,

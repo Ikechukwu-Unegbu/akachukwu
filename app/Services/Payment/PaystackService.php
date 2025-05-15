@@ -28,7 +28,7 @@ class PaystackService implements Payment
         $transaction = PaymentPaystack::create([
             'user_id'       =>  $user->id,
             'reference_id'  => $this->generateUniqueId(),
-            'amount'        => GeneralHelpers::calculateWalletFunding($amount),
+            'amount'        => $amount,
             'currency'      => config('app.currency', 'NGN'),
             'redirect_url'  => $redirectURL,
             'meta'          => json_encode($meta)
@@ -41,7 +41,7 @@ class PaystackService implements Payment
                 'Authorization' => 'Bearer ' . config('services.paystack.secret-key', $this->secret_key()),
             ])->post('https://api.paystack.co/transaction/initialize', [
                 'reference'     =>  $transaction->reference_id,
-                'amount'        =>  $transaction->amount * 100,
+                'amount'        =>  GeneralHelpers::calculateWalletFunding($transaction->amount) * 100,
                 'currency'      =>  $transaction->currency,
                 'email'         =>  $user->email,
                 'callback_url'  =>  $transaction->redirect_url,

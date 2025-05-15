@@ -261,17 +261,19 @@ class PayVesselService
                     if (PayVesselTransaction::where('reference_id', $paymentReference)->exists()) {
                         return response()->json(['message' => 'Payment Already Processed'], 200);
                     }
+
+                    $amountWithCharge = GeneralHelpers::calculateWithCharge($amountPaid);
     
                     $transaction = PayVesselTransaction::create([
                         'reference_id'  => $paymentReference,
                         'trx_ref'       => $transactionReference,
                         'user_id'       => $user->id,
-                        'amount'        => $amountPaid,
+                        'amount'        => $amountWithCharge,
                         'currency'      => config('app.currency', 'NGN'),
                         'meta'          => json_encode($payload)
                     ]);
 
-                    $user->setAccountBalance($amountPaid);
+                    $user->setAccountBalance($amountWithCharge);
                     
                     $transaction->success();
     

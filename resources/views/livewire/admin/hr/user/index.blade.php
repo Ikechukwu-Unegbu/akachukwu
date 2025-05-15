@@ -74,13 +74,13 @@
                                             <li><a href="{{ route('admin.crd-dbt', ['username' => $user->username]) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i>Top</a></li>
                                             <li><a href="{{ route('admin.hr.user.upgrade', $user->username) }}" class="dropdown-item text-success"><i class="bx bx-vertical-top"></i>Upgrade</a></li>
                                         </ul>
-                                        
+
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6">No records available</td>
+                                <td colspan="10">No records available</td>
                             </tr>
                         @endforelse
                     </x-admin.table-body>

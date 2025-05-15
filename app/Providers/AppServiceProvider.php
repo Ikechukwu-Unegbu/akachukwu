@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\User;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\View;
 use App\Observers\UserWalletObserver;
 
@@ -21,7 +22,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-    
+
     }
 
     /**
@@ -38,10 +39,12 @@ class AppServiceProvider extends ServiceProvider
         } else {
             View::share('settings', null);
         }
-        
+
         // View::share('settings', SiteSetting::find(1));
 
         User::observe(UserWalletObserver::class);
+
+        Paginator::useBootstrapFive();
     }
-    
+
 }
