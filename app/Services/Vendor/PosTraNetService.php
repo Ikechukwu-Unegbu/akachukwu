@@ -490,7 +490,6 @@ class PosTraNetService
                 $network = DataNetwork::whereVendorId($vendor->id)->whereNetworkId($networkId)->first();
                 $plan = DataPlan::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereDataId($dataId)->first();
                 $type = DataType::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereId($typeId)->first();
-                Log::info($vendor);
                 // Lock the user record to prevent double spending
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
@@ -578,7 +577,7 @@ class PosTraNetService
                         'error'   => 'Insufficient Balance From API.',
                         'message' => "An error occurred during Data request. Please try again later."
                     ];
-                    Log::error($response->object());
+                    Log::error('API response error', (array) $response);
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
 
