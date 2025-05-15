@@ -266,7 +266,7 @@ class MonnifyService implements Payment
     {
         // dd($user->id, $accountId, $bankCode);
         try {
-           
+
             if (!empty($user->nin)) {
                 $kycType = 'nin';
                 $kyc = $user->nin;
@@ -307,11 +307,11 @@ class MonnifyService implements Payment
                     if($accountId != null){
                         $oldAccount = VirtualAccount::find($accountId);
                         if($oldAccount){
-    
+
                             $oldAccount->delete();
                         }
                     }
-    
+
                     $data = [];
                     foreach ($response->responseBody->accounts as $account) {
                         $data[] = [
@@ -351,7 +351,7 @@ class MonnifyService implements Payment
                 ];
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
-    
+
     }
 
     public static function verifyBvn($bvn, $code, $accountNumber)
@@ -367,13 +367,57 @@ class MonnifyService implements Payment
             ]);
 
             $response = $response->object();
-            
+
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
                 self::updateAccountBvn($response->responseBody->bvn);
-                
+
                 ComplianceService::storePayload($response, $response->responseBody->bvn, NULL);
 
                 (new GenerateRemainingAccounts)->generateRemaingingAccounts();
+                return ApiHelper::sendResponse([], "KYC updated & BVN linked to your account successfully.");
+            }
+
+            if (isset($response->requestSuccessful) && !$response->requestSuccessful) {
+                $errorResponse = [
+                    'error'    =>    "Invalid BVN.",
+                    'message'  =>    "Service not available. Please try again later",
+                ];
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+            }
+            $errorResponse = [
+                'error'    =>    "API Endpoint error.",
+                'message'  =>    "Service not available. Please try again later",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $errorResponse = [
+                'error'    =>    "Server Error",
+                'message'  =>    "Opps! Unable to update or create your static account. Please check your network connection.",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+        }
+    }
+
+    public static function apiVerifyBvn($bvn, $code, $accountNumber)
+    {
+        try {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . self::token(),
+            ])->post(self::getUrl() . "api/v1/vas/bvn-account-match", [
+                "bvn"           => $bvn,
+                "accountNumber" => $accountNumber,
+                "bankCode"      => $code
+            ]);
+
+            $response = $response->object();
+
+            if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+                self::updateAccountBvn($response->responseBody->bvn);
+
+                ComplianceService::storePayload($response, $response->responseBody->bvn, NULL);
+
                 return ApiHelper::sendResponse([], "KYC updated & BVN linked to your account successfully.");
             }
 
@@ -410,9 +454,9 @@ class MonnifyService implements Payment
             ]);
 
             $response = $response->object();
-            
+
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
-                
+
                 if ($dob && $dob !== $response->responseBody->dateOfBirth) {
                     $errorResponse = [
                         'error'    =>    "Invalid Date of Birth.",
@@ -424,8 +468,60 @@ class MonnifyService implements Payment
                 self::updateAccountNin($response->responseBody->nin);
 
                 ComplianceService::storePayload($response, NULL, $response->responseBody->nin);
-                
+
                 (new GenerateRemainingAccounts)->generateRemaingingAccounts();
+                return ApiHelper::sendResponse([], "KYC updated & NIN linked to your account successfully.");
+            }
+
+            if (isset($response->requestSuccessful) && !$response->requestSuccessful) {
+                $errorResponse = [
+                    'error'    =>    "Invalid NIN.",
+                    'message'  =>    "Service not available. Please try again later",
+                ];
+                Log::warning($response->body());
+                return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+            }
+            $errorResponse = [
+                'error'    =>    "API Endpoint error.",
+                'message'  =>    "Service not available. Please try again later",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+        } catch (\Throwable $th) {
+            Log::error($th->getMessage());
+            $errorResponse = [
+                'error'    =>    "Server Error",
+                'message'  =>    "Opps! Unable to update or create your static account. Please check your network connection.",
+            ];
+            return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+        }
+    }
+
+    public static function apiVerifyNin($nin, $dob = null)
+    {
+        try {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . self::token(),
+            ])->post(self::getUrl() . "api/v1/vas/nin-details", [
+                "nin" => $nin
+            ]);
+
+            $response = $response->object();
+
+            if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+
+                if ($dob && $dob !== $response->responseBody->dateOfBirth) {
+                    $errorResponse = [
+                        'error'    =>    "Invalid Date of Birth.",
+                        'message'  =>    "The date of birth provided does not match our records.",
+                    ];
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+
+                self::updateAccountNin($response->responseBody->nin);
+
+                ComplianceService::storePayload($response, NULL, $response->responseBody->nin);
+
                 return ApiHelper::sendResponse([], "KYC updated & NIN linked to your account successfully.");
             }
 
@@ -523,9 +619,9 @@ class MonnifyService implements Payment
                         'redirect_url'  => config('app.url'),
                         'meta'          => json_encode($payload)
                     ]);
-                    
+
                     $user->setAccountBalance($amountWithCharge);
-                    
+
                     $transaction->success();
 
                     return response()->json([
