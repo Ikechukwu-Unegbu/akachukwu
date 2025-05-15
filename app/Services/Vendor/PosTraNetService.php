@@ -479,8 +479,6 @@ class PosTraNetService
         }
     }
 
-
-
     public static function data($networkId, $typeId, $dataId, $mobileNumber)
     {
         try {
@@ -492,7 +490,7 @@ class PosTraNetService
                 $network = DataNetwork::whereVendorId($vendor->id)->whereNetworkId($networkId)->first();
                 $plan = DataPlan::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereDataId($dataId)->first();
                 $type = DataType::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereId($typeId)->first();
-
+                Log::info($vendor);
                 // Lock the user record to prevent double spending
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
@@ -549,13 +547,12 @@ class PosTraNetService
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
 
                 // Handle insufficient balance
-                if (! self::$authUser->verifyAccountBalance($amount))
-                {
-                    return response()->json([
-                        'status'  => false,
-                        'error' => 'Insufficient Account Balance.',
+                if (! self::$authUser->verifyAccountBalance($amount))  {
+                    $errorResponse = [
+                        'error'   => 'Insufficient Account Balance.',
                         'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your wallet to continue."
-                    ], 401)->getData();
+                    ];
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
 
                 // Deduct the amount from the user's account balance
