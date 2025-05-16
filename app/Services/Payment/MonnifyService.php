@@ -602,12 +602,15 @@ class MonnifyService implements Payment
                 $user = User::where('email', $customerEmail)->first();
 
                 if ($user) {
+                    $checkTransaction = MonnifyTransaction::where('reference_id', $paymentReference)->first();
 
-                    if (MonnifyTransaction::where('reference_id', $paymentReference)->where('status', true)->exists()) {
+                    if ($checkTransaction && $checkTransaction->status) {
                         return response()->json(['message' => 'Payment Already Processed'], 200);
                     }
 
-                    $amountWithCharge = GeneralHelpers::calculateWithCharge($amountPaid);
+                    if ($checkTransaction && !$checkTransaction->status) {
+                        $amountPaid = $checkTransaction->amount;
+                    }
 
                     $transaction = MonnifyTransaction::updateOrCreate([
                         'reference_id'  => $paymentReference,

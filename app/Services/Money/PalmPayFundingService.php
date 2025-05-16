@@ -31,8 +31,14 @@ class PalmPayFundingService extends BasePalmPayService
             $transactionReference = $request->sessionId;
             $amountPaid = $request->orderAmount / 100;
 
-            if (PalmPayTransaction::where('reference_id', $paymentReference)->where('status', true)->exists()) {
-                return response()->json(['message' => 'Payment Already Processed'], 403);
+            $checkTransaction = PalmPayTransaction::where('reference_id', $paymentReference)->first();
+
+            if ($checkTransaction && $checkTransaction->status) {
+                return response()->json(['message' => 'Payment Already Processed'], 200);
+            }
+
+            if ($checkTransaction && !$checkTransaction->status) {
+                $amountPaid = $checkTransaction->amount;
             }
     
             if ($request->appId === $headers['appid'][0] && $request->sign === $headers['sign'][0]) {

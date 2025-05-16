@@ -127,7 +127,7 @@ class GeneralHelpers{
 
         $totalAmountToPay = $fundedAmount + $serviceCharge;
 
-        return self::customRoundDown($totalAmountToPay);
+        return $totalAmountToPay;
     }
 
     public static function customRoundDown(float $number): float

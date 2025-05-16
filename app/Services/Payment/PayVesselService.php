@@ -262,7 +262,15 @@ class PayVesselService
                         return response()->json(['message' => 'Payment Already Processed'], 200);
                     }
 
-                    $amountWithCharge = GeneralHelpers::calculateWithCharge($amountPaid);
+                    $checkTransaction = PayVesselTransaction::where('reference_id', $paymentReference)->first();
+
+                    if ($checkTransaction && $checkTransaction->status) {
+                        return response()->json(['message' => 'Payment Already Processed'], 200);
+                    }
+
+                    if ($checkTransaction && !$checkTransaction->status) {
+                        $amountPaid = $checkTransaction->amount;
+                    }
 
                     $transaction = PayVesselTransaction::create([
                         'reference_id'  => $paymentReference,
