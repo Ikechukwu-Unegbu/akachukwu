@@ -38,7 +38,7 @@ class Discount extends Component
             foreach ($this->discounts as $key => $value) {
                 ActivityLogService::log([
                     'activity'=>"Update",
-                    'description'=>'Updating network '.DataNetwork::find($key)->name.' Airtime Discount',
+                    'description'=>'Updating '.DataNetwork::find($key)->name.' Airtime Discount - '.DataNetwork::find($key)->vendor->name,
                     'type'=>'DataNetwork',
                     'resource'=>serialize(DataNetwork::find($key))
                 ]);
