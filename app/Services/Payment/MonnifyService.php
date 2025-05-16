@@ -614,13 +614,13 @@ class MonnifyService implements Payment
                         'trx_ref'       => $transactionReference,
                         'user_id'       => $user->id,
                     ], [
-                        'amount'        => $amountWithCharge,
+                        'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
                         'redirect_url'  => config('app.url'),
                         'meta'          => json_encode($payload)
                     ]);
 
-                    $user->setAccountBalance($amountWithCharge);
+                    $user->setAccountBalance($amountPaid);
 
                     $transaction->success();
 

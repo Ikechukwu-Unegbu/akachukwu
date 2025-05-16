@@ -139,10 +139,10 @@ class GeneralHelpers{
     {
         $siteSettings = SiteSetting::first();
         $chargePercentage = $siteSettings->card_charges ?? 0.0;
+        $serviceCharge = ($amount * $chargePercentage) / 100;
+        $totalAmountToPay = $amount + $serviceCharge;
 
-        $totalAmount = ($amount * $chargePercentage) / 100;
-
-        return self::customRoundDown($totalAmount);
+        return self::customRoundDown($totalAmountToPay);
     }
 
     public static function sendOneSignalTransactionNotification($service, $message, $amount, string $notificationClass): bool
