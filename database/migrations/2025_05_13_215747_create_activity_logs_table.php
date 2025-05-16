@@ -16,7 +16,8 @@ return new class extends Migration
             $table->foreignId('actor_id')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('resource_owner_id')->nullable()->constrained('users')->cascadeOnDelete();
             $table->string('activity');
-            $table->string('resource')->nullable();
+            $table->longText('resource')->nullable();
+            $table->longText('new_resource')->nullable();
 
             $table->text('description')->nullable();
             $table->string('type')->nullable();
