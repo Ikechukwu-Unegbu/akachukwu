@@ -102,7 +102,7 @@
                 };
             @endphp
 
-            <div class="flex justify-between items-center p-4 hover:bg-gray-50 rounded-lg transition-colors">
+            <div class="flex justify-between items-center rounded-lg transition-colors">
                 <div class="flex items-center space-x-4">
                     <!-- Dynamic Icon with different colors based on type -->
                     <div class="flex-shrink-0">
