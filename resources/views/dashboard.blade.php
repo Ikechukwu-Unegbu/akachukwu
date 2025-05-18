@@ -82,50 +82,6 @@
             <a href="{{ route('transactions') }}" class="text-blue-600 text-sm">See all Transactions</a>
         </div>
         <div class="space-y-4">
-            {{-- @forelse (auth()->user()->checkUserTransactionHistories(10, auth()->id()) as $transaction)
-            @php
-                $parts = explode(' ', class_basename($transaction));
-
-                $lastPart = end($parts);
-            @endphp
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <i class="fas {{ $transaction->icon }} bg-blue-100 p-2 rounded-full mr-3"></i>
-                        <div>
-                        <p class="font-semibold">
-                            @if (Str::title($transaction->utility) === 'Transfer')
-                                @php
-                                    $moneyTransfer = \App\Models\MoneyTransfer::find($transaction->id);
-                                @endphp
-                                @if ($moneyTransfer->user_id == Auth::user()->id)
-                                <span class="text-red">
-                                    {{ $moneyTransfer->type === 'external' ? 'Bank' : 'Intra' }} Transfer
-                                </span>
-                                @else
-                                <span class="text-green">Recieved</span>
-                                @endif
-                            @else
-                                {{ Str::title($transaction->utility) }}
-                            @endif
-                        </p>
-
-                            <p class="text-sm text-gray-500">
-                                {{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</p>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-{{ $transaction->status === 1 ? 'green' : ($transaction->status === 0 ? 'red' : 'yellow') }}-500 font-semibold">
-                            ₦{{ number_format($transaction->amount, 2) }}</p>
-                        <p class="text-sm text-gray-500">{{ Str::title($transaction->vendor_status) }}</p>
-                    </div>
-                </div>
-                @empty
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <h4 class="text-red-500 font-semibold">No Recent Transactions Found!</h4>
-                    </div>
-                </div>
-            @endforelse --}}
             @forelse ($transactions as $transaction)
                 @php
                     $isFunding = $transaction->type === 'funding';
@@ -159,46 +115,10 @@
                         <div>
                             <div class="flex items-center flex-wrap gap-2">
                                 <p class="font-semibold text-gray-800">{{ Str::title($transaction->title) }}</p>
-                                {{-- <span class="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-full">
-                                {{ Str::upper($transaction->utility) }}
-                            </span> --}}
                             </div>
-
-                            @if ($transaction->type !== 'funding')
-                                @php
-                                    $moneyTransfer = \App\Models\MoneyTransfer::find($transaction->id);
-                                    // $subscribedTo =
-                                    //     \App\Models\User::find($transaction->subscribed_to)?->name ??
-                                    //     ($moneyTransfer && $moneyTransfer->account_number
-                                    //         ? $moneyTransfer->account_number . ' (' . $moneyTransfer->bank_name . ')'
-                                    //         : $transaction->subscribed_to);
-                                @endphp
-                                <p class="text-sm text-gray-500 mt-1">
-                                <p class="text-sm text-vastel_blue mt-1">{{ $moneyTransfer?->reference_id }}</p>
-                                </p>
-                            @endif
-
-                            @if ($isFunding)
-                                <p class="text-sm text-vastel_blue mt-1">{{ $transaction->transaction_id }}</p>
-                            @endif
-
                             <p class="text-xs text-gray-400 mt-1">
                                 {{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y · h:i A') }}
                             </p>
-
-                            @if (!$isFunding && !$isTransfer)
-                                <div class="flex items-center gap-3 mt-2">
-                                    <a href="{{ route('user.transaction.' . Str::lower($transaction->utility) . '.receipt', $transaction->transaction_id) }}"
-                                        class="text-vastel_blue text-sm hover:underline flex items-center gap-1">
-                                        <i class="fas fa-receipt text-sm"></i> Receipt
-                                    </a>
-                                    <span class="text-gray-300">|</span>
-                                    <a href="{{ route('api.response', [Str::lower($transaction->utility), $transaction->transaction_id]) }}"
-                                        class="text-vastel_blue text-sm hover:underline flex items-center gap-1">
-                                        <i class="fas fa-code text-sm"></i> API Response
-                                    </a>
-                                </div>
-                            @endif
                         </div>
                     </div>
 
