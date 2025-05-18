@@ -4,6 +4,7 @@ namespace App\Services\Admin\Activity;
 use App\Models\ActivityLog;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 
 class ActivityLogService{
 
@@ -21,12 +22,36 @@ class ActivityLogService{
             'raw_response' => $data['raw_response'] ?? null,
             'ip_address' => $data['ip_address'] ?? Request::ip(),
             'user_agent' => $data['user_agent'] ?? Request::userAgent(),
-            'location' => $data['location'] ?? null,
+            'location' => self::getLocationByIp(request()),
             'balance_before' => $data['balance_before'] ?? null,
             'balance_after' => $data['balance_after'] ?? null,
             'tags' => $data['tags'] ?? [],
             'ref_id' => $data['ref_id'] ?? null,
         ]);
     }
+
+    public static function getLocationByIp( $request)
+    {
+        // Get IP address
+        $ip = $request->ip(); // or use a hardcoded one for testing
+
+        // IPInfo.io API (no token needed for limited access)
+        $response = Http::get("https://ipinfo.io/{$ip}/json");
+
+        if ($response->successful()) {
+            $location = $response->json();
+
+            return [
+                'ip' => $ip,
+                'city' => $location['city'] ?? null,
+                'region' => $location['region'] ?? null,
+                'country' => $location['country'] ?? null,
+                'loc' => $location['loc'] ?? null, // latitude,longitude
+            ];
+        }
+
+        return null;
+    }
+
 
 }

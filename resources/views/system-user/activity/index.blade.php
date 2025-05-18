@@ -195,11 +195,12 @@ $logs = collect([
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>ID</th>
                         <th>Date</th>
                         <th>User</th>
                         <th>Activity</th>
-                        <th>Bal B4/After</th>
-                        <th>Status</th>
+                        <!-- <th>Bal B4/After</th> -->
+                        <!-- <th>Status</th> -->
                         <!-- <th>Actor</th> -->
                         <th>Location</th>
                         <th>Device</th>
@@ -208,23 +209,24 @@ $logs = collect([
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach([1, 2, 3, 4, 5, 6] as $i)
+                    @foreach($activities as $activity)
                     <tr>
-                        <td>{{ now()->subMinutes($i*15)->format('Y-m-d H:i') }}</td>
+                        <td>#{{$activity->id}}</td>
+                        <td><small>{{ $activity->created_at->format('d M Y')  }}</small></td>
                         <td>
-                            John Doe<br>
-                            <small>john@example.com</small>
+                            <a href="">{{$activity->actor->name}}</a>
+                            <!-- <small>john@example.com</small> -->
                         </td>
                         <td>
-                            Money Transfer<br>
-                            <small>Ref: TXN2025{{ $i }}</small>
+                            {{$activity->type}}<br>
+                            <small>{{$activity->activity}}</small>
                         </td>
-                        <td>
+                        <!-- <td>
                             ₦100,000 ➝ <span class="text-danger">₦75,000</span>
                         </td>
                         <td>
                             <span class="badge bg-success">Success</span>
-                        </td>
+                        </td> -->
                         <!-- <td>
                             <span class="badge bg-info text-dark">User</span>
                         </td> -->
@@ -233,46 +235,87 @@ $logs = collect([
                             <small>MTN NG</small>
                         </td>
                         <td>
-                            Chrome on Windows
+                           {{$activity->getUserAgentSummaryAttribute()}}
                         </td>
                         <td>
-                            <span class="badge bg-secondary">money_transfer</span>
+                            <span class="badge bg-secondary">{{$activity->getTagsListAttribute()}}</span>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#logModal{{ $i }}">Details</button>
+                            <button class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#logModal{{ $activity->id }}">Details</button>
                         </td>
                     </tr>
 
                     <!-- Log Modal -->
-                    <div class="modal fade" id="logModal{{ $i }}" tabindex="-1" aria-labelledby="logModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="logModal{{ $activity->id }}" tabindex="-1" aria-labelledby="logModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Log Details - TXN2025{{ $i }}</h5>
+                            a        <h5 class="modal-title">Log Details </h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <p><strong>User:</strong> John Doe (john@example.com)</p>
-                                    <p><strong>Activity:</strong> Money Transfer to 0123456789 (₦25,000)</p>
-                                    <p><strong>Balance Before:</strong> ₦100,000</p>
-                                    <p><strong>Balance After:</strong> ₦75,000</p>
-                                    <p><strong>Timestamp:</strong> {{ now()->subMinutes($i*15) }}</p>
-                                    <p><strong>IP Address:</strong> 105.112.34.{{ $i }}</p>
-                                    <p><strong>Location:</strong> Lagos, Nigeria</p>
-                                    <p><strong>Device Info:</strong> Chrome 120 / Windows 10</p>
-                                    <p><strong>Request Payload:</strong></p>
-                                    <pre class="bg-light p-2">{
-    "amount": 25000,
-    "recipient": "0123456789",
-    "channel": "bank_transfer"
-}</pre>
+                                    <p><strong>User:</strong> {{$activity->actor->name}}</p>
+                                    <p><strong>Activity:</strong> {{$activity->type}} | {{$activity->activity}}</p>
+                                    <!-- <p><strong>Balance Before:</strong> ₦100,000</p>
+                                    <p><strong>Balance After:</strong> ₦75,000</p> -->
+                                    <p><strong>Timestamp:</strong> {{ $activity->created_at->format('j M Y') }}</p>
+                                    <p><strong>IP Address:</strong>{{ $activity->ip_address }}</p>
+                                    <p><strong>Location:</strong> {{$activity->getFormattedLocationAttribute()}}</p>
+                                    <p><strong>Device Info:</strong> {{$activity->getUserAgentSummaryAttribute()}}</p>
+                                    <!-- <p><strong>Request Payload:</strong></p>
+                                    <pre class="bg-light p-2">
+                                    {
+                                        "amount": 25000,
+                                        "recipient": "0123456789",
+                                        "channel": "bank_transfer"
+                                    }</pre>
                                     <p><strong>Response:</strong></p>
-                                    <pre class="bg-light p-2">{
-    "status": "success",
-    "message": "Transfer completed"
-}</pre>
-                                    <p><strong>Tags:</strong> money_transfer, api_call</p>
+                                    <pre class="bg-light p-2">
+                                    {
+                                        "status": "success",
+                                        "message": "Transfer completed"
+                                    }</pre> -->
+                                    <p><strong>Tags:</strong> {{$activity->getTagsListAttribute()}}</p>
                                     <p><strong>Raw Ref ID:</strong> 7F9B-2C19-43C7</p>
+                                    <p>
+                                    
+
+                                    @php
+    $diffs = $activity->getModelDifferences();
+@endphp
+
+@if(count($diffs) === 1 && isset($diffs['status']))
+    <div class="alert alert-info">
+        {{ $diffs['status'] }}
+    </div>
+@else
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach($diffs as $attribute => $change)
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body">
+                        <h5 class="card-title text-capitalize">{{ str_replace('_', ' ', $attribute) }}</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <strong>Old:</strong>
+                                {{ is_array($change['old']) ? json_encode($change['old']) : (is_null($change['old']) ? 'NULL' : $change['old']) }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>New:</strong>
+                                {{ is_array($change['new']) ? json_encode($change['new']) : (is_null($change['new']) ? 'NULL' : $change['new']) }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+@endif
+
+                                        
+
+
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -281,7 +324,7 @@ $logs = collect([
                 </tbody>
             </table>
             <div class="mt-3">
-               {{-- {{ $logs->links() ?? 'Pagination Placeholder' }}--}}
+               {{ $activities->links() ?? 'Pagination Placeholder' }}
             </div>
         </div>
     </div>
