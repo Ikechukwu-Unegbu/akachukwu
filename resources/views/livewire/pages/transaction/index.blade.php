@@ -133,7 +133,7 @@
                                 //         : $transaction->subscribed_to);
                             @endphp
                             <p class="text-sm text-gray-500 mt-1">
-                                <p class="text-sm text-vastel_blue mt-1">{{ $moneyTransfer->reference_id }}</p>
+                                <p class="text-sm text-vastel_blue mt-1">{{ $moneyTransfer?->reference_id }}</p>
                             </p>
                         @endif
 
