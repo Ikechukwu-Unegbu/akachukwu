@@ -6,6 +6,11 @@ use App\Models\Vendor;
 use Livewire\Component;
 use Livewire\Attributes\Rule;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Services\Admin\Activity\ActivityLogService;
+
+
 class Edit extends Component
 {
     public $vendor;
@@ -39,10 +44,20 @@ class Edit extends Component
     {
         $validated = $this->validate();
         
-        if ($this->status) $this->vendor->setAllStatusToFalse();
+        DB::transaction(function(){
+            
+            if ($this->status) $this->vendor->setAllStatusToFalse();
 
-        $this->vendor->update($validated);
+            $this->vendor->update($validated);
 
+            ActivityLogService::log([
+                'activity'=>"Update",
+                'description'=>'Editing Single Vendor: '.$this->vendor->name,
+                'type'=>'Vendors',
+                'tags'=>['Edit','Update', 'Vendors']
+            ]);
+
+        });
         $this->dispatch('success-toastr', ['message' => 'Vendor Updated Successfully']);
         session()->flash('success', 'Vendor Updated Successfully');
         return redirect()->to(route('admin.api.vendor'));

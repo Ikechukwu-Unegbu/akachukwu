@@ -10,6 +10,9 @@ use Illuminate\Support\Facades\DB;
 use App\Models\AirtimeVendorMapping;
 use App\Models\VendorServiceMapping;
 
+use Illuminate\Support\Facades\Auth;
+use App\Services\Admin\Activity\ActivityLogService;
+
 class Service extends Component
 {
     
@@ -44,7 +47,16 @@ class Service extends Component
 
     public function updateService()
     {
-        $this->service->update(['vendor_id' => $this->vendor]);
+        DB::transaction(function(){
+            $this->service->update(['vendor_id' => $this->vendor]);
+            ActivityLogService::log([
+                'activity'=>"Update",
+                'description'=>'Upding Service: '.$this->service->service_type.' Vendor To: '.Vendor::find($this->vendor)?->name,
+                'type'=>'Vendors',
+                'tags'=>['Update', 'VendorMapping']
+            ]);
+        });
+      
         $this->dispatch('success-toastr', ['message' => 'Service Updated Successfully']);
         session()->flash('success', 'Service Updated Successfully');
         $this->redirect(url()->previous());
@@ -77,6 +89,12 @@ class Service extends Component
             }
 
             AirtimeVendorMapping::updateOrCreate(['network' => $this->network_name], ['vendor_id' => $this->vendor]);
+            ActivityLogService::log([
+                'activity'=>"Update",
+                'description'=>'Changing airtime network ('.$this->network_name.') vendor to '.Vendor::find($this->vendor)?->name,
+                'type'=>'Vendors',
+                'tags'=>['Update', 'VendorMapping']
+            ]);
             DB::commit();
 
             $this->dispatch('success-toastr', ['message' => 'Airtime Service Updated Successfully']);

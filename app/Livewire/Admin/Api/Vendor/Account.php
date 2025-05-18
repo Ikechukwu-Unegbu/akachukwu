@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 use Livewire\WithPagination;
 use App\Models\VendorBalance;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Services\Admin\Activity\ActivityLogService;
+
 class Account extends Component
 {
     use WithPagination;
@@ -23,6 +27,12 @@ class Account extends Component
         $this->authorize('view vendor api');   
         $this->startDate = $request->input('start_date');
         $this->endDate = $request->input('end_date');
+        ActivityLogService::log([
+            'activity'=>"View",
+            'description'=>'Viewing vendor closing and opening accounts',
+            'type'=>'VendorAccount',
+            'tags'=>['Vendor','Account', 'View']
+        ]);
     }
 
     public function render()
