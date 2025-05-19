@@ -5,6 +5,7 @@ use App\Helpers\ApiHelper;
 use App\Models\Data\DataTransaction;
 use App\Models\Education\ResultCheckerTransaction;
 use App\Models\MoneyTransfer;
+use App\Models\PalmPayTransaction;
 use App\Models\Payment\Flutterwave;
 use App\Models\Payment\MonnifyTransaction;
 use App\Models\Payment\Paystack;
@@ -66,13 +67,14 @@ class TransactionApiService
             UNION ALL
             SELECT id, reference_id as transaction_id, user_id, amount, status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as type, api_status as text_status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as transaction_type, created_at FROM vastel_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, api_status as text_status, "credit" as transaction_type, created_at FROM monnify_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM monnify_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, api_status as text_status, "credit" as transaction_type, created_at FROM pay_vessel_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM pay_vessel_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, api_status as text_status, "credit" as transaction_type, created_at FROM paystack_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM paystack_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, api_status as text_status, "credit" as transaction_type, created_at FROM flutterwave_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM flutterwave_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "palmpay" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM palm_pay_transactions
             UNION ALL
             SELECT id, reference_id AS transaction_id,  user_id, amount, status, "money_transfer" AS type, transfer_status AS text_status,  CASE WHEN user_id = "' . (int) $userId . '" THEN "debit" WHEN recipient = "' . (int) $userId . '" THEN "wallet funding" ELSE "other" END AS transaction_type, created_at
                 FROM money_transfers
@@ -155,6 +157,11 @@ class TransactionApiService
 
             case 'payvessle':
                 $model = PayVesselTransaction::class;
+                $idColumn = 'reference_id';
+                break;
+
+            case 'palmpay':
+                $model = PalmPayTransaction::class;
                 $idColumn = 'reference_id';
                 break;
 
