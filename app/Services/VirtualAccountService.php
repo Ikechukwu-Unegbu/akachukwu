@@ -107,8 +107,8 @@ class VirtualAccountService
         return $factory::createSpecificVirtualAccount($user, null, $mapping['code']);
     }
 
-    public function getBanks()
+    public function getBanks($type)
     {
-        return Bank::orderBy('name')->get();
+        return Bank::where('type', $type)->orderBy('name')->get();
     }
 }
