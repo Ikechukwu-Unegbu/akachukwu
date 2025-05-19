@@ -74,7 +74,7 @@ class TransactionApiService
             UNION ALL
             SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, api_status as text_status, "credit" as transaction_type, created_at FROM flutterwave_transactions
             UNION ALL
-            SELECT id, reference_id AS transaction_id,  user_id, amount, status, "money_transfer" AS type, transfer_status AS text_status,  CASE WHEN user_id = " . (int) $userId . " THEN "debit" WHEN recipient = " . (int) $userId . " THEN "wallet funding" ELSE "other" END AS transaction_type, created_at
+            SELECT id, reference_id AS transaction_id,  user_id, amount, status, "money_transfer" AS type, transfer_status AS text_status,  CASE WHEN user_id = "' . (int) $userId . '" THEN "debit" WHEN recipient = "' . (int) $userId . '" THEN "wallet funding" ELSE "other" END AS transaction_type, created_at
                 FROM money_transfers
             ) as transactions'))
             ->join('users', 'transactions.user_id', '=', 'users.id')
