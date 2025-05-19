@@ -202,9 +202,19 @@ class BasePalmPayService
         return null;
     }
 
+    protected static function checkIfAccountExists($user): bool
+    {
+        return $user->virtualAccounts->where('bank_code', self::BANK_CODE)->isNotEmpty();
+    }
+
     public static function createSpecificVirtualAccount($user, $accountId = null)
     {
         try {
+
+            if (self::checkIfAccountExists($user)) {
+                return ApiHelper::sendError(['Account already exists'], "A virtual account with this bank already exists for the user.");
+            }
+
             if (!empty($user->nin)) {
                 $kycType = 'nin';
                 $kyc = $user->nin;
@@ -251,11 +261,11 @@ class BasePalmPayService
                 return ApiHelper::sendResponse([], "Virtual Account Created Successfully.");
             }
 
-            self::causer($response, 'Palmpay Virtul Account');
+            self::causer($response, 'Palmpay Virtual Account');
             return ApiHelper::sendError('API Error', 'Unable to create virtual account. Please try again later.');
 
         } catch (\Throwable $th) {
-            self::causer($th->getMessage(), 'Palmpay Virtul Account');
+            self::causer($th->getMessage(), 'Palmpay Virtual Account');
             return ApiHelper::sendError([], "Opps! Unable to create static account. Please check your network connection.");
         }
     }
