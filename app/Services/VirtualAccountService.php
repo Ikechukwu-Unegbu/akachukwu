@@ -29,6 +29,8 @@ class VirtualAccountService
         ]
     ];
 
+    protected CONST DEFAULT_GATEWAY = 'monnify';
+
     public function getAuthenticatedUser ()
     {
         return Auth::user();
@@ -107,8 +109,10 @@ class VirtualAccountService
         return $factory::createSpecificVirtualAccount($user, null, $mapping['code']);
     }
 
-    public function getBanks($type)
+    public function getBanks($type = null)
     {
+        $type = $type ?? self::DEFAULT_GATEWAY;
+
         return Bank::where('type', $type)->orderBy('name')->get();
     }
 }
