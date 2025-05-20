@@ -197,7 +197,7 @@ class PosTraNetService
                     // Update the transaction after successful API response
                     $transaction->update([
                         // 'balance_after' => self::$authUser->getAccountBalance(),
-                        'api_data_id' => $response->id ?? $response->ident
+                        'api_data_id' => $response?->id ?? $response?->ident
                     ]);
 
                     self::$authUser->initiateSuccess($discountedAmount, $transaction);
@@ -325,7 +325,7 @@ class PosTraNetService
                     $transaction->update([
                         // 'balance_after' => self::$authUser->getAccountBalance(),
                         'token' => VendorHelper::removeTokenPrefix($response->token),
-                        'api_data_id' => $response->id ?? $response->ident
+                        'api_data_id' => $response?->id ?? $response?->ident
                     ]);
                     self::$authUser->initiateSuccess($discountedAmount, $transaction);
                     BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
@@ -439,7 +439,7 @@ class PosTraNetService
                 if (isset($response->Status) && $response->Status == 'successful') {
                     $transaction->update([
                         // 'balance_after' => $user->account_balance,
-                        'api_data_id'   => $response->id ?? $response->ident
+                        'api_data_id'   => $response?->id ?? $response?->ident
                     ]);
 
                     self::$authUser->initiateSuccess($discountedAmount, $transaction);
@@ -529,7 +529,7 @@ class PosTraNetService
                     'plan_amount' => $plan->amount,
                     'discount' => $network->data_discount,
                 ]);
-                Log::info((array) $transaction);
+
                 // Deduct the amount from the user's account balance
                 $amount = $plan->amount;
 
@@ -590,7 +590,7 @@ class PosTraNetService
                         'plan_network' => $response->plan_network,
                         'plan_name' => $response->plan_name,
                         'plan_amount' => $response->plan_amount,
-                        'api_data_id' => $response->id ?? $response->ident
+                        'api_data_id' => $response?->id ?? $response?->ident
                     ]);
 
                     // Complete success processing
