@@ -39,6 +39,15 @@ class GeneralHelpers{
         return $uuid;
     }
 
+    public static function generateUniqueNumericRef(string $table): string
+    {
+        do {
+            // Generate a 12-digit random number with leading zeroes if necessary
+            $numericRef = str_pad((string)random_int(0, 999999999999), 12, '0', STR_PAD_LEFT);
+        } while (DB::table($table)->where('reference_id', $numericRef)->exists());
+
+        return $numericRef;
+    }
      /**
      * Determine if the given string is an email address or a username.
      *

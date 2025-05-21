@@ -8,6 +8,7 @@ use Livewire\Component;
 use App\Models\Data\DataNetwork;
 use Illuminate\Support\Facades\DB;
 use App\Models\AirtimeVendorMapping;
+use App\Helpers\ActivityConstants;
 use App\Models\VendorServiceMapping;
 
 use Illuminate\Support\Facades\Auth;
@@ -52,7 +53,7 @@ class Service extends Component
             ActivityLogService::log([
                 'activity'=>"Update",
                 'description'=>'Upding Service: '.$this->service->service_type.' Vendor To: '.Vendor::find($this->vendor)?->name,
-                'type'=>'Vendors',
+                'type'=>ActivityConstants::VENDORS,
                 'tags'=>['Update', 'VendorMapping']
             ]);
         });
@@ -92,7 +93,7 @@ class Service extends Component
             ActivityLogService::log([
                 'activity'=>"Update",
                 'description'=>'Changing airtime network ('.$this->network_name.') vendor to '.Vendor::find($this->vendor)?->name,
-                'type'=>'Vendors',
+                'type'=>ActivityConstants::VENDORS,
                 'tags'=>['Update', 'VendorMapping']
             ]);
             DB::commit();

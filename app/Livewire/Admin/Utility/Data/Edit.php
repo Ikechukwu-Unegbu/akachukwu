@@ -10,6 +10,7 @@ use Livewire\Component;
 use App\Services\Admin\Activity\ActivityLogService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use App\Helpers\ActivityConstants;
 
 class Edit extends Component
 {
@@ -57,7 +58,8 @@ class Edit extends Component
             ActivityLogService::log([
                 'activity'=>"Update",
                 'description'=>"Updating (for data) ".$this->network->name ." of ".$this->vendor->name.'.',
-                'type'=>'DataNetwork',
+                'type'=>ActivityConstants::DATANETWORK,
+                'resource'=>serialize($this->network)
             ]);
         });
 

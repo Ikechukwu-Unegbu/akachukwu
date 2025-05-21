@@ -9,6 +9,7 @@ use Livewire\Attributes\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\Activity\ActivityLogService;
+use App\Helpers\ActivityConstants;
 
 
 class Edit extends Component
@@ -53,7 +54,7 @@ class Edit extends Component
             ActivityLogService::log([
                 'activity'=>"Update",
                 'description'=>'Editing Single Vendor: '.$this->vendor->name,
-                'type'=>'Vendors',
+                'type'=>ActivityConstants::VENDORS,
                 'tags'=>['Edit','Update', 'Vendors']
             ]);
 

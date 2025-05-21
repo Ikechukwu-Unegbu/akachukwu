@@ -12,6 +12,7 @@ use App\Models\VendorBalance;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\Activity\ActivityLogService;
+use App\Helpers\ActivityConstants;
 
 class Account extends Component
 {
@@ -30,7 +31,7 @@ class Account extends Component
         ActivityLogService::log([
             'activity'=>"View",
             'description'=>'Viewing vendor closing and opening accounts',
-            'type'=>'VendorAccount',
+            'type'=>ActivityConstants::VENDOR_ACCOUNTS,
             'tags'=>['Vendor','Account', 'View']
         ]);
     }

@@ -11,6 +11,7 @@ use App\Models\Data\DataNetwork;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\Activity\ActivityLogService;
+use App\Helpers\ActivityConstants;
 
 
 class Delete extends Component
@@ -36,7 +37,7 @@ class Delete extends Component
             $activity = ActivityLogService::log([
                 'activity'=>"Delete",
                 'description'=>"Deleting plan for ".$this->type->name." for ".$this->vendor->name,
-                'type'=>'DataPlan',
+                'type'=>ActivityConstants::DATAPLAN,
                 'resource'=>serialize($this->plan)
             ]);
         }); 

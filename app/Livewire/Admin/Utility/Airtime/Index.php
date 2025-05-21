@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
 use App\Models\SiteSetting;
-
+use App\Helpers\ActivityConstants;
 use Illuminate\Support\Facades\Auth;
 
 use App\Services\Admin\Activity\ActivityLogService;
@@ -31,7 +31,7 @@ class Index extends Component
         ActivityLogService::log([
             'activity'=>"Update",
             'description'=>'Update General Airtime Sales from '. $siteSettings->airtime_sales .' to '.!$siteSettings->airtime_sales,
-            'type'=>'Airtime',
+            'type'=>ActivityConstants::AIRTIME,
         ]);
 
         $siteSettings->updateAirtimeSale();
@@ -47,7 +47,7 @@ class Index extends Component
         ActivityLogService::log([
             'activity'=>"Update",
             'description'=>'Update Network Airtime Sales(vendor specific)',
-            'type'=>'DataNetwork',
+            'type'=>ActivityConstants::DATANETWORK,
         ]);
         $dataNetwork->update(['airtime_status' => !$dataNetwork->airtime_status]);
         $this->dispatch('success-toastr', ['message' => 'Network status Updated Successfully']);

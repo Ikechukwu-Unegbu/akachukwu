@@ -11,6 +11,7 @@ use App\Models\Data\DataNetwork;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\Activity\ActivityLogService;
+use App\Helpers\ActivityConstants;
 
 class Create extends Component
 {
@@ -60,7 +61,7 @@ class Create extends Component
             $activity = ActivityLogService::log([
                 'activity'=>"Create",
                 'description'=>"Creating plan for ".$this->type->name." for ".$this->vendor->name,
-                'type'=>'DataPlan',
+                'type'=>ActivityConstants::DATAPLAN,
                 'resource'=>serialize($newPlan)
             ]);
 

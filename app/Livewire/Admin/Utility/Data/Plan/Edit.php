@@ -12,6 +12,7 @@ use App\Models\Data\DataNetwork;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\Activity\ActivityLogService;
+use App\Helpers\ActivityConstants;
 
 class Edit extends Component
 {
@@ -63,7 +64,7 @@ class Edit extends Component
             $activity = ActivityLogService::log([
                 'activity'=>"Create",
                 'description'=>"Updating ".$this->plan->size ." of ".$this->type->name."(".$this->network->name.")"." of ". $this->vendor->name,
-                'type'=>'DataPlan',
+                'type'=>ActivityConstants::DATAPLAN,
                 'resource'=>serialize($this->plan)
             ]);
             $this->plan->update([

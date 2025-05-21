@@ -7,6 +7,7 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Data\DataNetwork;
+use App\Helpers\ActivityConstants;
 
 use App\Services\Admin\Activity\ActivityLogService;
 
@@ -39,7 +40,7 @@ class Discount extends Component
                 ActivityLogService::log([
                     'activity'=>"Update",
                     'description'=>'Updating '.DataNetwork::find($key)->name.' Airtime Discount - '.DataNetwork::find($key)->vendor->name,
-                    'type'=>'DataNetwork',
+                    'type'=>ActivityConstants::DATANETWORK,
                     'resource'=>serialize(DataNetwork::find($key))
                 ]);
                 $this->vendor->networks->find($key)?->update(['airtime_discount' => $value]);

@@ -28,6 +28,7 @@ use App\Models\PalmPayTransaction;
 use Illuminate\Support\Facades\Auth;
 // use Illuminate\Support\Facades\DB;
 use App\Services\Admin\Activity\ActivityLogService;
+use App\Helpers\GeneralHelpers;
 
 class Index extends Component
 {
@@ -75,6 +76,7 @@ class Index extends Component
 
         DB::transaction(function(){
             if (isset($this->selectedUser['data'])) {
+                $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
                 foreach (array_keys($this->selectedUser['data']) as $data) {
                     $dataTransaction = DataTransaction::where('transaction_id', $data)->first();
                     $amount = CalculateDiscount::calculate($dataTransaction->amount, $dataTransaction->discount);
@@ -99,6 +101,7 @@ class Index extends Component
 
         DB::transaction(function(){
             if (isset($this->selectedUser['airtime'])) {
+                $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
                 foreach (array_keys($this->selectedUser['airtime']) as $airtime) {
                     $airtimeTransaction = AirtimeTransaction::where('transaction_id', $airtime)->first();
                     // $amount = CalculateDiscount::calculate($airtimeTransaction->amount, $airtimeTransaction->discount);
@@ -124,6 +127,7 @@ class Index extends Component
         DB::transaction(function(){
 
             if (isset($this->selectedUser['cable'])) {
+                $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
                 foreach (array_keys($this->selectedUser['cable']) as $cable) {
                     $cableTransaction = CableTransaction::where('transaction_id', $cable)->first();
                     $amount = CalculateDiscount::calculate($cableTransaction->amount, $cableTransaction->discount);
@@ -148,6 +152,7 @@ class Index extends Component
       
         DB::transaction(function(){
             if (isset($this->selectedUser['electricity'])) {
+                $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
                 foreach (array_keys($this->selectedUser['electricity']) as $electricity) {
                     $electricityTransaction = ElectricityTransaction::where('transaction_id', $electricity)->first();
                     $amount = CalculateDiscount::calculate($electricityTransaction->amount, $electricityTransaction->discount);
@@ -170,6 +175,7 @@ class Index extends Component
 
         DB::transaction(function(){
             if (isset($this->selectedUser['education'])) {
+                $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
                 foreach (array_keys($this->selectedUser['education']) as $education) {
                     $educationTransaction = ResultCheckerTransaction::where('transaction_id', $education)->first();
                     $amount = CalculateDiscount::calculate($electricityTransaction->amount, $electricityTransaction->discount);

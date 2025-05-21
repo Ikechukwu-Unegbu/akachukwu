@@ -9,6 +9,8 @@ use App\Models\VirtualAccount;
 use Illuminate\Support\Facades\Log;
 use App\Services\Payment\VirtualAccountServiceFactory;
 use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
+use App\Helpers\ActivityConstants;
+use App\Helpers\GeneralHelpers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Services\Admin\Activity\ActivityLogService;
@@ -33,7 +35,7 @@ class UserAccountNumbersCard extends Component
         ActivityLogService::log([
             'activity'=>"Change",
             'description'=>"Attempting to Change Virtual Account",
-            'type'=>'VirtualAccount',
+            'type'=>ActivityConstants::VIRTUALACCOUNT,
             'resource_owner_id'=>$user->id, 
             'resource'=>serialize($currentVirtualAccount)
         ]);
@@ -47,7 +49,7 @@ class UserAccountNumbersCard extends Component
             ActivityLogService::log([
                 'activity'=>"Change",
                 'description'=>"Succeeded to Change Virtual Account",
-                'type'=>'VirtualAccount',
+                'type'=>ActivityConstants::VIRTUALACCOUNT,
                 'resource_owner_id'=>$user->id, 
                 'resource'=>serialize($currentVirtualAccount)
                 
@@ -69,7 +71,7 @@ class UserAccountNumbersCard extends Component
             ActivityLogService::log([
                 'activity'=>"Change",
                 'description'=>"Attempting to Create Virtual Account",
-                'type'=>'VirtualAccount',
+                'type'=>ActivityConstants::VIRTUALACCOUNT,
                 'resource_owner_id'=>$user->id, 
                 // 'resource'=>serialize($currentVirtualAccount)
             ]);
@@ -81,7 +83,7 @@ class UserAccountNumbersCard extends Component
                 ActivityLogService::log([
                     'activity'=>"Change",
                     'description'=>"Succeeded to Create Virtual Account",
-                    'type'=>'VirtualAccount',
+                    'type'=>ActivityConstants::VIRTUALACCOUNT,
                     'resource_owner_id'=>$user->id, 
                     // 'resource'=>serialize($currentVirtualAccount)
                 ]);

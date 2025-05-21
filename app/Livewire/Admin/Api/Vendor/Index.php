@@ -8,6 +8,7 @@ use Livewire\WithPagination;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\Activity\ActivityLogService;
+use App\Helpers\ActivityConstants;
 
 
 class Index extends Component
@@ -24,7 +25,7 @@ class Index extends Component
         ActivityLogService::log([
             'activity'=>"View",
             'description'=>'Viewing Vendor Index Page',
-            'type'=>'Vendors',
+            'type'=>ActivityConstants::VENDORS,
             'tags'=>['View', 'Vendors']
         ]);
     }

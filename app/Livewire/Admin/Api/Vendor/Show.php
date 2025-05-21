@@ -7,7 +7,7 @@ use App\Services\Vendor\VendorService;
 use Livewire\Component;
 use Illuminate\Support\Facades\Http;
 use App\Services\Vendor\VendorServiceFactory;
-
+use App\Helpers\ActivityConstants;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Services\Admin\Activity\ActivityLogService;
@@ -28,7 +28,7 @@ class Show extends Component
         ActivityLogService::log([
             'activity'=>"View",
             'description'=>'Viewing Vendor Single Vendor: '.$this->vendor->name,
-            'type'=>'Vendors',
+            'type'=>ActivityConstants::VENDORS,
             'tags'=>['View', 'Vendors']
         ]);
         
