@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Helpers;
 
 use Carbon\Carbon;
@@ -120,15 +120,30 @@ class GeneralHelpers{
     public static function calculateWalletFunding($fundedAmount)
     {
         $siteSettings = SiteSetting::first();
-        
+
         $chargePercentage = $siteSettings->card_charges ?? 0.0;
-    
+
         $serviceCharge = ($fundedAmount * $chargePercentage) / 100;
-    
+
         $totalAmountToPay = $fundedAmount + $serviceCharge;
-    
+
         return $totalAmountToPay;
-    }    
+    }
+
+    public static function customRoundDown(float $number): float
+    {
+        return floor($number * 100) / 100;
+    }
+
+    public static function calculateWithCharge($amount)
+    {
+        $siteSettings = SiteSetting::first();
+        $chargePercentage = $siteSettings->card_charges ?? 0.0;
+        $serviceCharge = ($amount * $chargePercentage) / 100;
+        $totalAmountToPay = $amount + $serviceCharge;
+
+        return self::customRoundDown($totalAmountToPay);
+    }
 
     public static function sendOneSignalTransactionNotification($service, $message, $amount, string $notificationClass): bool
     {

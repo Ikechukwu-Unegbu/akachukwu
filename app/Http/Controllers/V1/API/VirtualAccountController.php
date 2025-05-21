@@ -39,7 +39,7 @@ class VirtualAccountController extends Controller
 
     public function banks()
     {
-        $banks = $this->virtualAccountService->getBanks();
+        $banks = $this->virtualAccountService->getBanks(request()->input('type'));
         return ApiHelper::sendResponse($banks, 'Bank Codes fetched successfully');
     }
 

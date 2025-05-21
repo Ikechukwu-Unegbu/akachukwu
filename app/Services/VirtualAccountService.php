@@ -29,6 +29,8 @@ class VirtualAccountService
         ]
     ];
 
+    protected CONST DEFAULT_GATEWAY = 'monnify';
+
     public function getAuthenticatedUser ()
     {
         return Auth::user();
@@ -46,11 +48,11 @@ class VirtualAccountService
             $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
 
             if (isset($data['bvn']) && !empty($data['bvn'])) {
-                return $virtualAccountFactory::verifyBvn($data['bvn'], $data['bank_code'], $data['account_number']);
+                return $virtualAccountFactory::apiVerifyBvn($data['bvn'], $data['bank_code'], $data['account_number']);
             }
 
             if (isset($data['nin']) && !empty($data['nin'])) {
-                return $virtualAccountFactory::verifyNin($data['nin']);
+                return $virtualAccountFactory::apiVerifyNin($data['nin']);
             }
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
@@ -107,8 +109,10 @@ class VirtualAccountService
         return $factory::createSpecificVirtualAccount($user, null, $mapping['code']);
     }
 
-    public function getBanks()
+    public function getBanks($type = null)
     {
-        return Bank::orderBy('name')->get();
+        $type = $type ?? self::DEFAULT_GATEWAY;
+
+        return Bank::where('type', $type)->orderBy('name')->get();
     }
 }

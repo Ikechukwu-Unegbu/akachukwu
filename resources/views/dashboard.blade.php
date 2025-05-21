@@ -1,23 +1,23 @@
 @extends('layouts.new-guest')
 @section('head')
-<title>Vastel | Dashboard</title>
+    <title>Vastel | Dashboard</title>
 @endsection
 @section('body')
     <!-- Wallet Balance -->
     <div class="px-[2rem] bg-white  shadow-xl p-6 mb-8">
-       <p class="text-sm mb-2 text-vastel_blue ml-5 md:ml-0">Wallet Balance</p>
+        <p class="text-sm mb-2 text-vastel_blue ml-5 md:ml-0">Wallet Balance</p>
         <div class="flex items-center justify-start md:justify-between flex-col md:flex-row">
             <div class="text-vastel_blue w-[100%] pl-5 md:pl-0  md:w-[50%] flex flex-col justify-end">
                 <h2 class="text-3xl font-bold">₦ {{ number_format(auth()->user()->account_balance, 2) }}</h2>
-                <p class="text-sm text-blue-600 mt-1">Referral Bonus: ₦ {{auth()->user()->bonus_balance}} <i class="fas fa-chevron-right"></i></p>
+                <p class="text-sm text-blue-600 mt-1">Referral Bonus: ₦ {{ auth()->user()->bonus_balance }} <i
+                        class="fas fa-chevron-right"></i></p>
             </div>
             <div class="flex justify-between gap-[2rem]">
                 <button data-modal-target="addMoneyModal" data-modal-toggle="addMoneyModal"
                     class="bg-vastel_blue shadow-lg text-white px-4 py-[0.7rem] rounded-[5px] flex items-center justify-center w-[8.8rem] ">
                     <i class="fas fa-plus mr-2"></i> Add Money
                 </button>
-                <button
-                     data-modal-target="transfer-modal" data-modal-toggle="transfer-modal"
+                <button data-modal-target="transfer-modal" data-modal-toggle="transfer-modal"
                     class="bg-vastel_blue shadow-lg text-white px-4 py-[0.7rem] rounded-[5px] flex items-center justify-center w-[8.8rem] ">
                     <i class="fas fa-exchange-alt mr-2"></i> Transfer
                 </button>
@@ -30,28 +30,28 @@
         <a href="{{ route('airtime.index') }}">
             <div class="flex flex-col  items-center text-vastel_blue">
                 <!-- <i class=" fas fa-mobile-alt fa-4x text-vastel_blue mb-2"></i> -->
-                <img src="{{asset('images/phonez.svg')}}" alt="">
+                <img src="{{ asset('images/phonez.svg') }}" alt="">
                 <span class="text-sm">Airtime</span>
             </div>
         </a>
         <a href="{{ route('data.index') }}">
             <div class="flex flex-col  items-center text-vastel_blue">
                 <!-- <i class=" fas fa-wifi text-3xl  text-vastel_blue mb-2"></i> -->
-                 <img src="{{asset('images/internet.svg')}}" alt="">
+                <img src="{{ asset('images/internet.svg') }}" alt="">
                 <span class="text-sm">Data</span>
             </div>
         </a>
         <a href="{{ route('cable.index') }}">
             <div class="flex flex-col  items-center text-vastel_blue">
                 <!-- <i class=" fas fa-tv text-3xl text-vastel_blue mb-2"></i> -->
-                 <img src="{{asset('images/tv.svg')}}" alt="">
+                <img src="{{ asset('images/tv.svg') }}" alt="">
                 <span class="text-sm">TV</span>
             </div>
         </a>
         <a href="{{ route('electricity.index') }}">
             <div class="flex flex-col  items-center text-vastel_blue">
                 <!-- <i class=" fas fa-bolt text-3xl text-vastel_blue mb-2"></i> -->
-                <img src="{{asset('images/electricity.svg')}}" alt="">
+                <img src="{{ asset('images/electricity.svg') }}" alt="">
                 <span class="text-sm">Electricity</span>
             </div>
         </a>
@@ -65,14 +65,14 @@
             <div class="flex flex-col  items-center text-vastel_blue">
                 <!-- <i class=" fas fa-ellipsis-h text-3xl text-blue-500 mb-2"></i> -->
                 <!-- <i class=" fa-solid text-3xl text-vastel_blue fa-cubes-stacked"></i> -->
-                <img src="{{asset('images/other-services.svg')}}" alt="">
+                <img src="{{ asset('images/other-services.svg') }}" alt="">
                 <span class="text-sm">All Services</span>
             </div>
         </a>
     </div>
 
     <!-- money transfer -->
-    <livewire:component.money-transfer-component/>
+    <livewire:component.money-transfer-component />
     <!-- end money transfer -->
 
     <!-- Recent Transactions -->
@@ -82,49 +82,66 @@
             <a href="{{ route('transactions') }}" class="text-blue-600 text-sm">See all Transactions</a>
         </div>
         <div class="space-y-4">
-            @forelse (auth()->user()->checkUserTransactionHistories(10, auth()->id()) as $transaction)
-            @php
-                $parts = explode(' ', class_basename($transaction));
+            @forelse ($transactions as $transaction)
+                @php
+                    $isFunding = $transaction->type === 'funding';
+                    $isTransfer = $transaction->plan_name === 'Transfer';
+                    $isCredit = $isFunding ? true : false;
+                    $statusColor = match (Str::lower($transaction->vendor_status)) {
+                        'successful' => 'green',
+                        'failed' => 'red',
+                        'processing' => 'yellow',
+                        'refunded' => 'yellow',
+                        'pending' => 'yellow',
+                        'n/a' => 'red',
+                        'default' => 'red',
+                    };
+                @endphp
 
-                $lastPart = end($parts);
-            @endphp
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <i class="fas {{ $transaction->icon }} bg-blue-100 p-2 rounded-full mr-3"></i>
-                        <div>
-                        <p class="font-semibold">
-                            @if (Str::title($transaction->utility) === 'Transfer')
-                                @php
-                                    $moneyTransfer = \App\Models\MoneyTransfer::find($transaction->id);
-                                @endphp
-                                @if($moneyTransfer->user_id == Auth::user()->id)
-                                <span class="text-red">
-                                    {{ $moneyTransfer->type === 'external' ? 'Bank' : 'Intra' }} Transfer
-                                </span>
-                                @else
-                                <span class="text-green">Recieved</span>
-                                @endif
+                <div class="flex justify-between items-center rounded-lg transition-colors">
+                    <div class="flex items-center space-x-4">
+                        <!-- Dynamic Icon with different colors based on type -->
+                        <div class="flex-shrink-0">
+                            @if ($isFunding)
+                                <i class="fas fa-wallet text-green-500 text-xl bg-green-50 p-3 rounded-full"></i>
+                            @elseif($isTransfer)
+                                <i class="fas fa-exchange-alt text-blue-500 text-xl bg-blue-50 p-3 rounded-full"></i>
                             @else
-                                {{-- Default behavior --}}
-                                {{ Str::title($transaction->utility) }}
+                                <i
+                                    class="fas {{ $transaction->icon }} text-blue-500 text-xl bg-blue-50 p-3 rounded-full"></i>
                             @endif
-                        </p>
+                        </div>
 
-                            <p class="text-sm text-gray-500">
-                                {{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</p>
+                        <div>
+                            <div class="flex items-center flex-wrap gap-2">
+                                <p class="font-semibold text-gray-800">{{ Str::title($transaction->title) }}</p>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-1">
+                                {{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y · h:i A') }}
+                            </p>
                         </div>
                     </div>
+
                     <div class="text-right">
-                        <p class="text-{{ $transaction->status === 1 ? 'green' : ($transaction->status === 0 ? 'red' : 'yellow') }}-500 font-semibold">
-                            ₦{{ number_format($transaction->amount, 2) }}</p>
-                        <p class="text-sm text-gray-500">{{ Str::title($transaction->vendor_status) }}</p>
+                        <p class="font-bold text-{{ $isCredit ? 'green' : 'red' }}-600">
+                            {{ $isCredit ? '+' : '-' }}₦{{ number_format(abs($transaction->amount), 2) }}
+                        </p>
+                        <span
+                            class="text-xs text-{{ $statusColor }}-600 bg-{{ $statusColor }}-100 px-2 py-1 rounded-full mt-1 inline-block">
+                            {{ Str::title($transaction->vendor_status) }}
+                        </span>
                     </div>
                 </div>
-                @empty
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <h4 class="text-red-500 font-semibold">No Recent Transactions Found!</h4>
-                    </div>
+
+                @if (!$loop->last)
+                    <hr class="border-gray-100 mx-4">
+                @endif
+
+            @empty
+                <div class="text-center py-8">
+                    <i class="fas fa-exchange-alt text-gray-300 text-4xl mb-3"></i>
+                    <h4 class="text-gray-500 font-semibold">No Transactions Found</h4>
+                    <p class="text-gray-400 text-sm mt-1">Your transaction history will appear here</p>
                 </div>
             @endforelse
         </div>
@@ -156,62 +173,64 @@
                 <!-- Modal body -->
                 <div class="p-6">
                     @if (auth()->user()->virtualAccounts()->count())
+                        @php $count = 0 @endphp
+                        @forelse (auth()->user()->virtualAccounts()->get() as $key => $account)
+                            @if ($loop->first)
+                                <h5 class="text-sm font-medium text-gray-600">Virtual accounts</h5>
+                                <p class="mb-4 text-xs text-gray-500">Make a transfer to any of the accounts</p>
+                            @endif
+                            <!-- Account {{ ++$count }} -->
+                            <div class="flex items-center justify-between p-4 mb-3 bg-gray-100 rounded-lg">
+                                <div>
+                                    <dl class="text-sm font-medium text-gray-800">
+                                        <div class="flex justify-left gap-4 py-1">
+                                            <dt class="font-bold">Account Name:</dt>
+                                            <dd>{{ $account->account_name }}</dd>
+                                        </div>
+                                        <div class="flex justify-left gap-4 py-1">
+                                            <dt class="font-bold">Account Number:</dt>
+                                            <dd id="account-number-{{ $count }}" class="account-number">
+                                                {{ $account->account_number }}</dd>
+                                        </div>
+                                        <div class="flex justify-left gap-4 py-1">
+                                            <dt class="font-bold">Bank Name:</dt>
+                                            <dd>{{ $account->bank_name }}</dd>
+                                        </div>
+                                    </dl>
 
-                    @php $count = 0 @endphp
-                    @forelse (auth()->user()->virtualAccounts()->get() as $key => $account)
-                        @if ($loop->first)
-                        <h5 class="text-sm font-medium text-gray-600">Virtual accounts</h5>
-                        <p class="mb-4 text-xs text-gray-500">Make a transfer to any of the accounts</p>
-                        @endif
-                        <!-- Account {{ ++$count }} -->
-                        <div class="flex items-center justify-between p-4 mb-3 bg-gray-100 rounded-lg">
-                            <div>
-                                <dl class="text-sm font-medium text-gray-800">
-                                    <div class="flex justify-left gap-4 py-1">
-                                        <dt class="font-bold">Account Name:</dt>
-                                        <dd>{{ $account->account_name }}</dd>
-                                    </div>
-                                    <div class="flex justify-left gap-4 py-1">
-                                        <dt class="font-bold">Account Number:</dt>
-                                        <dd id="account-number-{{ $count }}" class="account-number">{{ $account->account_number }}</dd>
-                                    </div>
-                                    <div class="flex justify-left gap-4 py-1">
-                                        <dt class="font-bold">Bank Name:</dt>
-                                        <dd>{{ $account->bank_name }}</dd>
-                                    </div>
-                                </dl>
-
+                                </div>
+                                <button type="button" class="text-indigo-600 text-sm font-medium copy-button"
+                                    data-target="account-number-{{ $count }}">Copy</button>
                             </div>
-                            <button type="button" class="text-indigo-600 text-sm font-medium copy-button" data-target="account-number-{{ $count }}">Copy</button>
-                        </div>
                         @empty
                             <h5 class="text-sm font-medium text-gray-600">Get Started with Virtual Accounts</h5>
-                            <p class="mb-4 text-xs text-gray-500">Complete your KYC to access virtual accounts for quick and easy transfers.</p>
+                            <p class="mb-4 text-xs text-gray-500">Complete your KYC to access virtual accounts for quick
+                                and easy transfers.</p>
                             <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
-                    @endforelse
-
+                        @endforelse
                     @else
-                    <h5 class="font-medium">Get Started with Virtual Accounts</h5>
-                    <p class="mb-4">Complete your KYC to access virtual accounts for quick and easy transfers.</p>
-                    <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
+                        <h5 class="font-medium">Get Started with Virtual Accounts</h5>
+                        <p class="mb-4">Complete your KYC to access virtual accounts for quick and easy transfers.</p>
+                        <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
                     @endif
 
                     <div class="card-funding-notice text-red-600" style="margin-top: 10px; font-size: 14px;">
                         <p>
-                            Please note: A <strong>{{ $settings?->card_charges }}% charge</strong> will be applied to all card funding transactions.
+                            Please note: A <strong>{{ $settings?->card_charges }}% charge</strong> will be applied to all
+                            card funding transactions.
                         </p>
                     </div>
 
                     @if ($settings?->card_funding_status)
-                    <div class="flex items-center justify-center py-4">
-                        <span class="text-sm text-gray-500">OR</span>
-                    </div>
-                    <a href="{{ route('payment.index') }}">
-                        <div class="flex items-center p-4 bg-gray-100 rounded-lg">
-                            <i class="fas fa-credit-card text-indigo-600"></i>
-                            <button class="ml-3 text-sm font-medium text-indigo-600">Top-up with Card</button>
+                        <div class="flex items-center justify-center py-4">
+                            <span class="text-sm text-gray-500">OR</span>
                         </div>
-                    </a>
+                        <a href="{{ route('payment.index') }}">
+                            <div class="flex items-center p-4 bg-gray-100 rounded-lg">
+                                <i class="fas fa-credit-card text-indigo-600"></i>
+                                <button class="ml-3 text-sm font-medium text-indigo-600">Top-up with Card</button>
+                            </div>
+                        </a>
                     @endif
                 </div>
             </div>
@@ -219,8 +238,8 @@
 
     </div>
 
-    <livewire:component.global.announcement-modal/>
-    <livewire:component.global.pin-setup-modal/>
+    <livewire:component.global.announcement-modal />
+    <livewire:component.global.pin-setup-modal />
 
 @endsection
 @push('scripts')

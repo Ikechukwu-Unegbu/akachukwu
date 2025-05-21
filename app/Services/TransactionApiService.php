@@ -5,6 +5,7 @@ use App\Helpers\ApiHelper;
 use App\Models\Data\DataTransaction;
 use App\Models\Education\ResultCheckerTransaction;
 use App\Models\MoneyTransfer;
+use App\Models\PalmPayTransaction;
 use App\Models\Payment\Flutterwave;
 use App\Models\Payment\MonnifyTransaction;
 use App\Models\Payment\Paystack;
@@ -16,7 +17,8 @@ use App\Models\Utility\ElectricityTransaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
-class TransactionApiService{
+class TransactionApiService
+{
 
 
 
@@ -24,9 +26,9 @@ class TransactionApiService{
     {
 
         $electricityTransactions = $model::select('transaction_id', 'status', 'amount', 'created_at')
-        ->where('user_id', $userId)
-        ->orderBy('created_at', 'desc')
-        ->paginate(5);
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->paginate(5);
 
         return $electricityTransactions;
     }
@@ -34,17 +36,17 @@ class TransactionApiService{
     public static function getServiceModelTransaction($model, $userId, $startDate = null, $endDate = null)
     {
         $query = $model::select('transaction_id', 'status', 'amount', 'created_at')
-        ->where('user_id', $userId);
+            ->where('user_id', $userId);
 
-            if ($startDate) {
-                $query->whereDate('created_at', '>=', $startDate);
-            }
-            if ($endDate) {
-                $query->whereDate('created_at', '<=', $endDate);
-            }
-            $transactions = $query->orderBy('created_at', 'desc')->paginate(5);
+        if ($startDate) {
+            $query->whereDate('created_at', '>=', $startDate);
+        }
+        if ($endDate) {
+            $query->whereDate('created_at', '<=', $endDate);
+        }
+        $transactions = $query->orderBy('created_at', 'desc')->paginate(5);
 
-            return $transactions;
+        return $transactions;
     }
 
 
@@ -65,30 +67,32 @@ class TransactionApiService{
             UNION ALL
             SELECT id, reference_id as transaction_id, user_id, amount, status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as type, api_status as text_status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as transaction_type, created_at FROM vastel_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, api_status as text_status, "credit" as transaction_type, created_at FROM monnify_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM monnify_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, api_status as text_status, "credit" as transaction_type, created_at FROM pay_vessel_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM pay_vessel_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, api_status as text_status, "credit" as transaction_type, created_at FROM paystack_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM paystack_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, api_status as text_status, "credit" as transaction_type, created_at FROM flutterwave_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM flutterwave_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id,  user_id, amount, status, "money_transfer" as type, transfer_status as text_status,  "debit" as transaction_type, created_at
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "palmpay" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM palm_pay_transactions
+            UNION ALL
+            SELECT id, reference_id AS transaction_id,  user_id, amount, status, "money_transfer" AS type, transfer_status AS text_status,  CASE WHEN user_id = "' . (int) $userId . '" THEN "debit" WHEN recipient = "' . (int) $userId . '" THEN "wallet funding" ELSE "other" END AS transaction_type, created_at
                 FROM money_transfers
             ) as transactions'))
-        ->join('users', 'transactions.user_id', '=', 'users.id')
-        ->select('transactions.*', 'users.name as user_name')
-        ->where('transactions.user_id', $userId) // Filter by logged-in user
-        ->when($type, function ($query, $type) {
-            $query->where('transactions.type', $type);
-        })
-        ->when($startDate, function ($query, $startDate) {
-            $query->where('transactions.created_at', '>=', $startDate);
-        })
-        ->when($endDate, function ($query, $endDate) {
-            $query->where('transactions.created_at', '<=', $endDate);
-        })
-        ->orderBy('transactions.created_at', 'desc');
+            ->join('users', 'transactions.user_id', '=', 'users.id')
+            ->select('transactions.*', 'users.name as user_name')
+            ->where('transactions.user_id', $userId) // Filter by logged-in user
+            ->when($type, function ($query, $type) {
+                $query->where('transactions.type', $type);
+            })
+            ->when($startDate, function ($query, $startDate) {
+                $query->where('transactions.created_at', '>=', $startDate);
+            })
+            ->when($endDate, function ($query, $endDate) {
+                $query->where('transactions.created_at', '<=', $endDate);
+            })
+            ->orderBy('transactions.created_at', 'desc');
 
         $transactions = $query->paginate(15);
 
@@ -157,6 +161,11 @@ class TransactionApiService{
                 $idColumn = 'reference_id';
                 break;
 
+            case 'palmpay':
+                $model = PalmPayTransaction::class;
+                $idColumn = 'reference_id';
+                break;
+
             case 'monnify':
                 $model = MonnifyTransaction::class;
                 $idColumn = 'reference_id';
@@ -185,8 +194,10 @@ class TransactionApiService{
         $query = $model::where($idColumn, $id);
 
         if (in_array($type, ['credit', 'debit'])) {
-            if ($type === 'credit') $query->where('type', true);
-            if ($type === 'debit') $query->where('type', false);
+            if ($type === 'credit')
+                $query->where('type', true);
+            if ($type === 'debit')
+                $query->where('type', false);
         }
 
         // Include related data for specific types

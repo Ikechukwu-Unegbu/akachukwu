@@ -21,8 +21,7 @@
                         <!-- Beneficiary List -->
                         <ul class="space-y-2">
                             @foreach ($beneficiaries as $__beneficiary)
-                                <li wire:click="beneficiary({{ $__beneficiary->id }})"
-                                    onclick="toggleModal()"
+                                <li wire:click="beneficiary({{ $__beneficiary->id }})" onclick="toggleModal()"
                                     class="bg-gray-100 py-2 px-4 rounded cursor-pointer hover:bg-gray-200">
                                     {{ $__beneficiary->beneficiary }}</li>
                             @endforeach
@@ -38,8 +37,9 @@
                 class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
                 @if ($networks->where('network_id', $network)->count())
                     <div class="flex">
-                        <img src="{{ $networks->where('network_id', $network)->first()?->logo() }}" alt="Logo" class="mr-3 w-6 h-6"> 
-                        <h4>{{ $networks->where('network_id', $network)->first()->name  }}</h4>
+                        <img src="{{ $networks->where('network_id', $network)->first()?->logo() }}" alt="Logo"
+                            class="mr-3 w-6 h-6">
+                        <h4>{{ $networks->where('network_id', $network)->first()->name }}</h4>
                     </div>
                 @else
                     Select Network
@@ -50,8 +50,10 @@
             <div id="networkDropdown" class="hidden w-full bg-white rounded-lg shadow-lg">
                 <ul class="py-2 text-sm text-gray-700">
                     @foreach ($networks as $__network)
-                        <li wire:click="selectedNetwork({{ $__network->id }})" class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100">
-                            <img src="{{ $__network->logo() }}" alt="{{ $__network->name }} Logo" class="mr-3 w-6 h-6"> {{ $__network->name }}
+                        <li wire:click="selectedNetwork({{ $__network->id }})"
+                            class="px-4 py-2 flex items-center cursor-pointer hover:bg-gray-100">
+                            <img src="{{ $__network->logo() }}" alt="{{ $__network->name }} Logo" class="mr-3 w-6 h-6">
+                            {{ $__network->name }}
                         </li>
                     @endforeach
                 </ul>
@@ -60,7 +62,8 @@
 
         <!-- Data Type -->
         <div class="relative space-x-0 z-50 mb-10 mt-10 w-full group">
-            <button type="button" id="datatypeDropdown" class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer">
+            <button type="button" id="datatypeDropdown"
+                class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer">
                 <span>{{ $dataType ? $dataTypes->where('id', $dataType)->first()?->name : 'Select Data Type' }}</span>
             </button>
 
@@ -68,7 +71,8 @@
             <div id="datatypePackages" class="hidden w-full bg-white rounded-lg shadow-lg">
                 <ul class="py-2 text-sm text-gray-700">
                     @foreach ($dataTypes as $__dataType)
-                        <li wire:click='selectedDataType({{ $__dataType->id }})' class="px-4 py-2 flex items-center justify-between cursor-pointer hover:bg-gray-100">
+                        <li wire:click='selectedDataType({{ $__dataType->id }})'
+                            class="px-4 py-2 flex items-center justify-between cursor-pointer hover:bg-gray-100">
                             {{ $__dataType->name }}
                         </li>
                     @endforeach
@@ -82,9 +86,11 @@
                 class="w-full text-left bg-transparent border-0 border-b-2 border-gray-300 text-gray-900 focus:ring-0 focus:border-blue-600 peer pb-3">
                 @if (count($plans) && $plans->where('data_id', $plan)->count())
                     <div class="flex justify-between items-center">
-                        <span class="text-gray-700">{{ $plans->where('data_id', $plan)->first()?->size }} for {{ $plans->where('data_id', $plan)->first()?->validity }}</span>
+                        <span class="text-gray-700">{{ $plans->where('data_id', $plan)->first()?->size }} for
+                            {{ $plans->where('data_id', $plan)->first()?->validity }}</span>
                         <div class="flex flex-row gap-3">
-                            <span class="text-green-600 font-bold">₦{{ number_format($plans->where('data_id', $plan)->first()?->amount, 1) }}</span>
+                            <span
+                                class="text-green-600 font-bold">₦{{ number_format($plans->where('data_id', $plan)->first()?->amount, 1) }}</span>
                         </div>
                     </div>
                 @else
@@ -95,12 +101,13 @@
             <div id="dataPlanPackages" class="w-full hidden absolute bg-white shadow-lg rounded-lg overflow-hidden z-0">
                 <ul class="divide-y divide-gray-200">
                     @foreach ($plans as $__plan)
-                    <li wire:click="selectPlan({{ $__plan->id }})" class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
-                        <span class="text-gray-700">{{ $__plan->size }} for {{ $__plan->validity }}</span>
-                        <div class="flex flex-row gap-3">
-                            <span class="text-green-600 font-bold">₦{{ number_format($__plan->amount, 1) }}</span>
-                        </div>
-                    </li>
+                        <li wire:click="selectPlan({{ $__plan->id }})"
+                            class="flex justify-between items-center p-4 cursor-pointer hover:bg-gray-100">
+                            <span class="text-gray-700">{{ $__plan->size }} for {{ $__plan->validity }}</span>
+                            <div class="flex flex-row gap-3">
+                                <span class="text-green-600 font-bold">₦{{ number_format($__plan->amount, 1) }}</span>
+                            </div>
+                        </li>
                     @endforeach
                 </ul>
             </div>
@@ -133,12 +140,59 @@
             @enderror
         </div>
 
+        <!-- Wrapper with Alpine.js data -->
+        {{-- <div x-data="{ showSchedule: false }">
+            <!-- Toggle Section -->
+            <div class="flex justify-between mt-3">
+                <div>
+                    <p class="text-[#969696] text-lg">Schedule this transaction</p>
+                </div>
+                <div>
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="toggleSchedule" class="sr-only peer" x-model="showSchedule">
+                        <div
+                            class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Schedule Form (Shows when toggle is on) -->
+            <div x-show="showSchedule" class="my-4 flex flex-col">
+                <label for="frequency" class="border border-[#D8D8D894] rounded-2xl p-2">
+                    <h3 class="mb-2 text-base font-semibold text-[#646464]">Frequency</h3>
+                    <select id="frequency" name="frequency"
+                        class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                    </select>
+                </label>
+
+                <label for="start-date" class="mt-2 border border-[#D8D8D894] rounded-2xl p-2">
+                    <h3 class="mb-2 text-base font-semibold text-[#646464]">Start Date</h3>
+                    <input type="date" id="start-date" name="start-date" placeholder="02/02/2025"
+                        class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                </label>
+
+                <label for="time" class="mt-2 border border-[#D8D8D894] rounded-2xl p-2">
+                    <h3 class="mb-2 text-base font-semibold text-[#646464]">Time</h3>
+                    <div class="w-full">
+                        <input type="time" id="time" name="time" placeholder="08:00AM"
+                            class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    </div>
+                </label>
+            </div>
+        </div> --}}
+
         @if ($network && $networks->where('network_id', $network)->first()?->data_discount > 0)
-        <div class="text-red-500 font-semibold pb-7 mt-3">
-            Amount to Pay (₦{{ number_format($calculatedDiscount, 2) }}) {{ $network ? $networks->where('network_id', $network)->first()?->data_discount . '% Discount' : '' }}
-        </div>
+            <div class="text-red-500 font-semibold pb-7 mt-3">
+                Amount to Pay (₦{{ number_format($calculatedDiscount, 2) }})
+                {{ $network ? $networks->where('network_id', $network)->first()?->data_discount . '% Discount' : '' }}
+            </div>
         @endif
-        
+
         <!-- Proceed Button -->
         <button type="submit" wire:loading.attr="disabled" wire:target='validateForm' wire:target='airtime'
             class="w-[8rem] bg-vastel_blue text-white py-2 rounded-lg hover:bg-blue-700 focus:outline-none focus:bg-blue-700">
@@ -188,14 +242,14 @@
         //     }
         // });
         document.addEventListener('click', function(event) {
-        const modal = document.getElementById('beneficiaryModal');
-        const body = document.body;
+            const modal = document.getElementById('beneficiaryModal');
+            const body = document.body;
 
-        if (event.target === modal) {
-            modal.classList.add('hidden');
-            body.classList.remove('overflow-hidden'); // Re-enable scrolling
-        }
-    });
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+                body.classList.remove('overflow-hidden'); // Re-enable scrolling
+            }
+        });
 
 
         // document.querySelectorAll('.close-modal').forEach(button => {
@@ -206,26 +260,26 @@
         // });
 
         document.querySelectorAll('.close-modal').forEach(button => {
-        button.addEventListener('click', function() {
-            const modal = document.getElementById('beneficiaryModal');
-            modal.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden'); // Re-enable scrolling
+            button.addEventListener('click', function() {
+                const modal = document.getElementById('beneficiaryModal');
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden'); // Re-enable scrolling
+            });
         });
-    });
 
-    function toggleModal() {
-        const modal = document.getElementById('beneficiaryModal');
-        const body = document.body;
+        function toggleModal() {
+            const modal = document.getElementById('beneficiaryModal');
+            const body = document.body;
 
-        // Toggle modal and body overflow
-        if (modal.classList.contains('hidden')) {
-            modal.classList.remove('hidden');
-            body.classList.add('overflow-hidden'); // Disable scrolling
-        } else {
-            modal.classList.add('hidden');
-            body.classList.remove('overflow-hidden'); // Enable scrolling
+            // Toggle modal and body overflow
+            if (modal.classList.contains('hidden')) {
+                modal.classList.remove('hidden');
+                body.classList.add('overflow-hidden'); // Disable scrolling
+            } else {
+                modal.classList.add('hidden');
+                body.classList.remove('overflow-hidden'); // Enable scrolling
+            }
         }
-    }
 
 
 
@@ -257,7 +311,7 @@
             }
         }
     </script>
-     <script>
+    <script>
         document.addEventListener('DOMContentLoaded', function() {
             initializeDropdown('networkDropdownButton', 'networkDropdown', 'selectedPackage');
             initializeDropdown('datatypeDropdown', 'datatypePackages', 'selectedPackage');
@@ -275,7 +329,7 @@
             const dropdownButton = document.getElementById(dropdownButtonId);
             const dropdownMenu = document.getElementById(dropdownMenuId);
             const selectedText = document.getElementById(selectedTextId);
-            
+
             // Toggle dropdown visibility
             dropdownButton.addEventListener('click', () => {
                 dropdownMenu.classList.toggle('hidden');
@@ -288,7 +342,7 @@
             };
 
             // Close the dropdown if clicked outside
-            document.addEventListener('click', function (event) {
+            document.addEventListener('click', function(event) {
                 if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
                     dropdownMenu.classList.add('hidden');
                 }

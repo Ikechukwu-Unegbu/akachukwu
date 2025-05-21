@@ -343,17 +343,17 @@ class User extends Authenticatable
     //             UNION ALL
     //             SELECT id, transaction_id, balance_before, balance_after, user_id,  amount, status, vendor_status, quantity as subscribed_to, exam_name as plan_name, "QTY" as type, "education" as utility, "fa-credit-card" as icon, "E-PINS Purchased" as title, created_at FROM result_checker_transactions
     //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before,  "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "flutterwave" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM flutterwave_transactions
+    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before,  "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "flutterwave" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM flutterwave_transactions
     //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before,  "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "paystack" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM paystack_transactions
+    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before,  "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "paystack" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM paystack_transactions
     //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "monnify" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM monnify_transactions
+    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "monnify" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM monnify_transactions
     //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM pay_vessel_transactions
+    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM pay_vessel_transactions
     //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM vastel_transactions
+    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM vastel_transactions
     //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, "N/A" as api_status , "wallet" as subscribed_to, reference_id, type, "transfer" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM money_transfers
+    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, "N/A" as api_status , "wallet" as subscribed_to, reference_id, type, "transfer" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM money_transfers
     //         ) as transactions
     //     '))->where('transactions.user_id', '=', $this->id)->orderBy('transactions.created_at', 'desc');
 
@@ -377,15 +377,15 @@ class User extends Authenticatable
                 UNION ALL
                 SELECT id, transaction_id, balance_before, balance_after, user_id, amount, status, vendor_status, quantity as subscribed_to, exam_name as plan_name, "QTY" as type, "education" as utility, "fa-credit-card" as icon, "E-PINS Purchased" as title, created_at FROM result_checker_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "flutterwave" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM flutterwave_transactions
+                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "flutterwave" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM flutterwave_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "paystack" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM paystack_transactions
+                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "paystack" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM paystack_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "monnify" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM monnify_transactions
+                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "monnify" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM monnify_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM pay_vessel_transactions
+                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM pay_vessel_transactions
                 UNION ALL
-                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "Wallet Topup" as title, created_at FROM vastel_transactions
+                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM vastel_transactions
                 UNION ALL
                 SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, "N/A" as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, type, "transfer" as utility, "fa-exchange-alt" as icon, "Money Transfer" as title, created_at
                 FROM money_transfers
@@ -451,7 +451,7 @@ class User extends Authenticatable
     //                     DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status',
     //                     'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
     //                     DB::raw('"funding" as type'), DB::raw('"flutterwave" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-    //                     DB::raw('"Wallet Topup" as title'), 'created_at'
+    //                     DB::raw('"wallet funding" as title'), 'created_at'
     //                 ])
     //         )
     //         ->unionAll(
@@ -461,7 +461,7 @@ class User extends Authenticatable
     //                     DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status',
     //                     'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
     //                     DB::raw('"funding" as type'), DB::raw('"paystack" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-    //                     DB::raw('"Wallet Topup" as title'), 'created_at'
+    //                     DB::raw('"wallet funding" as title'), 'created_at'
     //                 ])
     //         )
     //         ->unionAll(
@@ -471,7 +471,7 @@ class User extends Authenticatable
     //                     DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status',
     //                     'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
     //                     DB::raw('"funding" as type'), DB::raw('"monnify" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-    //                     DB::raw('"Wallet Topup" as title'), 'created_at'
+    //                     DB::raw('"wallet funding" as title'), 'created_at'
     //                 ])
     //         )
     //         ->unionAll(
@@ -481,7 +481,7 @@ class User extends Authenticatable
     //                     DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status',
     //                     'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
     //                     DB::raw('"funding" as type'), DB::raw('"payvessel" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-    //                     DB::raw('"Wallet Topup" as title'), 'created_at'
+    //                     DB::raw('"wallet funding" as title'), 'created_at'
     //                 ])
     //         )
     //         ->unionAll(
@@ -491,7 +491,7 @@ class User extends Authenticatable
     //                     DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status',
     //                     'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
     //                     DB::raw('"funding" as type'), DB::raw('"vastel" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-    //                     DB::raw('"Wallet Topup" as title'), 'created_at'
+    //                     DB::raw('"wallet funding" as title'), 'created_at'
     //                 ])
     //         );
 
@@ -547,7 +547,7 @@ class User extends Authenticatable
                             WHEN status = 1 THEN "Successful"
                             WHEN status = 0 THEN "Failed"
                             ELSE "N/A"
-                        END as utility'),
+                        END as b'),
                         // DB::raw('IF(user_id = ' . (int)$userId . ' OR recipient = ' . (int)$userId . ', recipient, user_id) as subscribed_to'),
                         DB::raw('CASE WHEN user_id = ' . (int)$userId . ' OR recipient = ' . (int)$userId . ' THEN recipient ELSE user_id END as subscribed_to'),
                         DB::raw('"Transfer" as plan_name'),
@@ -559,8 +559,8 @@ class User extends Authenticatable
                         END as type'),
                         // DB::raw('"transfer" as utility'),
                         DB::raw('CASE
-                            WHEN user_id = ' . (int)$userId . ' THEN "Transfer"
-                            WHEN recipient = ' . (int)$userId . ' THEN "Receive"
+                            WHEN user_id = ' . (int) $userId . ' THEN "debit"
+                            WHEN recipient = ' . (int) $userId . ' THEN "wallet funding"
                             ELSE "N/A"
                         END as utility'),
                         // DB::raw('"fa-exchange-alt" as icon'),
@@ -570,17 +570,14 @@ class User extends Authenticatable
                             ELSE "N/A"
                         END as icon'),
                         // DB::raw('"Money Transfer" as title'),
+                        // DB::raw('"debit" as title'),
                         DB::raw('CASE
-                            WHEN type = "internal" THEN "Intra"
-                            WHEN type = "external" THEN "Bank"
-                            ELSE "N/A"
+                            WHEN user_id = ' . (int) $userId . ' THEN "debit"
+                            WHEN recipient = ' . (int) $userId . ' THEN "wallet funding"
+                            ELSE "Transaction"
                         END as title'),
                         'created_at'
                     ])
-                    // ->where(function ($query) use ($userId) {
-                    //     $query->where('user_id', $userId)
-                    //           ->orWhere('recipient', $userId);
-                    // })
             )
             ->unionAll(
                 DB::table('cable_transactions')
@@ -605,8 +602,8 @@ class User extends Authenticatable
                     ->select([
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status',
                         'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
-                        DB::raw('"funding" as type'), DB::raw('"flutterwave" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                        DB::raw('"funding" as type'), DB::raw('"wallet funding" as utility'), DB::raw('"fa-exchange-alt" as icon'),
+                        DB::raw('"wallet funding" as title'), 'created_at'
                     ])
             )
             ->unionAll(
@@ -614,8 +611,8 @@ class User extends Authenticatable
                     ->select([
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status',
                         'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
-                        DB::raw('"funding" as type'), DB::raw('"paystack" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                        DB::raw('"funding" as type'), DB::raw('"wallet funding" as utility'), DB::raw('"fa-exchange-alt" as icon'),
+                        DB::raw('"wallet funding" as title'), 'created_at'
                     ])
             )
             ->unionAll(
@@ -623,8 +620,8 @@ class User extends Authenticatable
                     ->select([
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status',
                         'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
-                        DB::raw('"funding" as type'), DB::raw('"payvessel" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                        DB::raw('"funding" as type'), DB::raw('"wallet funding" as utility'), DB::raw('"fa-exchange-alt" as icon'),
+                        DB::raw('"wallet funding" as title'), 'created_at'
                     ])
             )
             ->unionAll(
@@ -632,8 +629,8 @@ class User extends Authenticatable
                     ->select([
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status',
                         'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
-                        DB::raw('"funding" as type'), DB::raw('"monnify" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                        DB::raw('"funding" as type'), DB::raw('"wallet funding" as utility'), DB::raw('"fa-exchange-alt" as icon'),
+                        DB::raw('"wallet funding" as title'), 'created_at'
                     ])
             )
             ->unionAll(
@@ -641,8 +638,8 @@ class User extends Authenticatable
                     ->select([
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status',
                         'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
-                        DB::raw('"funding" as type'), DB::raw('"vastel" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                        DB::raw('"funding" as type'), DB::raw('"wallet funding" as utility'), DB::raw('"fa-exchange-alt" as icon'),
+                        DB::raw('"wallet funding" as title'), 'created_at'
                     ])
                     ->whereRaw(auth()->user()->role === 'user' ? 'record = 1' : 'record IN (0,1)')
             )
@@ -651,8 +648,8 @@ class User extends Authenticatable
                     ->select([
                         'id', 'reference_id as transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount', 'status',
                         'api_status as vendor_status', DB::raw('"bank" as subscribed_to'), 'reference_id as plan_name',
-                        DB::raw('"funding" as type'), DB::raw('"Palmpay" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-                        DB::raw('"Wallet Topup" as title'), 'created_at'
+                        DB::raw('"funding" as type'), DB::raw('"wallet funding" as utility'), DB::raw('"fa-exchange-alt" as icon'),
+                        DB::raw('"wallet funding" as title'), 'created_at'
                     ])
             );
 
