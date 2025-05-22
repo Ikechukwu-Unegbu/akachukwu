@@ -55,29 +55,34 @@ class TransactionApiService
     {
         $userId = auth()->user()->id;
         $query = DB::table(DB::raw('(
-            SELECT id, transaction_id, user_id, amount, status, "data" as type, vendor_status as text_status, "debit" as transaction_type, created_at FROM data_transactions
+            SELECT id, transaction_id, user_id, amount, status, "data" as type, vendor_status as text_status, "debit" as transaction_type, "data purchase (debit)" as title, created_at FROM data_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "airtime" as type, vendor_status as text_status, "debit" as transaction_type, created_at FROM airtime_transactions
+            SELECT id, transaction_id, user_id, amount, status, "airtime" as type, vendor_status as text_status, "debit" as transaction_type,
+            "airtime purchase (debit)" as title, created_at FROM airtime_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "cable" as type, vendor_status as text_status, "debit" as transaction_type, created_at FROM cable_transactions
+            SELECT id, transaction_id, user_id, amount, status, "cable" as type, vendor_status as text_status, "debit" as transaction_type, "cable purchase (debit)" as title, created_at FROM cable_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "electricity" as type, vendor_status as text_status, "debit" as transaction_type, created_at FROM electricity_transactions
+            SELECT id, transaction_id, user_id, amount, status, "electricity" as type, vendor_status as text_status, "debit" as transaction_type, "electricity purchase (debit)" as title, created_at FROM electricity_transactions
             UNION ALL
-            SELECT id, transaction_id, user_id, amount, status, "education" as type, vendor_status as text_status, "debit" as transaction_type, created_at FROM result_checker_transactions
+            SELECT id, transaction_id, user_id, amount, status, "education" as type, vendor_status as text_status, "debit" as transaction_type, "exam pin purchase (debit)" as title, created_at FROM result_checker_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as type, api_status as text_status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as transaction_type, created_at FROM vastel_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as type, api_status as text_status, CASE WHEN type = 1 THEN "credit" ELSE "debit" END as transaction_type, "wallet funding (credit)" as title, created_at FROM vastel_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM monnify_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "monnify" as type, api_status as text_status, "credit" as transaction_type, "wallet funding (credit)" as title, created_at FROM monnify_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM pay_vessel_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "payvessle" as type, api_status as text_status, "credit" as transaction_type, "wallet funding (credit)" as title, created_at FROM pay_vessel_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM paystack_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "paystack" as type, api_status as text_status, "credit" as transaction_type, "wallet funding (credit)" as title, created_at FROM paystack_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM flutterwave_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "flutterwave" as type, api_status as text_status, "credit" as transaction_type, "wallet funding (credit)" as title, created_at FROM flutterwave_transactions
             UNION ALL
-            SELECT id, reference_id as transaction_id, user_id, amount, status, "palmpay" as type, api_status as text_status, "wallet funding" as transaction_type, created_at FROM palm_pay_transactions
+            SELECT id, reference_id as transaction_id, user_id, amount, status, "palmpay" as type, api_status as text_status, "credit" as transaction_type, "wallet funding (credit)" as title, created_at FROM palm_pay_transactions
             UNION ALL
-            SELECT id, reference_id AS transaction_id,  user_id, amount, status, "money_transfer" AS type, transfer_status AS text_status,  CASE WHEN user_id = "' . (int) $userId . '" THEN "debit" WHEN recipient = "' . (int) $userId . '" THEN "wallet funding" ELSE "other" END AS transaction_type, created_at
+            SELECT id, reference_id AS transaction_id,  user_id, amount, status, "money_transfer" AS type, transfer_status AS text_status,  CASE WHEN user_id = "' . (int) $userId . '" THEN "debit" WHEN recipient = "' . (int) $userId . '" THEN "wallet funding" ELSE "other" END AS transaction_type, CASE
+                    WHEN type = "internal" THEN CONCAT("internal transfer")
+                    WHEN type = "external" THEN CONCAT("bank transfer")
+                END as title,
+                created_at
                 FROM money_transfers
             ) as transactions'))
             ->join('users', 'transactions.user_id', '=', 'users.id')
