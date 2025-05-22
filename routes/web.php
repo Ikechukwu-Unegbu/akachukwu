@@ -37,8 +37,10 @@ use App\Services\Payment\MonnifyService;
 |
 */
 
-Route::get('/ref', function(){
-    $user = User::find(3);
+
+Route::get('/ref/{username}', function($username){
+    // dd($username);
+    $user = User::where('username', $username)->first();
     $service = new MonnifyService();
     return $service->getAllVirtualAccountsOfGivenUser($user->username);
 });

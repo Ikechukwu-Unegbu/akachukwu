@@ -364,7 +364,7 @@ class MonnifyService implements Payment
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . self::token(),
-        ])->get(self::getUrl() . "api/v2/bank-transfer/reserved-accounts/" . $virtualAccount->reference);
+        ])->get(self::getUrl() . "api/v2/bank-transfer/reserved-accounts/" . $virtualAccount?->reference);
         $response = $response->object();
         return $response;
     }
