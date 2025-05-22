@@ -58,18 +58,18 @@ class ScheduledTransactionController extends Controller
         $latestTransaction = null;
 
         if ($transaction->type === 'airtime') {
-            $latestTransaction = AirtimeTransaction::where('scheduled_transaction_id', $transaction->id)
+            $latestTransactions = AirtimeTransaction::where('scheduled_transaction_id', $transaction->id)
                 ->latest()
-                ->first();
+                ->paginate(50);
         } elseif ($transaction->type === 'data') {
-            $latestTransaction = DataTransaction::where('scheduled_transaction_id', $transaction->id)
+            $latestTransactions = DataTransaction::where('scheduled_transaction_id', $transaction->id)
                 ->latest()
-                ->first();
+                ->paginate(50);
         }
 
         return view('system-user.scheduled-transactions.show', [
             'transaction' => $transaction,
-            'latestTransaction' => $latestTransaction
+            'latestTransactions' => $latestTransactions
         ]);
     }
 
