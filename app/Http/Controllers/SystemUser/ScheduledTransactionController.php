@@ -55,36 +55,21 @@ class ScheduledTransactionController extends Controller
 
     public function show(ScheduledTransaction $transaction)
     {
-        $report = ScheduledTransaction::query()
-            ->with(['user'])
-            ->whereIn('type', ['airtime', 'data'])
-            ->latest()
-            ->find($transaction->id)
-            ->map(function ($scheduled) {
-                $latestTransaction = null;
-                if ($scheduled->type === 'airtime') {
-                    $latestTransaction = AirtimeTransaction::where('scheduled_transaction_id', $scheduled->id)
-                        ->latest()
-                        ->first();
-                } elseif ($scheduled->type === 'data') {
-                    $latestTransaction = DataTransaction::where('scheduled_transaction_id', $scheduled->id)
-                        ->latest()
-                        ->first();
-                }
+        $latestTransaction = null;
 
-                return [
-                    'scheduled_id' => $scheduled->id,
-                    'user' => $scheduled->user,
-                    'type' => $scheduled->type,
-                    'frequency' => $scheduled->frequency,
-                    'next_run_at' => $scheduled->next_run_at,
-                    'last_run_at' => $scheduled->last_run_at,
-                    'status' => $scheduled->status,
-                    'latest_transaction' => $latestTransaction ?? []
-                ];
-            });
+        if ($transaction->type === 'airtime') {
+            $latestTransaction = AirtimeTransaction::where('scheduled_transaction_id', $transaction->id)
+                ->latest()
+                ->first();
+        } elseif ($transaction->type === 'data') {
+            $latestTransaction = DataTransaction::where('scheduled_transaction_id', $transaction->id)
+                ->latest()
+                ->first();
+        }
+
         return view('system-user.scheduled-transactions.show', [
-            'transaction' => $transaction
+            'transaction' => $transaction,
+            'latestTransaction' => $latestTransaction
         ]);
     }
 

@@ -25,57 +25,62 @@
                         <h6 class="card-title">Transaction Information</h6>
                         <table class="table table-bordered">
                             <tr>
-                                <th>Transaction ID</th>
-                                <td>{{ $transaction->transaction_id }}</td>
+                                <th width="30%">Transaction ID</th>
+                                <td>{{ $transaction->uuid }}</td>
                             </tr>
                             <tr>
                                 <th>User</th>
                                 <td>{{ $transaction->user->name ?? 'N/A' }}</td>
                             </tr>
                             <tr>
-                                <th>Amount</th>
-                                <td>₦{{ number_format($transaction->amount, 2) }}</td>
+                                <th>Type</th>
+                                <td>{{ ucfirst($transaction->type) }}</td>
                             </tr>
                             <tr>
-                                <th>Mobile Number</th>
-                                <td>{{ $transaction->mobile_number }}</td>
+                                <th>Frequency</th>
+                                <td>{{ ucfirst($transaction->frequency) }}</td>
                             </tr>
                             <tr>
                                 <th>Status</th>
                                 <td>
                                     <span class="badge
-                                        @if($transaction->vendor_status == 'successful') bg-success
-                                        @elseif($transaction->vendor_status == 'failed') bg-danger
-                                            @else bg-warning
-                                        @endif">
-                                        {{ ucfirst($transaction->vendor_status) }}
-                                    </span>
+                                                        {{ $transaction->status === 'completed' ? 'bg-success' : '' }}
+                                                        {{ $transaction->status === 'failed' ? 'bg-danger' : '' }}
+                                                        {{ $transaction->status === 'pending' ? 'bg-warning' : '' }}
+                                                        {{ $transaction->status === 'processing' ? 'bg-warning' : '' }}
+                                                        {{ $transaction->status === 'disabled' ? 'bg-danger' : '' }}">
+                                        {{ ucfirst($transaction->status) }}
                                 </td>
-                            </tr>
-                            <tr>
-                                <th>Date</th>
-                                <td>{{ $transaction->created_at->format('M d, Y h:i A') }}</td>
                             </tr>
                         </table>
                     </div>
 
                     <div class="col-md-6">
-                        <h6 class="card-title">Balance Information</h6>
+                        <h4>Schedule Information</h4>
                         <table class="table table-bordered">
                             <tr>
-                                <th>Balance Before</th>
-                                <td>₦{{ number_format($transaction->balance_before, 2) }}</td>
+                                <th width="30%">Next Run At</th>
+                                <td>{{ $transaction->next_run_at->format('Y-m-d H:i') }}</td>
                             </tr>
                             <tr>
-                                <th>Balance After</th>
-                                <td>₦{{ number_format($transaction->balance_after, 2) }}</td>
+                                <th>Last Run At</th>
+                                <td>{{ $transaction->last_run_at ? $transaction->last_run_at->format('Y-m-d H:i') : 'Never' }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Created At</th>
+                                <td>{{ $transaction->created_at->format('Y-m-d H:i') }}</td>
+                            </tr>
+                            <tr>
+                                <th>Updated At</th>
+                                <td>{{ $transaction->updated_at->format('Y-m-d H:i') }}</td>
                             </tr>
                         </table>
 
                         @if($transaction->logs)
                             <div style="max-height: 30vh; overflow: scroll;">
                                 <h6 class="mt-4">Logs</h6>
-                                <pre  class="bg-light p-3" >{{ json_encode($transaction->logs, JSON_PRETTY_PRINT) }}</pre>
+                                <pre class="bg-light p-3">{{ json_encode($transaction->logs, JSON_PRETTY_PRINT) }}</pre>
                             </div>
                         @endif
                     </div>
