@@ -355,6 +355,20 @@ class MonnifyService implements Payment
 
     }
 
+
+    public function getAllVirtualAccountsOfGivenUser(int|string $username)
+    {
+        $user = User::where('username', $username)->first();
+        $monnifyGatewayModel = PaymentGateway::where('name', 'Monnify')->first();
+        $virtualAccount = VirtualAccount::where('user_id', $user->id)->where('payment_id', $monnifyGatewayModel->id)->first();
+        $response = Http::withHeaders([
+            'Accept' => 'application/json',
+            'Authorization' => 'Bearer ' . self::token(),
+        ])->get(self::getUrl() . "api/v2/bank-transfer/reserved-accounts/" . $virtualAccount->reference);
+        $response = $response->object();
+        return $response;
+    }
+
     public static function verifyBvn($bvn, $code, $accountNumber)
     {
         try {
