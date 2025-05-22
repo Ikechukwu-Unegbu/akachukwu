@@ -41,7 +41,7 @@ class ScheduledTransactionController extends Controller
             $query->where('created_at', '<=', Carbon::parse($request->date_to));
         }
 
-        $transactions =  $query->latest()->paginate(50);
+        $transactions = $query->latest()->paginate(50);
 
         $productTypes = ['airtime', 'data'];
         $statuses = ['pending', 'processing', 'completed', 'failed', 'disabled'];
@@ -53,70 +53,36 @@ class ScheduledTransactionController extends Controller
         ));
     }
 
-    protected function buildQuery(Request $request)
-    {
-        $query = null;
-
-        if ($request->filled('product_type') && isset($this->transactionModels[$request->product_type])) {
-            $typesToQuery = [$request->product_type];
-        } else {
-            $typesToQuery = array_keys($this->transactionModels);
-        }
-
-        foreach ($typesToQuery as $type) {
-            $model = $this->transactionModels[$type];
-
-            $modelQuery = $model::query()
-                ->select([
-                    DB::raw("'$type' as product_type"),
-                    'id',
-                    'transaction_id',
-                    'user_id',
-                    'amount',
-                    'balance_before',
-                    'balance_after',
-                    'status',
-                    'vendor_status',
-                    'created_at',
-                    'updated_at'
-                ]);
-
-            if ($request->filled('status')) {
-                $modelQuery->where('vendor_status', $request->status);
-            }
-
-            if ($request->filled('date_from')) {
-                $modelQuery->where('created_at', '>=', Carbon::parse($request->date_from));
-            }
-
-            if ($request->filled('date_to')) {
-                $modelQuery->where('created_at', '<=', Carbon::parse($request->date_to));
-            }
-
-            if ($request->filled('search')) {
-                $search = $request->search;
-                $modelQuery->where(function ($q) use ($search, $type) {
-                    $q->where('transaction_id', 'like', "%$search%")
-                        ->when(in_array($type, ['airtime', 'data']), function ($q) use ($search) {
-                            $q->orWhere('mobile_number', 'like', "%$search%");
-                        })
-                        ->orWhereHas('user', function ($q) use ($search) {
-                            $q->where('name', 'like', "%$search%")
-                                ->orWhere('email', 'like', "%$search%")
-                                ->orWhere('username', 'like', "%$search%");
-                        });
-                });
-            }
-
-            $query = $query ? $query->unionAll($modelQuery) : $modelQuery;
-        }
-
-        return $query;
-    }
-
-
     public function show(ScheduledTransaction $transaction)
     {
+        $report = ScheduledTransaction::query()
+            ->with(['user'])
+            ->whereIn('type', ['airtime', 'data'])
+            ->latest()
+            ->find($transaction->id)
+            ->map(function ($scheduled) {
+                $latestTransaction = null;
+                if ($scheduled->type === 'airtime') {
+                    $latestTransaction = AirtimeTransaction::where('scheduled_transaction_id', $scheduled->id)
+                        ->latest()
+                        ->first();
+                } elseif ($scheduled->type === 'data') {
+                    $latestTransaction = DataTransaction::where('scheduled_transaction_id', $scheduled->id)
+                        ->latest()
+                        ->first();
+                }
+
+                return [
+                    'scheduled_id' => $scheduled->id,
+                    'user' => $scheduled->user,
+                    'type' => $scheduled->type,
+                    'frequency' => $scheduled->frequency,
+                    'next_run_at' => $scheduled->next_run_at,
+                    'last_run_at' => $scheduled->last_run_at,
+                    'status' => $scheduled->status,
+                    'latest_transaction' => $latestTransaction ?? []
+                ];
+            });
         return view('system-user.scheduled-transactions.show', [
             'transaction' => $transaction
         ]);

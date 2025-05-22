@@ -73,9 +73,10 @@
                         </table>
 
                         @if($transaction->logs)
-                            <h6 class="mt-4">Logs</h6>
-                            <pre
-                                class="bg-light p-3">{{ json_encode($transaction->logs, JSON_PRETTY_PRINT) }}</pre>
+                            <div style="max-height: 30vh; overflow: scroll;">
+                                <h6 class="mt-4">Logs</h6>
+                                <pre  class="bg-light p-3" >{{ json_encode($transaction->logs, JSON_PRETTY_PRINT) }}</pre>
+                            </div>
                         @endif
                     </div>
                 </div>
