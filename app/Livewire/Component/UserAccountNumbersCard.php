@@ -3,6 +3,7 @@
 namespace App\Livewire\Component;
 
 use App\Models\User;
+use App\Services\Payment\MonnifyService;
 use Livewire\Component;
 use App\Models\PaymentGateway;
 use App\Models\VirtualAccount;
@@ -21,6 +22,7 @@ class UserAccountNumbersCard extends Component
 
     public $virtualAccountServices = [];
 
+    public $monnifyBankIds = ['50515', '035'];
     public function mount()
     {
         $this->virtualAccountServices = GenerateRemainingAccounts::$virtualAccountService;
@@ -77,7 +79,7 @@ class UserAccountNumbersCard extends Component
             ]);
 
             $service = (new GenerateRemainingAccounts)->generateSpecificAccount($user, $bankCode);
-    
+
             if (isset($service->status) && $service->status === true) {
 
                 ActivityLogService::log([
@@ -105,6 +107,21 @@ class UserAccountNumbersCard extends Component
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
         }
+    }
+
+    public function deleteVirtualAccount(VirtualAccount $virtualAccount)
+    {
+        $deallocationService = (new MonnifyService)::deallocateReservedAccount($virtualAccount->reference);
+
+        if ($deallocationService) {
+            $virtualAccount->delete();
+        }
+
+        $message = $deallocationService ? 'Account De-allocated successfully.' : "Failed to delete virtual account. Please try again.";
+        $type = $deallocationService ? 'success' : 'error';
+        $this->dispatch("{$type}-toastr", ['message' => $message]);
+        session()->flash($type, $message);
+        return $this->redirect(url()->previous());
     }
 
 

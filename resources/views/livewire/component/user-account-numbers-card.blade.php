@@ -20,12 +20,22 @@
                         {{ $accounts->account_name }} - {{ $accounts->bank_name }}
                         <small style="font-style: bold;" class="fw-bold">{{ $accounts->gateway->name }}</small>
                     </div>
-
                     <!-- Modal Trigger with unique ID per account -->
-                    <span class="badge text-xs text-bg-primary rounded-pill" data-bs-toggle="modal"
-                        data-bs-target="#confirmChangeModal{{ $accounts->id }}">
-                        Change
-                    </span>
+                    <div class="text-end">
+                        <div class="badge text-xs text-bg-primary rounded-pill" data-bs-toggle="modal"
+                            style="cursor: pointer;"
+                            data-bs-target="#confirmChangeModal{{ $accounts->id }}">
+                            Change
+                        </div>
+
+                        @if(in_array($accounts->bank_code, $monnifyBankIds))
+                            <div class="badge text-xs text-bg-danger rounded-pill" data-bs-toggle="modal"
+                                style="cursor: pointer;"
+                                data-bs-target="#confirmDeallocationModal{{ $accounts->id }}">
+                                Delete
+                            </div>
+                        @endif
+                    </div>
                 </li>
 
 
@@ -56,6 +66,39 @@
                                         aria-hidden="true"></span>
                                     <!-- Button text -->
                                     <span wire:loading.remove wire:target="changeAccount">Yes, Change</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div wire:ignore.self class="modal fade" id="confirmDeallocationModal{{ $accounts->id }}" tabindex="-1"
+                    aria-labelledby="confirmDeallocationModalLabel{{ $accounts->id }}" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="confirmDeallocationModalLabel{{ $accounts->id }}">Confirm Account Deallocation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                Are you sure you want to deallocate this account?
+
+                                <div class="text-danger">
+                                    <strong>{{ $accounts->account_name }} |  {{ $accounts->account_number }} from {{ $accounts->gateway->name }} </strong>?
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+
+                                <button type="button" class="btn btn-primary"
+                                    wire:click="deleteVirtualAccount({{ $accounts->id }}, '{{ $accounts->bank_code }}', {{ $user->id }})"
+                                    wire:loading.attr="disabled" wire:target="deleteVirtualAccount">
+                                    <!-- Spinner while loading -->
+                                    <span wire:loading wire:target="deleteVirtualAccount"
+                                        class="spinner-border spinner-border-sm" role="status"
+                                        aria-hidden="true"></span>
+                                    <!-- Button text -->
+                                    <span wire:loading.remove wire:target="deleteVirtualAccount">Yes, Deallocate</span>
                                 </button>
                             </div>
                         </div>
@@ -117,7 +160,7 @@
             </div>
         </div>
 
-        
+
         @endforeach
     </ol>
     <script>

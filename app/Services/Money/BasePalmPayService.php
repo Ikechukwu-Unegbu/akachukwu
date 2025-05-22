@@ -39,7 +39,7 @@ class BasePalmPayService
 
     protected static function getUrl()
     {
-        if (app()->environment() === 'production') 
+        if (app()->environment() === 'production')
             return self::PRODUCTION_URL;
 
         return self::TEST_URL;
@@ -62,7 +62,7 @@ class BasePalmPayService
             $signatures  = self::generateSign($payload, config('palmpay.private_key'));
 
             $response = Http::withHeaders(self::header($signatures))->post(self::getUrl(). $url, $payload);
-            
+
             return ($response->ok()) ? $response->object() : null;
 
         } catch (\Throwable $th) {
@@ -85,7 +85,7 @@ class BasePalmPayService
         return "{$vendorCode}|{$transactionNumber}|{$timestamp}|{$randomDigits}";
     }
 
-    protected static function generateSign($params, $privateKey) 
+    protected static function generateSign($params, $privateKey)
     {
         // Step 1: Create the parameter string
         ksort($params); // Sort parameters by key
@@ -96,20 +96,20 @@ class BasePalmPayService
             }
         }
         $strA = rtrim($strA, '&'); // Remove the trailing '&'
-  
+
         // Step 2: Generate MD5 hash and convert to uppercase
         $md5Str = strtoupper(md5($strA));
-    
+
         // Step 3: Sign the MD5 hash with SHA1 and RSA
         $privateKey = "-----BEGIN RSA PRIVATE KEY-----\n" . chunk_split($privateKey, 64, "\n") . "-----END RSA PRIVATE KEY-----";
-        
+
         openssl_sign($md5Str, $signature, $privateKey, OPENSSL_ALGO_SHA1);
         $sign = base64_encode($signature);
-    
+
         return $sign;
     }
-    
-    protected static function verifySign($params, $publicKey, $sign) 
+
+    protected static function verifySign($params, $publicKey, $sign)
     {
          // Step 1: Create the parameter string
         ksort($params); // Sort parameters by key
@@ -136,23 +136,23 @@ class BasePalmPayService
     protected static function causer($error, $attempt = null) : void
     {
         $log =  [
-            'username' => Auth::user()->username ?? '', 
-            'Attempts' => ($attempt) ? $attempt : 'Account No. Verification (PalmPay)', 
-            'Error' => $error, 
+            'username' => Auth::user()->username ?? '',
+            'Attempts' => ($attempt) ? $attempt : 'Account No. Verification (PalmPay)',
+            'Error' => $error,
             'dateTime' => date('d-M-Y H:i:s A')
         ];
         Log::error($log);
     }
 
     protected static function initiateLimiter($userId) : bool
-    {        
+    {
         $rateLimitKey = "palmpay-{$userId}";
 
         if (RateLimiter::tooManyAttempts($rateLimitKey, 1)) {
-            RateLimiter::availableIn($rateLimitKey);           
+            RateLimiter::availableIn($rateLimitKey);
             return true;
         }
-    
+
         RateLimiter::hit($rateLimitKey, 60);
 
         return false;
@@ -161,16 +161,16 @@ class BasePalmPayService
     protected static function initiateIdempotencyCheck($userId, $accountNo, $bankCode)
     {
         $duplicateTransaction = IdempotencyCheck::checkDuplicateTransaction(
-            MoneyTransfer::class, 
+            MoneyTransfer::class,
             [
-                'user_id'        => $userId, 
+                'user_id'        => $userId,
                 'account_number' => $accountNo,
                 'bank_code'      => $bankCode,
             ],
             'transfer_status',
             ['successful', 'failed', 'pending']
         );
-  
+
         return $duplicateTransaction;
     }
 
@@ -202,16 +202,28 @@ class BasePalmPayService
         return null;
     }
 
+    protected static function checkIfAccountExists($user): bool
+    {
+        return $user->virtualAccounts->where('bank_code', self::BANK_CODE)->isNotEmpty();
+    }
+
     public static function createSpecificVirtualAccount($user, $accountId = null)
     {
-        try {           
+        try {
+
+            if (self::checkIfAccountExists($user)) {
+                return ApiHelper::sendError(['Account already exists'], "A virtual account with this bank already exists for the user.");
+            }
+
             if (!empty($user->nin)) {
                 $kycType = 'nin';
                 $kyc = $user->nin;
+                $identityType = 'personal_nin';
             } elseif (!empty($user->bvn)) {
                 $kycType = 'bvn';
                 $kyc = $user->bvn;
-            }else{
+                $identityType = 'personal';
+            } else {
                 return false;
             }
 
@@ -220,9 +232,9 @@ class BasePalmPayService
 
             $payload = [
                 "requestTime"          =>   round(microtime(true) * 1000),
-                "identityType"         =>   "personal",
+                "identityType"         =>   $identityType,
                 "licenseNumber"        =>   $kyc,
-                "virtualAccountName"   =>   $user->name,   
+                "virtualAccountName"   =>   $user->name,
                 "version"              =>   "V2.0",
                 "customerName"         =>   $user->name,
                 "email"                =>   $user->email,
@@ -245,16 +257,16 @@ class BasePalmPayService
                     "reservation_reference" => $response->data->appId,
                     "payment_id"     => PaymentGateway::where('name', 'Palmpay')->first()?->id
                 ]);
-                
+
                 return ApiHelper::sendResponse([], "Virtual Account Created Successfully.");
             }
 
-            self::causer($response, 'Palmpay Virtul Account');
+            self::causer($response, 'Palmpay Virtual Account');
             return ApiHelper::sendError('API Error', 'Unable to create virtual account. Please try again later.');
 
         } catch (\Throwable $th) {
-            self::causer($th->getMessage(), 'Palmpay Virtul Account');
+            self::causer($th->getMessage(), 'Palmpay Virtual Account');
             return ApiHelper::sendError([], "Opps! Unable to create static account. Please check your network connection.");
-        }    
+        }
     }
 }

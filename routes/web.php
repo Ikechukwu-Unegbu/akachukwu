@@ -24,6 +24,7 @@ use App\Models\Data\DataPlan;
 use App\Models\User;
 use App\Notifications\WelcomeEmail;
 use Illuminate\Support\Facades\Notification;
+use App\Services\Payment\MonnifyService;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,11 +37,12 @@ use Illuminate\Support\Facades\Notification;
 |
 */
 
-Route::get('/ref', function(){
-    $user = User::find(1);
-    
-    Notification::sendNow($user, new WelcomeEmail('345678',$user));
-   return view('emails.welcome');
+
+Route::get('/ref/{username}', function($username){
+    // dd($username);
+    $user = User::where('username', $username)->first();
+    $service = new MonnifyService();
+    return $service->getAllVirtualAccountsOfGivenUser($user->username);
 });
 
 Route::get('savings', function () {
@@ -159,7 +161,7 @@ Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate'])
     Route::get('otp/verify', function () {
         return view('auth.otp');
     })->name('otp');
-    
+
     Route::post('/upgrade-to-reseller', UpgradeToResellerController::class)->name('reseller-upgrade');
     // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
 

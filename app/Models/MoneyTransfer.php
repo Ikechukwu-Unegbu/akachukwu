@@ -9,8 +9,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class MoneyTransfer extends Model
 {
     use HasTransactionType;
-        protected $guarded = [];
+    protected $guarded = [];
     protected $addsToBalance = false;
+
+    protected $title = 'transfer';
     protected static function boot()
     {
         parent::boot();
@@ -32,21 +34,21 @@ class MoneyTransfer extends Model
     public function scopeSearch($query, $search)
     {
         return $query->when($search, function ($query, $search) {
-            $query->where(function($q) use ($search) {
+            $query->where(function ($q) use ($search) {
                 $q->where('reference_id', 'LIKE', "%{$search}%")
-                  ->orWhere('trx_ref', 'LIKE', "%{$search}%")
-                  ->orWhereHas('sender', function ($userQuery) use ($search) {
-                      $userQuery->where('name', 'LIKE', "%{$search}%")
-                                ->orWhere('username', 'LIKE', "%{$search}%")
-                                ->orWhere('phone', 'LIKE', "%{$search}%")
-                                ->orWhere('email', 'LIKE', "%{$search}%");
-                  })
-                  ->orWhereHas('receiver', function ($userQuery) use ($search) {
-                      $userQuery->where('name', 'LIKE', "%{$search}%")
-                                ->orWhere('username', 'LIKE', "%{$search}%")
-                                ->orWhere('phone', 'LIKE', "%{$search}%")
-                                ->orWhere('email', 'LIKE', "%{$search}%");
-                  });
+                    ->orWhere('trx_ref', 'LIKE', "%{$search}%")
+                    ->orWhereHas('sender', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('username', 'LIKE', "%{$search}%")
+                            ->orWhere('phone', 'LIKE', "%{$search}%")
+                            ->orWhere('email', 'LIKE', "%{$search}%");
+                    })
+                    ->orWhereHas('receiver', function ($userQuery) use ($search) {
+                        $userQuery->where('name', 'LIKE', "%{$search}%")
+                            ->orWhere('username', 'LIKE', "%{$search}%")
+                            ->orWhere('phone', 'LIKE', "%{$search}%")
+                            ->orWhere('email', 'LIKE', "%{$search}%");
+                    });
             });
         });
     }

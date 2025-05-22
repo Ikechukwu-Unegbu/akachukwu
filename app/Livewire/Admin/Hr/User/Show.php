@@ -16,7 +16,7 @@ class Show extends Component
 
     public function mount( $user)
     {
-        // dd(Auth::user()->name);
+
         ActivityLogService::log([
             'activity'=>"View",
             'description'=>Auth::user()->name.' viewed '.$user."'s profile.",
@@ -24,6 +24,10 @@ class Show extends Component
         ]);
         $this->user = User::withTrashed()->where('username', $user)->first();
         $this->authorize('view users'); 
+
+        //$this->user = User::withTrashed()->where('username', $user)->firstOrFail();
+        //$this->authorize('view users');
+
     }
 
     public function blockUser()
@@ -48,6 +52,7 @@ class Show extends Component
     {
 
         $user = User::withTrashed()->find($this->user->id);
+
     
         DB::transaction(function()use($user){
          
@@ -67,6 +72,7 @@ class Show extends Component
             ]);
         });
       
+
         $this->dispatch('success-toastr', ['message' => $message]);
         $this->mount($user->username);
     }

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 
-class PayVesselService 
+class PayVesselService
 {
     private CONST LIVE = "https://api.payvessel.com/api/";
     private CONST TEST = "https://sandbox.payvessel.com/api/";
@@ -31,7 +31,7 @@ class PayVesselService
     private static function url($url, $data = [])
     {
         $url = self::getUrl() . $url;
-        
+
         return Http::withHeaders(self::headers())->post($url, $data);
     }
 
@@ -57,7 +57,7 @@ class PayVesselService
                     "bankcode"     => [$bankCode['code']],
                     "account_type" =>  "STATIC"
                 ];
-    
+
                 $response = self::url(self::CREATE_VIRTUAL_ACCOUNT_URL, $data);
 
                 if ($response->ok() === true) {
@@ -89,7 +89,7 @@ class PayVesselService
                 'message'  =>    "Opps! Unable to create static account. Please check your network connection.",
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-        }       
+        }
     }
 
     public static function createSpecificVirtualAccount($user, $accountId=null, $bankCode)
@@ -114,9 +114,9 @@ class PayVesselService
                     "bankcode"     => [$bankCode],
                     "account_type" =>  "STATIC"
                 ];
-    
+
                 $response = self::url(self::CREATE_VIRTUAL_ACCOUNT_URL, $data);
-                
+
 
                 if ($response->ok() === true) {
                     $response = $response->object();
@@ -126,7 +126,7 @@ class PayVesselService
                         if($accountId != null){
                             $oldAccount = VirtualAccount::find($accountId);
                             if($oldAccount){
-        
+
                                 $oldAccount->delete();
                             }
                         }
@@ -147,7 +147,7 @@ class PayVesselService
                     }
                 }
             });
-            
+
             return ApiHelper::sendResponse([], "Virtual Account Created Succeefully.");
 
         } catch (\Throwable $th) {
@@ -157,14 +157,14 @@ class PayVesselService
                 'message'  =>    "Opps! Unable to create static account. Please check your network connection.",
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-        }       
+        }
     }
 
 
     public static function verifyBvn($bvn)
     {
         try {
-            
+
             auth()->user()->virtualAccounts()->each(function ($account) use ($bvn) {
 
                 $url = self::getUrl() . "external/request/virtual-account/" . config('payment.payvessel.business_id') . "/{$account->account_number}";
@@ -176,14 +176,14 @@ class PayVesselService
                 $response = Http::withHeaders(self::headers())->post($url, $data);
 
                 if ($response->ok() === true) {
-                    $response = $response->object();                
+                    $response = $response->object();
                     if (isset($response->status) && $response->status) {
                         self::updateAccountBvn($response->bvn);
                     }
                 }
 
             });
-            
+
             if (!empty(auth()->user()->bvn)) {
                 return ApiHelper::sendResponse([], "BVN linked to your account successfully.");
             }
@@ -211,13 +211,13 @@ class PayVesselService
         auth()->user()->update(['bvn' => $bvn]);
     }
 
-    private static function computeSHA512TransactionHash($stringifiedData, $clientSecret) 
+    private static function computeSHA512TransactionHash($stringifiedData, $clientSecret)
     {
         return hash_hmac('sha512', trim($stringifiedData), $clientSecret);
     }
 
     public static function webhook(Request $request)
-    {       
+    {
         try {
 
             // Verify the webhook signature
@@ -235,8 +235,8 @@ class PayVesselService
             $payvesselSignature = $request->header('payvessel-http-signature');
             $calculatedHash = self::computeSHA512TransactionHash($payload, config('payment.payvessel.secret'));
             $ip_address = $request->ip();
-            $ipAddress = ["3.255.23.38", "162.246.254.36"];          
-            
+            $ipAddress = ["3.255.23.38", "162.246.254.36"];
+
             if (!hash_equals($calculatedHash, $payvesselSignature)) {
                 return response()->json(['message' => 'Webhook payload verification failed.'], 400);
             }
@@ -255,33 +255,41 @@ class PayVesselService
             if ($paymentStatus == "Success") {
 
                 $user = User::where('email', $customerEmail)->first();
-    
+
                 if ($user) {
-    
+
                     if (PayVesselTransaction::where('reference_id', $paymentReference)->exists()) {
                         return response()->json(['message' => 'Payment Already Processed'], 200);
                     }
 
-                    $amountWithCharge = GeneralHelpers::calculateWithCharge($amountPaid);
-    
+                    $checkTransaction = PayVesselTransaction::where('reference_id', $paymentReference)->first();
+
+                    if ($checkTransaction && $checkTransaction->status) {
+                        return response()->json(['message' => 'Payment Already Processed'], 200);
+                    }
+
+                    if ($checkTransaction && !$checkTransaction->status) {
+                        $amountPaid = $checkTransaction->amount;
+                    }
+
                     $transaction = PayVesselTransaction::create([
                         'reference_id'  => $paymentReference,
                         'trx_ref'       => $transactionReference,
                         'user_id'       => $user->id,
-                        'amount'        => $amountWithCharge,
+                        'amount'        => $amountPaid,
                         'currency'      => config('app.currency', 'NGN'),
                         'meta'          => json_encode($payload)
                     ]);
 
-                    $user->setAccountBalance($amountWithCharge);
-                    
+                    $user->setAccountBalance($amountPaid);
+
                     $transaction->success();
-    
+
                     return ApiHelper::sendResponse($transaction, "Transaction successful.");
-                }            
+                }
             }
         } catch (\Throwable $th) {
-            Log::error($th->getMessage());          
+            Log::error($th->getMessage());
             $errorResponse = [
                 'error'    =>    "Server Error",
                 'message'  =>    "Opps! Unable to complete transaction at the moment.",
@@ -295,13 +303,13 @@ class PayVesselService
     {
         $filename = 'payloads.json';
         $payloadString = json_encode($payload, JSON_PRETTY_PRINT);
-    
+
         if (Storage::disk('webhooks')->exists($filename)) {
 
             $existingContent = Storage::disk('webhooks')->get($filename);
-    
+
             $existingContent = rtrim($existingContent, "\n]");
-    
+
             if (strlen($existingContent) > 1) {
                 $existingContent .= ",\n";
             }
