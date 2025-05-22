@@ -14,6 +14,7 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Services\Admin\Activity\ActivityLogService;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -46,6 +47,14 @@ class AuthenticatedSessionController extends Controller
         }
         $request->authenticate();
        
+        //log action
+        ActivityLogService::log([
+            'activity'=>"Login",
+            'description'=>'Login',
+            'type'=>'auth',
+            'balance_before'=>$user->account_balance,
+            'balance_after'=>$user->account_balance, 
+        ]);
         
         $request->session()->regenerate();
 

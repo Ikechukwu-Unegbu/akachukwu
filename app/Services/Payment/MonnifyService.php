@@ -2,6 +2,7 @@
 
 namespace App\Services\Payment;
 
+use DB;
 use Exception;
 use App\Models\User;
 use App\Helpers\ApiHelper;
@@ -360,13 +361,18 @@ class MonnifyService implements Payment
     {
         $user = User::where('username', $username)->first();
         $monnifyGatewayModel = PaymentGateway::where('name', 'Monnify')->first();
-        $virtualAccount = VirtualAccount::where('user_id', $user->id)->where('payment_id', $monnifyGatewayModel->id)->first();
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . self::token(),
-        ])->get(self::getUrl() . "api/v2/bank-transfer/reserved-accounts/" . $virtualAccount?->reference);
-        $response = $response->object();
-        return $response;
+        $virtualAccount = DB::table('virtual_accounts')->where('user_id', $user->id)->where('payment_id', $monnifyGatewayModel->id)->first();
+
+        if ($virtualAccount) {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . self::token(),
+            ])->get(self::getUrl() . "api/v2/bank-transfer/reserved-accounts/" . $virtualAccount?->reference);
+            $response = $response->object();
+            return $response;
+        }
+
+        return response()->json('virtual account not found!');
     }
 
     public static function verifyBvn($bvn, $code, $accountNumber)

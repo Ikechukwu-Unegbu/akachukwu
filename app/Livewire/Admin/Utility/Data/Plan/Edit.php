@@ -8,6 +8,12 @@ use App\Models\Data\DataType;
 use Livewire\Attributes\Rule;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Services\Admin\Activity\ActivityLogService;
+use App\Helpers\ActivityConstants;
+
 class Edit extends Component
 {
     public $vendor;
@@ -28,6 +34,7 @@ class Edit extends Component
 
     public function mount(DataPlan $plan, DataType $type, DataVendor $vendor, DataNetwork $network)
     {
+        // dd('here');
         $this->vendor = $vendor;
         $this->network = $network;
         $this->type = $type;
@@ -42,6 +49,7 @@ class Edit extends Component
 
     public function update()
     {
+   
         $this->validate();
 
         if ($this->api_id !== $this->plan->data_id) {
@@ -51,13 +59,26 @@ class Edit extends Component
             if ($checkIfApiIdExists > 0) return $this->dispatch('error-toastr', ['message' => "API ID already exists on vendor({$this->vendor->name}). Please verify the API ID"]);
         }
 
-        $this->plan->update([
-            'data_id'   =>  $this->api_id,
-            'size'      =>  $this->plan_size,
-            'amount'    =>  $this->amount,
-            'validity'  =>  $this->validity,
-            'status'    =>  $this->status
-        ]);
+        DB::transaction(function(){
+            // dd('here');
+            $activity = ActivityLogService::log([
+                'activity'=>"Create",
+                'description'=>"Updating ".$this->plan->size ." of ".$this->type->name."(".$this->network->name.")"." of ". $this->vendor->name,
+                'type'=>ActivityConstants::DATAPLAN,
+                'resource'=>serialize($this->plan)
+            ]);
+            $this->plan->update([
+                'data_id'   =>  $this->api_id,
+                'size'      =>  $this->plan_size,
+                'amount'    =>  $this->amount,
+                'validity'  =>  $this->validity,
+                'status'    =>  $this->status
+            ]);
+            $activity->new_resource = serialize($this->plan);
+            $activity->save();
+         
+        });
+    
 
         $this->dispatch('success-toastr', ['message' => 'Data Plan Updated Successfully']);
         session()->flash('success', 'Data Plan Updated Successfully');
