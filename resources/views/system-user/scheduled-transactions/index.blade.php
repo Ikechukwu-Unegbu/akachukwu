@@ -78,35 +78,32 @@
                         </thead>
                         <tbody>
                             @forelse($transactions as $transaction)
+                                @php
+                                    $payload = json_decode($transaction->payload);
+                                @endphp
                                 <tr>
                                     <td>{{ $loop->iteration + ($transactions->currentPage() - 1) * $transactions->perPage() }}
                                     </td>
-                                    <td>{{ $transaction->transaction_id }}</td>
+                                    <td>{{ $payload->transaction_id }}</td>
                                     <td>{{ $transaction->user->username ?? 'N/A' }}</td>
-                                    <td>{{ ucfirst($transaction->product_type) }}</td>
-                                    <td>₦{{ number_format($transaction->amount, 2) }}</td>
-                                    {{-- <td>{{ $transaction->mobile_number ?? 'N/A' }}</td> --}}
+                                    <td>{{ ucfirst($transaction->type) }}</td>
+                                    <td>₦{{ number_format($payload->amount, 2) }}</td>
                                     <td>
-                                        <span
-                                            class="badge
-                                            @if ($transaction->vendor_status == 'successful') bg-success
-                                            @elseif($transaction->vendor_status == 'failed') bg-danger
-                                                @else bg-warning @endif">
-                                            {{ ucfirst($transaction->vendor_status) }}
+                                        <span class="badge
+                                                    {{ $transaction->status === 'completed' ? 'bg-success' : '' }}
+                                                    {{ $transaction->status === 'failed' ? 'bg-danger' : '' }}
+                                                    {{ $transaction->status === 'pending' ? 'bg-warning' : '' }}
+                                                    {{ $transaction->status === 'processing' ? 'bg-warning' : '' }}
+                                                    {{ $transaction->status === 'disabled' ? 'bg-danger' : '' }}">
+                                            {{ ucfirst($transaction->status) }}
                                         </span>
                                     </td>
                                     <td>{{ $transaction->created_at->format('M d, Y h:i A') }}</td>
                                     <td>
-                                        <a href="{{ route('admin.scheduled.show', [$transaction->product_type, $transaction->id]) }}"
+                                        <a href="{{ route('admin.scheduled.show', $transaction->uuid) }}"
                                             class="btn btn-sm btn-primary">
                                             View
                                         </a>
-                                        {{--@if ($transaction->vendor_status == 'failed')
-                                            <a href="{{ route('admin.scheduled-transactions.retry', [$transaction->product_type, $transaction->id]) }}"
-                                                class="btn btn-sm btn-warning">
-                                                Retry
-                                            </a>
-                                        @endif --}}
                                     </td>
                                 </tr>
                             @empty

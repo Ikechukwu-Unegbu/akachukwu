@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\SystemUser;
 
+use App\Models\ScheduledTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,14 +23,28 @@ class ScheduledTransactionController extends Controller
 
     public function index(Request $request)
     {
-        $query = $this->buildQuery($request);
+        $query = ScheduledTransaction::query();
 
-        $transactions = $query->orderBy('created_at', 'desc')
-            ->paginate(50)
-            ->appends($request->query());
+        if ($request->filled('product_type')) {
+            $query->where('type', $request->product_type);
+        }
 
-        $productTypes = array_keys($this->transactionModels);
-        $statuses = ['successful', 'processing', 'pending', 'refunded', 'failed'];
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('date_from')) {
+            $query->where('created_at', '>=', Carbon::parse($request->date_from));
+        }
+
+        if ($request->filled('date_to')) {
+            $query->where('created_at', '<=', Carbon::parse($request->date_to));
+        }
+
+        $transactions =  $query->latest()->paginate(50);
+
+        $productTypes = ['airtime', 'data'];
+        $statuses = ['pending', 'processing', 'completed', 'failed', 'disabled'];
 
         return view('system-user.scheduled-transactions.index', compact(
             'transactions',
@@ -100,17 +115,10 @@ class ScheduledTransactionController extends Controller
     }
 
 
-    public function show($type, $id)
+    public function show(ScheduledTransaction $transaction)
     {
-        if (!array_key_exists($type, $this->transactionModels)) {
-            abort(404);
-        }
-
-        $transaction = $this->transactionModels[$type]::findOrFail($id);
-
         return view('system-user.scheduled-transactions.show', [
-            'transaction' => $transaction,
-            'productType' => $type
+            'transaction' => $transaction
         ]);
     }
 

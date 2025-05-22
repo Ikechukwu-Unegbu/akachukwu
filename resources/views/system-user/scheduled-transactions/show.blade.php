@@ -72,10 +72,10 @@
                             </tr>
                         </table>
 
-                        @if($transaction->api_response)
-                            <h6 class="mt-4">API Response</h6>
+                        @if($transaction->logs)
+                            <h6 class="mt-4">Logs</h6>
                             <pre
-                                class="bg-light p-3">{{ json_encode(json_decode($transaction->api_response), JSON_PRETTY_PRINT) }}</pre>
+                                class="bg-light p-3">{{ json_encode($transaction->logs, JSON_PRETTY_PRINT) }}</pre>
                         @endif
                     </div>
                 </div>
