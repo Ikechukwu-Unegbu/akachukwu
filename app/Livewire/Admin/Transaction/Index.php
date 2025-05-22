@@ -25,6 +25,11 @@ use App\Services\Vendor\QueryVendorTransaction;
 use App\Models\Education\ResultCheckerTransaction;
 use App\Models\PalmPayTransaction;
 
+use Illuminate\Support\Facades\Auth;
+// use Illuminate\Support\Facades\DB;
+use App\Services\Admin\Activity\ActivityLogService;
+use App\Helpers\GeneralHelpers;
+
 class Index extends Component
 {
     use WithPagination;
@@ -69,52 +74,132 @@ class Index extends Component
             return $this->dispatch('error-toastr', ['message' => "Select User(s) to Perform Refund."]);
         }
 
-        if (isset($this->selectedUser['data'])) {
-            foreach (array_keys($this->selectedUser['data']) as $data) {
-                $dataTransaction = DataTransaction::where('transaction_id', $data)->first();
-                $amount = CalculateDiscount::calculate($dataTransaction->amount, $dataTransaction->discount);
-                $dataTransaction->user->setAccountBalance($amount);
-                $dataTransaction->refund();
-                (new ReferralService)->reverseRferrerpay($dataTransaction);
-            }
-        }
+        DB::transaction(function(){
+            if (isset($this->selectedUser['data'])) {
+                $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
+                foreach (array_keys($this->selectedUser['data']) as $data) {
+                    $dataTransaction = DataTransaction::where('transaction_id', $data)->first();
+                    $amount = CalculateDiscount::calculate($dataTransaction->amount, $dataTransaction->discount);
+                    $dataTransaction->user->setAccountBalance($amount);
+                    $dataTransaction->refund();
+                    (new ReferralService)->reverseRferrerpay($dataTransaction);
 
-        if (isset($this->selectedUser['airtime'])) {
-            foreach (array_keys($this->selectedUser['airtime']) as $airtime) {
-                $airtimeTransaction = AirtimeTransaction::where('transaction_id', $airtime)->first();
-                // $amount = CalculateDiscount::calculate($airtimeTransaction->amount, $airtimeTransaction->discount);
-                $amount = $airtimeTransaction->amount;
-                $airtimeTransaction->user->setAccountBalance($amount);
-                $airtimeTransaction->refund();
+                    ActivityLogService::log([
+                        'actor_id' => auth()->id(),
+                        'resource_owner' => $dataTransaction->user_id,
+                        'activity' => 'data_refund',
+                        'type'=>'Data Transaction',
+                        'resource' => serialize($dataTransaction),
+                        'description' => 'Refunded data transaction: ' . $dataTransaction->transaction_id,
+                        'ref_id' => $batchId,
+                        'tags' => ['refund', 'data'],
+                    ]);
+                }
             }
-        }
+        });
+       
 
-        if (isset($this->selectedUser['cable'])) {
-            foreach (array_keys($this->selectedUser['cable']) as $cable) {
-                $cableTransaction = CableTransaction::where('transaction_id', $cable)->first();
-                $amount = CalculateDiscount::calculate($cableTransaction->amount, $cableTransaction->discount);
-                $cableTransaction->user->setAccountBalance($amount);
-                $cableTransaction->refund();
-            }
-        }
+        DB::transaction(function(){
+            if (isset($this->selectedUser['airtime'])) {
+                $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
+                foreach (array_keys($this->selectedUser['airtime']) as $airtime) {
+                    $airtimeTransaction = AirtimeTransaction::where('transaction_id', $airtime)->first();
+                    // $amount = CalculateDiscount::calculate($airtimeTransaction->amount, $airtimeTransaction->discount);
+                    $amount = $airtimeTransaction->amount;
+                    $airtimeTransaction->user->setAccountBalance($amount);
+                    $airtimeTransaction->refund();
 
-        if (isset($this->selectedUser['electricity'])) {
-            foreach (array_keys($this->selectedUser['electricity']) as $electricity) {
-                $electricityTransaction = ElectricityTransaction::where('transaction_id', $electricity)->first();
-                $amount = CalculateDiscount::calculate($electricityTransaction->amount, $electricityTransaction->discount);
-                $electricityTransaction->user->setAccountBalance($amount);
-                $electricityTransaction->refund();
+                    ActivityLogService::log([
+                        'actor_id' => auth()->id(),
+                        'resource_owner' => $airtimeTransaction->user_id,
+                        'activity' => 'airtime_refund',
+                        'type'=>'Airtime Transaction',
+                        'resource' => serialize($airtimeTransaction),
+                        'description' => 'Refunded airtime transaction: ' . $airtimeTransaction->transaction_id,
+                        'ref_id' => $batchId,
+                        'tags' => ['refund', 'airtime'],
+                    ]);
+                }
             }
-        }
+        });
+     
 
-        if (isset($this->selectedUser['education'])) {
-            foreach (array_keys($this->selectedUser['education']) as $education) {
-                $educationTransaction = ResultCheckerTransaction::where('transaction_id', $education)->first();
-                $amount = CalculateDiscount::calculate($electricityTransaction->amount, $electricityTransaction->discount);
-                $educationTransaction->user->setAccountBalance($amount);
-                $educationTransaction->refund();
+        DB::transaction(function(){
+
+            if (isset($this->selectedUser['cable'])) {
+                $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
+                foreach (array_keys($this->selectedUser['cable']) as $cable) {
+                    $cableTransaction = CableTransaction::where('transaction_id', $cable)->first();
+                    $amount = CalculateDiscount::calculate($cableTransaction->amount, $cableTransaction->discount);
+                    $cableTransaction->user->setAccountBalance($amount);
+                    $cableTransaction->refund();
+
+                    ActivityLogService::log([
+                        'actor_id' => auth()->id(),
+                        'resource_owner' => $cableTransaction->user_id,
+                        'type'=>"Cable Transaction",
+                        'activity' => 'cable_refund',
+                        'resource' => serialize($cableTransaction),
+                        'description' => 'Refunded airtime transaction: ' . $cableTransaction->transaction_id,
+                        'ref_id' => $batchId,
+                        'tags' => ['refund', 'cable'],
+                    ]);
+                }
             }
-        }
+          
+        });
+
+      
+        DB::transaction(function(){
+            if (isset($this->selectedUser['electricity'])) {
+                $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
+                foreach (array_keys($this->selectedUser['electricity']) as $electricity) {
+                    $electricityTransaction = ElectricityTransaction::where('transaction_id', $electricity)->first();
+                    $amount = CalculateDiscount::calculate($electricityTransaction->amount, $electricityTransaction->discount);
+                    $electricityTransaction->user->setAccountBalance($amount);
+                    $electricityTransaction->refund();
+
+                    ActivityLogService::log([
+                        'actor_id' => auth()->id(),
+                        'resource_owner' => $electricityTransaction->user_id,
+                        'activity' => 'electric_refund',
+                        'type'=>'Electricity Transaction',
+                        'resource' => serialize($electricityTransaction),
+                        'description' => 'Refunded electricity transaction: ' . $electricityTransaction->transaction_id,
+                        'ref_id' => $batchId,
+                        'tags' => ['refund', 'electricity'],
+                    ]);
+                }
+            }
+        });
+
+        DB::transaction(function(){
+            if (isset($this->selectedUser['education'])) {
+                $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
+                foreach (array_keys($this->selectedUser['education']) as $education) {
+                    $educationTransaction = ResultCheckerTransaction::where('transaction_id', $education)->first();
+                    $amount = CalculateDiscount::calculate($electricityTransaction->amount, $electricityTransaction->discount);
+                    $educationTransaction->user->setAccountBalance($amount);
+                    $educationTransaction->refund();
+                    
+
+                    ActivityLogService::log([
+                        'actor_id' => auth()->id(),
+                        'resource_owner' => $educationTransaction->user_id,
+                        'activity' => 'education_refund',
+                        'type'=>'Eduction Transaction',
+                        'resource' => serialize($educationTransaction),
+                        'description' => 'Refunded education transaction: ' . $educationTransaction->transaction_id,
+                        'ref_id' => $batchId,
+                        'tags' => ['refund', 'education'],
+                    ]);
+                }
+            }
+        });
+
+    
+
+      
 
         $this->dispatch('success-toastr', ['message' => 'Transaction Refunded Successfully']);
         session()->flash('success', 'Transaction Refunded Successfully');
@@ -126,7 +211,18 @@ class Index extends Component
         $this->transaction_id = $id;
         $this->transaction_type = $type;
         $this->loader = false;
+    
         $this->transactionDetails = self::getTransactionTableByType($type, $id);
+        ActivityLogService::log([
+            'actor_id' => auth()->id(),
+            // 'resource_owner' => $educationTransaction->user_id,
+            'activity' => 'view',
+            'type'=>'Transaction',
+            'resource' => serialize($this->transactionDetails),
+            'description' => 'Viewed Transaction with id: '.$id.' and type of: '.$type,
+            // 'ref_id' => $batchId,
+            'tags' => ['transation', 'read'],
+        ]);
     }
 
 
@@ -139,7 +235,14 @@ class Index extends Component
         $this->get_transaction = self::getTransactionTableByType($type, $id);
         
         $query =  QueryVendorTransaction::initializeQuery($id, $type);
-        // dd($query);
+        
+        ActivityLogService::log([
+            'actor_id' => auth()->id(),
+            'activity' => 'view',
+            'type'=>'Transaction',
+            'description' => 'Queried Transaction with id: '.$id.' and type of: '.$type,
+            'tags' => ['transation', 'read'],
+        ]);
         if (!isset($query->status)) {
             $this->dispatch('error-toastr', ['message' => "Unable to query transaction. Please try again later."]);
             $this->error_msg = "Unable to query transaction. Please try again later.";

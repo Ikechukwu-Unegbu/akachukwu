@@ -6,6 +6,7 @@ use App\Models\AirtimeVendorMapping;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\File;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Vendor;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -21,6 +22,11 @@ class DataNetwork extends Model
     public function dataPlans() : HasMany
     {
         return $this->hasMany(DataPlan::class, 'network_id', 'network_id');
+    }
+
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class, 'vendor_id');
     }
 
     public function logo()

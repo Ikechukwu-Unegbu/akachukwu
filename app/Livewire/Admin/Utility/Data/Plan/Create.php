@@ -8,6 +8,10 @@ use App\Models\Data\DataType;
 use Livewire\Attributes\Rule;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Services\Admin\Activity\ActivityLogService;
+use App\Helpers\ActivityConstants;
 
 class Create extends Component
 {
@@ -43,16 +47,27 @@ class Create extends Component
             
         if ($checkIfApiIdExists > 0) return $this->dispatch('error-toastr', ['message' => "API ID already exists on vendor({$this->vendor->name}). Please verify the API ID"]);
 
-        DataPlan::create([
-            'vendor_id'     =>  $this->vendor->id,
-            'network_id'    =>  $this->network->network_id,
-            'type_id'       =>  $this->type->id,
-            'data_id'       =>  $this->api_id,
-            'size'          =>  $this->plan_size,
-            'amount'        =>  $this->amount,
-            'validity'      =>  $this->validity,
-            'status'        =>  $this->status
-        ]);
+        DB::transaction(function(){
+            $newPlan = DataPlan::create([
+                'vendor_id'     =>  $this->vendor->id,
+                'network_id'    =>  $this->network->network_id,
+                'type_id'       =>  $this->type->id,
+                'data_id'       =>  $this->api_id,
+                'size'          =>  $this->plan_size,
+                'amount'        =>  $this->amount,
+                'validity'      =>  $this->validity,
+                'status'        =>  $this->status
+            ]);
+            $activity = ActivityLogService::log([
+                'activity'=>"Create",
+                'description'=>"Creating plan for ".$this->type->name." for ".$this->vendor->name,
+                'type'=>ActivityConstants::DATAPLAN,
+                'resource'=>serialize($newPlan)
+            ]);
+
+
+        });
+      
 
         $this->dispatch('success-toastr', ['message' => 'Data Plan Added Successfully']);
         session()->flash('success', 'Data Plan Added Successfully');
