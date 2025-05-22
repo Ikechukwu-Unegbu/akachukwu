@@ -62,11 +62,11 @@
                                 <td>
                                     <span
                                         class="badge
-                                                                        {{ $transaction->status === 'completed' ? 'bg-success' : '' }}
-                                                                        {{ $transaction->status === 'failed' ? 'bg-danger' : '' }}
-                                                                        {{ $transaction->status === 'pending' ? 'bg-warning' : '' }}
-                                                                        {{ $transaction->status === 'processing' ? 'bg-warning' : '' }}
-                                                                        {{ $transaction->status === 'disabled' ? 'bg-danger' : '' }}">
+                                                                                    {{ $transaction->status === 'completed' ? 'bg-success' : '' }}
+                                                                                    {{ $transaction->status === 'failed' ? 'bg-danger' : '' }}
+                                                                                    {{ $transaction->status === 'pending' ? 'bg-warning' : '' }}
+                                                                                    {{ $transaction->status === 'processing' ? 'bg-warning' : '' }}
+                                                                                    {{ $transaction->status === 'disabled' ? 'bg-danger' : '' }}">
                                         {{ ucfirst($transaction->status) }}
                                 </td>
                             </tr>
@@ -153,34 +153,55 @@
         </div>
 
         <div class="card">
-            <div class="card-header">
-                <h4 class="card-title p-2 m-0">Admin Notes</h4>
-            </div>
-            <div class="card-body">
-                <form action="" method="POST">
-                    @csrf
-                    <div class="p-3">
-                        <textarea name="adminNotes" id="adminNotes" rows="3" class="form-control"></textarea>
-                    </div>
-            </div>
-        </div>
-
-        <div class="card">
             <div class="card-body">
                 <div class="text-center">
                     <div class="pt-4">
-                        <button type="submit" name="action" value="retry" class="btn btn-sm btn-primary">
-                            Retry Transfer
+                        <!-- Retry Button (only show if transaction can be retried) -->
+                        <button class="btn btn-warning btn-action btn-sm" data-action="retry" data-id="{{ $transaction->id }}">
+                            <i class="fas fa-redo"></i> Retry
                         </button>
-                        <button type="submit" name="action" value="reverse" class="btn btn-sm btn-warning">
-                            Reverse Transfer
+
+                        <!-- Cancel Button -->
+                        <button class="btn btn-danger btn-action btn-sm" data-action="cancel" data-id="{{ $transaction->id }}">
+                            <i class="fas fa-times"></i> Cancel
                         </button>
-                        <button type="submit" name="action" value="flag" class="btn btn-sm btn-danger">
-                            Flag Transaction
+
+                        <!-- Notify User Button -->
+                        <button class="btn btn-info btn-action btn-sm" data-action="notify" data-id="{{ $transaction->id }}">
+                            <i class="fas fa-envelope"></i> Notify User
+                        </button>
+
+                        <!-- Add Note Button with Modal -->
+                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#noteModal"
+                            data-id="{{ $transaction->id }}">
+                            <i class="fas fa-edit"></i> Add Note
                         </button>
                     </div>
                 </div>
-                </form>
+            </div>
+
+        </div>
+        <!-- Note Modal -->
+        <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="noteModalLabel">Add Internal Note</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="noteContent" class="form-control" rows="5"
+                            placeholder="Enter note content..."></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btn-note-submit" data-action="note">Save
+                            Note</button>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -191,6 +212,78 @@
     @endpush
 
     @push('scripts')
+        <script>
+            $(document).ready(function () {
+                // Handle action buttons
+                $('.btn-action').click(function () {
+                    const action = $(this).data('action');
+                    const id = $(this).data('id');
+
+                    if (action === 'note') return;
+
+                    if (action === 'cancel' || action === 'notify') {
+                        if (!confirm(`Are you sure you want to ${action} this transaction?`)) {
+                            return;
+                        }
+                    }
+
+                    $.ajax({
+                        url: "{{ route('admin.scheduled.update', '') }}/" + id,
+                        method: 'PUT',
+                        data: {
+                            action: action,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function (response) {
+                            toastr.success(response.success);
+                            // Optional: reload page or update UI
+                            setTimeout(() => location.reload(), 1000);
+                        },
+                        error: function (xhr) {
+                            toastr.error(xhr.responseJSON.error || 'Operation failed');
+                        }
+                    });
+                });
+
+                // Handle note submission
+                $('#noteModal').on('show.bs.modal', function (event) {
+                    const button = $(event.relatedTarget);
+                    const id = button.data('id');
+                    const modal = $(this);
+
+                    modal.find('.btn-note-submit').data('id', id);
+                });
+
+                $('.btn-note-submit').click(function () {
+                    const id = $(this).data('id');
+                    const content = $('#noteContent').val();
+
+                    if (!content.trim()) {
+                        toastr.warning('Please enter note content');
+                        return;
+                    }
+
+                    $.ajax({
+                        url: "{{ route('admin.scheduled.update', '') }}/" + id,
+                        method: 'PUT',
+                        data: {
+                            action: 'note',
+                            note: content,
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function (response) {
+                            toastr.success(response.success);
+                            $('#noteModal').modal('hide');
+                            $('#noteContent').val('');
+                            setTimeout(() => location.reload(), 1000);
+                        },
+                        error: function (xhr) {
+                            toastr.error(xhr.responseJSON.error || 'Failed to save note');
+                        }
+                    });
+                });
+            });
+        </script>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const logsContainer = document.getElementById('logsContainer');

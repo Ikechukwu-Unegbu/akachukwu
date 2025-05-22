@@ -218,13 +218,14 @@ Route::group(['prefix' => 'admin'], function () {
 
             // Route::get('bank/{transfer:reference_id}/show', \App\Livewire\Admin\Transfer\BankDetails::class)->name('bank.details');
         });
+
+        Route::prefix('scheduled-transactions')->as('admin.scheduled.')->group(function() {
+            Route::get('/', [ScheduledTransactionController::class, 'index'])->name('index');
+            Route::get('/{transaction:uuid}/show', [ScheduledTransactionController::class, 'show'])->name('show');
+            Route::put('/scheduled-transactions/{transaction}', [ScheduledTransactionController::class, 'update'])->name('update');
+        });
     });
 
-    Route::prefix('scheduled-transactions')->as('admin.scheduled.')->group(function() {
-        Route::get('/', [ScheduledTransactionController::class, 'index'])->name('index');
-        Route::get('/{transaction:uuid}/show', [ScheduledTransactionController::class, 'show'])->name('show');
-        Route::post('/{type}/{id}/retry', [ScheduledTransactionController::class, 'retry'])->name('retry');
-    });
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');
 });
 

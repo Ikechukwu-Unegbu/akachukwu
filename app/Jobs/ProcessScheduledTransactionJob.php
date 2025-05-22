@@ -164,7 +164,7 @@ class ProcessScheduledTransactionJob implements ShouldQueue
     public function handleLogs()
     {
         return [
-            'timestamp' => now()->toDateTimeString(),
+            'timestamp' => Carbon::now()->format('d M Y | h:i:s A'),
             'status' => 'started',
             'message' => 'Processing scheduled transaction',
         ];

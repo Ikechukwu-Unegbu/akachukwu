@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\SystemUser;
 
-use App\Models\ScheduledTransaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Data\DataTransaction;
+use App\Models\ScheduledTransaction;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Utility\CableTransaction;
 use App\Models\Utility\AirtimeTransaction;
+use App\Jobs\ProcessScheduledTransactionJob;
 use App\Models\Utility\ElectricityTransaction;
 
 class ScheduledTransactionController extends Controller
@@ -73,29 +76,83 @@ class ScheduledTransactionController extends Controller
         ]);
     }
 
-    public function retry($type, $id)
+    public function update(Request $request, ScheduledTransaction $transaction)
     {
-        if (!array_key_exists($type, $this->transactionModels)) {
-            abort(404);
-        }
-
-        $transaction = $this->transactionModels[$type]::findOrFail($id);
+        $action = $request->input('action');
+        $noteContent = $request->input('note');
 
         try {
-            // Your retry logic here
-            $result = $this->processRetry($transaction);
+            $notes = $transaction->note ?? [];
 
-            if ($result['success']) {
-                $transaction->update([
-                    'status' => 1,
-                    'vendor_status' => 'successful'
-                ]);
-                return back()->with('success', 'Transaction retried successfully');
+            switch ($action) {
+                case 'retry':
+                    $adminId = auth()->id();
+                    // Add retry logic here (dispatch job or whatever your retry mechanism is)
+                    dispatch(new ProcessScheduledTransactionJob($transaction));
+                    Auth::loginUsingId($adminId);
+                    // Add note
+                    $notes[] = [
+                        'type' => 'retry',
+                        'content' => 'Transaction retry requested by admin',
+                        'admin_id' => auth()->id(),
+                        'timestamp' => now(),
+                    ];
+
+                    return response()->json(['success' => 'Transaction queued for retry']);
+
+                case 'cancel':
+                    // Cancel the transaction
+                    $transaction->update([
+                        'status' => 'cancelled',
+                        'next_run_at' => null,
+                    ]);
+
+                    // Add note
+                    $notes[] = [
+                        'type' => 'cancel',
+                        'content' => $noteContent ?? 'Transaction cancelled by admin',
+                        'admin_id' => auth()->id(),
+                        'timestamp' => now(),
+                    ];
+
+                    return response()->json(['success' => 'Transaction cancelled successfully']);
+
+                case 'notify':
+                    // Notify the user
+                    $user = $transaction->user;
+                    Mail::to($user->email)->send(new TransactionNotification($transaction));
+
+                    // Add note
+                    $notes[] = [
+                        'type' => 'notification',
+                        'content' => $noteContent ?? 'User notified about transaction',
+                        'admin_id' => auth()->id(),
+                        'timestamp' => now(),
+                    ];
+
+                    return response()->json(['success' => 'User notified successfully']);
+
+                case 'note':
+                    // Just add a note
+                    $notes[] = [
+                        'type' => 'note',
+                        'content' => $noteContent,
+                        'admin_id' => auth()->id(),
+                        'timestamp' => now(),
+                    ];
+
+                    return response()->json(['success' => 'Note added successfully']);
+
+                default:
+                    return response()->json(['error' => 'Invalid action'], 400);
             }
 
-            return back()->with('error', 'Retry failed: ' . $result['message']);
+            // Save notes
+            $transaction->update(['note' => $notes]);
+
         } catch (\Exception $e) {
-            return back()->with('error', 'Error: ' . $e->getMessage());
+            Log::error("Failed to update transaction {$transaction->id}: " . $e->getMessage());
+            return response()->json(['error' => 'Operation failed'], 500);
         }
     }
 
