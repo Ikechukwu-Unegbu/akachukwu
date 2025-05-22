@@ -13,8 +13,8 @@ class Show extends Component
 
     public function mount( $user)
     {
-        $this->user = User::withTrashed()->where('username', $user)->first();
-        $this->authorize('view users'); 
+        $this->user = User::withTrashed()->where('username', $user)->firstOrFail();
+        $this->authorize('view users');
     }
 
     public function blockUser()
@@ -29,7 +29,7 @@ class Show extends Component
     public function softDelete()
     {
         $user = User::withTrashed()->find($this->user->id);
-    
+
         if ($user->deleted_at) {
             $user->deleted_at = null;
             $message = "This user has been restored.";
@@ -37,7 +37,7 @@ class Show extends Component
             $user->deleted_at = now();
             $message = "This user has been deleted.";
         }
-    
+
         $user->save();
         $this->dispatch('success-toastr', ['message' => $message]);
         $this->mount($user->username);
