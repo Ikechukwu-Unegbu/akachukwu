@@ -38,7 +38,7 @@ use App\Services\Payment\MonnifyService;
 */
 
 Route::get('/ref', function(){
-    $user = User::find(1);
+    $user = User::find(3);
     $service = new MonnifyService();
     return $service->getAllVirtualAccountsOfGivenUser($user->username);
 });
@@ -159,7 +159,7 @@ Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate'])
     Route::get('otp/verify', function () {
         return view('auth.otp');
     })->name('otp');
-    
+
     Route::post('/upgrade-to-reseller', UpgradeToResellerController::class)->name('reseller-upgrade');
     // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
 

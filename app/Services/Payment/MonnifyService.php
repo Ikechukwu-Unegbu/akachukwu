@@ -361,7 +361,6 @@ class MonnifyService implements Payment
         $user = User::where('username', $username)->first();
         $monnifyGatewayModel = PaymentGateway::where('name', 'Monnify')->first();
         $virtualAccount = VirtualAccount::where('user_id', $user->id)->where('payment_id', $monnifyGatewayModel->id)->first();
-        dd($virtualAccount);
         $response = Http::withHeaders([
             'Accept' => 'application/json',
             'Authorization' => 'Bearer ' . self::token(),
