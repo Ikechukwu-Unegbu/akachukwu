@@ -24,6 +24,7 @@ use App\Models\Data\DataPlan;
 use App\Models\User;
 use App\Notifications\WelcomeEmail;
 use Illuminate\Support\Facades\Notification;
+use App\Services\Payment\MonnifyService;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,9 +39,8 @@ use Illuminate\Support\Facades\Notification;
 
 Route::get('/ref', function(){
     $user = User::find(1);
-    
-    Notification::sendNow($user, new WelcomeEmail('345678',$user));
-   return view('emails.welcome');
+    $service = new MonnifyService();
+    return $service->getAllVirtualAccountsOfGivenUser($user->username);
 });
 
 Route::get('savings', function () {
