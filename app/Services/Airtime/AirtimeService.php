@@ -12,21 +12,21 @@ use App\Models\Utility\AirtimeTransaction;
 use App\Traits\ResolvesAirtimeVendorService;
 use App\Services\Vendor\VendorServiceFactory;
 
-class AirtimeService 
+class AirtimeService
 {
     use ResolvesVendorService, ResolvesAirtimeVendorService;
 
-    public static function create($vendorId, $networkId, $amount, $mobileNumber)
+    public static function create($vendorId, $networkId, $amount, $mobileNumber, $isScheduled = false, $scheduledPayload = [], $isInitialRun = false, $hasTransaction = null)
     {
         // $vendorService = (new self)->resolveServiceClass('airtime');
         $checkLimit = self::checkAirtimeLimit($amount);
         if ($checkLimit !== true) {
             return $checkLimit;
         }
-        
-        $resolveVendorServiceClass = (new self)->resolveVendorServiceClass($vendorId, $networkId);    
-        $vendorService = VendorServiceFactory::make($resolveVendorServiceClass->vendor);        
-        return $vendorService::airtime($resolveVendorServiceClass->networkId, $amount, $mobileNumber);
+
+        $resolveVendorServiceClass = (new self)->resolveVendorServiceClass($vendorId, $networkId);
+        $vendorService = VendorServiceFactory::make($resolveVendorServiceClass->vendor);
+        return $vendorService::airtime($resolveVendorServiceClass->networkId, $amount, $mobileNumber, $isScheduled, $scheduledPayload, $isInitialRun, $hasTransaction);
     }
 
     public static function checkAirtimeLimit($amount)

@@ -26,6 +26,7 @@ use App\Models\Utility\CableTransaction;
 use App\Services\Airtime\AirtimeService;
 use App\Models\Utility\AirtimeTransaction;
 use App\Services\Referrals\ReferralService;
+use App\Services\ScheduledTransactionService;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
@@ -91,125 +92,27 @@ class VTPassService
         } catch (\Throwable $th) {
 
         }
-       
+
     }
 
-    // public static function airtime($networkId, $amount, $mobileNumber)
-    // {
-    //     try {
-
-    //         if ($amount < 50) {
-    //             $errorResponse = [
-    //                 'error' => 'Insufficient Account Balance.',
-    //                 'message' => "The minimum airtime topup is ₦50"
-    //             ];
-    //             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //         }
-
-    //         $verifyAccountBalance = self::verifyAccountBalance($amount);
-    //         if (!$verifyAccountBalance->status) {
-    //             return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-    //         }
-
-    //         $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
-
-    //         $discount = $network->airtime_discount;
-            
-    //         // Initiate Airtime Transaction
-    //         $transaction = AirtimeTransaction::create([
-    //             'vendor_id'         =>  self::$vendor->id,
-    //             'network_id'        =>  $network->network_id,
-    //             'network_name'      =>  $network->name,
-    //             'amount'            =>  $amount,
-    //             'mobile_number'     =>  $mobileNumber,
-    //             'balance_before'    =>  Auth::user()->account_balance,
-    //             'balance_after'     =>  Auth::user()->account_balance,
-    //             'discount'          =>  $discount
-    //         ]);
-
-    //         $data = [
-    //             'request_id'   => $transaction->transaction_id,
-    //             'serviceID'    => Str::lower($network->name),
-    //             'amount'       => $amount,
-    //             'phone'        => $mobileNumber,
-    //         ];
-
-    //         $response = static::url($data);
-
-    //         self::storeApiResponse($transaction, $response);
-
-    //         if (auth()->user()->isReseller()) {
-    //             $amount = CalculateDiscount::applyDiscount($amount, 'airtime');
-    //         }
-
-    //         $amount = CalculateDiscount::calculate($amount, $discount);
-
-    //         self::$authUser->transaction($amount);
-
-    //         if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
-    //             // Insufficient API Wallet Balance Error
-    //             self::$authUser->initiatePending($amount, $transaction);
-    //             $errorResponse = [
-    //                 'error'   => 'Insufficient Balance From API.',
-    //                 'message' => "An error occurred during the Airtime request. Please try again later."
-    //             ];
-    //             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //         }
-
-    //         if (
-    //             isset($response->code) && 
-    //             isset($response->content->transactions->status) && 
-    //             $response->content->transactions->status === "delivered"
-    //         ) {
-    //             $transaction->update([
-    //                 'balance_after'     =>    self::$authUser->getAccountBalance(),
-    //                 'api_data_id'       =>    $response->content->transactions->transactionId,
-    //                 'amount'            =>    $amount,
-    //             ]);
-
-    //             self::$authUser->initiateSuccess($amount, $transaction);
-
-    //             BeneficiaryService::create($transaction->mobile_number, 'airtime', $transaction);
-
-    //             return ApiHelper::sendResponse($transaction, "Airtime purchase successful: ₦{$amount} {$network->name} airtime added to {$mobileNumber}.");
-    //         }
-
-    //         $errorResponse = [
-    //             'error'     => 'Server Error',
-    //             'message'   => "Opps! Unable to Perform transaction. Please try again later.",
-    //         ];
-    //         self::$authUser->initiatePending($amount, $transaction);
-    //         return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //     } catch (\Throwable $th) {
-
-    //         Log::error($th->getMessage());
-
-    //         $errorResponse = [
-    //             'error'     => $th->getMessage(),
-    //             'message'   => "Opps! Unable to perform airtime payment. Please check your network connection."
-    //         ];
-    //         return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //     }
-    // }
-
-    public static function airtime($networkId, $amount, $mobileNumber)
+    public static function airtime($networkId, $amount, $mobileNumber, $isScheduled = false, $scheduledPayload, $initialRun = false, $hasTransaction)
     {
         try {
-            
+
             $checkLimit = AirtimeService::checkAirtimeLimit($amount);
             if ($checkLimit !== true) {
                 return $checkLimit;
             }
 
-            return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
-            
+            return DB::transaction(function () use ($networkId, $amount, $mobileNumber, $isScheduled, $scheduledPayload, $initialRun, $hasTransaction) {
+
 
                 // Lock user's account balance to prevent concurrent modifications
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
-             
+
                 GeneralHelpers::randomDelay();
-                
+
                 // Retrieve network details
                 $network = DataNetwork::whereVendorId(self::$vendor->id)
                     ->whereNetworkId($networkId)
@@ -218,17 +121,19 @@ class VTPassService
                 $discount = $network->airtime_discount;
 
                 // Create the airtime transaction record
-                $transaction = AirtimeTransaction::create([
-                    'user_id'           => Auth::id(),
-                    'vendor_id'         => self::$vendor->id,
-                    'network_id'        => $network->network_id,
-                    'network_name'      => $network->name,
-                    'amount'            => $amount,
-                    'mobile_number'     => $mobileNumber,
-                    // 'balance_before'    => $user->account_balance,
-                    // 'balance_after'     => $user->account_balance - $amount,
-                    'discount'          => $discount,
-                ]);
+                if (!$hasTransaction) {
+                    $transaction = AirtimeTransaction::create([
+                        'user_id'           => Auth::id(),
+                        'vendor_id'         => self::$vendor->id,
+                        'network_id'        => $network->network_id,
+                        'network_name'      => $network->name,
+                        'amount'            => $amount,
+                        'mobile_number'     => $mobileNumber,
+                        'discount'          => $discount,
+                    ]);
+                }
+
+                if ($hasTransaction) $transaction = $hasTransaction;
 
                 // Apply reseller discount if applicable
                 $discountedAmount = $amount;
@@ -237,9 +142,31 @@ class VTPassService
                 }
 
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
-                // Deduct the amount from the user's account balance
-                $user->account_balance -= $discountedAmount;
-                $user->save();
+
+                if (!$initialRun) {
+                    // Deduct the amount from the user's account balance
+                    $user->account_balance -= $discountedAmount;
+                    $user->save();
+                }
+
+                if ($isScheduled) {
+                    $transaction->pending();
+                    $scheduledPayload['type'] = 'airtime';
+                    $schedulerService = ScheduledTransactionService::initiateScheduler($transaction, $scheduledPayload);
+
+                    if (isset($schedulerService['status']) && $schedulerService['status']) {
+                        return ApiHelper::sendResponse($transaction, $schedulerService['message']);
+                    }
+
+                    $errorResponse = [
+                        'error' => 'Scheduler Failed',
+                        'message' => "An error occurred during scheduling Airtime request. Please try again later."
+                    ];
+
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
+
+
 
                 // Prepare data for the API request
                 $data = [
@@ -255,7 +182,7 @@ class VTPassService
                 // Store the API response
                 self::storeApiResponse($transaction, $response);
 
-                
+
 
                 // Handle API response
                 if (isset($response->code) && isset($response->content->transactions->status)) {
@@ -308,117 +235,10 @@ class VTPassService
         }
     }
 
-
-    // public static function data($networkId, $typeId, $dataId, $mobileNumber)
-    // {
-    //     try {
-    //         $vendor = self::$vendor;
-    //         $network = DataNetwork::whereVendorId($vendor->id)->whereNetworkId($networkId)->first();
-    //         $plan = DataPlan::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereDataId($dataId)->first();
-    //         $type = DataType::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereId($typeId)->first();
-
-    //         $verifyAccountBalance = self::verifyAccountBalance($plan->amount);
-    //         if (!$verifyAccountBalance->status) {
-    //             return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-    //         }
-
-    //         $discount = $network->data_discount;
-
-    //         $transaction = DataTransaction::create([
-    //             'user_id'            =>  Auth::id(),
-    //             'vendor_id'          =>  $vendor->id,
-    //             'network_id'         =>  $network->network_id,
-    //             'type_id'            =>  $type->id,
-    //             'data_id'            =>  $plan->data_id,
-    //             'amount'             =>  $plan->amount,
-    //             'size'               =>  $plan->size,
-    //             'validity'           =>  $plan->validity,
-    //             'mobile_number'      =>  $mobileNumber,
-    //             'balance_before'     =>  Auth::user()->account_balance,
-    //             'balance_after'      =>  Auth::user()->account_balance,
-    //             'plan_network'       =>  $network->name,
-    //             'plan_name'          =>  $plan->size,
-    //             'plan_amount'        =>  $plan->amount,
-    //             'discount'           =>    $discount
-    //         ]);
-
-    //         $serviceId = "";
-
-    //         if ($type->dataNetwork->name === "MTN" && $type->name == "CORPORATE" || $type->name == "SME") {
-    //             $serviceId = self::MTN_CORPORATE;
-    //         }
-
-    //         $data = [
-    //             'request_id'       =>  $transaction->transaction_id,
-    //             'serviceID'        =>  $plan->service_id,
-    //             'billersCode'      =>  $transaction->mobile_number,
-    //             'variation_code'   =>  $transaction->data_id,
-    //             'amount'           =>  $transaction->amount,
-    //             'phone'            =>  $transaction->mobile_number
-    //         ];
-            
-    //         $response = self::url($data);
-            
-    //         self::storeApiResponse($transaction, $response);
-
-    //         $amount = $plan->amount;
-
-    //         if (auth()->user()->isReseller()) {
-    //             $amount = CalculateDiscount::applyDiscount($amount, 'data');
-    //         }
-
-    //         $amount = CalculateDiscount::calculate($amount, $discount);
-
-    //         self::$authUser->transaction($amount);
-
-    //         if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
-    //             // Insufficient API Wallet Balance Error
-    //             self::$authUser->initiateRefund($user, $amount, $transaction);
-    //             $errorResponse = [
-    //                 'error'   => 'Insufficient Balance From API.',
-    //                 'message' => "An error occurred during Data request. Please try again later."
-    //             ];
-    //             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //         }
-
-    //         if (
-    //             isset($response->code) &&
-    //             isset($response->content->transactions->status) &&
-    //             $response->content->transactions->status === "delivered"
-    //         ) {
-    //             $transaction->update([
-    //                 'balance_after'     =>    self::$authUser->getAccountBalance(),
-    //                 'plan_amount'       =>    $response->amount,
-    //                 'api_data_id'       =>    $response->content->transactions->transactionId
-    //             ]);
-
-    //             self::$authUser->initiateSuccess($amount, $transaction);
-
-    //             BeneficiaryService::create($transaction->mobile_number, 'data', $transaction);
-
-    //             return ApiHelper::sendResponse($transaction, "Data purchase successful: {$network->name} {$plan->size} for ₦{$plan->amount} on {$mobileNumber}.");
-    //         }
-
-    //         $errorResponse = [
-    //             'error'     => 'Server Error',
-    //             'message'   => "Opps! Unable to Perform transaction. Please try again later."
-    //         ];
-    //         self::$authUser->initiatePending($amount, $transaction);
-    //         return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //     } catch (\Throwable $th) {
-    //         Log::error($th->getMessage());
-    //         $errorResponse = [
-    //             'error'     =>  'network connection error',
-    //             'message'   =>  'Opps! Unable to make payment. Please check your network connection.',
-    //         ];
-    //         return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //     }
-    // }
-
-    public static function data($networkId, $typeId, $dataId, $mobileNumber)
+    public static function data($networkId, $typeId, $dataId, $mobileNumber, $isScheduled = false, $scheduledPayload, $initialRun = false, $hasTransaction)
     {
         try {
-            return DB::transaction(function () use ($networkId, $typeId, $dataId, $mobileNumber) {
+            return DB::transaction(function () use ($networkId, $typeId, $dataId, $mobileNumber, $isScheduled, $scheduledPayload, $initialRun, $hasTransaction) {
                 // Lock user's account balance to prevent concurrent modifications
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
@@ -428,27 +248,31 @@ class VTPassService
                 $plan = DataPlan::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereDataId($dataId)->firstOrFail();
                 $type = DataType::whereVendorId($vendor->id)->whereNetworkId($network->network_id)->whereId($typeId)->firstOrFail();
 
-             
+
                 $discount = $network->data_discount;
 
                 // Create the data transaction record
-                $transaction = DataTransaction::create([
-                    'user_id'          => $user->id,
-                    'vendor_id'        => $vendor->id,
-                    'network_id'       => $network->network_id,
-                    'type_id'          => $type->id,
-                    'data_id'          => $plan->data_id,
-                    'amount'           => $plan->amount,
-                    'size'             => $plan->size,
-                    'validity'         => $plan->validity,
-                    'mobile_number'    => $mobileNumber,
-                    // 'balance_before'   => $user->account_balance,
-                    // 'balance_after'    => $user->account_balance - $plan->amount,
-                    'plan_network'     => $network->name,
-                    'plan_name'        => $plan->size,
-                    'plan_amount'      => $plan->amount,
-                    'discount'         => $discount,
-                ]);
+                if (!$hasTransaction) {
+                    $transaction = DataTransaction::create([
+                        'user_id'          => $user->id,
+                        'vendor_id'        => $vendor->id,
+                        'network_id'       => $network->network_id,
+                        'type_id'          => $type->id,
+                        'data_id'          => $plan->data_id,
+                        'amount'           => $plan->amount,
+                        'size'             => $plan->size,
+                        'validity'         => $plan->validity,
+                        'mobile_number'    => $mobileNumber,
+                        // 'balance_before'   => $user->account_balance,
+                        // 'balance_after'    => $user->account_balance - $plan->amount,
+                        'plan_network'     => $network->name,
+                        'plan_name'        => $plan->size,
+                        'plan_amount'      => $plan->amount,
+                        'discount'         => $discount,
+                    ]);
+                }
+
+                if ($hasTransaction) $transaction = $hasTransaction;
 
                 // Apply reseller discount if applicable
                 $amount = $plan->amount;
@@ -458,13 +282,31 @@ class VTPassService
                 }
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
 
-                // Deduct the amount from the user's account balance
-                $user->account_balance -= $discountedAmount;
-                $user->save();
+                if (!$initialRun) {
+                    // Deduct the amount from the user's account balance
+                    $user->account_balance -= $discountedAmount;
+                    $user->save();
+                }
+
+                if ($isScheduled) {
+                    $transaction->pending();
+                    $scheduledPayload['type'] = 'data';
+                    $schedulerService = ScheduledTransactionService::initiateScheduler($transaction, $scheduledPayload);
+                    if (isset($schedulerService['status']) && $schedulerService['status']) {
+                        return ApiHelper::sendResponse($transaction, $schedulerService['message']);
+                    }
+
+                    $errorResponse = [
+                        'error' => 'Scheduler Failed',
+                        'message' => "An error occurred during scheduling Data request. Please try again later."
+                    ];
+
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
 
                 // Prepare data for the API request
-                $serviceId = ($type->dataNetwork->name === "MTN" && in_array($type->name, ["CORPORATE", "SME"])) ? 
-                            self::MTN_CORPORATE : 
+                $serviceId = ($type->dataNetwork->name === "MTN" && in_array($type->name, ["CORPORATE", "SME"])) ?
+                            self::MTN_CORPORATE :
                             $plan->service_id;
 
                 $data = [
@@ -482,7 +324,7 @@ class VTPassService
                 // Store the API response
                 self::storeApiResponse($transaction, $response);
 
-              
+
 
                 // Handle API response
                 if (isset($response->code) && isset($response->content->transactions->status)) {
@@ -536,111 +378,6 @@ class VTPassService
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
     }
-
-
-    // public static function electricity($discoId, $meterNumber, $meterType, $amount, $customerName, $customerMobile, $customerAddress)
-    // {
-    //     try {
-
-    //         if ($amount < 500) {
-    //             $errorResponse = [
-    //                 'error'     => 'Minimum account error',
-    //                 'message'   => "The minimum amount is ₦500"
-    //             ];
-    //             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //         }
-            
-    //         $verifyAccountBalance = self::verifyAccountBalance($amount);
-    //         if (!$verifyAccountBalance->status) {
-    //             return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-    //         }
-
-    //         $vendor = self::$vendor;
-
-    //         $electricity = Electricity::whereVendorId($vendor->id)->whereDiscoId($discoId)->first();
-
-    //         $discount = $electricity->discount;
-
-    //         $transaction = ElectricityTransaction::create([
-    //             'user_id'                   =>  Auth::id(),
-    //             'vendor_id'                 =>  $vendor->id,
-    //             'disco_id'                  =>  $electricity->disco_id,
-    //             'disco_name'                =>  $electricity->disco_name,
-    //             'meter_number'              =>  $meterNumber,
-    //             'meter_type_id'             =>  $meterType,
-    //             'meter_type_name'           =>  $meterType == 1 ? 'prepaid' : 'postpaid',
-    //             'amount'                    =>  $amount,
-    //             'customer_mobile_number'    =>  $customerMobile,
-    //             'customer_name'             =>  $customerName,
-    //             'customer_address'          =>  $customerAddress,
-    //             'balance_before'            =>  Auth::user()->account_balance,
-    //             'balance_after'             =>  Auth::user()->account_balance,
-    //             'discount'                  =>  $discount
-    //         ]);
-
-    //         $data = [
-    //             "request_id"    =>  $transaction->transaction_id,
-    //             "serviceID"     =>  $transaction->disco_id,
-    //             "billersCode"   =>  $transaction->meter_number,
-    //             "variation_code" =>  $transaction->meter_type_name,
-    //             "amount"        =>  $transaction->amount,
-    //             "phone"         =>  $transaction->customer_mobile_number,
-    //         ];
-
-    //         $response = self::url($data);
-
-    //         self::storeApiResponse($transaction, $response);
-
-    //         $amount = $transaction->amount;
-
-    //         if (auth()->user()->isReseller()) {
-    //             $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
-    //         }
-
-    //         $amount = CalculateDiscount::calculate($amount, $discount);
-
-    //         self::$authUser->transaction($amount);
-
-    //         if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
-    //             // Insufficient API Wallet Balance Error
-    //             self::$authUser->initiateRefund($user, $amount, $transaction);
-    //             $errorResponse = [
-    //                 'error'     =>  'Insufficient Account Balance.',
-    //                 'message'   =>  "An error occurred during bill payment request. Please try again later."
-    //             ];
-    //             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //         }
-
-    //         if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "delivered") {
-    //             $transaction->update([
-    //                 'balance_after'     =>    self::$authUser->getAccountBalance(),
-    //                 'status'            =>    true,
-    //                 'token'             =>    VendorHelper::removeTokenPrefix($response->purchased_code),
-    //                 'api_data_id'       =>    $response->content->transactions->transactionId
-    //                 // 'api_response'      =>    $response->response_description ?? NULL
-    //             ]);
-    //             self::$authUser->initiateSuccess($amount, $transaction);
-    //             BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
-
-    //             return ApiHelper::sendResponse($transaction, "Bill payment successful: ₦{$transaction->amount} {$transaction->meter_type_name} for ({$transaction->meter_number}).");
-    //         }
-
-    //         $errorResponse = [
-    //             'error'     => 'Server Error',
-    //             'message'   => "Opps! Unable to Perform transaction. Please try again later."
-    //         ];
-    //         self::$authUser->initiatePending($amount, $transaction);
-    //         return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //     } catch (\Throwable $th) {
-    //         Log::error($th->getMessage());
-    //         $errorResponse = [
-    //             'error'     =>  'network connection error',
-    //             'message'   =>  'Opps! Unable to make payment. Please check your network connection.'
-    //         ];
-    //         return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //     }
-    // }
-
     public static function electricity($discoId, $meterNumber, $meterType, $amount, $customerName, $customerMobile, $customerAddress)
     {
         try {
@@ -768,7 +505,6 @@ class VTPassService
         }
     }
 
-
     public static function validateMeterNumber($meterNumber, $discoId, $meterType)
     {
         try {
@@ -806,101 +542,6 @@ class VTPassService
             return ApiHelper::sendError("network connection error", "Opps! Unable to validate number. Please check your network connection.");
         }
     }
-
-    // public static function cable($cableId, $cablePlan, $iucNumber, $customer)
-    // {
-    //     try {
-
-    //         $vendor = self::$vendor;
-    //         $cable = Cable::whereVendorId($vendor->id)->whereCableId($cableId)->first();
-    //         $cable_plan = CablePlan::whereVendorId($vendor->id)->whereCablePlanId($cablePlan)->first();
-
-    //         $verifyAccountBalance = self::verifyAccountBalance($cable_plan->amount);
-    //         if (!$verifyAccountBalance->status) {
-    //             return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
-    //         }
-
-    //         $discount = $cable->discount;
-
-    //         $transaction = CableTransaction::create([
-    //             'user_id'             =>  Auth::id(),
-    //             'vendor_id'           =>  $vendor->id,
-    //             'cable_name'          =>  $cable->cable_name,
-    //             'cable_id'            =>  $cable->cable_id,
-    //             'cable_plan_name'     =>  $cable_plan->package,
-    //             'cable_plan_id'       =>  $cable_plan->cable_plan_id,
-    //             'smart_card_number'   =>  $iucNumber,
-    //             'customer_name'       =>  $customer,
-    //             'amount'              =>  $cable_plan->amount,
-    //             'balance_before'      =>  Auth::user()->account_balance,
-    //             'balance_after'       =>  Auth::user()->account_balance,
-    //             'discount'            =>  $discount
-    //         ]);
-
-    //         $data = [
-    //             "request_id"        =>  $transaction->transaction_id,
-    //             "serviceID"         =>  $transaction->cable_id,
-    //             "billersCode"       =>  $transaction->smart_card_number,
-    //             "variation_code"    =>  $transaction->cable_plan_id,
-    //             "amount"            =>  $transaction->amount,
-    //             "phone"             =>  "08020536913",
-    //             "subscription_type" => "change"
-    //         ];
-
-    //         $response = self::url($data);
-
-    //         self::storeApiResponse($transaction, $response);
-
-    //         $amount = $transaction->amount;
-
-    //         if (auth()->user()->isReseller()) {
-    //             $amount = CalculateDiscount::applyDiscount($amount, 'electricity');
-    //         }
-            
-    //         $amount = CalculateDiscount::calculate($amount, $discount);
-
-    //         self::$authUser->transaction($amount);
-
-    //         if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "failed") {
-    //             // Insufficient API Wallet Balance Error
-    //             self::$authUser->initiateRefund($user, $amount, $transaction);
-    //             $errorResponse = [
-    //                 'error'     =>  'Insufficient Account Balance.',
-    //                 'message'   =>  "An error occurred during cable payment request. Please try again later."
-    //             ];
-    //             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //         }
-
-    //         if (isset($response->code) && isset($response->content->transactions->status) && $response->content->transactions->status === "delivered") {
-    //             $transaction->update([
-    //                 'balance_after'     =>    self::$authUser->getAccountBalance(),
-    //                 'status'            =>    true,
-    //                 'api_data_id'       =>    $response->content->transactions->transactionId
-    //                 // 'api_response'      =>    $response->response_description ?? NULL
-    //             ]);
-
-    //             self::$authUser->initiateSuccess($amount, $transaction);
-
-    //             BeneficiaryService::create($transaction->smart_card_number, 'cable', $transaction);
-
-    //             return ApiHelper::sendResponse($transaction, "Cable subscription successful: {$transaction->cable_plan_name} for ₦{$transaction->amount} on {$transaction->customer_name} ({$transaction->smart_card_number}).");
-    //         }
-    //         $errorResponse = [
-    //             'error'     => 'Server Error',
-    //             'message'   => "Opps! Unable to Perform transaction. Please try again later."
-    //         ];
-    //         self::$authUser->initiatePending($amount, $transaction);
-    //         return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //     } catch (\Throwable $th) {
-    //         Log::error($th->getMessage());
-    //         $errorResponse = [
-    //             'error'     =>  'network connection error',
-    //             'message'   =>  'Opps! Unable to payment payment. Please check your network connection.'
-    //         ];
-    //         return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
-    //     }
-    // }
-
 
     public static function cable($cableId, $cablePlan, $iucNumber, $customer)
     {
@@ -968,7 +609,7 @@ class VTPassService
 
                 // Store the API response
                 self::storeApiResponse($transaction, $response);
-                
+
 
                 // Handle API response
                 if (isset($response->code) && isset($response->content->transactions->status)) {
@@ -1034,15 +675,15 @@ class VTPassService
                     ];
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
-    
+
                 // Fetch the result checker model
                 $resultCheckerModel = ResultChecker::where('vendor_id', self::$vendor->id)->where('name', $exam)->firstOrFail();
                 $amount = ($quantity * $resultCheckerModel->amount);
-    
+
                 // Lock the user's account balance to prevent concurrent modifications
                 $user = Auth::user();
                 $user->lockForUpdate();
-    
+
                 // Verify if the user has enough balance
                 if ($user->account_balance < $amount) {
                     $errorResponse = [
@@ -1051,7 +692,7 @@ class VTPassService
                     ];
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
-    
+
                 // Create the result checker transaction record
                 $transaction = ResultCheckerTransaction::create([
                     'vendor_id'         => self::$vendor->id,
@@ -1062,11 +703,11 @@ class VTPassService
                     // 'balance_before'    => $user->account_balance,
                     // 'balance_after'     => $user->account_balance - $amount
                 ]);
-    
+
                 // Deduct the amount from the user's account balance
                 $user->account_balance -= $amount;
                 $user->save();
-    
+
                 // Prepare data for the API request
                 $data = [
                     "request_id"     => $transaction->reference_id,
@@ -1075,27 +716,27 @@ class VTPassService
                     "quantity"       => $quantity,
                     "phone"          => "08020536913"
                 ];
-    
+
                 // Call the external API
                 $response = self::url($data);
-    
+
                 // Store the API response
                 self::storeApiResponse($transaction, $response);
-    
+
                 // Handle the API response and check status
                 if (isset($response->code) && isset($response->content->transactions->status)) {
                     $status = $response->content->transactions->status;
-    
+
                     if ($status === 'failed') {
                         self::$authUser->initiatePending($amount, $transaction);
-    
+
                         $errorResponse = [
                             'error'   => 'Insufficient Account Balance.',
                             'message' => "An error occurred during e-pin request. Please try again later."
                         ];
                         return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                     }
-    
+
                     if ($status === 'delivered') {
                         // Save the result checker pins
                         foreach ($response->cards as $card) {
@@ -1104,18 +745,18 @@ class VTPassService
                                 'pin'    => $card->Pin
                             ]);
                         }
-    
+
                         // Update the transaction status after successful purchase
                         $transaction->update([
                             // 'balance_after' => $user->account_balance,
                             'api_data_id'   => $response->content->transactions->transactionId
                         ]);
-    
+
                         self::$authUser->initiateSuccess($amount, $transaction);
                         return ApiHelper::sendResponse($transaction, "Result Checker PIN purchase successful: {$transaction->exam_name} ($transaction->quantity QTY) ₦{$amount}.");
                     }
                 }
-    
+
                 // Handle unexpected responses or server errors
                 $errorResponse = [
                     'error'   => 'Server Error',
@@ -1127,7 +768,7 @@ class VTPassService
         } catch (\Throwable $th) {
             // Log and handle exceptions
             Log::error($th->getMessage());
-    
+
             $errorResponse = [
                 'error'   => $th->getMessage(),
                 'message' => "Opps! Unable to perform result checker PIN payment. Please check your network connection."
@@ -1135,7 +776,7 @@ class VTPassService
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
     }
-    
+
 
     public static function validateIUCNumber($iucNumber, $cableName)
     {
@@ -1156,7 +797,7 @@ class VTPassService
             $response = Http::withHeaders(self::headers())->post($url, $data);
 
             $response = $response->object();
-            
+
             if (isset($response->code) && isset($response->content->Customer_Name)) {
                 $responseData = [
                     'name'     => $response->content->Customer_Name,
@@ -1226,7 +867,7 @@ class VTPassService
                     foreach ($response->content->variations as $dataPlan) {
 
                         $plan = DataPlan::where(['vendor_id' => self::$vendor->id, 'data_id' => $dataPlan->variation_code])->first();
-                        
+
                         $size = "";
                         $string = $dataPlan->name;
 
@@ -1235,11 +876,11 @@ class VTPassService
                                 $size =  $matches[0] . "\n";
                             }
                         }
-                    
+
                         if (preg_match('/([0-9.]+ ?(?:TB|MB|mb|GB))/', $string, $matches)) {
                             $size =  $matches[0] . "\n";
                         }
-        
+
                         if ($plan) {
                             $plan->update([
                                 'live_amount'   => $dataPlan->variation_amount,
@@ -1272,7 +913,7 @@ class VTPassService
 
                 foreach ($response->content->variations as $cablePlan) {
                     $plan = CablePlan::where(['vendor_id' => self::$vendor->id, 'cable_plan_id' => $cablePlan->variation_code])->first();
-                    
+
                     if ($plan) {
                         $plan->update([
                             'live_amount'   => $cablePlan->variation_amount,
@@ -1292,16 +933,16 @@ class VTPassService
             $exams = ResultChecker::where('status', true)->get();
 
             foreach ($exams as $exam) {
-                
+
                 $serviceId = Str::lower($exam->name);
-    
+
                 $url = Str::remove('pay', self::getUrl()) . "service-variations?serviceID=" . $serviceId;
-    
+
                 $response = Http::get($url);
                 $response = $response->object();
-   
+
                 if (isset($response->response_description) && $response->response_description === "000" && $response->content->serviceID === $serviceId) {
-    
+
                     foreach ($response->content->variations as $variation) {
                         $exam->update([
                             'live_amount'   => $variation->variation_amount,

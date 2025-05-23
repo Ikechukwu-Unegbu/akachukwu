@@ -2,22 +2,23 @@
 
 namespace App\Livewire\Pages\Utility\Data;
 
+use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\Beneficiary;
 use App\Models\Data\DataPlan;
 use App\Models\Data\DataType;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
-use App\Services\Account\AccountBalanceService;
 use App\Services\Data\DataService;
 use App\Services\CalculateDiscount;
 use Illuminate\Support\Facades\Auth;
 use App\Traits\ResolvesVendorService;
 use App\Services\Account\UserPinService;
-use Illuminate\Validation\ValidationException;
-use Illuminate\Support\Facades\RateLimiter;
-use App\Services\Beneficiary\BeneficiaryService;
 use App\Services\Blacklist\CheckBlacklist;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Validation\ValidationException;
+use App\Services\Account\AccountBalanceService;
+use App\Services\Beneficiary\BeneficiaryService;
 
 class Create extends Component
 {
@@ -37,6 +38,11 @@ class Create extends Component
     public $transaction_status = false;
     public $transaction_link;
     public $accountBalance;
+    public $isScheduled = false;
+    public $frequencies = ['hourly', 'daily', 'weekly', 'monthly', 'yearly'];
+    public $frequency;
+    public $date;
+    public $time;
 
     public function mount()
     {
@@ -72,19 +78,42 @@ class Create extends Component
 
     public function validateForm()
     {
-       
+
         $this->validate([
-            'network'       =>  'required|exists:data_networks,network_id',
-            'dataType'      =>  'required',
-            'plan'          =>  'required',
-            'phone_number'  =>  ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
+            'network' => 'required|exists:data_networks,network_id',
+            'dataType' => 'required',
+            'plan' => 'required',
+            'phone_number' => ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
         ]);
 
-        if($this->accountBalance < $this->amount){
+        if ($this->isScheduled) {
+            $this->validate([
+                'frequency' => ['required', 'in:' . implode(',', $this->frequencies)],
+                'date' => ['required', 'date', 'after_or_equal:today'],
+                'time' => [
+                    'required',
+                    'date_format:H:i',
+
+                    function ($attribute, $value, $fail) {
+                        $date = $this->date;
+                        $time = $this->time;
+
+                        if ($date === now()->toDateString()) {
+                            $selectedTime = Carbon::createFromFormat('H:i', $time);
+                            if ($selectedTime->lte(now())) {
+                                $fail('The time must be in the future if the date is today.');
+                            }
+                        }
+                    },
+                ]
+            ]);
+        }
+
+        if ($this->accountBalance < $this->amount) {
             $this->addError('amount', 'Your account balance is insufficient for this transaction.');
             return false;
         }
-        
+
 
         return $this->form_action = true;
     }
@@ -144,13 +173,17 @@ class Create extends Component
         return $this->validate_pin_action = true;
     }
 
+    public function handleSchedule()
+    {
+        $this->isScheduled = !$this->isScheduled;
+    }
 
     public function submit()
     {
         //check if blacklisted
         $isBlacklisted = CheckBlacklist::checkIfUserIsBlacklisted();
-        if($isBlacklisted || !auth()->user()->hasCompletedKYC()){
-    
+        if ($isBlacklisted || !auth()->user()->hasCompletedKYC()) {
+
             return redirect()->route('restrained');
         }
 
@@ -165,12 +198,24 @@ class Create extends Component
 
         RateLimiter::hit($rateLimitKey, 60); // Allow one attempt per minute.
 
+        $scheduledPayload = [];
+
+        if ($this->isScheduled) {
+            $scheduledPayload = [
+                'frequency'  => $this->frequency,
+                'start_date' => $this->date,
+                'time'       => $this->time,
+            ];
+        }
+
         $dataTransaction = DataService::create(
-            $this->vendor->id, 
-            $this->network, 
-            $this->dataType, 
-            $this->plan, 
-            $this->phone_number
+            $this->vendor->id,
+            $this->network,
+            $this->dataType,
+            $this->plan,
+            $this->phone_number,
+            $this->isScheduled,
+            $scheduledPayload,
         );
 
         if (!$dataTransaction->status) {
@@ -186,9 +231,9 @@ class Create extends Component
             $this->transaction_status = true;
             $this->transaction_modal = true;
             $this->transaction_link = route('user.transaction.data.receipt', $dataTransaction->response->transaction_id);
-            $this->dataType = "";
-            $this->phone_number = "";
-            $this->plan = "";
+            $this->reset(['dataType', 'phone_number', 'plan', 'frequency', 'date', 'time']);
+            $this->isScheduled = false;
+            $this->dispatch('success-toastr', ['message' => $dataTransaction->message]);
         }
     }
 
@@ -216,10 +261,10 @@ class Create extends Component
     public function render()
     {
         return view('livewire.pages.utility.data.create', [
-            'networks'      =>  $this->vendor ? DataNetwork::whereVendorId($this->vendor->id)->whereStatus(true)->get() : [],
-            'dataTypes'     =>  $this->vendor && $this->network ? DataType::whereVendorId($this->vendor->id)->whereNetworkId($this->network)->whereStatus(true)->get() : [],
-            'plans'         =>  $this->vendor && $this->network && $this->dataType ? DataPlan::with('type')->whereVendorId($this->vendor->id)->whereNetworkId($this->network)->whereTypeId($this->dataType)->whereStatus(true)->get() : [],
-            'beneficiaries' =>  BeneficiaryService::get('data')
+            'networks' => $this->vendor ? DataNetwork::whereVendorId($this->vendor->id)->whereStatus(true)->get() : [],
+            'dataTypes' => $this->vendor && $this->network ? DataType::whereVendorId($this->vendor->id)->whereNetworkId($this->network)->whereStatus(true)->get() : [],
+            'plans' => $this->vendor && $this->network && $this->dataType ? DataPlan::with('type')->whereVendorId($this->vendor->id)->whereNetworkId($this->network)->whereTypeId($this->dataType)->whereStatus(true)->get() : [],
+            'beneficiaries' => BeneficiaryService::get('data')
         ]);
     }
 }

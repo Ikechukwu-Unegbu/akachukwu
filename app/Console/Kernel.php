@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('vendor:record-balance')->dailyAt('00:00');
         $schedule->command('vendor:record-balance')->dailyAt('23:59');
+        $schedule->command('app:process-scheduled-transactions')->everyMinute();
     }
 
     /**

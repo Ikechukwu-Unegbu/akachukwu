@@ -10,6 +10,7 @@ use App\Http\Controllers\SystemUser\BankTransferController;
 use App\Http\Controllers\SystemUser\BlacklistController;
 use App\Http\Controllers\SystemUser\DashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\SystemUser\ScheduledTransactionController;
 use App\Http\Controllers\SystemUser\InAppTransferController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
 use Illuminate\Support\Facades\Route;
@@ -217,8 +218,13 @@ Route::group(['prefix' => 'admin'], function () {
 
             // Route::get('bank/{transfer:reference_id}/show', \App\Livewire\Admin\Transfer\BankDetails::class)->name('bank.details');
         });
-    });
 
+        Route::prefix('scheduled-transactions')->as('admin.scheduled.')->group(function() {
+            Route::get('/', [ScheduledTransactionController::class, 'index'])->name('index');
+            Route::get('/{transaction:uuid}/show', [ScheduledTransactionController::class, 'show'])->name('show');
+            Route::put('/scheduled-transactions/{transaction}', [ScheduledTransactionController::class, 'update'])->name('update');
+        });
+    });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');
 });
