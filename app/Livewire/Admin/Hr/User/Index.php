@@ -5,7 +5,11 @@ namespace App\Livewire\Admin\Hr\User;
 use App\Models\User;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
+
+use App\Services\Admin\Activity\ActivityLogService;
 class Index extends Component
 {
     use WithPagination;
@@ -30,14 +34,27 @@ class Index extends Component
     public function mount()
     {
         $this->authorize('view users');
+        ActivityLogService::log([
+            'activity'=>"View",
+            'description'=>'Viewing User Index',
+            'type'=>'Users',
+        ]);
     }
 
     public function render()
     {
         $query = User::query();
 
+
         if ($this->search) {
             $query->search($this->search);
+      
+            ActivityLogService::log([
+                'activity'=>"Search",
+                'description'=> Auth::user()->name.' searched. '.$this->search,
+                'type'=>'Users',
+            ]);
+      
         }
 
         if ($this->param === 'blocked') {

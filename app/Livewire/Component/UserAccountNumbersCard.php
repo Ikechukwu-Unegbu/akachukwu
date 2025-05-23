@@ -10,6 +10,11 @@ use App\Models\VirtualAccount;
 use Illuminate\Support\Facades\Log;
 use App\Services\Payment\VirtualAccountServiceFactory;
 use App\Actions\Automatic\Accounts\GenerateRemainingAccounts;
+use App\Helpers\ActivityConstants;
+use App\Helpers\GeneralHelpers;
+
+use Illuminate\Support\Facades\Auth;
+use App\Services\Admin\Activity\ActivityLogService;
 
 class UserAccountNumbersCard extends Component
 {
@@ -28,11 +33,29 @@ class UserAccountNumbersCard extends Component
     {
         $user = User::find($user);
         $currentVirtualAccount = VirtualAccount::find($virtualAccountID);
+
+        ActivityLogService::log([
+            'activity'=>"Change",
+            'description'=>"Attempting to Change Virtual Account",
+            'type'=>ActivityConstants::VIRTUALACCOUNT,
+            'resource_owner_id'=>$user->id, 
+            'resource'=>serialize($currentVirtualAccount)
+        ]);
+
+    
         $activeGateway = PaymentGateway::where('id', $currentVirtualAccount->payment_id)->first();
         $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
         $response = $virtualAccountFactory::createSpecificVirtualAccount($user, $virtualAccountID, $bankCode);
 
         if ($response->status === 'success') {
+            ActivityLogService::log([
+                'activity'=>"Change",
+                'description'=>"Succeeded to Change Virtual Account",
+                'type'=>ActivityConstants::VIRTUALACCOUNT,
+                'resource_owner_id'=>$user->id, 
+                'resource'=>serialize($currentVirtualAccount)
+                
+            ]);
             session()->flash('message', $response->message);
         } else {
             session()->flash('error', $response->message);
@@ -47,9 +70,25 @@ class UserAccountNumbersCard extends Component
 
             $user = User::find($userId);
 
+            ActivityLogService::log([
+                'activity'=>"Change",
+                'description'=>"Attempting to Create Virtual Account",
+                'type'=>ActivityConstants::VIRTUALACCOUNT,
+                'resource_owner_id'=>$user->id, 
+                // 'resource'=>serialize($currentVirtualAccount)
+            ]);
+
             $service = (new GenerateRemainingAccounts)->generateSpecificAccount($user, $bankCode);
 
             if (isset($service->status) && $service->status === true) {
+
+                ActivityLogService::log([
+                    'activity'=>"Change",
+                    'description'=>"Succeeded to Create Virtual Account",
+                    'type'=>ActivityConstants::VIRTUALACCOUNT,
+                    'resource_owner_id'=>$user->id, 
+                    // 'resource'=>serialize($currentVirtualAccount)
+                ]);
                 $this->dispatch('success-toastr', ['message' => $service->message]);
                 session()->flash('success', $service->message);
                 return $this->redirect(url()->previous());

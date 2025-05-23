@@ -31,9 +31,9 @@
                     </button>
 
 
-                    <button type="button"  class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#reset-email">
+                    <!-- <button type="button"  class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#reset-email">
                       Send Password Reset Email
-                    </button>
+                    </button> -->
 
 
                     <button type="button"  class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#reset-email">
