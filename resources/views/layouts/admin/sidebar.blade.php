@@ -78,6 +78,9 @@
             </x-admin.dropdown>
         @endif
 
+        <li class="nav-heading">Scheduled Mgt.</li>
+        <x-admin.menu title="Scheduled Transactions" icon="bi-arrow-clockwise" link="{{ route('admin.scheduled.index') }}" />
+
         <li class="nav-heading">Transfer Mgt.</li>
         <x-admin.dropdown title="Manage Transfers" icon="bi-recycle">
             <x-admin.dropdown-item title="In-App Transfers" link="{{ route('admin.transfer.in-app') }}" />

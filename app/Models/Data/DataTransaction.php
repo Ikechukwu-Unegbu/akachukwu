@@ -42,8 +42,8 @@ class DataTransaction extends Model
         'api_data_id',
         'api_response',
         'status',
-        'discount'
-
+        'discount',
+        'scheduled_transaction_id'
     ];
 
     public function getActivitylogOptions(): LogOptions
