@@ -19,7 +19,7 @@ return new class extends Migration {
             $table->string('frequency');
             $table->date('start_date');
             $table->time('time');
-            $table->timestamp('next_run_at');
+            $table->timestamp('next_run_at')->nullable();
             $table->timestamp('last_run_at')->nullable();
             $table->enum('status', ['pending', 'processing', 'completed', 'failed', 'disabled'])->default('pending');
             $table->json('logs')->nullable();

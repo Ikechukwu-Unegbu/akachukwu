@@ -4,12 +4,14 @@ namespace App\Http\Controllers\SystemUser;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use App\Mail\TransactionMail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Data\DataTransaction;
 use App\Models\ScheduledTransaction;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Utility\CableTransaction;
 use App\Models\Utility\AirtimeTransaction;
 use App\Jobs\ProcessScheduledTransactionJob;
@@ -87,7 +89,8 @@ class ScheduledTransactionController extends Controller
             switch ($action) {
                 case 'retry':
                     $adminId = auth()->id();
-                    // Add retry logic here (dispatch job or whatever your retry mechanism is)
+                    $transaction->update(['next_run_at' => now()]);
+
                     dispatch(new ProcessScheduledTransactionJob($transaction));
                     Auth::loginUsingId($adminId);
                     // Add note
@@ -103,7 +106,7 @@ class ScheduledTransactionController extends Controller
                 case 'cancel':
                     // Cancel the transaction
                     $transaction->update([
-                        'status' => 'cancelled',
+                        'status' => 'disabled',
                         'next_run_at' => null,
                     ]);
 
@@ -120,7 +123,12 @@ class ScheduledTransactionController extends Controller
                 case 'notify':
                     // Notify the user
                     $user = $transaction->user;
-                    Mail::to($user->email)->send(new TransactionNotification($transaction));
+
+                    try {
+                        Mail::to($user->email)->send(new TransactionMail($transaction));
+                    } catch (\Throwable $th) {
+                        Log::error($th->getMessage());
+                    }
 
                     // Add note
                     $notes[] = [

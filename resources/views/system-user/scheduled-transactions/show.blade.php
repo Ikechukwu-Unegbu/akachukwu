@@ -18,7 +18,6 @@
             </div>
         </div>
         <div class="card">
-
             <div class="card-body">
                 <div class="row mt-4">
                     <div class="col-md-6">
@@ -27,10 +26,6 @@
                             <tr>
                                 <th width="30%">Transaction ID</th>
                                 <td>{{ $transaction->uuid }}</td>
-                            </tr>
-                            <tr>
-                                <th>User</th>
-                                <td>{{ $transaction->user->name ?? 'N/A' }}</td>
                             </tr>
                             <tr>
                                 <th>Type</th>
@@ -42,11 +37,11 @@
                             </tr>
                             <tr>
                                 <th width="30%">Next Run At</th>
-                                <td>{{ $transaction->next_run_at->format('Y-m-d H:i') }}</td>
+                                <td>{{ $transaction->next_run_at?->format('Y-m-d H:i') ?? 'N/A' }}</td>
                             </tr>
                             <tr>
                                 <th>Last Run At</th>
-                                <td>{{ $transaction->last_run_at ? $transaction->last_run_at->format('Y-m-d H:i') : 'Never' }}
+                                <td>{{ $transaction->last_run_at ? $transaction->last_run_at->format('Y-m-d H:i') : 'N/A' }}
                                 </td>
                             </tr>
                             <tr>
@@ -75,8 +70,8 @@
 
                     <div class="col-md-6">
                         <h4 class="card-title">Schedule Logs</h4>
-                        @if($transaction->logs)
-                            <div id="logsContainer" style="max-height: 30vh; overflow: auto;">
+                        @if ($transaction->logs)
+                            <div id="logsContainer" style="max-height: 50vh; overflow: auto;">
                                 <h6 class="mt-4">Logs</h6>
                                 <pre class="bg-light p-3">{{ json_encode($transaction->logs, JSON_PRETTY_PRINT) }}</pre>
                             </div>
@@ -86,7 +81,7 @@
 
 
             </div>
-            @if($transaction->vendor_status == 'failed')
+            @if ($transaction->vendor_status == 'failed')
                 <div class="card-footer">
                     <div class="mt-4">
                         <a href="{{ route('admin.scheduled.retry', [$productType, $transaction->id]) }}"
@@ -100,12 +95,29 @@
 
         <div class="card">
             <div class="card-header">
+                <h5 class="card-title p-2 m-0">User Information</h5>
+            </div>
+            <div class="card-body mt-2">
+                <p class="mt-1 text-sm text-gray-900">
+                    {{ $transaction->user->name ?? 'N/A' }} ({{ $transaction->user->username ?? '' }}) <br>
+                    {{ $transaction->user->email ?? '' }}
+                </p>
+                <p class="mt-2 text-sm">
+                    <span class="text-gray-700">Wallet Balance:</span>
+                    ₦{{ number_format($transaction->user->account_balance, 2) }}
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
                 <div class="d-flex justify-content-between">
                     <h4 class="card-title">{{ ucfirst($transaction->type) }} Transactions</h4>
                     <form action="{{ route('admin.scheduled.show', $transaction->uuid) }}" method="GET" class="d-inline">
                         <select name="perPage" onchange="this.form.submit()" class="form-select d-inline-block w-auto">
-                            @foreach([50, 100, 200] as $perPage)
-                                <option value="{{ $perPage }}" {{ request('perPage', 50) == $perPage ? 'selected' : '' }}>
+                            @foreach ([50, 100, 200] as $perPage)
+                                <option value="{{ $perPage }}"
+                                    {{ request('perPage', 50) == $perPage ? 'selected' : '' }}>
                                     {{ $perPage }} per page
                                 </option>
                             @endforeach
@@ -116,7 +128,20 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <x-admin.table>
-                        <x-admin.table-header :headers="['Trx. ID', 'Phone No.', 'Network', 'Vendor', 'Data Plan', 'Amount', 'Bal. B4', 'Bal. After', 'After Refund', 'Discount', 'Date', 'Status']" />
+                        <x-admin.table-header :headers="[
+                            'Trx. ID',
+                            'Phone No.',
+                            'Network',
+                            'Vendor',
+                            'Data Plan',
+                            'Amount',
+                            'Bal. B4',
+                            'Bal. After',
+                            'After Refund',
+                            'Discount',
+                            'Date',
+                            'Status',
+                        ]" />
                         <x-admin.table-body>
                             @forelse ($latestTransactions as $__transaction)
                                 <tr>
@@ -154,20 +179,29 @@
 
         <div class="card">
             <div class="card-body">
+                <div class="processing-indicator" id="processingIndicator">
+                    <div class="processing-content">
+                        <div class="spinner"></div>
+                        <p id="processingText">Processing your request...</p>
+                    </div>
+                </div>
                 <div class="text-center">
                     <div class="pt-4">
                         <!-- Retry Button (only show if transaction can be retried) -->
-                        <button class="btn btn-warning btn-action btn-sm" data-action="retry" data-id="{{ $transaction->id }}">
+                        <button class="btn btn-warning btn-action btn-sm" data-action="retry"
+                            data-id="{{ $transaction->id }}">
                             <i class="fas fa-redo"></i> Retry
                         </button>
 
                         <!-- Cancel Button -->
-                        <button class="btn btn-danger btn-action btn-sm" data-action="cancel" data-id="{{ $transaction->id }}">
+                        <button class="btn btn-danger btn-action btn-sm" data-action="cancel"
+                            data-id="{{ $transaction->id }}">
                             <i class="fas fa-times"></i> Cancel
                         </button>
 
                         <!-- Notify User Button -->
-                        <button class="btn btn-info btn-action btn-sm" data-action="notify" data-id="{{ $transaction->id }}">
+                        <button class="btn btn-info btn-action btn-sm" data-action="notify"
+                            data-id="{{ $transaction->id }}">
                             <i class="fas fa-envelope"></i> Notify User
                         </button>
 
@@ -193,8 +227,7 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <textarea id="noteContent" class="form-control" rows="5"
-                            placeholder="Enter note content..."></textarea>
+                        <textarea id="noteContent" class="form-control" rows="5" placeholder="Enter note content..."></textarea>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -213,16 +246,35 @@
 
     @push('scripts')
         <script>
-            $(document).ready(function () {
+            $(document).ready(function() {
+                function showProcessing(message = 'Processing your request...') {
+                    $('#processingText').text(message);
+                    $('#processingIndicator').fadeIn();
+                }
+
+                function hideProcessing() {
+                    $('#processingIndicator').fadeOut();
+                }
                 // Handle action buttons
-                $('.btn-action').click(function () {
+                $('.btn-action').click(function() {
                     const action = $(this).data('action');
                     const id = $(this).data('id');
+                    let actionText = '';
+
+                    switch(action) {
+                        case 'retry': actionText = 'Retrying transaction'; break;
+                        case 'cancel': actionText = 'Cancelling transaction'; break;
+                        case 'notify': actionText = 'Notifying user'; break;
+                        default: actionText = 'Processing';
+                    }
+
+                    showProcessing(actionText);
 
                     if (action === 'note') return;
 
                     if (action === 'cancel' || action === 'notify') {
                         if (!confirm(`Are you sure you want to ${action} this transaction?`)) {
+                            hideProcessing();
                             return;
                         }
                     }
@@ -234,19 +286,22 @@
                             action: action,
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function (response) {
+                        success: function(response) {
                             toastr.success(response.success);
                             // Optional: reload page or update UI
                             setTimeout(() => location.reload(), 1000);
                         },
-                        error: function (xhr) {
+                        error: function(xhr) {
                             toastr.error(xhr.responseJSON.error || 'Operation failed');
+                        },
+                        complete: function() {
+                            hideProcessing();
                         }
                     });
                 });
 
                 // Handle note submission
-                $('#noteModal').on('show.bs.modal', function (event) {
+                $('#noteModal').on('show.bs.modal', function(event) {
                     const button = $(event.relatedTarget);
                     const id = button.data('id');
                     const modal = $(this);
@@ -254,10 +309,10 @@
                     modal.find('.btn-note-submit').data('id', id);
                 });
 
-                $('.btn-note-submit').click(function () {
+                $('.btn-note-submit').click(function() {
                     const id = $(this).data('id');
                     const content = $('#noteContent').val();
-
+                    showProcessing('Saving note...');
                     if (!content.trim()) {
                         toastr.warning('Please enter note content');
                         return;
@@ -271,21 +326,24 @@
                             note: content,
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function (response) {
+                        success: function(response) {
                             toastr.success(response.success);
                             $('#noteModal').modal('hide');
                             $('#noteContent').val('');
                             setTimeout(() => location.reload(), 1000);
                         },
-                        error: function (xhr) {
+                        error: function(xhr) {
                             toastr.error(xhr.responseJSON.error || 'Failed to save note');
+                        },
+                        complete: function() {
+                            hideProcessing();
                         }
                     });
                 });
             });
         </script>
         <script>
-            document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('DOMContentLoaded', function() {
                 const logsContainer = document.getElementById('logsContainer');
                 if (logsContainer) {
                     logsContainer.scrollTop = logsContainer.scrollHeight;
@@ -296,5 +354,51 @@
                 }
             });
         </script>
+    @endpush
+
+    @push('styles')
+        <style>
+            .processing-indicator {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 9999;
+            }
+
+            .processing-content {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: white;
+                padding: 20px;
+                border-radius: 5px;
+                text-align: center;
+            }
+
+            .spinner {
+                width: 40px;
+                height: 40px;
+                margin: 0 auto 15px;
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid #3498db;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+        </style>
     @endpush
 @endsection
