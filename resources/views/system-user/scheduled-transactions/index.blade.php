@@ -16,7 +16,7 @@
             <div class="card-header">
                 <form action="{{ route('admin.scheduled.index') }}" method="GET" class="mb-3 mt-4">
                     <div class="row">
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label>Product Type</label>
                             <select name="product_type" class="form-control">
                                 <option value="">All Types</option>
@@ -29,7 +29,20 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <label>Frequencies</label>
+                            <select name="frequency" class="form-control">
+                                <option value="">All Frequencies</option>
+                                @foreach ($frequencies as $frequency)
+                                    <option value="{{ $frequency }}"
+                                        {{ request('frequency') == $frequency ? 'selected' : '' }}>
+                                        {{ ucfirst($frequency) }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
                             <label>Status</label>
                             <select name="status" class="form-control">
                                 <option value="">All Statuses</option>
@@ -42,12 +55,12 @@
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label>From Date</label>
                             <input type="date" name="date_from" class="form-control" value="{{ request('date_from') }}">
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <label>To Date</label>
                             <input type="date" name="date_to" class="form-control" value="{{ request('date_to') }}">
                         </div>
@@ -55,6 +68,19 @@
                         <div class="col-md-12 mt-3">
                             <button type="submit" class="btn btn-primary">Filter</button>
                             <a href="{{ route('admin.scheduled.index') }}" class="btn btn-secondary">Reset</a>
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-download"></i> Export
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ route('admin.scheduled.index', ['export' => 'excel']) }}">
+                                        <i class="fas fa-file-excel text-success"></i> Excel
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('admin.scheduled.index', ['export' => 'pdf']) }}">
+                                        <i class="fas fa-file-pdf text-danger"></i> PDF
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -62,7 +88,7 @@
             <div class="card-body">
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped">
+                    <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>#</th>
@@ -70,7 +96,7 @@
                                 <th>User</th>
                                 <th>Product</th>
                                 <th>Amount</th>
-                                {{-- <th>Mobile Number</th> --}}
+                                <th>Frequency</th> 
                                 <th>Status</th>
                                 <th>Date</th>
                                 <th>Actions</th>
@@ -88,6 +114,7 @@
                                     <td>{{ $transaction->user->username ?? 'N/A' }}</td>
                                     <td>{{ ucfirst($transaction->type) }}</td>
                                     <td>₦{{ number_format($payload->amount, 2) }}</td>
+                                     <td>{{ Str::title($transaction->frequency) }}</td>
                                     <td>
                                         <span class="badge
                                                     {{ $transaction->status === 'completed' ? 'bg-success' : '' }}
@@ -97,7 +124,7 @@
                                                     {{ $transaction->status === 'disabled' ? 'bg-danger' : '' }}">
                                             {{ ucfirst($transaction->status) }}
                                         </span>
-                                    </td>
+                                    </td>                                   
                                     <td>{{ $transaction->created_at->format('M d, Y h:i A') }}</td>
                                     <td>
                                         <a href="{{ route('admin.scheduled.show', $transaction->uuid) }}"

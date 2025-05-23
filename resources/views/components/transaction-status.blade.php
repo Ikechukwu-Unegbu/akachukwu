@@ -10,7 +10,7 @@
                         <i class="fas fa-{{ $status ? 'thumbs-up' : 'times' }} text-{{ $status ? 'green' : 'red' }}-500 text-3xl"></i>
                     </div>
                     <h3 class="text-lg font-semibold mb-1 text-gray-900 dark:text-white">Transaction {{ $status ? 'Successful' : 'Failed' }}</h3>
-                    <p class="text-gray-900 dark:text-white text-sm mb-4">{{ $utility }} {{ (isset($action)) ? 'Scheduled' : 'Purchased' }} {{ $status ? 'Successfully' : 'Failed' }}</p>
+                    <p class="text-gray-900 dark:text-white text-sm mb-4">{{ $utility }} {{ (isset($action) && $action) ? 'Scheduled' : 'Purchased' }} {{ $status ? 'Successfully' : 'Failed' }}</p>
                     @if (!empty($link))
                     <div class="flex justify-center items-center gap-5">
                         <a href="{{ $link }}" class="bg-vastel_blue text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">

@@ -24,13 +24,14 @@ class TransactionMail extends Mailable
     {
         $this->transaction = $transaction;
 
-        // Customize these based on your needs
         $this->subject = 'Transaction Update: ' . ucfirst($transaction->status);
         $this->greeting = 'Hello ' . $transaction->user->name . ',';
 
+        $amount = json_decode($transaction->payload)->amount;
+
         $this->content = [
             'Transaction Type' => ucfirst($transaction->type),
-            'Amount' => config('app.currency_symbol') . number_format($transaction->amount, 2),
+            'Amount' => config('app.currency') . number_format($amount, 2),
             'Status' => ucfirst($transaction->status),
             'Last Run' => $transaction->last_run_at ? $transaction->last_run_at->format('M j, Y g:i A') : 'Not yet run',
             'Next Scheduled' => $transaction->next_run_at ? $transaction->next_run_at->format('M j, Y g:i A') : 'Not scheduled'
@@ -53,7 +54,7 @@ class TransactionMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.transaction-notification',
+            markdown: 'emails.transaction-notification',
         );
     }
 

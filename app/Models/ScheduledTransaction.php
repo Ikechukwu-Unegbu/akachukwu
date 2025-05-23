@@ -18,6 +18,7 @@ class ScheduledTransaction extends Model
         'next_run_at' => 'datetime',
         'last_run_at' => 'datetime',
         'logs' => 'array',
+        'notes' => 'array'
     ];
 
     protected static function boot()
@@ -43,5 +44,34 @@ class ScheduledTransaction extends Model
     public function dataTransactions(): HasMany
     {
         return $this->hasMany(DataTransaction::class);
+    }
+
+    public function getNoteType($type)
+    {
+        $types = [
+            'note' => 'Note',
+            'retry' => 'Retry Attempt',
+            'cancel' => 'Cancellation',
+            'notification' => 'User Notification'
+        ];
+
+        return $types[$type] ?? ucfirst($type);
+    }
+
+    public function getNoteColor($type)
+    {
+        $colors = [
+            'note' => 'note',
+            'retry' => 'retry',
+            'cancel' => 'cancel',
+            'notification' => 'notification'
+        ];
+
+        return $colors[$type] ?? 'note';
+    }
+
+    public function getAdminName($adminId)
+    {
+        return \App\Models\User::find($adminId)->name ?? 'System';
     }
 }

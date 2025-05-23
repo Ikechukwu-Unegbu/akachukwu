@@ -17,12 +17,50 @@
                 </div>
             </div>
         </div>
+         <div class="card">
+            <div class="card-body">
+                <div class="processing-indicator" id="processingIndicator">
+                    <div class="processing-content">
+                        <div class="spinner"></div>
+                        <p id="processingText">Processing your request...</p>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="pt-4">
+                        <!-- Retry Button (only show if transaction can be retried) -->
+                        <button class="btn btn-warning btn-action btn-sm" data-action="retry"
+                            data-id="{{ $transaction->id }}">
+                            <i class="fas fa-redo"></i> Retry
+                        </button>
+
+                        <!-- Cancel Button -->
+                        <button class="btn btn-danger btn-action btn-sm" data-action="cancel"
+                            data-id="{{ $transaction->id }}">
+                            <i class="fas fa-times"></i> Cancel
+                        </button>
+
+                        <!-- Notify User Button -->
+                        <button class="btn btn-info btn-action btn-sm" data-action="notify"
+                            data-id="{{ $transaction->id }}">
+                            <i class="fas fa-envelope"></i> Notify User
+                        </button>
+
+                        <!-- Add Note Button with Modal -->
+                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#noteModal"
+                            data-id="{{ $transaction->id }}">
+                            <i class="fas fa-edit"></i> Add Note
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <div class="card">
             <div class="card-body">
                 <div class="row mt-4">
                     <div class="col-md-6">
                         <h6 class="card-title">Schedule Information</h6>
-                        <table class="table table-bordered">
+                        <table class="table">
                             <tr>
                                 <th width="30%">Transaction ID</th>
                                 <td>{{ $transaction->uuid }}</td>
@@ -177,6 +215,44 @@
             </div>
         </div>
 
+        <div class="card mt-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4>Internal Notes</h4>
+                <button class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#noteModal" data-id="{{ $transaction->id }}">
+                    <i class="fas fa-plus"></i> Add Note
+                </button>
+            </div>
+            <div class="card-body mt-3">
+                @if ($transaction->notes && count($transaction->notes) > 0)
+                    <div class="timeline">
+                        @foreach (array_reverse($transaction->notes) as $note)
+                            <div class="timeline-item">
+                                <div class="timeline-item-marker">
+                                    <div
+                                        class="timeline-item-marker-indicator bg-{{ $transaction->getNoteColor($note['type']) }}">
+                                    </div>
+                                </div>
+                                <div class="timeline-item-content">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="font-weight-bold">{{ $transaction->getNoteType($note['type']) }}</span>
+                                        <small
+                                            class="text-muted">{{ \Carbon\Carbon::parse($note['timestamp'])->format('M j, Y g:i A') }}</small>
+                                    </div>
+                                    <p class="mb-1">{{ $note['content'] }}</p>
+                                    <small class="text-muted">Added by:
+                                        {{ $transaction->getAdminName($note['admin_id']) }}</small>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <div class="alert alert-info mb-0">
+                        No internal notes have been added yet.
+                    </div>
+                @endif
+            </div>
+        </div>
+
         <div class="card">
             <div class="card-body">
                 <div class="processing-indicator" id="processingIndicator">
@@ -206,7 +282,7 @@
                         </button>
 
                         <!-- Add Note Button with Modal -->
-                        <button class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#noteModal"
+                        <button class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#noteModal"
                             data-id="{{ $transaction->id }}">
                             <i class="fas fa-edit"></i> Add Note
                         </button>
@@ -215,6 +291,7 @@
             </div>
 
         </div>
+
         <!-- Note Modal -->
         <div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel"
             aria-hidden="true">
@@ -222,9 +299,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="noteModalLabel">Add Internal Note</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <textarea id="noteContent" class="form-control" rows="5" placeholder="Enter note content..."></textarea>
@@ -261,18 +336,25 @@
                     const id = $(this).data('id');
                     let actionText = '';
 
-                    switch(action) {
-                        case 'retry': actionText = 'Retrying transaction'; break;
-                        case 'cancel': actionText = 'Cancelling transaction'; break;
-                        case 'notify': actionText = 'Notifying user'; break;
-                        default: actionText = 'Processing';
+                    switch (action) {
+                        case 'retry':
+                            actionText = 'Retrying transaction';
+                            break;
+                        case 'cancel':
+                            actionText = 'Cancelling transaction';
+                            break;
+                        case 'notify':
+                            actionText = 'Notifying user';
+                            break;
+                        default:
+                            actionText = 'Processing';
                     }
 
                     showProcessing(actionText);
 
                     if (action === 'note') return;
 
-                    if (action === 'cancel' || action === 'notify') {
+                    if (action === 'cancel' || action === 'notify' || action === 'retry') {
                         if (!confirm(`Are you sure you want to ${action} this transaction?`)) {
                             hideProcessing();
                             return;
@@ -398,6 +480,57 @@
                 100% {
                     transform: rotate(360deg);
                 }
+            }
+        </style>
+        <style>
+            .timeline {
+                position: relative;
+                padding-left: 1rem;
+            }
+
+            .timeline-item {
+                position: relative;
+                padding-bottom: 1.5rem;
+            }
+
+            .timeline-item:last-child {
+                padding-bottom: 0;
+            }
+
+            .timeline-item-marker {
+                position: absolute;
+                left: -1.25rem;
+                top: 0;
+            }
+
+            .timeline-item-marker-indicator {
+                width: 12px;
+                height: 12px;
+                border-radius: 100%;
+                background: #adb5bd;
+            }
+
+            .timeline-item-content {
+                padding: 0.5rem 0.75rem;
+                background-color: #f8f9fa;
+                border-radius: 0.25rem;
+                margin-bottom: 1rem;
+            }
+
+            .bg-note {
+                background-color: #6c757d;
+            }
+
+            .bg-retry {
+                background-color: #ffc107;
+            }
+
+            .bg-cancel {
+                background-color: #dc3545;
+            }
+
+            .bg-notification {
+                background-color: #17a2b8;
             }
         </style>
     @endpush
