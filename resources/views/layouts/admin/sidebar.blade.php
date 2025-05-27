@@ -90,9 +90,6 @@
                 @can('view banks')
                     <x-admin.dropdown-item title="Manage Banks" link="{{ route('admin.bank.index') }}" />
                 @endcan
-                @can('view banks')
-                    <x-admin.dropdown-item title="Bank Settings" link="{{ route('admin.bank.settings.index') }}" />
-                @endcan
             </x-admin.dropdown>
         @endif
 

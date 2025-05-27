@@ -33,6 +33,10 @@ class BankController extends Controller
             $query->where('status', (bool) $request->status);
         }
 
+        if ($request->has('va_status') && $request->va_status !== null) {
+            $query->where('va_status', (bool) $request->va_status);
+        }
+
         // Sorting
         $sortField = $request->get('sort_by', 'created_at');
         $sortDirection = $request->get('sort_dir', 'desc');
@@ -46,7 +50,9 @@ class BankController extends Controller
 
         $banks = $query->paginate(20)->withQueryString();
 
-        return view('system-user.banks.index', compact('banks'));
+        $vendors = self::VENDORS;
+
+        return view('system-user.banks.index', compact('banks', 'vendors'));
     }
 
     /**
@@ -74,9 +80,11 @@ class BankController extends Controller
             'transfer_ussd_template' => 'nullable|string',
             'bank_id' => 'nullable|string',
             'nip_bank_code' => 'nullable|string',
-            'status' => 'boolean',
+            'va_status' => 'nullable',
+            'status' => 'nullable',
         ]);
-        $validated['status'] = $validated['status'] ?? true;
+        $validated['status'] = !isset($validated['status']) ? false : true;
+        $validated['va_status'] = !isset($validated['va_status']) ? false : true;
         Bank::create($validated);
 
         return redirect()->route('system-user.banks.index')->with('success', 'Bank created successfully.');
@@ -107,16 +115,18 @@ class BankController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'code' => 'required|string|max:255|unique:banks,code,' . $bank->id,
-            'type' => 'required|in:monnify,other',
+            'type' => 'required|in:' . implode(',', self::VENDORS),
             'image' => 'nullable|string|max:512',
             'ussd_template' => 'nullable|string',
             'base_ussd_code' => 'nullable|string',
             'transfer_ussd_template' => 'nullable|string',
             'bank_id' => 'nullable|string',
             'nip_bank_code' => 'nullable|string',
-            'status' => 'boolean',
+            'status' => 'nullable',
+            'va_status' => 'nullable',
         ]);
         $validated['status'] = !isset($validated['status']) ? false : true;
+        $validated['va_status'] = !isset($validated['va_status']) ? false : true;
 
         $bank->update($validated);
 

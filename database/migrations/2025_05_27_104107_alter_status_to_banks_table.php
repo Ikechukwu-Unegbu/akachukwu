@@ -15,6 +15,8 @@ return new class extends Migration
             $table->boolean('status')
                 ->default(true)
                 ->change();
+
+            $table->boolean('va_status')->default(false)->after('status');
         });
     }
 
@@ -24,9 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('banks', function (Blueprint $table) {
-            $table->enum('status', [true, false])
-                ->default(true)
-                ->change();
+            $table->dropColumn('va_status');
         });
     }
 };

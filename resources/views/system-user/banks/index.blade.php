@@ -18,7 +18,7 @@
         <div class="card">
             <div class="card-header">
                 <form method="GET" action="{{ route('admin.bank.index') }}">
-                    <div class="row g-3">
+                    <div class="row ">
                         <div class="col-md-4">
                             <label for="search" class="form-label">Search</label>
                             <input type="text" class="form-control" id="search" name="search"
@@ -27,24 +27,35 @@
 
                         <div class="col-md-3">
                             <label for="type" class="form-label">Type</label>
-                            <select class="form-control" id="type" name="type">
+                            <select class="form-select" id="type" name="type">
                                 <option value="">All Types</option>
-                                <option value="monnify" {{ request('type') == 'monnify' ? 'selected' : '' }}>Monnify
-                                </option>
-                                <option value="other" {{ request('type') == 'other' ? 'selected' : '' }}>Other</option>
+                                @foreach ($vendors as $vendor)
+                                    <option value="{{ $vendor }}" {{ request('type') === $vendor ? 'selected' : '' }}>
+                                        {{ ucfirst($vendor) }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                            <label for="va_status" class="form-label">VA Status</label>
+                            <select class="form-select" id="va_status" name="va_status">
+                                <option value="">All VA Statuses</option>
+                                <option value="1" {{ request('va_status') === '1' ? 'selected' : '' }}>Active</option>
+                                <option value="0" {{ request('va_status') === '0' ? 'selected' : '' }}>Inactive</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
                             <label for="status" class="form-label">Status</label>
-                            <select class="form-control" id="status" name="status">
+                            <select class="form-select" id="status" name="status">
                                 <option value="">All Statuses</option>
                                 <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Active</option>
                                 <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Inactive</option>
                             </select>
                         </div>
 
-                        <div class="col-md-2 d-flex align-items-end">
+                        <div class="col-md-1 d-flex align-items-end">
                             <button type="submit" class="btn btn-primary w-100">Filter</button>
                         </div>
                     </div>
@@ -59,6 +70,7 @@
                                 <th>Name</th>
                                 <th>Code</th>
                                 <th>Type</th>
+                                <th>VA Status</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -70,6 +82,11 @@
                                     <td>{{ $bank->name }}</td>
                                     <td>{{ $bank->code }}</td>
                                     <td>{{ ucfirst($bank->type) }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ $bank->va_status ? 'success' : 'danger' }}">
+                                            {{ $bank->va_status ? 'Active' : 'Inactive' }}
+                                        </span>
+                                    </td>
                                     <td>
                                         <span class="badge bg-{{ $bank->status ? 'success' : 'danger' }}">
                                             {{ $bank->status ? 'Active' : 'Inactive' }}

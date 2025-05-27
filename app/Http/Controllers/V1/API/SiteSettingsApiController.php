@@ -14,33 +14,16 @@ class SiteSettingsApiController extends Controller
     {
         $siteSettings = SiteSetting::first();
 
-        $bankConfig = is_string($siteSettings->bank_config)
-            ? json_decode($siteSettings->bank_config, true)
-            : $siteSettings->bank_config;
+        return ApiHelper::sendResponse($siteSettings, '');
+    }
 
-        $bankConfig = $bankConfig ?? [
-            'default' => ['palm_pay' => true],
-            'monnify' => []
-        ];
+    public function activeVirtualAccounts()
+    {
+        $activeVirtualAccounts = Bank::where('va_status', true)
+            ->where('status', true)
+            ->get();
 
-        $response = $siteSettings->toArray();
-
-        $response['bank_config'] = $bankConfig;
-
-
-        $response['available_banks'] = Bank::whereIn('id', $bankConfig['monnify'])
-            ->orWhere('code', 'PALMPAY')
-            ->get()
-            ->map(function ($bank) {
-                return [
-                    'id' => $bank->id,
-                    'name' => $bank->name,
-                    'code' => $bank->code,
-                    'type' => $bank->type
-                ];
-            });
-
-        return ApiHelper::sendResponse($response, '');
+        return ApiHelper::sendResponse($activeVirtualAccounts, '');
     }
 
 }
