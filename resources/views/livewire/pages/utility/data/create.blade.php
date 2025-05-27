@@ -159,7 +159,7 @@
             </div>
 
             <!-- Schedule Form (Shows when toggle is on) -->
-            <div x-show="showSchedule" class="my-4 flex flex-col">
+            {{-- <div x-show="showSchedule" class="my-4 flex flex-col">
                 <label for="frequency" class="border border-[#D8D8D894] rounded-2xl p-2">
                     <h3 class="mb-2 text-base font-semibold text-[#646464]">Frequency</h3>
                     <select id="frequency" name="frequency"
@@ -194,7 +194,7 @@
                         <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
                     @enderror
                 </label>
-            </div>
+            </div> --}}
         </div>
 
         @if ($network && $networks->where('network_id', $network)->first()?->data_discount > 0)
