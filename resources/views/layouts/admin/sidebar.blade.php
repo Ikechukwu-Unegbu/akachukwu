@@ -81,6 +81,18 @@
         <li class="nav-heading">Scheduled Mgt.</li>
         <x-admin.menu title="Scheduled Transactions" icon="bi-arrow-clockwise" link="{{ route('admin.scheduled.index') }}" />
 
+        @if(auth()->user()->can('view banks'))
+            <li class="nav-heading">Bank Mgt</li>
+            <x-admin.dropdown title="Bank Settings" icon="bxs-cog">
+                @can('create banks')
+                    <x-admin.dropdown-item title="Add Bank" link="{{ route('admin.bank.create') }}" />
+                @endcan
+                @can('view banks')
+                    <x-admin.dropdown-item title="Manage Banks" link="{{ route('admin.bank.index') }}" />
+                @endcan
+            </x-admin.dropdown>
+        @endif
+
         <li class="nav-heading">Transfer Mgt.</li>
         <x-admin.dropdown title="Manage Transfers" icon="bi-recycle">
             <x-admin.dropdown-item title="In-App Transfers" link="{{ route('admin.transfer.in-app') }}" />
