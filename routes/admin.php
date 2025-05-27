@@ -233,6 +233,11 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/{bank:id}/edit', [BankController::class, 'edit'])->name('edit');
             Route::put('/{bank:id}/update', [BankController::class, 'update'])->name('update');
             Route::delete('/{bank:id}/delete', [BankController::class, 'destroy'])->name('delete');
+
+            Route::prefix('settings')->as('settings.')->group(function() {
+                Route::get('/', [BankController::class, 'showBankConfig'])->name('index');
+                Route::post('/update', [BankController::class, 'updateBankConfig'])->name('update');
+            });
         });
     });
 

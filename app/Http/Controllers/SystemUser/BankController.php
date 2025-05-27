@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\SystemUser;
 
 use App\Models\Bank;
+use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 class BankController extends Controller
@@ -129,5 +130,52 @@ class BankController extends Controller
     {
         $bank->delete();
         return redirect()->route('admin.bank.index')->with('success', 'Bank deleted successfully.');
+    }
+
+    public function showBankConfig()
+    {
+        $monnifyBanks = Bank::where('type', 'monnify')->get();
+
+        $currentConfig = json_decode(SiteSetting::first()->bank_config, true) ?? [
+            'default' => ['palm_pay' => true],
+            'monnify' => []
+        ];
+
+        $enabledBanks = $currentConfig['monnify'] ?? [];
+
+        return view('system-user.banks.settings', compact('monnifyBanks', 'enabledBanks'));
+    }
+
+    public function updateBankConfig(Request $request)
+    {
+        $validated = $request->validate([
+            'enabled_monnify_banks' => 'required|array',
+            'enabled_monnify_banks.*' => 'exists:banks,id',
+        ]);
+
+        $currentConfig = json_decode(SiteSetting::first()->bank_config, true) ?? [];
+
+        $newConfig = [
+            'default' => [
+                'palm_pay' => $currentConfig['default']['palm_pay'] ?? true
+            ],
+            'monnify' => $validated['enabled_monnify_banks']
+        ];
+
+        SiteSetting::first()->update([
+            'bank_config' => json_encode($newConfig)
+        ]);
+
+        return redirect()->back()->with('success', 'Bank configuration updated successfully');
+    }
+
+    public function getBankConfig()
+    {
+        $config = SiteSetting::first()->bank_config ?? json_encode([
+            'default' => ['palm_pay' => true],
+            'monnify' => []
+        ]);
+
+        return response()->json(json_decode($config, true));
     }
 }

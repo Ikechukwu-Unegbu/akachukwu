@@ -92,6 +92,7 @@ class PermissionSeeder extends Seeder
             'create banks',
             'edit banks',
             'delete banks',
+            'edit bank settings',
         ];
 
         // foreach ($permissions as $permission) Permission::create(['name' => $permission]);
