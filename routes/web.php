@@ -199,6 +199,3 @@ require __DIR__ . '/savings.php';
 require __DIR__ . '/logger.php';
 
 
-Route::middleware(['web', 'auth'])->group(function () {
-    // \Opcodes\LogViewer\Logs\LaravelLog::routes();
-});
