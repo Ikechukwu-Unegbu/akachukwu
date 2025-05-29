@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Models\Data\DataTransaction;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Utility\UpgradeRequest;
@@ -27,8 +26,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
-
-    use LogsActivity;
 
     protected $fillable = [
         'name',
@@ -63,13 +60,6 @@ class User extends Authenticatable
     public function getAuthIdentifier()
     {
         return $this->isBlocked() ? null : parent::getAuthIdentifier();
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly(['name', ]);
-        // Chain fluent methods for configuration options
     }
 
     public function upgradeRequests()

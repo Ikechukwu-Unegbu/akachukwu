@@ -6,9 +6,10 @@ use App\Models\User;
 use App\Models\SiteSetting;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
-use App\Observers\UserWalletObserver;
 
+use App\Observers\UserWalletObserver;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
@@ -45,6 +46,10 @@ class AppServiceProvider extends ServiceProvider
         User::observe(UserWalletObserver::class);
 
         Paginator::useBootstrapFive();
+
+        Gate::define('viewLogViewer', function (?User $user) {
+            return $user && $user->isSuperAdmin();
+        });
     }
 
 }
