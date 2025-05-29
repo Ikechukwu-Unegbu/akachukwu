@@ -1,30 +1,31 @@
 <?php
 
-use App\Http\Controllers\Blog\BlogPageController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MtnDevController;
+use App\Models\User;
+use App\Models\Data\DataPlan;
+use App\Notifications\WelcomeEmail;
 use Illuminate\Support\Facades\Route;
+use App\Services\Payment\MonnifyService;
 use  App\Http\Controllers\TestController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\MtnDevController;
+use App\Http\Controllers\V1\PinController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\V1\AdminController;
-use App\Http\Controllers\V1\Utilities\TVController;
-use App\Http\Controllers\ProfileSettingsController;
-use App\Http\Controllers\UpgradeToResellerController;
+use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\V1\SettingsController;
+use App\Http\Controllers\Blog\BlogPageController;
+use App\Notifications\AdminDebitUserNotification;
 use App\Http\Controllers\V1\ApiResponseController;
-use App\Http\Controllers\V1\BonusWithdrawalController;
+use App\Http\Controllers\V1\TransactionController;
+use App\Http\Controllers\ProfileSettingsController;
+use App\Http\Controllers\V1\Utilities\TVController;
+use App\Http\Controllers\UpgradeToResellerController;
 use App\Http\Controllers\V1\Utilities\DataController;
+use App\Http\Controllers\V1\BonusWithdrawalController;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;
 use App\Http\Controllers\V1\Education\ResultCheckerController;
-use App\Http\Controllers\V1\PinController;
-use App\Http\Controllers\V1\SettingsController;
-use App\Http\Controllers\V1\TransactionController;
-use App\Models\Data\DataPlan;
-use App\Models\User;
-use App\Notifications\WelcomeEmail;
-use Illuminate\Support\Facades\Notification;
-use App\Services\Payment\MonnifyService;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,9 +41,20 @@ use App\Services\Payment\MonnifyService;
 
 Route::get('/ref/{username}', function($username){
     // dd($username);
-    $user = User::where('username', $username)->first();
-    $service = new MonnifyService();
-    return $service->getAllVirtualAccountsOfGivenUser($user->username);
+    // $user = User::where('username', $username)->first();
+    // $service = new MonnifyService();
+    // return $service->getAllVirtualAccountsOfGivenUser($user->username);
+
+     $validatedData = [
+        'amount' => 1000,
+        'reason' => 'Test debit',
+        'action' => 'debit',
+        'record' => true
+    ];
+
+    $admin = User::where('email', 'mr.ikunegbu@gmail.com')->firstOrFail();
+    $admin->notify(new AdminDebitUserNotification($validatedData));
+    return response()->json(['message' => 'Email sent successfully']);
 });
 
 Route::get('savings', function () {
