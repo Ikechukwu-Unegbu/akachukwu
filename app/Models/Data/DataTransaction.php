@@ -6,19 +6,17 @@ use App\Models\User;
 use App\Traits\HasTransactionType;
 use Illuminate\Support\Str;
 use App\Traits\HasStatusText;
-use Spatie\Activitylog\LogOptions;
 use App\Traits\RecordsBalanceChanges;
 use App\Traits\ThrottlesTransactions;
 use App\Traits\GeneratesTransactionId;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DataTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText, HasTransactionType;
+    use TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText, HasTransactionType;
     protected $throttleActionName = 'data_purchase';
     protected $addsToBalance = false;
     protected $guarded = [];
@@ -45,32 +43,6 @@ class DataTransaction extends Model
         'discount',
         'scheduled_transaction_id'
     ];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly([ 'transaction_id',
-        'user_id',
-        'vendor_id',
-        'network_id',
-        'type_id',
-        'data_id',
-        'amount',
-        'size',
-        'validity',
-        'mobile_number',
-        'balance_before',
-        'balance_after',
-        'balance_after_refund',
-        'plan_network',
-        'plan_name',
-        'plan_amount',
-        'api_data_id',
-        'api_response',
-        'status',
-        'discount']);
-        // Chain fluent methods for configuration options
-    }
 
     public function network() : BelongsTo
     {

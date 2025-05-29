@@ -7,26 +7,18 @@ use App\Traits\HasTransactionType;
 use Illuminate\Support\Str;
 use App\Traits\HasStatusText;
 use App\Models\Data\DataVendor;
-use Spatie\Activitylog\LogOptions;
 use App\Traits\RecordsBalanceChanges;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ResultCheckerTransaction extends Model
 {
-    use LogsActivity, HasFactory, TransactionStatusTrait, RecordsBalanceChanges, HasStatusText, HasTransactionType;
+    use HasFactory, TransactionStatusTrait, RecordsBalanceChanges, HasStatusText, HasTransactionType;
     protected $addsToBalance = false;
 
     protected $guarded = [];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logAll();
-    }
 
     protected static function boot()
     {
