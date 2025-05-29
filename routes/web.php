@@ -1,30 +1,31 @@
 <?php
 
-use App\Http\Controllers\Blog\BlogPageController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MtnDevController;
+use App\Models\User;
+use App\Models\Data\DataPlan;
+use Opcodes\LogViewer\LogViewer;
+use App\Notifications\WelcomeEmail;
 use Illuminate\Support\Facades\Route;
+use App\Services\Payment\MonnifyService;
 use  App\Http\Controllers\TestController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\MtnDevController;
+use App\Http\Controllers\V1\PinController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\V1\AdminController;
-use App\Http\Controllers\V1\Utilities\TVController;
-use App\Http\Controllers\ProfileSettingsController;
-use App\Http\Controllers\UpgradeToResellerController;
+use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\V1\SettingsController;
+use App\Http\Controllers\Blog\BlogPageController;
 use App\Http\Controllers\V1\ApiResponseController;
-use App\Http\Controllers\V1\BonusWithdrawalController;
+use App\Http\Controllers\V1\TransactionController;
+use App\Http\Controllers\ProfileSettingsController;
+use App\Http\Controllers\V1\Utilities\TVController;
+use App\Http\Controllers\UpgradeToResellerController;
 use App\Http\Controllers\V1\Utilities\DataController;
+use App\Http\Controllers\V1\BonusWithdrawalController;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;
 use App\Http\Controllers\V1\Education\ResultCheckerController;
-use App\Http\Controllers\V1\PinController;
-use App\Http\Controllers\V1\SettingsController;
-use App\Http\Controllers\V1\TransactionController;
-use App\Models\Data\DataPlan;
-use App\Models\User;
-use App\Notifications\WelcomeEmail;
-use Illuminate\Support\Facades\Notification;
-use App\Services\Payment\MonnifyService;
 
 /*
 |--------------------------------------------------------------------------
@@ -197,3 +198,8 @@ require __DIR__ . '/admin.php';
 require __DIR__ . '/feature.php';
 require __DIR__ . '/savings.php';
 require __DIR__ . '/logger.php';
+
+
+Route::middleware(['web', 'auth'])->group(function () {
+    LogViewer::routes();
+});
