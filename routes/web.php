@@ -45,16 +45,23 @@ Route::get('/ref/{username}', function($username){
     // $service = new MonnifyService();
     // return $service->getAllVirtualAccountsOfGivenUser($user->username);
 
-     $validatedData = [
-        'amount' => 1000,
-        'reason' => 'Test debit',
-        'action' => 'debit',
-        'record' => true
-    ];
+    try {
+        $validatedData = [
+           'amount' => 1000,
+           'reason' => 'Test debit',
+           'action' => 'debit',
+           'record' => true
+       ];
 
-    $admin = User::where('email', 'mr.ikunegbu@gmail.com')->firstOrFail();
-    $admin->notify(new AdminDebitUserNotification($validatedData));
-    return response()->json(['message' => 'Email sent successfully']);
+       $admin = User::where('email', 'mr.ikunegbu@gmail.com')->firstOrFail();
+       $admin->notify(new AdminDebitUserNotification($validatedData));
+       return response()->json(['message' => 'Email sent successfully']);
+
+    } catch (\Exception $e) {
+        dd($e->getMessage());
+        return response()->json(['error' => 'An error occurred while processing your request.'], 500);
+    }
+
 });
 
 Route::get('savings', function () {
