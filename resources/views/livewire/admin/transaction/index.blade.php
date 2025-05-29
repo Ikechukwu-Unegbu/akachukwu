@@ -143,7 +143,7 @@
                                 'failed'     => 'red',
                                 'processing' => 'yellow',
                                 'refunded'   => 'yellow',
-                                'pending'    => 'blue',
+                                'pending'    => 'yellow',
                                 'n/a'    => 'red',
                                 ''    => 'red',
                                 'default'    => 'red'
@@ -153,7 +153,7 @@
                                 'failed'     => 'white',
                                 'processing' => 'black',
                                 'refunded'   => 'black',
-                                'pending'    => 'white',
+                                'pending'    => 'black',
                                 'n/a'    => 'white',
                                 ''    => 'white',
                                 'default'    => 'white'
