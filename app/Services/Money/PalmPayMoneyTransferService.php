@@ -102,7 +102,7 @@ class PalmPayMoneyTransferService extends BasePalmPayService
                 "payeeBankCode"     => $transaction->bank_code,
                 "payeeBankAccNo"    => $transaction->account_number,
                 "amount"            => intval(round($amount, 2) * 100),
-                "currency"          => config('palmpay.country_code'),
+                "currency"          => config('palmpay.currency', 'NGN'),
                 // "notifyUrl"         => route('webhook.palmpay'),
                 "remark"            => $transaction->narration ?? 'NA'
             ];
