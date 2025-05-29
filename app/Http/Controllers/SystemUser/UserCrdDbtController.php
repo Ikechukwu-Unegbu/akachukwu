@@ -18,7 +18,7 @@ use App\Notifications\AdminDebitUserNotification;
 
 class UserCrdDbtController extends Controller
 {
-  
+
 
     public function store(Request $request)
     {
@@ -32,7 +32,7 @@ class UserCrdDbtController extends Controller
         ]);
 
        return DB::transaction(function() use($request, $validatedData) {
-        
+
         $user = User::where('username', $validatedData['username'])->firstOrFail();
 
         if ($validatedData['action'] == 'credit') {
@@ -50,11 +50,11 @@ class UserCrdDbtController extends Controller
             $vastelTransaction->success();
             $user->setAccountBalance($validatedData['amount']);
             $vastelTransaction->update(['balance_after' => $user->account_balance]);
-            $user->notify(new AdminTopupNotification($validatedData));
+            // $user->notify(new AdminTopupNotification($validatedData));
         }
 
 
-        if ($validatedData['action'] == 'debit') {            
+        if ($validatedData['action'] == 'debit') {
             $balanceService = new AccountBalanceService($user);
             $balanceUpto = $balanceService->verifyAccountBalance($validatedData['amount']);
             if (!$balanceUpto) {
@@ -73,8 +73,8 @@ class UserCrdDbtController extends Controller
             $vastelTransaction->balance_before =  $user->account_balance;
             $vastelTransaction->save();
             $vastelTransaction->success();
-            $user->setTransaction($validatedData['amount']);            
-            $user->notify(new AdminDebitUserNotification($validatedData));
+            $user->setTransaction($validatedData['amount']);
+            // $user->notify(new AdminDebitUserNotification($validatedData));
 
             $vastelTransaction->update(['balance_after' => $user->account_balance]);
 
