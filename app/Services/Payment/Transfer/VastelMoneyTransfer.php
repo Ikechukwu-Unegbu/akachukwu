@@ -157,6 +157,8 @@ class VastelMoneyTransfer{
 
             $transfer->update(['sender_balance_after' => $sender->account_balance]);
 
+            $transfer->update(['balance_after_refund' => $amount]);
+
             DB::commit();
 
             return ApiHelper::sendResponse($transfer->sender, "The amount of {$amount} has been successfully reversed to {$transfer->sender->name}.");
