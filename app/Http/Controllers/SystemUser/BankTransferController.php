@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\SystemUser;
 
+use Log;
 use App\Models\Bank;
-use App\Services\Payment\Transfer\VastelMoneyTransfer;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\MoneyTransfer;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use App\Services\Payment\Transfer\VastelMoneyTransfer;
 
 class BankTransferController extends Controller
 {
@@ -179,5 +182,76 @@ class BankTransferController extends Controller
 
         $logsToSave = is_string($existingLogs) ? json_encode($log) : $log;
         $transfer->update(['logs' => $logsToSave]);
+    }
+
+    public function performReimbursement(Request $request)
+    {
+        $request->validate([
+            'action' => 'required|in:debit,refund',
+            'transactions' => 'required|array',
+            'transactions.*' => 'exists:money_transfers,id'
+        ]);
+
+        try {
+                DB::beginTransaction();
+                foreach ($request->transactions as $key => $value) {
+                    $transaction = MoneyTransfer::findOrFail($value);
+
+                    $amount = $transaction->amount+$transaction->charges;
+
+                    $user = User::where('id', $transaction->user_id)->lockForUpdate()->first();
+
+                    if ($request->action === 'debit')
+                        $this->debited($transaction, $user, $amount);
+
+                    if ($request->action === 'refund')
+                        $this->refunded($transaction, $user, $amount);
+                }
+                DB::commit();
+                $message = ($request->action === 'debit') ? 'Debited' : ($request->action === 'refund' ? 'Refunded' : '');
+
+                session()->flash('success', "Transaction {$message} Successfully");
+
+                return response()->json([
+                    'status' => true,
+                    'message' => "Transaction {$message} Successfully"
+                ]);
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            Log::error($th->getMessage());
+            return response()->json([
+                'status' => false,
+                'message' => "Transaction failed!"
+            ]);
+        }
+    }
+
+    private function debited($transaction, $user, $amount) : void
+    {
+        $transaction->update(['sender_balance_before' => $user->account_balance]);
+
+        $user->account_balance -= $amount;
+        $user->save();
+        $transaction->update([
+            'status'            =>  0,
+            'transfer_status'   =>  'failed',
+            'sender_balance_after' => $user->account_balance
+        ]);
+    }
+
+    private function refunded($transaction, $user, $amount) : void
+    {
+        $transaction->update(['sender_balance_before' => $user->account_balance]);
+
+        $user->account_balance += $amount;
+        $user->save();
+
+        $transaction->update([
+            'status'            =>  2,
+            'transfer_status'   =>  'refunded',
+            'balance_after_refund' => $amount,
+            'sender_balance_after' => $user->account_balance
+        ]);
     }
 }
