@@ -48,16 +48,14 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useBootstrapFive();
 
-        Gate::define('viewLogViewer', function (?User $user) {
-            return $user && $user->isSuperAdmin();
-        });
 
-        // LogViewer::auth(function ($request) {
-        // // Allow access to superadmins or specific emails
-        //     return auth()->check() && auth()->user()->isSuperAdmin();
-        //     // OR allow only certain emails
-        //     // return auth()->check() && in_array(auth()->user()->email, ['you@example.com']);
-        // });
+
+        LogViewer::auth(function ($request) {
+        // Allow access to superadmins or specific emails
+            return auth()->check() && auth()->user()->isSuperAdmin();
+            // OR allow only certain emails
+            // return auth()->check() && in_array(auth()->user()->email, ['you@example.com']);
+        });
     }
 
 }

@@ -14,13 +14,12 @@ use App\Traits\ThrottlesTransactions;
 use App\Traits\GeneratesTransactionId;
 use App\Traits\TransactionStatusTrait;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class AirtimeTransaction extends Model
 {
-    use LogsActivity, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText, HasTransactionType;
+    use TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText, HasTransactionType;
     protected $throttleActionName = 'airtime_purchase';
     protected $addsToBalance = false;
 
@@ -44,27 +43,6 @@ class AirtimeTransaction extends Model
         'discount',
         'scheduled_transaction_id'
     ];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly([
-        'transaction_id',
-        'user_id',
-        'vendor_id',
-        'network_id',
-        'network_name',
-        'amount',
-        'mobile_number',
-        'balance_before',
-        'balance_after',
-        'balance_after_refund',
-        'api_data_id',
-        'api_response',
-        'status',
-        'discount' ]);
-        // Chain fluent methods for configuration options
-    }
 
     public function vendor() : BelongsTo
     {
