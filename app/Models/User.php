@@ -532,12 +532,12 @@ class User extends Authenticatable
                         DB::raw('"N/A" as balance_before'),
                         DB::raw('"N/A" as balance_after'),
                         'user_id', 'amount', 'status',
-                        // DB::raw('"N/A" as vendor_status'),
-                        DB::raw('CASE
-                            WHEN status = 1 THEN "Successful"
-                            WHEN status = 0 THEN "Failed"
-                            ELSE "N/A"
-                        END as b'),
+                        DB::raw('transfer_status as vendor_status'),
+                        // DB::raw('CASE
+                        //     WHEN status = 1 THEN "Successful"
+                        //     WHEN status = 0 THEN "Failed"
+                        //     ELSE "N/A"
+                        // END as b'),
                         // DB::raw('IF(user_id = ' . (int)$userId . ' OR recipient = ' . (int)$userId . ', recipient, user_id) as subscribed_to'),
                         DB::raw('CASE WHEN user_id = ' . (int)$userId . ' OR recipient = ' . (int)$userId . ' THEN recipient ELSE user_id END as subscribed_to'),
                         DB::raw('"Transfer" as plan_name'),

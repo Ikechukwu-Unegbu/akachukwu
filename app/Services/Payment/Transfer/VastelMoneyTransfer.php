@@ -151,15 +151,15 @@ class VastelMoneyTransfer{
 
             $sender = User::where('id', $transfer->sender->id)->lockForUpdate()->firstOrFail();
             $transfer->update(['sender_balance_before' => $sender->account_balance]);
-
-            $senderAccount = (new AccountBalanceService($transfer->sender))->updateAccountBalance($transfer->amount);
+            $amount = $transfer->amount + $transfer->charges;
+            $senderAccount = (new AccountBalanceService($transfer->sender))->updateAccountBalance($amount);
             $sender = User::where('id', $transfer->sender->id)->firstOrFail();
 
             $transfer->update(['sender_balance_after' => $sender->account_balance]);
 
             DB::commit();
 
-            return ApiHelper::sendResponse($transfer->sender, "The amount of {$transfer->amount} has been successfully reversed to {$transfer->sender->name}.");
+            return ApiHelper::sendResponse($transfer->sender, "The amount of {$amount} has been successfully reversed to {$transfer->sender->name}.");
         } catch (\Throwable $th) {
             DB::rollBack();
             Log::error($th->getMessage());
