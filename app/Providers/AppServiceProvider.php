@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Cache\RateLimiting\Limit;
+use Opcodes\LogViewer\Facades\LogViewer;
 use Illuminate\Support\Facades\RateLimiter;
 
 class AppServiceProvider extends ServiceProvider
@@ -47,8 +48,15 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useBootstrapFive();
 
-        Gate::define('viewLogViewer', function (?User $user) {
-            return $user && $user->isSuperAdmin();
+        // Gate::define('viewLogViewer', function (?User $user) {
+        //     return $user && $user->isSuperAdmin();
+        // });
+
+        LogViewer::auth(function ($request) {
+        // Allow access to superadmins or specific emails
+            return auth()->check() && auth()->user()->isSuperAdmin();
+            // OR allow only certain emails
+            // return auth()->check() && in_array(auth()->user()->email, ['you@example.com']);
         });
     }
 
