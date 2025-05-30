@@ -6,6 +6,7 @@ use App\Http\Controllers\Blog\FaqController;
 use App\Http\Controllers\Blog\MediaController;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SystemUser\BankController;
 use App\Http\Controllers\SystemUser\BankTransferController;
 use App\Http\Controllers\SystemUser\BlacklistController;
 use App\Http\Controllers\SystemUser\DashboardController;
@@ -220,6 +221,20 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('/', [ScheduledTransactionController::class, 'index'])->name('index');
             Route::get('/{transaction:uuid}/show', [ScheduledTransactionController::class, 'show'])->name('show');
             Route::put('/scheduled-transactions/{transaction}', [ScheduledTransactionController::class, 'update'])->name('update');
+        });
+
+        Route::prefix('banks')->as('admin.bank.')->group(function() {
+            Route::get('/', [BankController::class, 'index'])->name('index');
+            Route::get('/create', [BankController::class, 'create'])->name('create');
+            Route::post('/store', [BankController::class, 'store'])->name('store');
+            Route::get('/{bank:id}/edit', [BankController::class, 'edit'])->name('edit');
+            Route::put('/{bank:id}/update', [BankController::class, 'update'])->name('update');
+            Route::delete('/{bank:id}/delete', [BankController::class, 'destroy'])->name('delete');
+
+            Route::prefix('settings')->as('settings.')->group(function() {
+                Route::get('/', [BankController::class, 'showBankConfig'])->name('index');
+                Route::post('/update', [BankController::class, 'updateBankConfig'])->name('update');
+            });
         });
     });
 
