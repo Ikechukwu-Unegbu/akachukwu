@@ -41,7 +41,7 @@ use App\Http\Controllers\V1\Education\ResultCheckerController;
 
 Route::get('/ref/{username}', function($username){
     // dd($username);
-    // $user = User::where('username', $username)->first();
+    $user = User::where('username', $username)->firstOrFail();
     // $service = new MonnifyService();
     // return $service->getAllVirtualAccountsOfGivenUser($user->username);
 
@@ -53,8 +53,7 @@ Route::get('/ref/{username}', function($username){
            'record' => true
        ];
 
-       $admin = User::where('email', 'mr.ikunegbu@gmail.com')->firstOrFail();
-       $admin->notify(new AdminDebitUserNotification($validatedData));
+       $user->notify(new AdminDebitUserNotification($validatedData));
        return response()->json(['message' => 'Email sent successfully']);
 
     } catch (\Exception $e) {
