@@ -697,7 +697,7 @@ class User extends Authenticatable
 
     public function routeNotificationForOneSignal()
     {
-        return $this->os_player_id ?? 'd39957ea-aa71-4dca-b179-48a79d053e1a';
+        return $this->os_player_id;
     }
 
 
