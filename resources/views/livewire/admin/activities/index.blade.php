@@ -49,7 +49,7 @@
                         @forelse ($activity_logs as $log)
                         <tr>
                             <th scope="row">{{ $loop->index+$activity_logs->firstItem() }}</th>
-                            <td>{{ $log->subject->name ?? $log->causer->name }}</td>
+                            <td>{{ $log->subject->name ?? $log->causer->username }}</td>
                             <td>{{ $log->description }}</td>
                             <td>{{ $log->created_at->format('M d, Y h:ia') }}</td>
                             <td>

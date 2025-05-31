@@ -168,7 +168,7 @@
                                     </div>
                                 </td>
                                 <td>{{ $transfer->reference_id }}</td>
-                                <td>{{ $transfer->sender->name ?? 'N/A' }}</td>
+                                <td>{{ $transfer->sender->username ?? 'N/A' }}</td>
                                 <td>{{ $transfer->bank_name ?? 'N/A' }} <br> {{ $transfer->account_number }}</td>
                                 <td>₦{{ number_format($transfer->amount, 2) }}</td>
                                 <td>{{ $transfer->created_at->format('M d, Y h:i A') }}</td>
