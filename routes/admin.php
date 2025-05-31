@@ -6,10 +6,12 @@ use App\Http\Controllers\Blog\FaqController;
 use App\Http\Controllers\Blog\MediaController;
 use App\Http\Controllers\Blog\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SystemUser\BankController;
 use App\Http\Controllers\SystemUser\BankTransferController;
 use App\Http\Controllers\SystemUser\BlacklistController;
 use App\Http\Controllers\SystemUser\DashboardController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\SystemUser\ScheduledTransactionController;
 use App\Http\Controllers\SystemUser\InAppTransferController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
 use Illuminate\Support\Facades\Route;
@@ -135,10 +137,6 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('transaction/query-vendors', App\Livewire\Admin\Transaction\QueryTransaction::class)->name('admin.transaction.query-vendor');
 
-        ## Transaction - Money Transfer
-        Route::get('transaction/money-transfer', App\Livewire\Admin\Transaction\MoneyTransfer\Index::class)->name('admin.transaction.money-transfer');
-        Route::get('transaction/money-transfer/{moneyTransfer:id}/show', App\Livewire\Admin\Transaction\MoneyTransfer\Show::class)->name('admin.transaction.money-transfer.show');
-
         ## API Routes
         ## API - Vendor
         Route::get('api/vendors', App\Livewire\Admin\Api\Vendor\Index::class)->name('admin.api.vendor');
@@ -213,12 +211,32 @@ Route::group(['prefix' => 'admin'], function () {
 
             Route::get('bank', [BankTransferController::class, 'index'])->name('bank');
             Route::get('bank/{transfer:reference_id}/show', [BankTransferController::class, 'show'])->name('bank.details');
+            Route::post('bank/perform-reimbursement', [BankTransferController::class, 'performReimbursement'])->name('bank.reimbursement');
             Route::post('bank/{transfer}', [BankTransferController::class, 'update'])->name('bank.details.update');
 
             // Route::get('bank/{transfer:reference_id}/show', \App\Livewire\Admin\Transfer\BankDetails::class)->name('bank.details');
         });
-    });
 
+        Route::prefix('scheduled-transactions')->as('admin.scheduled.')->group(function() {
+            Route::get('/', [ScheduledTransactionController::class, 'index'])->name('index');
+            Route::get('/{transaction:uuid}/show', [ScheduledTransactionController::class, 'show'])->name('show');
+            Route::put('/scheduled-transactions/{transaction}', [ScheduledTransactionController::class, 'update'])->name('update');
+        });
+
+        Route::prefix('banks')->as('admin.bank.')->group(function() {
+            Route::get('/', [BankController::class, 'index'])->name('index');
+            Route::get('/create', [BankController::class, 'create'])->name('create');
+            Route::post('/store', [BankController::class, 'store'])->name('store');
+            Route::get('/{bank:id}/edit', [BankController::class, 'edit'])->name('edit');
+            Route::put('/{bank:id}/update', [BankController::class, 'update'])->name('update');
+            Route::delete('/{bank:id}/delete', [BankController::class, 'destroy'])->name('delete');
+
+            Route::prefix('settings')->as('settings.')->group(function() {
+                Route::get('/', [BankController::class, 'showBankConfig'])->name('index');
+                Route::post('/update', [BankController::class, 'updateBankConfig'])->name('update');
+            });
+        });
+    });
 
     // Route::get('/system/dashboard', [DashboardController::class, 'home'])->name('system.index');
 });

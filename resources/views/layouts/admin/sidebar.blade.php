@@ -55,9 +55,6 @@
                 @can('view result-checker transaction')
                     <x-admin.dropdown-item title="E-PINs" link="{{ route('admin.transaction.result-checker') }}" />
                 @endcan
-                {{-- @can('view money transaction') --}}
-                <x-admin.dropdown-item title="Money Transfer" link="{{ route('admin.transaction.money-transfer') }}" />
-                {{-- @endcan --}}
                 <x-admin.dropdown-item title="Reseller Mgt." link="{{ route('admin.transaction.reseller') }}" />
             </x-admin.dropdown>
         @endif
@@ -74,6 +71,21 @@
                 @endcan
                 @can('blacklist')
                     <x-admin.dropdown-item title="Blacklist" link="{{ route('admin.blacklist') }}" />
+                @endcan
+            </x-admin.dropdown>
+        @endif
+
+        <li class="nav-heading">Scheduled Mgt.</li>
+        <x-admin.menu title="Scheduled Transactions" icon="bi-arrow-clockwise" link="{{ route('admin.scheduled.index') }}" />
+
+        @if(auth()->user()->can('view banks'))
+            <li class="nav-heading">Bank Mgt</li>
+            <x-admin.dropdown title="Bank Settings" icon="bxs-cog">
+                @can('create banks')
+                    <x-admin.dropdown-item title="Add Bank" link="{{ route('admin.bank.create') }}" />
+                @endcan
+                @can('view banks')
+                    <x-admin.dropdown-item title="Manage Banks" link="{{ route('admin.bank.index') }}" />
                 @endcan
             </x-admin.dropdown>
         @endif
@@ -100,7 +112,7 @@
             <li class="nav-heading">Activity Logger</li>
             <x-admin.dropdown title="Activity Logs" icon="bi-clock-history">
                 @can('view logs')
-                    <x-admin.dropdown-item title="Logs" link="{{ route('admin.logs') }}" />
+                    <x-admin.dropdown-item title="Logs" link="{{ route('admin.activity') }}" />
                 @endcan
             </x-admin.dropdown>
         @endif

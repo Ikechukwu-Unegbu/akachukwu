@@ -98,7 +98,7 @@
                 </div>
                 <div>
                     <label class="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" id="toggleSchedule" class="sr-only peer" x-model="showSchedule">
+                        <input type="checkbox" id="toggleSchedule" class="sr-only peer" x-model="showSchedule" x-on:click="$wire.handleSchedule">
                         <div
                             class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600">
                         </div>
@@ -110,27 +110,39 @@
             <div x-show="showSchedule" class="my-4 flex flex-col">
                 <label for="frequency" class="border border-[#D8D8D894] rounded-2xl p-2">
                     <h3 class="mb-2 text-base font-semibold text-[#646464]">Frequency</h3>
-                    <select id="frequency" name="frequency"
-                        class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
-                        <option value="daily">Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="monthly">Monthly</option>
-                        <option value="yearly">Yearly</option>
+                    <select
+                        id="frequency"
+                        name="frequency"
+                        class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        wire:model="frequency"
+                    >
+                        <option value="">-------------</option>
+                        @foreach ($frequencies as $_frequency)
+                            <option value="{{ $_frequency }}">{{ Str::title($_frequency) }}</option>
+                        @endforeach
                     </select>
+                    @error('frequency')
+                        <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
+                    @enderror
                 </label>
 
                 <label for="start-date" class="mt-2 border border-[#D8D8D894] rounded-2xl p-2">
                     <h3 class="mb-2 text-base font-semibold text-[#646464]">Start Date</h3>
-                    <input type="date" id="start-date" name="start-date" placeholder="02/02/2025"
-                        class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    <input type="date" id="start-date" name="start-date" placeholder="02/02/2025" wire:model="date" class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
+                    @error('date')
+                        <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
+                    @enderror
                 </label>
 
                 <label for="time" class="mt-2 border border-[#D8D8D894] rounded-2xl p-2">
                     <h3 class="mb-2 text-base font-semibold text-[#646464]">Time</h3>
                     <div class="w-full">
-                        <input type="time" id="time" name="time" placeholder="08:00AM"
+                        <input type="time" id="time" name="time" placeholder="08:00AM" wire:model="time"
                             class="w-full rounded border border-gray-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500">
                     </div>
+                    @error('time')
+                        <span class="text-red-500 font-bold text-sm"> {{ $message }} </span>
+                    @enderror
                 </label>
             </div>
         </div> --}}
@@ -171,7 +183,7 @@
             <h6>₦{{ number_format(auth()->user()->account_balance, 2) }}</h6>
         </div>
     </x-pin-validation>
-    <x-transaction-status :status="$transaction_status" utility="Airtime" :link="$transaction_link" :modal="$transaction_modal" />
+    <x-transaction-status :status="$transaction_status" utility="Airtime" :link="$transaction_link" :modal="$transaction_modal" :action="$isScheduled" />
 </div>
 @push('scripts')
     <script>

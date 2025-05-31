@@ -92,8 +92,8 @@
                                 <tr>
                                     <td>{{ ($transfers->currentPage() - 1) * $transfers->perPage() + $loop->iteration }}</td>
                                     <td>{{ $transfer->reference_id }}</td>
-                                    <td>{{ $transfer->sender->name ?? 'N/A' }}</td>
-                                    <td>{{ $transfer->receiver->name ?? 'N/A' }}</td>
+                                    <td>{{ $transfer->sender->username ?? 'N/A' }}</td>
+                                    <td>{{ $transfer->receiver->username ?? 'N/A' }}</td>
                                     <td>₦{{ number_format($transfer->amount, 2) }}</td>
                                     <td>{{ $transfer->created_at->format('M d, Y h:i A') }}</td>
                                     <td>

@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ElectricityTransaction extends Model
 {
-    use LogsActivity, HasFactory, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText, HasTransactionType;
+    use HasFactory, TransactionStatusTrait, GeneratesTransactionId, RecordsBalanceChanges, HasStatusText, HasTransactionType;
     protected $guarded = [];
     protected $addsToBalance = false;
     protected $fillable = [
@@ -46,33 +46,6 @@ class ElectricityTransaction extends Model
         'updated_at',
         'discount'
     ];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly([
-            'transaction_id',
-            'user_id',
-            'vendor_id',
-            'disco_id',
-            'disco_name',
-            'meter_number',
-            'meter_type_id',
-            'meter_type_name',
-            'amount',
-            'customer_mobile_number',
-            'customer_name',
-            'customer_address',
-            'balance_before',
-            'balance_after',
-            'api_data_id',
-            'api_response',
-            'token',
-            'status',
-            'discount'
-        ]);
-        // Chain fluent methods for configuration options
-    }
 
     public function user() : BelongsTo
     {
