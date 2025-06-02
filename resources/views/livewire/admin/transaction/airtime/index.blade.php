@@ -80,8 +80,7 @@
                         'Vendor',
                         'Amount',
                         'Discount',
-                        'Bal. B4',
-                        'Bal. After',
+                   
                         'Date',
                         'Status',
                         'Action',
@@ -94,17 +93,18 @@
                                         <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $airtime_transaction->id }}">
                                     </div>
                                 </th>
+                                <td>{{ $airtime_transaction->transaction_id }}</td>
                                 <td> <a
                                         href="{{ route('admin.hr.user.show', [$airtime_transaction->user->username]) }}">{{ $airtime_transaction->user->username }}</a>
                                 </td>
-                                <td>{{ $airtime_transaction->transaction_id }}</td>
+                               
                                 <td>{{ $airtime_transaction->mobile_number }}</td>
                                 <td>{{ $airtime_transaction->network_name ?? '' }}</td>
                                 <td>{{ $airtime_transaction->vendor->name ?? '' }}</td>
                                 <td>₦{{ $airtime_transaction->amount }}</td>
                                 <td>%{{ $airtime_transaction->discount }}</td>
-                                <td>₦{{ $airtime_transaction->balance_before }}</td>
-                                <td>₦{{ $airtime_transaction->balance_after }}</td>
+                                {{--<td>₦{{ $airtime_transaction->balance_before }}</td>
+                                <td>₦{{ $airtime_transaction->balance_after }}</td>--}}
                                 <td>{{ $airtime_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span
