@@ -67,7 +67,7 @@
             <div class="card-header">
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage" wireSearchAction="wire:model.live=search"  />
             </div>
-            <div class="card-body">                
+            <div class="card-body">
                 <x-admin.table>
                     <x-admin.table-header :headers="['#','Trx. ID', 'User', 'Meter. Info.','Customer', 'Disco Name','Address', 'Amount','Bal. b4','Bal. After','After Rfund', 'Token','Date', 'Status', 'Action']" />
                     <x-admin.table-body>
@@ -75,8 +75,8 @@
                             <tr>
                                 <th scope="row">
                                     <div class="form-check">
-                                        <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $electricity_transaction->id }}">
-                                    </div>    
+                                        <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $electricity_transaction->id }}" @disabled(Str::lower($electricity_transaction->vendor_status) === 'refunded')>
+                                    </div>
                                 </th>
                                 <td>{{$electricity_transaction->transaction_id}}</td>
                                 <td> <a  href="{{route('admin.hr.user.show', [$electricity_transaction->user->username])}}">{{ $electricity_transaction->user->username }}</a> </td>
@@ -111,9 +111,9 @@
                                 <td colspan="8">No records available</td>
                             </tr>
                         @endforelse
-                    </x-admin.table-body> 
+                    </x-admin.table-body>
                 </x-admin.table>
-                <x-admin.paginate :paginate=$electricity_transactions /> 
+                <x-admin.paginate :paginate=$electricity_transactions />
             </div>
         </div>
     </section>

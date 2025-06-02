@@ -67,16 +67,18 @@
             <div class="card-header">
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage" wireSearchAction="wire:model.live=search"  />
             </div>
-            <div class="card-body">                
+            <div class="card-body">
                 <x-admin.table>
                     <x-admin.table-header :headers="['#', 'Trx. ID', 'User', 'Phone No.', 'Network','Vendor', 'Data Plan', 'Amount', 'Bal. B4', 'Bal. After', 'After Refund','Discount', 'Date', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($data_transactions as $data_transaction)
                             <tr>
                                 <th scope="row">
+
                                     <div class="form-check">
-                                        <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $data_transaction->id }}">
-                                    </div>    
+                                        <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $data_transaction->id }}" @disabled(Str::lower($data_transaction->vendor_status) === 'refunded') id="transaction-{{ $data_transaction->id }}" value="{{ $data_transaction->id }}">
+                                    </div>
+
                                 </th>
                                 <td> <a  href="{{route('admin.hr.user.show', [$data_transaction->user->username])}}">{{ $data_transaction->user->username }}</a> </td>
                                 <td>{{ $data_transaction->transaction_id }}</td>
@@ -113,7 +115,7 @@
                     </x-admin.table-body>
                 </x-admin.table>
 
-                <x-admin.paginate :paginate=$data_transactions /> 
+                <x-admin.paginate :paginate=$data_transactions />
             </div>
         </div>
     </section>
