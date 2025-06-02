@@ -108,16 +108,43 @@ class GeneralHelpers{
     public static function minimumTransaction($amount) : bool
     {
         $siteSetting = SiteSetting::find(1);
+
         if ($siteSetting && $siteSetting->minimum_transfer > $amount) {
             return false;
         }
         return true;
     }
 
+    public static function singleTransactionLimit($amount, $userId)
+    {
+        $user = User::find($userId);
+        $settings = SiteSetting::first();
+
+        if ($user && !is_null($user->single_transfer_limit)) {
+            $singleLimit = $user->single_transfer_limit;
+        } else {
+            $singleLimit = $settings->single_transfer_limit ?? 0;
+        }
+
+        $status = $amount <= $singleLimit;
+
+        return (object)[
+            'status' => $status,
+            'limit' => $singleLimit
+        ];
+    }
+
     public static function dailyTransactionLimit($model, $amount, $userId)
     {
         $settings = SiteSetting::first();
-        $dailyLimit = $settings->maximum_transfer;
+        $user = User::find($userId);
+
+        if ($user && !is_null($user->daily_transfer_limit)) {
+            $dailyLimit = $user->daily_transfer_limit;
+        } else {
+            $settings = SiteSetting::first();
+            $dailyLimit = $settings->maximum_transfer ?? 0;
+        }
 
         $totalSpentToday = $model::where('user_id', $userId)
             ->whereDate('created_at', Carbon::today())
@@ -182,5 +209,23 @@ class GeneralHelpers{
     public static function totalUsersCount()
     {
         return User::count();
+    }
+
+    public static function singleTransferLimit($user)
+    {
+        if (!is_null($user->single_transfer_limit)) {
+            return $user->single_transfer_limit;
+        }
+        $settings = SiteSetting::first();
+        return $settings->single_transfer_limit ?? 0;
+    }
+
+    public static function dailyTransferLimit($user)
+    {
+        if (!is_null($user->daily_transfer_limit)) {
+            return $user->daily_transfer_limit;
+        }
+        $settings = SiteSetting::first();
+        return $settings->maximum_transfer ?? 0;
     }
 }
