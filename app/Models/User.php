@@ -27,31 +27,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
-    protected $fillable = [
-        'name',
-        'username',
-        'email',
-        'role',
-        'email_verified_at',
-        'password',
-        'image',
-        'address',
-        'mobile',
-        'referer_username',
-        'gender',
-        'account_balance',
-        'wallet_balance',
-        'bonus_balance',
-        'remember_token',
-        'phone',
-        'user_level',
-        'pin',
-        'bvn',
-        'nin',
-        'os_player_id',
-        'device_type',
-    ];
-
     public function isBlocked()
     {
         return $this->blocked_by_admin;
