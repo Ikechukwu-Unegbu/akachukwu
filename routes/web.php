@@ -1,29 +1,31 @@
 <?php
 
-use App\Http\Controllers\Blog\BlogPageController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\MtnDevController;
+use App\Models\User;
+use App\Models\Data\DataPlan;
+use App\Notifications\WelcomeEmail;
 use Illuminate\Support\Facades\Route;
+use App\Services\Payment\MonnifyService;
 use  App\Http\Controllers\TestController;
 use App\Http\Controllers\PagesController;
+use App\Http\Controllers\MtnDevController;
+use App\Http\Controllers\V1\PinController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\V1\AdminController;
-use App\Http\Controllers\V1\Utilities\TVController;
-use App\Http\Controllers\ProfileSettingsController;
-use App\Http\Controllers\UpgradeToResellerController;
+use Illuminate\Support\Facades\Notification;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\V1\SettingsController;
+use App\Http\Controllers\Blog\BlogPageController;
+use App\Notifications\AdminDebitUserNotification;
 use App\Http\Controllers\V1\ApiResponseController;
-use App\Http\Controllers\V1\BonusWithdrawalController;
+use App\Http\Controllers\V1\TransactionController;
+use App\Http\Controllers\ProfileSettingsController;
+use App\Http\Controllers\V1\Utilities\TVController;
+use App\Http\Controllers\UpgradeToResellerController;
 use App\Http\Controllers\V1\Utilities\DataController;
+use App\Http\Controllers\V1\BonusWithdrawalController;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;
 use App\Http\Controllers\V1\Education\ResultCheckerController;
-use App\Http\Controllers\V1\PinController;
-use App\Http\Controllers\V1\SettingsController;
-use App\Http\Controllers\V1\TransactionController;
-use App\Models\Data\DataPlan;
-use App\Models\User;
-use App\Notifications\WelcomeEmail;
-use Illuminate\Support\Facades\Notification;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,11 +38,29 @@ use Illuminate\Support\Facades\Notification;
 |
 */
 
-Route::get('/ref', function(){
-    $user = User::find(1);
-    
-    Notification::sendNow($user, new WelcomeEmail('345678',$user));
-   return view('emails.welcome');
+
+Route::get('/ref/{username}', function($username){
+    // dd($username);
+    $user = User::where('username', $username)->firstOrFail();
+    // $service = new MonnifyService();
+    // return $service->getAllVirtualAccountsOfGivenUser($user->username);
+
+    try {
+        $validatedData = [
+           'amount' => 1000,
+           'reason' => 'Test debit',
+           'action' => 'debit',
+           'record' => true
+       ];
+
+       $user->notify(new AdminDebitUserNotification($validatedData));
+       return response()->json(['message' => 'Email sent successfully']);
+
+    } catch (\Exception $e) {
+        dd($e->getMessage());
+        return response()->json(['error' => 'An error occurred while processing your request.'], 500);
+    }
+
 });
 
 Route::get('savings', function () {
@@ -159,7 +179,7 @@ Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate'])
     Route::get('otp/verify', function () {
         return view('auth.otp');
     })->name('otp');
-    
+
     Route::post('/upgrade-to-reseller', UpgradeToResellerController::class)->name('reseller-upgrade');
     // Route::get('money-transfer', \App\Livewire\User\MoneyTransfer\Index::class)->name('user.money-transfer');
 
@@ -195,3 +215,5 @@ require __DIR__ . '/admin.php';
 require __DIR__ . '/feature.php';
 require __DIR__ . '/savings.php';
 require __DIR__ . '/logger.php';
+
+

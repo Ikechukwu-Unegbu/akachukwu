@@ -11,7 +11,7 @@ use Livewire\WithPagination;
 class Index extends Component
 {
     use WithPagination;
-    
+
     public $perPage = 50;
     public $perPages = [50, 100, 200];
     public $search;
@@ -39,9 +39,9 @@ class Index extends Component
                 $user = User::where('id', $transaction->user_id)->lockForUpdate()->first();
 
                 if ($this->action === 'debit')
-                    $this->debited($transaction, $user, $amount);   
+                    $this->debited($transaction, $user, $amount);
 
-                if ($this->action === 'refund') 
+                if ($this->action === 'refund')
                     $this->refunded($transaction, $user, $amount);
             }
 
@@ -55,22 +55,29 @@ class Index extends Component
 
     private function debited($transaction, $user, $amount) : void
     {
+        $transaction->update(['sender_balance_before' => $user->account_balance]);
+
         $user->account_balance -= $amount;
         $user->save();
         $transaction->update([
             'status'            =>  0,
-            'transfer_status'   =>  'failed'
+            'transfer_status'   =>  'failed',
+            'sender_balance_after' => $user->account_balance
         ]);
     }
 
     private function refunded($transaction, $user, $amount) : void
     {
+        $transaction->update(['sender_balance_before' => $user->account_balance]);
+
         $user->account_balance += $amount;
         $user->save();
+
         $transaction->update([
             'status'            =>  2,
             'transfer_status'   =>  'refunded',
             'balance_after_refund' => $amount,
+            'sender_balance_after' => $user->account_balance
         ]);
     }
 

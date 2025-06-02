@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Traits;
+
 trait HasTransactionType
 {
     public function getTransactionTypeAttribute(): string
@@ -16,12 +17,36 @@ trait HasTransactionType
         return 'debit';
     }
 
+    public function getTitleAttribute(): string
+    {
+        // Handle MoneyTransfer special case
+        if ($this instanceof \App\Models\MoneyTransfer) {
+            $prefix = $this->type == 'internal' ? 'internal transfer' : 'bank transfer';
+            return $prefix;
+        }
+
+        // Default cases for other models
+        $type = str_replace('_', ' ', $this->getTable());
+        $type = str_replace(' transactions', '', $type);
+        $type = ucfirst($type);
+
+        return $type;
+    }
+
     public static function bootHasTransactionType()
     {
         static::retrieved(function ($model) {
-            if (!in_array('transaction_type', $model->appends ?? [])) {
-                $model->appends[] = 'transaction_type';
+            $appends = $model->appends ?? [];
+
+            if (!in_array('transaction_type', $appends)) {
+                $appends[] = 'transaction_type';
             }
+
+            if (!in_array('title', $appends)) {
+                $appends[] = 'title';
+            }
+
+            $model->appends = $appends;
         });
     }
 }

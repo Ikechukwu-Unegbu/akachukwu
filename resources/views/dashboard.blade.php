@@ -86,7 +86,7 @@
                 @php
                     $isFunding = $transaction->type === 'funding';
                     $isTransfer = $transaction->plan_name === 'Transfer';
-                    $isCredit = $isFunding ? true : false;
+                    $isCredit = $isFunding ? true : ($transaction->vendor_status === 'refunded' ? true : false);
                     $statusColor = match (Str::lower($transaction->vendor_status)) {
                         'successful' => 'green',
                         'failed' => 'red',

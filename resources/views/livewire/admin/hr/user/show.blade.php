@@ -21,19 +21,19 @@
                     <button type="button"  class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#block_modal">
                         Block this user
                     </button>
-                    @else 
+                    @else
                     <button type="button"  class="btn btn-success" data-bs-toggle="modal" data-bs-target="#unblock_modal">
                         Unblock User
                     </button>
-                    @endif 
+                    @endif
                     <button type="button"  class="btn btn-{{ $user->deleted_at ? 'success' : 'danger' }} mt-5" data-bs-toggle="modal" data-bs-target="#soft-delete">
                         {{ $user->deleted_at ? 'Undo Soft Deleted' : 'Soft Delete This User' }}
                     </button>
 
 
-                    <button type="button"  class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#reset-email">
+                    <!-- <button type="button"  class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#reset-email">
                       Send Password Reset Email
-                    </button>
+                    </button> -->
 
 
                     <button type="button"  class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#reset-email">
@@ -50,7 +50,7 @@
                             <h4>User Details</h4>
                             @can('impersonate')
                             <div class="filter">
-                                <a class="btn btn-primary btn-sm" href="#" data-bs-toggle="dropdown">Action</a>                                
+                                <a class="btn btn-primary btn-sm" href="#" data-bs-toggle="dropdown">Action</a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                     <li><a href="#" class="dropdown-item text-success" data-bs-toggle="modal"
                                             data-bs-target="#impersonateUserModal">Login as {{ $user->name }}</a></li>
@@ -61,8 +61,25 @@
                     </div>
                     <div class="pt-2 card-body profile-overview">
                         <div class="row">
-                            <div class="col-lg-3 col-md-4 label ">Level</div>
-                            <div class="col-lg-9 col-md-8">{{ Str::title($user->user_level) }}</div>
+                            <div class="col-lg-3 col-md-4 label ">Role</div>
+                            <div class="col-lg-9 col-md-8">
+                                @php
+                                    $roleLabels = [
+                                        'user' => 'User',
+                                        'admin' => 'Administrator',
+                                        'superadmin' => 'Super Administrator',
+                                    ];
+                                    $roleClasses = [
+                                        'user' => 'text-secondary',
+                                        'admin' => 'text-primary fw-bold',
+                                        'superadmin' => 'text-danger fw-bold',
+                                    ];
+                                    $role = $user->role;
+                                @endphp
+                                <span class="{{ $roleClasses[$role] ?? 'text-dark' }}">
+                                    {{ $roleLabels[$role] ?? Str::title($role) }}
+                                </span>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Address</div>
@@ -96,12 +113,18 @@
                             <div class="col-lg-3 col-md-4 label ">NIN</div>
                             <div class="col-lg-9 col-md-8">{{ $user->nin}}</div>
                         </div>
-                
+
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Deleted At: </div>
                             <div class="col-lg-9 col-md-8">{{ $user->deleted_at}}</div>
                         </div>
-              
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <div></div>
+                            <a href="{{ route('admin.hr.user.upgrade', $user->username) }}" class="btn btn-primary">Update User</a>
+                        </div>
                     </div>
                 </div>
 
@@ -125,7 +148,7 @@
                                 <td>₦ {{ isset($transaction->balance_before) ? $transaction->balance_before : 'NA' }}</td>
                                 <td>₦ {{ isset($transaction->balance_after) ? $transaction->balance_after : 'NA' }}</td>
 
-                              
+
                                 <td>
                                     <small>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</small>
                                 </td>
@@ -233,7 +256,7 @@
                     </div>
                 </div>
             </div>
-     
+
     </div>
 
 
@@ -261,7 +284,7 @@
             </div>
         </div>
     </div>
-   
+
 
 </div>
 

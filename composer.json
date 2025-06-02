@@ -6,7 +6,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2.18",
+        "barryvdh/laravel-dompdf": "^3.1",
         "doctrine/dbal": "^3.9",
+        "donatj/phpuseragentparser": "^1.10",
         "guzzlehttp/guzzle": "^7.2",
         "laravel-notification-channels/onesignal": "^2.7",
         "laravel/framework": "^10.10",
@@ -14,6 +16,8 @@
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "3.0",
         "livewire/livewire": "^3.1",
+        "maatwebsite/excel": "^3.1",
+        "opcodesio/log-viewer": "^3.17",
         "sentry/sentry-laravel": "^4.6",
         "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-permission": "^6.3",

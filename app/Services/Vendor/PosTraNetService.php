@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use App\Models\Data\DataPlan;
 use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
+use App\Helpers\GeneralHelpers;
 use App\Models\Data\DataNetwork;
 use App\Models\Utility\CablePlan;
 use Illuminate\Support\Facades\DB;
@@ -25,11 +26,12 @@ use App\Services\Airtime\AirtimeService;
 use App\Models\Utility\AirtimeTransaction;
 use App\Services\Referrals\ReferralService;
 use App\Actions\Idempotency\IdempotencyCheck;
-use App\Helpers\GeneralHelpers;
+use App\Services\ScheduledTransactionService;
 use App\Models\Utility\ElectricityTransaction;
 use App\Services\Account\AccountBalanceService;
 use App\Services\Beneficiary\BeneficiaryService;
 use App\Models\Education\ResultCheckerTransaction;
+
 
 class PosTraNetService
 {
@@ -53,7 +55,7 @@ class PosTraNetService
     {
         return [
             'Authorization' => "Token " . self::$vendor->token,
-            'Content-Type'  => 'application/json'
+            'Content-Type' => 'application/json'
         ];
     }
 
@@ -79,14 +81,14 @@ class PosTraNetService
 
             if ($response)
                 return response()->json([
-                    'status'    =>  true,
-                    'response'  => number_format($response->user->Account_Balance, 2)
+                    'status' => true,
+                    'response' => number_format($response->user->Account_Balance, 2)
                 ], 200)->getData();
 
 
             return response()->json([
-                'status'    =>  false,
-                'response'  => []
+                'status' => false,
+                'response' => []
             ], 401)->getData();
         } catch (\Throwable $th) {
         }
@@ -94,7 +96,7 @@ class PosTraNetService
 
 
 
-    public static function airtime($networkId, $amount, $mobileNumber)
+    public static function airtime($networkId, $amount, $mobileNumber, $isScheduled = false, $scheduledPayload, $initialRun = false, $hasTransaction)
     {
         try {
 
@@ -104,15 +106,15 @@ class PosTraNetService
             }
 
             // Start a database transaction to ensure atomicity
-            return DB::transaction(function () use ($networkId, $amount, $mobileNumber) {
+            return DB::transaction(function () use ($networkId, $amount, $mobileNumber, $isScheduled, $scheduledPayload, $initialRun, $hasTransaction) {
 
                 $network = DataNetwork::whereVendorId(self::$vendor->id)->whereNetworkId($networkId)->first();
                 $discount = $network->airtime_discount;
 
                 GeneralHelpers::randomDelay();
 
-                if(Auth::check()){
-                    if(Auth::user()->account_balance < $amount){
+                if (Auth::check()) {
+                    if (Auth::user()->account_balance < $amount) {
                         return ApiHelper::sendError('Insufficient balance', "You dont have enough money for this transaction.");
                     }
                 }
@@ -138,29 +140,52 @@ class PosTraNetService
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
                 // Create an airtime transaction record
-                $transaction = AirtimeTransaction::create([
-                    'user_id' => Auth::id(),
-                    'vendor_id' => self::$vendor->id,
-                    'network_id' => $network->network_id,
-                    'network_name' => $network->name,
-                    'amount' => $amount,
-                    'mobile_number' => $mobileNumber,
-                    'balance_before' => $user->account_balance,
-                    'balance_after' => $user->account_balance,
-                    'discount' => $discount
-                ]);
+                if (!$hasTransaction) {
+                    $transaction = AirtimeTransaction::create([
+                        'user_id' => Auth::id(),
+                        'vendor_id' => self::$vendor->id,
+                        'network_id' => $network->network_id,
+                        'network_name' => $network->name,
+                        'amount' => $amount,
+                        'mobile_number' => $mobileNumber,
+                        'balance_before' => $user->account_balance,
+                        'balance_after' => $user->account_balance,
+                        'discount' => $discount
+                    ]);
+                }
 
-                 // If the user is a reseller, apply any discounts
-                 $discountedAmount = $amount;
+                if ($hasTransaction) $transaction = $hasTransaction;
 
-                 if (auth()->user()->isReseller()) {
+                // If the user is a reseller, apply any discounts
+                $discountedAmount = $amount;
+
+                if (auth()->user()->isReseller()) {
                     $discountedAmount = CalculateDiscount::applyDiscount($discountedAmount, 'airtime');
                 }
                 // Apply any other discounts (if applicable)
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
                 // Deduct the amount from the user's balance if they have enough funds
-                $user->account_balance -= $discountedAmount;  // Deduct the amount
-                $user->save();  // Save the updated balance
+                if (!$initialRun) {
+                    $user->account_balance -= $discountedAmount;  // Deduct the amount
+                    $user->save();  // Save the updated balance
+                }
+
+                if ($isScheduled) {
+                    $transaction->pending();
+                    $scheduledPayload['type'] = 'airtime';
+                    $schedulerService = ScheduledTransactionService::initiateScheduler($transaction, $scheduledPayload);
+
+                    if (isset($schedulerService['status']) && $schedulerService['status']) {
+                        return ApiHelper::sendResponse($transaction, $schedulerService['message']);
+                    }
+
+                    $errorResponse = [
+                        'error' => 'Scheduler Failed',
+                        'message' => "An error occurred during scheduling Airtime request. Please try again later."
+                    ];
+
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
 
                 // Send the request to the API for airtime purchase
                 $data = [
@@ -197,7 +222,7 @@ class PosTraNetService
                     // Update the transaction after successful API response
                     $transaction->update([
                         // 'balance_after' => self::$authUser->getAccountBalance(),
-                        'api_data_id' => $response->id ?? $response->ident
+                        'api_data_id' => $response?->id ?? $response?->ident
                     ]);
 
                     self::$authUser->initiateSuccess($discountedAmount, $transaction);
@@ -325,7 +350,7 @@ class PosTraNetService
                     $transaction->update([
                         // 'balance_after' => self::$authUser->getAccountBalance(),
                         'token' => VendorHelper::removeTokenPrefix($response->token),
-                        'api_data_id' => $response->id ?? $response->ident
+                        'api_data_id' => $response?->id ?? $response?->ident
                     ]);
                     self::$authUser->initiateSuccess($discountedAmount, $transaction);
                     BeneficiaryService::create($transaction->meter_number, 'electricity', $transaction);
@@ -361,7 +386,6 @@ class PosTraNetService
         }
     }
 
-
     public static function cable($cableId, $cablePlan, $iucNumber, $customer)
     {
         try {
@@ -374,31 +398,31 @@ class PosTraNetService
                 $user = User::where('id', Auth::id())->lockForUpdate()->firstOrFail();
 
                 $verifyAccountBalance = self::verifyAccountBalance($cable_plan->amount);
-                if (! $verifyAccountBalance->status) {
+                if (!$verifyAccountBalance->status) {
                     return ApiHelper::sendError($verifyAccountBalance->error, $verifyAccountBalance->message);
                 }
 
                 $discount = $cable->discount;
 
                 $transaction = CableTransaction::create([
-                    'user_id'             =>  $user->id,
-                    'vendor_id'           =>  $vendor->id,
-                    'cable_name'          =>  $cable->cable_name,
-                    'cable_id'            =>  $cable->cable_id,
-                    'cable_plan_name'     =>  $cable_plan->package,
-                    'cable_plan_id'       =>  $cable_plan->cable_plan_id,
-                    'smart_card_number'   =>  $iucNumber,
-                    'customer_name'       =>  $customer,
-                    'amount'              =>  $cable_plan->amount,
-                    'balance_before'      =>  $user->account_balance,
-                    'balance_after'       =>  $user->account_balance,
-                    'discount'            =>  $discount
+                    'user_id' => $user->id,
+                    'vendor_id' => $vendor->id,
+                    'cable_name' => $cable->cable_name,
+                    'cable_id' => $cable->cable_id,
+                    'cable_plan_name' => $cable_plan->package,
+                    'cable_plan_id' => $cable_plan->cable_plan_id,
+                    'smart_card_number' => $iucNumber,
+                    'customer_name' => $customer,
+                    'amount' => $cable_plan->amount,
+                    'balance_before' => $user->account_balance,
+                    'balance_after' => $user->account_balance,
+                    'discount' => $discount
                 ]);
 
                 $data = [
-                    'cablename'         =>  $transaction->cable_id,
-                    'cableplan'         =>  $transaction->cable_plan_id,
-                    'smart_card_number' =>  $transaction->smart_card_number
+                    'cablename' => $transaction->cable_id,
+                    'cableplan' => $transaction->cable_plan_id,
+                    'smart_card_number' => $transaction->smart_card_number
                 ];
 
                 $response = self::url(self::CABLE_URL, $data);
@@ -429,7 +453,7 @@ class PosTraNetService
                 if (isset($response->error)) {
                     self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
                     $errorResponse = [
-                        'error'   => 'Insufficient Balance From API.',
+                        'error' => 'Insufficient Balance From API.',
                         'message' => "An error occurred during cable payment request. Please try again later."
                     ];
                     Log::error($errorResponse);
@@ -439,7 +463,7 @@ class PosTraNetService
                 if (isset($response->Status) && $response->Status == 'successful') {
                     $transaction->update([
                         // 'balance_after' => $user->account_balance,
-                        'api_data_id'   => $response->id ?? $response->ident
+                        'api_data_id' => $response?->id ?? $response?->ident
                     ]);
 
                     self::$authUser->initiateSuccess($discountedAmount, $transaction);
@@ -451,8 +475,8 @@ class PosTraNetService
 
                 if (isset($response->Status) && $response->Status == 'failed') {
                     $errorResponse = [
-                        'error'     => 'API response Error',
-                        'message'   => "Cable purchase failed. Please try again later.",
+                        'error' => 'API response Error',
+                        'message' => "Cable purchase failed. Please try again later.",
                     ];
 
                     self::$authUser->initiatePending($discountedAmount, $transaction);
@@ -461,8 +485,8 @@ class PosTraNetService
                 }
 
                 $errorResponse = [
-                    'error'     => 'Server Error',
-                    'message'   => "Oops! Unable to Perform transaction. Please try again later."
+                    'error' => 'Server Error',
+                    'message' => "Oops! Unable to Perform transaction. Please try again later."
                 ];
 
                 self::$authUser->initiatePending($discountedAmount, $transaction);
@@ -472,18 +496,18 @@ class PosTraNetService
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
-                'error'     =>  'Network Connection Error',
-                'message'   =>  'Oops! Unable to make payment. Please check your network connection.',
+                'error' => 'Network Connection Error',
+                'message' => 'Oops! Unable to make payment. Please check your network connection.',
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
     }
 
-    public static function data($networkId, $typeId, $dataId, $mobileNumber)
+    public static function data($networkId, $typeId, $dataId, $mobileNumber, $isScheduled = false, $scheduledPayload, $initialRun = false, $hasTransaction)
     {
         try {
             // Start a database transaction to ensure atomicity
-            return DB::transaction(function () use ($networkId, $typeId, $dataId, $mobileNumber) {
+            return DB::transaction(function () use ($networkId, $typeId, $dataId, $mobileNumber, $isScheduled, $scheduledPayload, $initialRun, $hasTransaction) {
 
                 // Retrieve vendor, network, plan, and type (same logic as before)
                 $vendor = self::$vendor;
@@ -512,24 +536,28 @@ class PosTraNetService
 
 
                 // Proceed with transaction logic
-                $transaction = DataTransaction::create([
-                    'user_id' => Auth::id(),
-                    'vendor_id' => $vendor->id,
-                    'network_id' => $network->network_id,
-                    'type_id' => $type->id,
-                    'data_id' => $plan->data_id,
-                    'amount' => $plan->amount,
-                    'size' => $plan->size,
-                    'validity' => $plan->validity,
-                    'mobile_number' => $mobileNumber,
-                    'balance_before' => $user->account_balance,
-                    'balance_after' => $user->account_balance,
-                    'plan_network' => $network->name,
-                    'plan_name' => $plan->size,
-                    'plan_amount' => $plan->amount,
-                    'discount' => $network->data_discount,
-                ]);
-                Log::info((array) $transaction);
+                if (!$hasTransaction) {
+                    $transaction = DataTransaction::create([
+                        'user_id' => Auth::id(),
+                        'vendor_id' => $vendor->id,
+                        'network_id' => $network->network_id,
+                        'type_id' => $type->id,
+                        'data_id' => $plan->data_id,
+                        'amount' => $plan->amount,
+                        'size' => $plan->size,
+                        'validity' => $plan->validity,
+                        'mobile_number' => $mobileNumber,
+                        'balance_before' => $user->account_balance,
+                        'balance_after' => $user->account_balance,
+                        'plan_network' => $network->name,
+                        'plan_name' => $plan->size,
+                        'plan_amount' => $plan->amount,
+                        'discount' => $network->data_discount,
+                    ]);
+                }
+
+                if ($hasTransaction) $transaction = $hasTransaction;
+
                 // Deduct the amount from the user's account balance
                 $amount = $plan->amount;
 
@@ -546,18 +574,35 @@ class PosTraNetService
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
 
                 // Handle insufficient balance
-                if (! self::$authUser->verifyAccountBalance($amount))  {
+                if (!self::$authUser->verifyAccountBalance($amount)) {
                     $errorResponse = [
-                        'error'   => 'Insufficient Account Balance.',
+                        'error' => 'Insufficient Account Balance.',
                         'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your wallet to continue."
                     ];
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
 
-                // Deduct the amount from the user's account balance
-                // self::$authUser->transaction($discountedAmount);
-                $user->account_balance -= $discountedAmount;
-                $user->save();
+                if (!$initialRun) {
+                    // Deduct the amount from the user's account balance
+                    $user->account_balance -= $discountedAmount;
+                    $user->save();
+                }
+
+                if ($isScheduled) {
+                    $transaction->pending();
+                    $scheduledPayload['type'] = 'data';
+                    $schedulerService = ScheduledTransactionService::initiateScheduler($transaction, $scheduledPayload);
+                    if (isset($schedulerService['status']) && $schedulerService['status']) {
+                        return ApiHelper::sendResponse($transaction, $schedulerService['message']);
+                    }
+
+                    $errorResponse = [
+                        'error' => 'Scheduler Failed',
+                        'message' => "An error occurred during scheduling Data request. Please try again later."
+                    ];
+
+                    return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
+                }
 
                 // External API request and response processing (same as in your code)
                 $data = [
@@ -576,7 +621,7 @@ class PosTraNetService
                     // Insufficient API Wallet Balance Error
                     self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
                     $errorResponse = [
-                        'error'   => 'Insufficient Balance From API.',
+                        'error' => 'Insufficient Balance From API.',
                         'message' => "An error occurred during Data request. Please try again later."
                     ];
                     Log::error('API response error', (array) $response);
@@ -590,7 +635,7 @@ class PosTraNetService
                         'plan_network' => $response->plan_network,
                         'plan_name' => $response->plan_name,
                         'plan_amount' => $response->plan_amount,
-                        'api_data_id' => $response->id ?? $response->ident
+                        'api_data_id' => $response?->id ?? $response?->ident
                     ]);
 
                     // Complete success processing
@@ -626,7 +671,7 @@ class PosTraNetService
         try {
 
             $vendor = self::$vendor;
-            $meterType =  $meterType == 1 ? 'Prepaid' : 'Postpaid';
+            $meterType = $meterType == 1 ? 'Prepaid' : 'Postpaid';
 
             $disco = Electricity::whereVendorId($vendor->id)->whereDiscoId($discoId)->first()->disco_name;
 
@@ -638,23 +683,23 @@ class PosTraNetService
 
             if (!$response->invalid) {
                 $responseData = [
-                    'name'     => $response->name,
-                    'address'  => $response->address,
+                    'name' => $response->name,
+                    'address' => $response->address,
                 ];
                 return ApiHelper::sendResponse($responseData, 'Meter Number validated. Proceed to make payment.');
             }
 
             $errorResponse = [
-                'error'     =>   'Meter number error',
-                'message'   =>   'Invalid meter number. Provide a valid meter number.',
+                'error' => 'Meter number error',
+                'message' => 'Invalid meter number. Provide a valid meter number.',
             ];
 
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
-                'error'     =>  'network connection error',
-                'message'   =>  'Opps! Unable to validate number. Please check your network connection.',
+                'error' => 'network connection error',
+                'message' => 'Opps! Unable to validate number. Please check your network connection.',
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
@@ -674,21 +719,21 @@ class PosTraNetService
 
             if (!$response->invalid) {
                 $responseData = [
-                    'name'     => $response->name,
+                    'name' => $response->name,
                 ];
                 return ApiHelper::sendResponse($responseData, 'IUC validated. Proceed to make payment.');
             }
 
             $errorResponse = [
-                'error'     =>   'IUC/SMARTCARD error',
-                'message'   =>   'Invalid IUC/SMARTCARD. Please provide a valid IUC/SMARTCARD.',
+                'error' => 'IUC/SMARTCARD error',
+                'message' => 'Invalid IUC/SMARTCARD. Please provide a valid IUC/SMARTCARD.',
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
             Log::error($th->getMessage());
             $errorResponse = [
-                'error'     =>  'network connection error',
-                'message'   =>  'Opps! Unable to validate IUC/SMARTCARD. Please check your network connection.',
+                'error' => 'network connection error',
+                'message' => 'Opps! Unable to validate IUC/SMARTCARD. Please check your network connection.',
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         }
@@ -698,18 +743,18 @@ class PosTraNetService
     {
         if ((int) $quantity > 5) {
             return response()->json([
-                'status'    => false,
-                'error'     => [],
-                'message'   => "No. of pins out of range allowed. Kindly note that valid values are 1,2,3,4,5"
+                'status' => false,
+                'error' => [],
+                'message' => "No. of pins out of range allowed. Kindly note that valid values are 1,2,3,4,5"
             ], 401)->getData();
         }
 
         $resultCheckerModel = ResultChecker::where('vendor_id', self::$vendor->id)->where('name', $examId)->first();
         $amount = ($quantity * $resultCheckerModel->amount);
 
-        if (! self::$authUser->verifyAccountBalance($amount))
+        if (!self::$authUser->verifyAccountBalance($amount))
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'error' => 'Insufficient Account Balance.',
                 'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your wallet to continue."
             ], 401)->getData();
@@ -717,18 +762,18 @@ class PosTraNetService
         $resultCheckerModel = ResultChecker::where('vendor_id', self::$vendor->id)->where('name', $examId)->first();
 
         $transaction = ResultCheckerTransaction::create([
-            'vendor_id'         =>  self::$vendor->id,
-            'result_checker_id' =>  $resultCheckerModel->id,
-            'exam_name'         =>  $resultCheckerModel->name,
-            'quantity'          =>  $quantity,
-            'amount'            =>  $amount,
-            'balance_before'    =>  Auth::user()->account_balance,
-            'balance_after'     =>  Auth::user()->account_balance
+            'vendor_id' => self::$vendor->id,
+            'result_checker_id' => $resultCheckerModel->id,
+            'exam_name' => $resultCheckerModel->name,
+            'quantity' => $quantity,
+            'amount' => $amount,
+            'balance_before' => Auth::user()->account_balance,
+            'balance_after' => Auth::user()->account_balance
         ]);
 
         $data = [
-            "exam_name"  => $resultCheckerModel->name,
-            "quantity"   => $quantity
+            "exam_name" => $resultCheckerModel->name,
+            "quantity" => $quantity
         ];
 
         $response = static::url(self::RESULT_CHECKER_URL, $data);
@@ -738,17 +783,17 @@ class PosTraNetService
 
     protected static function verifyAccountBalance($amount)
     {
-        if (! self::$authUser->verifyAccountBalance($amount)) {
+        if (!self::$authUser->verifyAccountBalance($amount)) {
             $errorResponse = [
-                'status'    =>  false,
-                'error'     =>  'Insufficient Account Balance.',
-                'message'   =>  "You need at least ₦{$amount} to purchase this plan. Please fund your wallet to continue."
+                'status' => false,
+                'error' => 'Insufficient Account Balance.',
+                'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your wallet to continue."
             ];
             return (object) $errorResponse;
         }
 
         return (object) [
-            'status'    =>  true
+            'status' => true
         ];
     }
 
@@ -780,8 +825,8 @@ class PosTraNetService
 
                             if ($plan) {
                                 $plan->update([
-                                    'live_amount'   => $dataPlan->plan_amount,
-                                    'live_size'     => $dataPlan->plan,
+                                    'live_amount' => $dataPlan->plan_amount,
+                                    'live_size' => $dataPlan->plan,
                                     'live_validity' => $dataPlan->month_validate,
                                 ]);
                             }
@@ -822,8 +867,8 @@ class PosTraNetService
                             // dd($plan);
                             if ($plan) {
                                 $plan->update([
-                                    'live_amount'   => $cablePlan->plan_amount,
-                                    'live_package'  => $cablePlan->package,
+                                    'live_amount' => $cablePlan->plan_amount,
+                                    'live_package' => $cablePlan->package,
                                 ]);
                             }
                         }
@@ -838,7 +883,7 @@ class PosTraNetService
     public static function storeApiResponse($transaction, $response)
     {
         $transaction->update([
-            'api_response' =>  json_encode($response)
+            'api_response' => json_encode($response)
         ]);
 
         return true;
@@ -848,10 +893,10 @@ class PosTraNetService
     {
         try {
             $url = [
-                'airtime'        => self::AIRTIME_URL,
-                'cable'          => self::CABLE_URL,
-                'data'           => self::DATA_URL,
-                'electricity'    => self::ELECTRICITY_URL,
+                'airtime' => self::AIRTIME_URL,
+                'cable' => self::CABLE_URL,
+                'data' => self::DATA_URL,
+                'electricity' => self::ELECTRICITY_URL,
                 'result_checker' => self::RESULT_CHECKER_URL
             ];
             $data = json_decode($data->api_response);

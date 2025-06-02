@@ -67,6 +67,57 @@
         </div>
     </div>
 
+    <div>
+        <div class="card">
+            <div class="card-body p-4">
+                <button class="btn btn-primary" data-bs-toggle="modal"
+                    data-bs-target="#reimbursement">Reimbursement</button>
+                <div wire:ignore.self class="modal fade" id="reimbursement" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Transaction Confirmation</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gridRadios"
+                                        id="debit" value="debit" name="action">
+                                    <label class="form-check-label" for="debit">
+                                        Debit
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="gridRadios"
+                                        id="refund" value="refund" name="action">
+                                    <label class="form-check-label" for="refund">
+                                        Refund
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="mx-auto">
+                                    <button type="button" wire:loading.remove wire:target="performReimbursement"
+                                        class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary" id="proceedReimbursement">
+                                        <span id="proceedText">
+                                            Proceed
+                                        </span>
+                                        <span id="reimbursementLoader" style="display:none;">
+                                            <i class="bx bx-loader-circle bx-spin"></i> Processing...
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Results Table -->
     <div class="card">
         <div class="card-header">
@@ -111,9 +162,13 @@
                     <tbody>
                         @forelse ($transfers as $transfer)
                             <tr>
-                                <td>{{ ($transfers->currentPage() - 1) * $transfers->perPage() + $loop->iteration }}</td>
+                                <td>
+                                    <div class="form-check">
+                                        <input class="form-check-input form-check-lg transaction-checkbox" type="checkbox" value="{{ $transfer->id }}" name="transactions[]">
+                                    </div>
+                                </td>
                                 <td>{{ $transfer->reference_id }}</td>
-                                <td>{{ $transfer->sender->name ?? 'N/A' }}</td>
+                                <td>{{ $transfer->sender->username ?? 'N/A' }}</td>
                                 <td>{{ $transfer->bank_name ?? 'N/A' }} <br> {{ $transfer->account_number }}</td>
                                 <td>₦{{ number_format($transfer->amount, 2) }}</td>
                                 <td>{{ $transfer->created_at->format('M d, Y h:i A') }}</td>
@@ -151,5 +206,70 @@
 
     @push('title')
         Transfer :: InApp
+    @endpush
+
+    @push('scripts')
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const proceedBtn = document.getElementById('proceedReimbursement');
+            const loader = document.getElementById('reimbursementLoader');
+            const proceedText = document.getElementById('proceedText');
+
+            proceedBtn.addEventListener('click', function (e) {
+                // Collect checked transaction IDs
+                let checkedBoxes = document.querySelectorAll('.transaction-checkbox:checked');
+                let transactionIds = Array.from(checkedBoxes).map(cb => cb.value);
+
+                if (transactionIds.length === 0) {
+                    alert('Please select at least one transaction.');
+                    return;
+                }
+
+                // Get selected action
+                let actionChecked = document.querySelector('input[name="gridRadios"]:checked');
+                if (!actionChecked) {
+                    alert('Please select an action (Debit or Refund).');
+                    return;
+                }
+                let action = actionChecked.value;
+
+                // Show loader and disable button
+                loader.style.display = 'inline-block';
+                proceedText.style.display = 'none';
+                proceedBtn.disabled = true;
+
+                // Prepare data
+                let formData = new FormData();
+                formData.append('_token', '{{ csrf_token() }}');
+                formData.append('action', action);
+                transactionIds.forEach(id => formData.append('transactions[]', id));
+
+                // Send AJAX POST request
+                fetch('{{ route('admin.transfer.bank.reimbursement') }}', {
+                    method: 'POST',
+                    body: formData,
+                })
+                .then(response => response.json())
+                .then(data => {
+                    loader.style.display = 'none';
+                    proceedText.style.display = 'inline-block';
+                    proceedBtn.disabled = false;
+
+                    if(data.status){
+                        alert('Reimbursement processed successfully!');
+                        location.reload();
+                    } else {
+                        alert(data.message || 'An error occurred.');
+                    }
+                })
+                .catch(() => {
+                    loader.style.display = 'none';
+                    proceedText.style.display = 'inline-block';
+                    proceedBtn.disabled = false;
+                    alert('An error occurred while processing the reimbursement.');
+                });
+            });
+        });
+    </script>
     @endpush
 @endsection

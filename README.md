@@ -494,51 +494,6 @@ meter_type: *Prepaid* = 1 & *Postpaid* = 2
         },
         "message": "Result Checker PIN purchase successful: WAEC (1 QTY) ₦3900."
     }
-## Virtual Account Endpoint
-
-    GET /api/banks HTTP/1.1
-    Content-Type: application/json
-    Example Response : {
-        "status": true,
-        "response": [
-            {
-            "id": 1,
-            "name": "Access bank",
-            "code": "044",
-            "ussd_template": "*901*Amount*AccountNumber#",
-            "base_ussd_code": "*901#",
-            "transfer_ussd_template": "*901*AccountNumber#"
-            }
-        ],
-        "message": "Bank Codes fetched successfully"
-    }
-
-    GET /api/virtual-accounts HTTP/1.1
-    Content-Type: application/json
-    Authorization: Bearer 2|0q2K7QUbnT3TcQUMsyyRh4UASupLJl9XuKjotUqqe5b1832c
-    Example Response : {
-        "status": true,
-        "response": []
-        "message": "Virtual Account fetched successfully."
-    }
-
-    Either a BVN or NIN is required.
-    If a BVN is provided, then both the account number and bank code must be supplied.
-    If a NIN is provided, the account number and bank code are not required.
-    
-    POST /api/virtual-accounts/create HTTP/1.1
-    Content-Type: application/json
-    Authorization: Bearer 2|0q2K7QUbnT3TcQUMsyyRh4UASupLJl9XuKjotUqqe5b1832c
-    Body : {
-        "bvn || nin": 22222222222,
-        "account_number": 2222222222,
-        "bank_code": "044"
-    }
-    Example Response : {
-        "status": true,
-        "response": []
-        "message": "KYC updated & BVN linked to your account successfully."
-    }
 
 ## Money Transfer (Bank) Endpoint
      GET /api/bank-list HTTP/1.1

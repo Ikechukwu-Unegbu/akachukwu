@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Models\Data\DataTransaction;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Utility\UpgradeRequest;
@@ -27,8 +26,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
-
-    use LogsActivity;
 
     protected $fillable = [
         'name',
@@ -63,13 +60,6 @@ class User extends Authenticatable
     public function getAuthIdentifier()
     {
         return $this->isBlocked() ? null : parent::getAuthIdentifier();
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly(['name', ]);
-        // Chain fluent methods for configuration options
     }
 
     public function upgradeRequests()
@@ -542,12 +532,12 @@ class User extends Authenticatable
                         DB::raw('"N/A" as balance_before'),
                         DB::raw('"N/A" as balance_after'),
                         'user_id', 'amount', 'status',
-                        // DB::raw('"N/A" as vendor_status'),
-                        DB::raw('CASE
-                            WHEN status = 1 THEN "Successful"
-                            WHEN status = 0 THEN "Failed"
-                            ELSE "N/A"
-                        END as b'),
+                        DB::raw('transfer_status as vendor_status'),
+                        // DB::raw('CASE
+                        //     WHEN status = 1 THEN "Successful"
+                        //     WHEN status = 0 THEN "Failed"
+                        //     ELSE "N/A"
+                        // END as b'),
                         // DB::raw('IF(user_id = ' . (int)$userId . ' OR recipient = ' . (int)$userId . ', recipient, user_id) as subscribed_to'),
                         DB::raw('CASE WHEN user_id = ' . (int)$userId . ' OR recipient = ' . (int)$userId . ' THEN recipient ELSE user_id END as subscribed_to'),
                         DB::raw('"Transfer" as plan_name'),

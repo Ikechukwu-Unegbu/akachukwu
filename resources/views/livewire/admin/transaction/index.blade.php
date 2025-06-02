@@ -81,12 +81,12 @@
                                     <div class="mx-auto">
                                         <button type="button" wire:loading.remove wire:target="performRefund" class="btn btn-secondary"  data-bs-dismiss="modal">Close</button>
                                         <button type="button" class="btn btn-primary" wire:click='performRefund'>
-                                            
+
                                             <div wire:loading.remove wire:target="performRefund">
                                                  Proceed
                                             </div>
-                
-                                            <div wire:loading wire:target="performRefund">  
+
+                                            <div wire:loading wire:target="performRefund">
                                                 <i class="bx bx-loader-circle bx-spin"></i>  Please wait...
                                             </div>
                                         </button>
@@ -134,14 +134,33 @@
                     <x-admin.table-header :headers="[$status === 'pending' ? '#' : 'SN', 'Customer', 'Amount', 'Type', 'Date', 'Status', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($transactions as $transaction)
+                        @php
+                            $isFunding = $transaction->type === 'funding';
+                            $isTransfer = $transaction->plan_name === 'Transfer';
+                            $isCredit = $isFunding ? true : ($transaction->vendor_status === 'refunded' ? true : false);
+                            $statusColor = match (Str::lower($transaction->vendor_status)) {
+                                'successful' => 'green',
+                                'failed'     => 'red',
+                                'processing' => 'yellow',
+                                'refunded'   => 'yellow',
+                                'pending'    => 'yellow',
+                                'n/a'    => 'red',
+                                ''    => 'red',
+                                'default'    => 'red'
+                            };
+                            $textColor = match (Str::lower($transaction->vendor_status)) {
+                                'successful' => 'white',
+                                'failed'     => 'white',
+                                'processing' => 'black',
+                                'refunded'   => 'black',
+                                'pending'    => 'black',
+                                'n/a'    => 'white',
+                                ''    => 'white',
+                                'default'    => 'white'
+                            };
+                        @endphp
                             <tr>
                                 <th scope="row">
-                                    {{-- @if ($status === 'pending')
-                                        <div class="form-check">
-                                            <input class="form-check-input form-check-lg" type="checkbox" wire:model="selectedUser.{{ $transaction->utility }}.{{ $transaction->transaction_id }}">
-                                        </div>
-                                    @else
-                                    @endif --}}
                                     {{ $loop->index + $transactions->firstItem() }}
                                 </th>
                                 <td> <a href="{{route('admin.hr.user.show', [$transaction->user_name])}}">{{ $transaction->user_name }}</a> </td>
@@ -155,15 +174,16 @@
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</td>
                                 <td>
-                                    <span class="badge bg-{{ $transaction->status === 1 ? 'success' : ($transaction->status === 0 ? 'danger' : 'warning') }}">
-                                        {{ Str::title($transaction->vendor_status) }}</span>
+                                    <span class="badge" style="background-color: {{ $statusColor }}; color: {{ $textColor }};">
+                                        {{ $transaction->vendor_status ? Str::title($transaction->vendor_status) : 'N/A' }}
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
                                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             <li><a x-on:click="$wire.handleTransaction({{ $transaction->id }}, '{{ $transaction->utility }}')" href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#action-modal" class="dropdown-item text-success"><i class="bx bx-bullseye"></i> View</a></li>
-                                            <li><a href="javascript.void(0)" x-on:click="$wire.queryTransaction({{ $transaction->id }}, '{{ $transaction->utility }}')" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#action-query"><i class="bi bi-database"></i>Query Vendor</a> </li>                                       
+                                            <li><a href="javascript.void(0)" x-on:click="$wire.queryTransaction({{ $transaction->id }}, '{{ $transaction->utility }}')" class="dropdown-item text-danger" data-bs-toggle="modal" data-bs-target="#action-query"><i class="bi bi-database"></i>Query Vendor</a> </li>
                                         </ul>
                                     </div>
                                 </td>
@@ -175,8 +195,8 @@
                         @endforelse
                     </x-admin.table-body>
                 </x-admin.table>
-                <x-admin.paginate :paginate=$transactions />
 
+                {{ $transactions->links() }}
                 <div wire:ignore.self class="modal fade" id="action-modal" tabindex="-1" data-bs-backdrop="false">
                     <div class="modal-dialog modal-dialog-centered">
                         <div class="modal-content">
@@ -213,7 +233,7 @@
                                 <h5 class="modal-title">Query Vendor</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" x-on:click="$wire.handleModal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body"> 
+                            <div class="modal-body">
                                 @if ($loader)
                                     <div class="text-center" style="font-size: 20px">
                                         <i class="bx bx-loader-circle bx-spin" style="font-size: 40px"></i>
@@ -243,7 +263,7 @@
                             <div class="modal-footer d-flex justify-content-between">
                                 @if (!$loader)
                                 @if ($get_transaction?->vendor_status == 'pending' || $get_transaction?->vendor_status == 'processing' || $get_transaction?->vendor_status == 'failed')
-                                <button 
+                                <button
                                     type="button"
                                     class="btn btn-warning"
                                     x-data
@@ -253,11 +273,11 @@
                                 </button>
                                 @endif
                                 @if (!empty($vendorResponse))
-                                <button 
+                                <button
                                     type="button"
                                     x-data
                                     x-on:click='if (confirm("Are you sure you want to debit this user?")) { $wire.handleDebit(); }'
-                                    class="btn btn-danger" 
+                                    class="btn btn-danger"
                                 >
                                     Debit
                                 </button>

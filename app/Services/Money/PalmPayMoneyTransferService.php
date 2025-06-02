@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\DB;
 class PalmPayMoneyTransferService extends BasePalmPayService
 {
     public static function queryBankAccount($bankCode, $accountNo)
-    {        
+    {
         try {
             $data = [
                 "requestTime" =>  round(microtime(true) * 1000),
@@ -27,18 +27,18 @@ class PalmPayMoneyTransferService extends BasePalmPayService
 
             if (isset($response->data) && isset($response->data->Status)) {
                 if ($response->data->Status === 'Success') {
-                    return ApiHelper::sendResponse((array) $response->data, "Account verified successfully."); 
+                    return ApiHelper::sendResponse((array) $response->data, "Account verified successfully.");
                 }
                 if ($response->data->Status === 'Failed') {
                     return ApiHelper::sendError($response->data->errorMessage, "Account verification failed. Please check the details or try again later.");
                 }
             }
-           
-            static::causer($response);            
+
+            static::causer($response);
             return ApiHelper::sendError([], "Unable to verify account at this time. Please check the details and try again later.");
 
         } catch (\Throwable $th) {
-            static::causer($th->getMessage());     
+            static::causer($th->getMessage());
             return ApiHelper::sendError("Server Error!", "An error occurred while verifying the account. Please try again later.");
         }
     }
@@ -59,7 +59,7 @@ class PalmPayMoneyTransferService extends BasePalmPayService
             if ($validationResponse) {
                 return $validationResponse;
             }
-            
+
             /** Perform Wallet Deduction from the user's balance if they have enough funds */
             $balance_before = $user->account_balance;
             $user->decrement('account_balance', $totalAmount);
@@ -88,7 +88,8 @@ class PalmPayMoneyTransferService extends BasePalmPayService
                 'recipient_balance_before' =>  0.00,
                 'recipient_balance_after'  =>  0.00,
                 'transfer_status'       =>  static::ORDER_STATUS_UNPAID,
-                'reference_id'          =>  static::generateUniqueReferenceId()
+                'reference_id'          =>  static::generateUniqueReferenceId(),
+                'charges'       =>  $fee
             ]);
 
             /** Prepare API Payload */
@@ -101,16 +102,16 @@ class PalmPayMoneyTransferService extends BasePalmPayService
                 "payeeBankCode"     => $transaction->bank_code,
                 "payeeBankAccNo"    => $transaction->account_number,
                 "amount"            => intval(round($amount, 2) * 100),
-                "currency"          => config('palmpay.country_code'),
+                "currency"          => config('palmpay.currency', 'NGN'),
                 // "notifyUrl"         => route('webhook.palmpay'),
                 "remark"            => $transaction->narration ?? 'NA'
             ];
-            
+
             /** Store API Payload */
             $transaction->update(['meta' => $payload]);
 
             $response = static::processEndpoint(static::BANK_TRANSFER_URL, $payload);
-            
+
             if (property_exists($response, 'data') && $response->data?->message === 'success') {
                 $transaction->update([
                     'status'          => $response->data->status,

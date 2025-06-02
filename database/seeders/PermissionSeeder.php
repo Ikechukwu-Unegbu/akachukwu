@@ -86,7 +86,13 @@ class PermissionSeeder extends Seeder
             'create announcement',
             'edit announcement',
             'delete announcement',
-            'view money transaction'
+            'view money transaction',
+
+            'view banks',
+            'create banks',
+            'edit banks',
+            'delete banks',
+            'edit bank settings',
         ];
 
         // foreach ($permissions as $permission) Permission::create(['name' => $permission]);
