@@ -120,7 +120,7 @@
                                     <a href="javascript:void(0)" data-bs-toggle="modal"
                                             data-bs-target="#action-{{ $airtime_transaction->id }}"
                                             class="btn btn-sm btn-secondary">
-                                            Vendor Response</a>
+                                            Response</a>
                                     </div>
                                 </td>
                             </tr>
