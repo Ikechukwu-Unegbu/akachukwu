@@ -69,7 +69,23 @@
             </div>
             <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'Trx. ID', 'User', 'Phone No.', 'Network','Vendor', 'Data Plan', 'Amount', 'Bal. B4', 'Bal. After', 'After Refund','Discount', 'Refunded', 'Date', 'Status', 'Action']" />
+                    <x-admin.table-header :headers="['#', 
+                
+                    'User', 
+                    'Network',
+                    'Type',
+                    'Plan',
+                    'Phone No.', 
+                    'Amount', 
+                   
+                    'Status', 
+                        'Trx. ID', 
+                         'Vendor', 
+                         'Refunded',
+                    'Discount',
+                     'Date', 
+                     
+                     'Action']" />
                     <x-admin.table-body>
                         @forelse ($data_transactions as $data_transaction)
                             <tr>
@@ -79,22 +95,25 @@
                                     </div>
                                 </th>
                                 <td> <a  href="{{route('admin.hr.user.show', [$data_transaction->user->username])}}">{{ $data_transaction->user->username }}</a> </td>
-                                <td>{{ $data_transaction->transaction_id }}</td>
-                                <td>{{ $data_transaction->mobile_number }}</td>
                                 <td>{{ $data_transaction->plan_network }}</td>
-                                <td>{{ $data_transaction->vendor->name }}</td>
-                                <td>{{ $data_transaction->size }}</td>
+                                <td>{{ $data_transaction->data_type->name }}</td>
+                                <td>{{ $data_transaction->data_plan->size }}</td>
+                                <td>{{ $data_transaction->mobile_number }}</td>
                                 <td>₦{{ $data_transaction->amount }}</td>
-                                <td>₦{{ $data_transaction->balance_before }}</td>
-                                <td>₦{{ $data_transaction->balance_after }}</td>
-                                <td>₦{{ $data_transaction->balance_after_refund }}</td>
-                                <td>%{{ $data_transaction->discount }}</td>
-                                <td>{{ Str::lower($data_transaction->vendor_status) === 'refunded' ? 'Yes' : 'No' }}</td>
-                                <td>{{ $data_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $data_transaction->status === 1 ? 'success' : ($data_transaction->status === 0 ? 'danger' : 'warning') }}">
                                         {{ Str::title($data_transaction->vendor_status) }}</span>
                                 </td>
+                                <td>{{ $data_transaction->transaction_id }}</td>
+                                <td>{{ $data_transaction->vendor->name }}</td>
+                                <td>{{ Str::lower($data_transaction->vendor_status) === 'refunded' ? 'Yes' : 'No' }}</td>
+                                
+                                
+                              
+                                <td>%{{ $data_transaction->discount }}</td>
+
+                                <td>{{ $data_transaction->created_at->format('M d, Y. h:ia') }}</td>
+                          
                                 <td>
 
                                  <div class="d-flex align-items-center">
@@ -104,7 +123,7 @@
                                     <a href="javascript:void(0)" data-bs-toggle="modal"
                                             data-bs-target="#action-{{ $data_transaction->id }}"
                                             class="btn btn-sm btn-secondary">
-                                            Vendor Response</a>
+                                            Response</a>
                                 </div>
 
                                 </td>
