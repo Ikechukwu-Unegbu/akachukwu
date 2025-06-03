@@ -13,9 +13,19 @@
                 <div class="card mb-0 pb-0">
                     <div class="pt-4 card-body profile-card d-flex flex-column align-items-center">
                         <img src="{{ $user->profilePicture }}" alt="Profile" class="rounded-circle">
-                        <h2>{{ $user->name }} <span>@if($user->blocked_by_admin ==true) <i class="fa-solid fa-lock"></i> @else <i class="fa-solid fa-check"></i>@endif</span></h2>
-                        <h3>{{ $user->username }}</h3>
-                        <h3>{{ $user->email }}</h3>
+                        <h2>Fullname: {{ $user->name }}
+                            <span>
+                                @if($user->blocked_by_admin)
+                                    <i class="fa-solid fa-lock"></i>
+                                @else
+                                    <i class="fa-solid fa-check"></i>
+                                @endif
+                            </span>
+                        </h2>
+
+                        <h3>Username: {{ $user->username }}</h3>
+                        <h3>Email: {{ $user->email }}</h3>
+
                     </div>
                     @if($user->blocked_by_admin == false)
                     <button type="button"  class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#block_modal">

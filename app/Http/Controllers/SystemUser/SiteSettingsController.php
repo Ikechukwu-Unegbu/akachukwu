@@ -28,6 +28,7 @@ class SiteSettingsController extends Controller
             'transfer_charges' => 'required|numeric',
             'minimum_transfer' => 'required|numeric',
             'maximum_transfer' => 'required|numeric',
+            'single_transfer_limit' => 'required|numeric',
             'card_charges' => 'required|numeric',
             'card_funding_status' => 'required|integer|boolean',
         ], [
@@ -63,11 +64,12 @@ class SiteSettingsController extends Controller
         $siteSettings->transfer_charges = $validatedData['transfer_charges'];
         $siteSettings->minimum_transfer = $validatedData['minimum_transfer'];
         $siteSettings->maximum_transfer = $validatedData['maximum_transfer'];
+        $siteSettings->single_transfer_limit = $validatedData['single_transfer_limit'];
         $siteSettings->card_charges = $validatedData['card_charges'];
         $siteSettings->card_funding_status = $validatedData['card_funding_status'];
         $siteSettings->address_one = $request->address_one;
         $siteSettings->address_two = $request->address_two;
-        
+
         $siteSettings->save();
 
         return redirect()->back()->with('success', 'Site settings updated successfully!');

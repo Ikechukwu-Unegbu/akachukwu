@@ -100,6 +100,11 @@ class MoneyTransferComponent extends Component
                         $fail("The minimum transfer amount is ₦" . number_format($this->settings->minimum_transfer, 2));
                     }
 
+                    $singleLimit = GeneralHelpers::singleTransactionLimit($value, $user->id);
+                    if (!$singleLimit->status) {
+                        $fail("The maximum single transfer limit is ₦" . number_format($singleLimit->limit, 2));
+                    }
+
                     if (!GeneralHelpers::dailyTransactionLimit(MoneyTransfer::class, $value, Auth::id())) {
                         $fail("You have exceeded your daily transaction limit.");
                     }
@@ -254,6 +259,10 @@ class MoneyTransferComponent extends Component
 
                     if (!GeneralHelpers::minimumTransaction($value)) {
                         $fail("The minimum transfer amount is ₦" . number_format($this->settings->minimum_transfer, 2));
+                    }
+                    $singleLimit = GeneralHelpers::singleTransactionLimit($value, $user->id);
+                    if (!$singleLimit->status) {
+                        $fail("The maximum single transfer limit is ₦" . number_format($singleLimit->limit, 2));
                     }
 
                     if (!GeneralHelpers::dailyTransactionLimit(MoneyTransfer::class, $value, Auth::id())) {

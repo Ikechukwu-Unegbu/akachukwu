@@ -75,7 +75,7 @@
                             <tr>
                                 <th scope="row">
                                     <div class="form-check">
-                                        <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $cable_transaction->id }}">
+                                        <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $cable_transaction->id }}" @disabled(Str::lower($cable_transaction->vendor_status) === 'refunded')>
                                     </div>
                                 </th>
                                 <td>{{$cable_transaction->transaction_id}}</td>

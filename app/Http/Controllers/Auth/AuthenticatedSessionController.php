@@ -52,8 +52,8 @@ class AuthenticatedSessionController extends Controller
             'activity'=>"Login",
             'description'=>'Login',
             'type'=>'auth',
-            'balance_before'=>$user->account_balance,
-            'balance_after'=>$user->account_balance, 
+            // 'balance_before'=>$user->account_balance,
+            // 'balance_after'=>$user->account_balance, 
         ]);
         
         $request->session()->regenerate();
