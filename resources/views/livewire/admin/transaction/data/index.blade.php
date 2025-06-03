@@ -90,9 +90,12 @@
                         @forelse ($data_transactions as $data_transaction)
                             <tr>
                                 <th scope="row">
+
                                     <div class="form-check">
-                                        <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $data_transaction->id }}">
+                                        <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $data_transaction->id }}" @disabled(Str::lower($data_transaction->vendor_status) === 'refunded') id="transaction-{{ $data_transaction->id }}" value="{{ $data_transaction->id }}">
                                     </div>
+
+
                                 </th>
                                 <td> <a  href="{{route('admin.hr.user.show', [$data_transaction->user->username])}}">{{ $data_transaction->user->username }}</a> </td>
                                 <td>{{ $data_transaction->plan_network }}</td>
