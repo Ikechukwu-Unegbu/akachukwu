@@ -69,7 +69,23 @@
             </div>
             <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'Trx. ID', 'User', 'Phone No.', 'Network','Vendor', 'Data Plan', 'Amount', 'Bal. B4', 'Bal. After', 'After Refund','Discount', 'Date', 'Status', 'Action']" />
+                    <x-admin.table-header :headers="['#', 
+                
+                    'User', 
+                    'Network',
+                    'Type',
+                    'Plan',
+                    'Phone No.', 
+                    'Amount', 
+                   
+                    'Status', 
+                        'Trx. ID', 
+                         'Vendor', 
+                         'Refunded',
+                    'Discount',
+                     'Date', 
+                     
+                     'Action']" />
                     <x-admin.table-body>
                         @forelse ($data_transactions as $data_transaction)
                             <tr>
@@ -79,31 +95,40 @@
                                         <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $data_transaction->id }}" @disabled(Str::lower($data_transaction->vendor_status) === 'refunded') id="transaction-{{ $data_transaction->id }}" value="{{ $data_transaction->id }}">
                                     </div>
 
+
                                 </th>
                                 <td> <a  href="{{route('admin.hr.user.show', [$data_transaction->user->username])}}">{{ $data_transaction->user->username }}</a> </td>
-                                <td>{{ $data_transaction->transaction_id }}</td>
-                                <td>{{ $data_transaction->mobile_number }}</td>
                                 <td>{{ $data_transaction->plan_network }}</td>
-                                <td>{{ $data_transaction->vendor->name }}</td>
-                                <td>{{ $data_transaction->size }}</td>
+                                <td>{{ $data_transaction->data_type->name }}</td>
+                                <td>{{ $data_transaction->data_plan->size }}</td>
+                                <td>{{ $data_transaction->mobile_number }}</td>
                                 <td>₦{{ $data_transaction->amount }}</td>
-                                <td>₦{{ $data_transaction->balance_before }}</td>
-                                <td>₦{{ $data_transaction->balance_after }}</td>
-                                <td>₦{{ $data_transaction->balance_after_refund }}</td>
-                                <td>%{{ $data_transaction->discount }}</td>
-                                <td>{{ $data_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span class="badge bg-{{ $data_transaction->status === 1 ? 'success' : ($data_transaction->status === 0 ? 'danger' : 'warning') }}">
                                         {{ Str::title($data_transaction->vendor_status) }}</span>
                                 </td>
+                                <td>{{ $data_transaction->transaction_id }}</td>
+                                <td>{{ $data_transaction->vendor->name }}</td>
+                                <td>{{ Str::lower($data_transaction->vendor_status) === 'refunded' ? 'Yes' : 'No' }}</td>
+                                
+                                
+                              
+                                <td>%{{ $data_transaction->discount }}</td>
+
+                                <td>{{ $data_transaction->created_at->format('M d, Y. h:ia') }}</td>
+                          
                                 <td>
-                                    <div class="filter">
-                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                            <li><a href="{{ route('admin.transaction.data.show', $data_transaction->id) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
-                                            <li><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#action-{{ $data_transaction->id }}" class="dropdown-item text-success"><i class="bx bx-code-curly"></i> Vendor Response</a></li>
-                                        </ul>
-                                    </div>
+
+                                 <div class="d-flex align-items-center">
+                                        <a href="{{ route('admin.transaction.data.show', $data_transaction->id) }}"
+                                            class="btn btn-sm btn-primary me-3">
+                                            View</a>
+                                    <a href="javascript:void(0)" data-bs-toggle="modal"
+                                            data-bs-target="#action-{{ $data_transaction->id }}"
+                                            class="btn btn-sm btn-secondary">
+                                            Response</a>
+                                </div>
+
                                 </td>
                             </tr>
                             <x-admin.api-response id="{{ $data_transaction->id }}" response="{{ $data_transaction->api_response }}" />

@@ -191,6 +191,11 @@ class BasePalmPayService
             return ApiHelper::sendError([], "The amount is below the minimum transfer limit.");
         }
 
+        $singleLimit = GeneralHelpers::singleTransactionLimit($value, $user->id);
+        if (!$singleLimit->status) {
+            $fail("The maximum single transfer limit is ₦" . number_format($singleLimit->limit, 2));
+        }
+
         if (!GeneralHelpers::dailyTransactionLimit(MoneyTransfer::class, $totalAmount, $user->id)) {
             return ApiHelper::sendError([], "You have exceeded your daily transaction limit.");
         }

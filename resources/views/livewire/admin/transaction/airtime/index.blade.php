@@ -27,16 +27,16 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="gridRadios"
-                                            id="debit" value="debit" wire:model="action">
+                                        <input class="form-check-input" type="radio" name="gridRadios" id="debit"
+                                            value="debit" wire:model="action">
                                         <label class="form-check-label" for="debit">
                                             Debit
                                         </label>
                                     </div>
 
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="gridRadios"
-                                            id="refund" value="refund" wire:model="action">
+                                        <input class="form-check-input" type="radio" name="gridRadios" id="refund"
+                                            value="refund" wire:model="action">
                                         <label class="form-check-label" for="refund">
                                             Refund
                                         </label>
@@ -72,39 +72,42 @@
             <div class="card-body">
                 <x-admin.table style="font-size: small;">
                     <x-admin.table-header :headers="[
-                        '#',
-                        'Trx. ID',
-                        'Customer',
-                        'Phone No.',
-                        'Network',
-                        'Vendor',
-                        'Amount',
-                        'Discount',
-                        'Bal. B4',
-                        'Bal. After',
-                        'Date',
-                        'Status',
-                        'Action',
-                    ]" />
+        '#',
+        'Trx. ID',
+        'Customer',
+        'Phone No.',
+        'Network',
+        'Vendor',
+        'Amount',
+        'Discount',
+        'Refunded',
+        'Date',
+        'Status',
+        'Action',
+    ]" />
                     <x-admin.table-body>
                         @forelse ($airtime_transactions as $airtime_transaction)
                             <tr>
                                 <th scope="row">
                                     <div class="form-check">
+
                                         <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $airtime_transaction->id }}" @disabled(Str::lower($airtime_transaction->vendor_status) === 'refunded')>
+
+
                                     </div>
                                 </th>
+                                <td>{{ $airtime_transaction->transaction_id }}</td>
                                 <td> <a
                                         href="{{ route('admin.hr.user.show', [$airtime_transaction->user->username]) }}">{{ $airtime_transaction->user->username }}</a>
                                 </td>
-                                <td>{{ $airtime_transaction->transaction_id }}</td>
+
                                 <td>{{ $airtime_transaction->mobile_number }}</td>
                                 <td>{{ $airtime_transaction->network_name ?? '' }}</td>
                                 <td>{{ $airtime_transaction->vendor->name ?? '' }}</td>
                                 <td>₦{{ $airtime_transaction->amount }}</td>
                                 <td>%{{ $airtime_transaction->discount }}</td>
-                                <td>₦{{ $airtime_transaction->balance_before }}</td>
-                                <td>₦{{ $airtime_transaction->balance_after }}</td>
+                                {{--<td>₦{{ $airtime_transaction->balance_before }}</td>--}}
+                                <td>{{ Str::lower($airtime_transaction->vendor_status) === 'refunded' ? 'Yes' : 'No' }}</td>
                                 <td>{{ $airtime_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
                                     <span
@@ -112,18 +115,14 @@
                                         {{ Str::title($airtime_transaction->vendor_status) }}</span>
                                 </td>
                                 <td>
-                                    <div class="filter">
-                                        <a class="icon" href="#" data-bs-toggle="dropdown"><i
-                                                class="bi bi-three-dots"></i></a>
-                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                            <li><a href="{{ route('admin.transaction.airtime.show', $airtime_transaction->id) }}"
-                                                    class="dropdown-item text-primary"><i class="bx bx-list-ul"></i>
-                                                    View</a></li>
-                                            <li><a href="javascript:void(0)" data-bs-toggle="modal"
-                                                    data-bs-target="#action-{{ $airtime_transaction->id }}"
-                                                    class="dropdown-item text-success"><i class="bx bx-code-curly"></i>
-                                                    Vendor Response</a></li>
-                                        </ul>
+                                    <div class="d-flex align-items-center">
+                                        <a href="{{ route('admin.transaction.airtime.show', $airtime_transaction->id) }}"
+                                            class="btn btn-sm btn-primary me-3">
+                                            View</a>
+                                    <a href="javascript:void(0)" data-bs-toggle="modal"
+                                            data-bs-target="#action-{{ $airtime_transaction->id }}"
+                                            class="btn btn-sm btn-secondary">
+                                            Response</a>
                                     </div>
                                 </td>
                             </tr>
@@ -137,7 +136,7 @@
                         @endforelse
                     </x-admin.table-body>
                 </x-admin.table>
-                <x-admin.paginate :paginate=$airtime_transactions />
+                {{ $airtime_transactions->links() }}
             </div>
         </div>
     </section>
