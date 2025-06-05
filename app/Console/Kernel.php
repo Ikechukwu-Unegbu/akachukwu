@@ -17,7 +17,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('vendor:record-balance')->dailyAt('00:00');
         $schedule->command('vendor:record-balance')->dailyAt('23:59');
         $schedule->command('app:process-scheduled-transactions')->everyMinute();
-        $schedule->job(new EnforcePostNoDebitJob)->everyTenMinutes();
+        $schedule->job(new EnforcePostNoDebitJob)->everyMinute();
     }
 
     /**

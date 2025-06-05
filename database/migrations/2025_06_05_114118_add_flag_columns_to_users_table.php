@@ -25,7 +25,12 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn([
+                'kyc_name',
+                'is_flagged',
+                'post_no_debit',
+                'is_blacklisted',
+            ]);
         });
     }
 };

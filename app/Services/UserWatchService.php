@@ -3,8 +3,8 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Services\Admin\Activity\ActivityLogService;
 use Illuminate\Support\Facades\Log;
+use App\Services\Admin\Activity\ActivityLogService;
 
 class UserWatchService
 {
@@ -101,5 +101,14 @@ class UserWatchService
             'description'   =>  "User {$user->id} blacklisted and marked as refunded.",
             'type'          =>  'RefundToVictim',
         ]);
+    }
+
+    public static function blockIfPostNoDebit(User $user): bool
+    {
+        if ($user->post_no_debit) {
+            return true;
+        }
+
+        return false;
     }
 }

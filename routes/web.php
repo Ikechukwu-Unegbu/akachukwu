@@ -134,7 +134,7 @@ Route::resource('blog', BlogPageController::class)->parameters(['blog' => 'slug'
 });
 
 
-Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate'])->group(function () {
+Route::middleware(['auth', 'verified', 'user', 'otp', 'testing', 'impersonate', 'blacklist'])->group(function () {
 
     Route::get('/airtime', [AirtimeController::class, 'index'])->name('airtime.index');
     Route::get('/data', [DataController::class, 'index'])->name('data.index');

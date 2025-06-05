@@ -30,22 +30,21 @@ class AuthenticateUserController extends Controller
     public function login(Request $request, UserProfileService $service)
     {
         $request->validate([
-            'login' => 'required', 
+            'login' => 'required',
             'password' => 'required',
         ], [
-            'login.required' => 'Username or email field is empty', 
+            'login.required' => 'Username or email field is empty',
             'password.required' => 'Password field is required',
         ]);
-    
+
         $loginType = filter_var($request->login, FILTER_VALIDATE_EMAIL) ? 'email' : 'username';
-        
+
         $user = $service->getUser($request->login);
-        if($user){
-            if ($user->blocked_by_admin == true) {
-                return response()->json(['message' => 'Account Currently Inaccessible. Please contact Support for further assistance.'], 403);
-            }
+        if($user) {
+            $blockedResponse = $this->ensureUserIsNotBlockedOrBlacklisted($user);
+            if ($blockedResponse) return $blockedResponse;
         }
-    
+
         if (Auth::attempt([$loginType => $request->login, 'password' => $request->password])) {
             $user = User::find(Auth::user()->id);
             $user->load('virtualAccounts');
@@ -64,15 +63,15 @@ class AuthenticateUserController extends Controller
             }
 
             return response()->json([
-                'token' => $token, 
-                'status' => 'success', 
+                'token' => $token,
+                'status' => 'success',
                 'user' => $user
             ], 200);
         }
-    
+
         return response()->json(['message' => 'Unauthorized'], 401);
     }
-    
+
 
     public function verifyOtp(Request $request, OTPService $otpService)
     {
@@ -91,7 +90,7 @@ class AuthenticateUserController extends Controller
             ], 200);
         }
         return response()->json([
-            'status'=>'failed', 
+            'status'=>'failed',
             'message'=>'Invalid otp'
         ], 403);
     }
@@ -102,7 +101,7 @@ class AuthenticateUserController extends Controller
             'email'=>'required|email'
         ]);
         $user =  User::where('email', $request->email)->first();
-      
+
         $otp = $otpService->generateOTP($user);
         Notification::sendNow($user, new WelcomeEmail($otp, $user));
         return response()->json([
@@ -116,5 +115,16 @@ class AuthenticateUserController extends Controller
         $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out successfully'], 200);
+    }
+
+    private function ensureUserIsNotBlockedOrBlacklisted($user)
+    {
+        if ($user->blocked_by_admin) {
+            return response()->json(['message' => 'Account Currently Inaccessible. Please contact Support for further assistance.'], 403);
+        }
+        if ($user->is_blacklisted) {
+            return response()->json(['message' => 'Account Currently Blacklisted. Please contact Support for further assistance.'], 403);
+        }
+        return null;
     }
 }

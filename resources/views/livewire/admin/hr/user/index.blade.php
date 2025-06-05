@@ -52,7 +52,14 @@
                         @forelse ($users as $user)
                             <tr>
                                 <th scope="row">{{ $loop->index + 1 }}</th>
-                                <td>{{ $user->name }}</td>
+                                <td>
+                                    {{ $user->name }}
+                                    <div class="d-flex">
+                                        @if ($user->is_flagged)<span class="badge bg-danger me-2">Flagged</span>@endif
+                                        @if ($user->post_no_debit)<span class="badge bg-danger me-2">Post no Debit</span>@endif
+                                        @if ($user->is_blacklisted)<span class="badge bg-danger me-2">Blacklisted</span>@endif
+                                    </div>
+                                </td>
                                 <td>{{ $user->username }}</td>
                                 <td>₦ {{ $user->account_balance }}</td>
                                 <td>{{ Str::title($user->user_level) }}</td>

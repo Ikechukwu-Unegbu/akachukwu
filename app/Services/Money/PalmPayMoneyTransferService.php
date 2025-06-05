@@ -5,6 +5,7 @@ namespace App\Services\Money;
 use App\Models\Bank;
 use App\Models\User;
 use App\Helpers\ApiHelper;
+use App\Traits\HandlesPostNoDebit;
 use Illuminate\Support\Str;
 use App\Models\MoneyTransfer;
 use App\Helpers\GeneralHelpers;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\DB;
 
 class PalmPayMoneyTransferService extends BasePalmPayService
 {
+    use HandlesPostNoDebit;
+
     public static function queryBankAccount($bankCode, $accountNo)
     {
         try {
@@ -46,6 +49,11 @@ class PalmPayMoneyTransferService extends BasePalmPayService
     public static function processBankTransfer($accountName, $accountNo, $bankCode, $bankId, $amount, $fee, $remark, $userId)
     {
         try {
+
+            if ( self::ensurePostNoDebitIsAllowed()) {
+                return ApiHelper::sendError([], 'Your account is restricted from performing debit operations.', 403);
+            }
+
             DB::beginTransaction();
             /** Random Delay */
             GeneralHelpers::randomDelay();

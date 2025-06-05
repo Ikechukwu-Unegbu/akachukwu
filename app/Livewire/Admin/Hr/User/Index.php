@@ -28,7 +28,7 @@ class Index extends Component
         'perPage' => ['except' => 50],
         'endDate' => ['except' => ''],
         'startDate' => ['except' => ''],
-      
+
     ];
 
     public function mount()
@@ -48,13 +48,13 @@ class Index extends Component
 
         if ($this->search) {
             $query->search($this->search);
-      
+
             ActivityLogService::log([
                 'activity'=>"Search",
                 'description'=> Auth::user()->name.' searched. '.$this->search,
                 'type'=>'Users',
             ]);
-      
+
         }
 
         if ($this->param === 'blocked') {

@@ -6,6 +6,7 @@ use App\Helpers\ApiHelper;
 use App\Models\SiteSetting;
 use App\Models\MoneyTransfer;
 use App\Helpers\GeneralHelpers;
+use App\Traits\HandlesPostNoDebit;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,8 @@ use App\Actions\Idempotency\IdempotencyCheck;
 use App\Services\Account\AccountBalanceService;
 
 class VastelMoneyTransfer{
+
+    use HandlesPostNoDebit;
 
     public $helper;
     public $accountBalanceService;
@@ -45,6 +48,11 @@ class VastelMoneyTransfer{
     public function transfer(array $data)
     {
         try {
+
+            if ( self::ensurePostNoDebitIsAllowed()) {
+                return ApiHelper::sendError([], 'Your account is restricted from performing debit operations.', 403);
+            }
+
             /** Random Delay */
             GeneralHelpers::randomDelay();
 
