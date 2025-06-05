@@ -134,13 +134,3 @@ Route::get('sitesetting', [SiteSettingsApiController::class, '__invoke']);
 Route::get('active-virtual-accounts', [SiteSettingsApiController::class, 'activeVirtualAccounts']);
 Route::get('bank-list', [BankTransferApiController::class, 'banks']);
 
-Route::middleware('auth:sanctum')->post('developer-test-only', function (Request $request) {
-    $user = auth()->user();
-    $response = \App\Services\UserWatchService::processKycValidation($user, (array) $request->all());
-
-    return response()->json([
-        'status' => true,
-        'message' => 'KYC processed',
-        'data' => $response,
-    ]);
-});
