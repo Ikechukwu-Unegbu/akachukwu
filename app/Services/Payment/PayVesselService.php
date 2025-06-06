@@ -2,16 +2,17 @@
 
 namespace App\Services\Payment;
 
+use App\Models\User;
 use App\Helpers\ApiHelper;
-use App\Models\Payment\PayVesselTransaction;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
 use App\Models\VirtualAccount;
-use App\Models\User;
+use App\Services\UserWatchService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Payment\PayVesselTransaction;
 
 class PayVesselService
 {
@@ -284,6 +285,8 @@ class PayVesselService
                     $user->setAccountBalance($amountPaid);
 
                     $transaction->success();
+
+                    UserWatchService::enforcePostNoDebit($user);
 
                     return ApiHelper::sendResponse($transaction, "Transaction successful.");
                 }

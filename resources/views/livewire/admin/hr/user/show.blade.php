@@ -116,6 +116,10 @@
                             <div class="col-lg-9 col-md-8">{{ $user->created_at->format('d M, Y') }}</div>
                         </div>
                         <div class="row">
+                            <div class="col-lg-3 col-md-4 label ">KYC Name</div>
+                            <div class="col-lg-9 col-md-8">{{ $user->kyc_name ?? 'N/A'}}</div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-3 col-md-4 label ">BVN</div>
                             <div class="col-lg-9 col-md-8">{{ $user->bvn}}</div>
                         </div>

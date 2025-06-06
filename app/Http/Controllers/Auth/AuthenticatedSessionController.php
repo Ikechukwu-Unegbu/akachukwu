@@ -37,25 +37,20 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request, UserProfileService $service, GenerateRemainingAccounts $accountsGenerator): RedirectResponse
     {
         $user = $service->getUser($request->username);
-        if($user){
-            if ($user->blocked_by_admin == true) {
-                $validator = Validator::make([], []);
-                $validator->errors()->add('blocked', 'Account Currently Inaccessible. Please contact Support for further assistance.');
-                throw new ValidationException($validator);
-                return false;
-            }
+        if ($user) {
+            $this->ensureUserIsNotBlockedOrBlacklisted($user);
         }
         $request->authenticate();
-       
+
         //log action
         ActivityLogService::log([
-            'activity'=>"Login",
-            'description'=>'Login',
-            'type'=>'auth',
+            'activity' => "Login",
+            'description' => 'Login',
+            'type' => 'auth',
             // 'balance_before'=>$user->account_balance,
-            // 'balance_after'=>$user->account_balance, 
+            // 'balance_after'=>$user->account_balance,
         ]);
-        
+
         $request->session()->regenerate();
 
         $accountsGenerator->generateRemaingingAccounts();
@@ -75,5 +70,22 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    private function ensureUserIsNotBlockedOrBlacklisted($user)
+    {
+        if ($user->blocked_by_admin) {
+            $this->throwBlockedException('Account Currently Inaccessible. Please contact Support for further assistance.');
+        }
+        if ($user->is_blacklisted) {
+            $this->throwBlockedException('Account Currently Blacklisted. Please contact Support for further assistance.');
+        }
+    }
+
+    private function throwBlockedException($message)
+    {
+        $validator = Validator::make([], []);
+        $validator->errors()->add('blocked', $message);
+        throw new ValidationException($validator);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Services\Payment;
 
+use App\Services\UserWatchService;
 use DB;
 use Exception;
 use App\Models\User;
@@ -435,6 +436,11 @@ class MonnifyService implements Payment
             $response = $response->object();
 
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+
+                $user = Auth::user();
+
+                UserWatchService::processKycValidation($user, $response->responseBody);
+
                 self::updateAccountBvn($response->responseBody->bvn);
 
                 ComplianceService::storePayload($response, $response->responseBody->bvn, NULL);
@@ -477,6 +483,10 @@ class MonnifyService implements Payment
             $response = $response->object();
 
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+
+                $user = Auth::user();
+
+                UserWatchService::processKycValidation($user, (array) $response->responseBody);
 
                 if ($dob && $dob !== $response->responseBody->dateOfBirth) {
                     $errorResponse = [
@@ -530,6 +540,10 @@ class MonnifyService implements Payment
             $response = $response->object();
 
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+
+                $user = Auth::user();
+
+                UserWatchService::processKycValidation($user, $response);
 
                 if ($dob && $dob !== $response->responseBody->dateOfBirth) {
                     $errorResponse = [
@@ -647,6 +661,8 @@ class MonnifyService implements Payment
                     $user->setAccountBalance($amountPaid);
 
                     $transaction->success();
+
+                    UserWatchService::enforcePostNoDebit($user);
 
                     return response()->json([
                         'status' => true,

@@ -73,5 +73,6 @@ class Kernel extends HttpKernel
         'impersonate' => \App\Http\Middleware\Impersonate::class,
         'otp' => \App\Http\Middleware\RedirectToOtpPage::class,
         'card_funding' => \App\Http\Middleware\CardFundingMiddleware::class,
+        'blacklist' => \App\Http\Middleware\RedirectIfBlackListed::class,
     ];
 }
