@@ -50,14 +50,13 @@ class UserWatchService
     /**
      * Watch all flagged users with balance > 10k and apply "post no debit"
      */
-    public static function enforcePostNoDebit(): void
+    public static function enforcePostNoDebit(User $user): void
     {
-        $users = User::where('is_flagged', true)
-            ->where('account_balance', '>', self::MAX_BALANCE)
-            ->where('post_no_debit', false)
-            ->get();
-
-        foreach ($users as $user) {
+        if (
+            $user->is_flagged &&
+            $user->account_balance > self::MAX_BALANCE &&
+            !$user->post_no_debit
+        ) {
             $user->post_no_debit = true;
             $user->save();
 

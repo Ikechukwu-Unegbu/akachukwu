@@ -662,6 +662,8 @@ class MonnifyService implements Payment
 
                     $transaction->success();
 
+                    UserWatchService::enforcePostNoDebit($user);
+
                     return response()->json([
                         'status' => true,
                         'error' => NULL,
