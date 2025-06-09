@@ -140,7 +140,7 @@
                     </x-admin.table-body>
                 </x-admin.table>
 
-                {{ $data_transaction->links() }}
+                {{ $data_transactions->links() }}
             </div>
         </div>
     </section>
