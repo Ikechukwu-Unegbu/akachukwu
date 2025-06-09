@@ -140,7 +140,7 @@
                     </x-admin.table-body>
                 </x-admin.table>
 
-                <x-admin.paginate :paginate=$data_transactions />
+                {{ $data_transaction->links() }}
             </div>
         </div>
     </section>
