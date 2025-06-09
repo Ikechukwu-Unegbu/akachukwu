@@ -97,7 +97,7 @@
 
 
                                 </th>
-                                <td> <a  href="{{route('admin.hr.user.show', [$data_transaction?->user?->username])}}">{{ $data_transaction?->user?->username }}</a> </td>
+                                <td> {{ $data_transaction?->user?->username ?? $data_transaction->user_id }}</td>
                                 <td>{{ $data_transaction->plan_network }}</td>
                                 <td>{{ $data_transaction->data_type->name }}</td>
                                 <td>{{ $data_transaction->data_plan->size }}</td>
