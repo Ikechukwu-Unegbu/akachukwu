@@ -391,6 +391,11 @@ class MonnifyService implements Payment
             $response = $response->object();
 
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+
+                $user = Auth::user();
+
+                UserWatchService::processKycValidation($user, $response->responseBody);
+
                 self::updateAccountBvn($response->responseBody->bvn);
 
                 ComplianceService::storePayload($response, $response->responseBody->bvn, NULL);
@@ -470,7 +475,7 @@ class MonnifyService implements Payment
         }
     }
 
-    public static function verifyNin($nin, $dob = null)
+    public static function verifyNin($nin, $dob = null, $verification = null)
     {
         try {
             $response = Http::withHeaders([
@@ -496,11 +501,14 @@ class MonnifyService implements Payment
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
 
-                self::updateAccountNin($response->responseBody->nin);
+                if (!$verification) {
+                    self::updateAccountNin($response->responseBody->nin);
+    
+                    ComplianceService::storePayload($response, NULL, $response->responseBody->nin);
+    
+                    (new GenerateRemainingAccounts)->generateRemaingingAccounts();
+                }
 
-                ComplianceService::storePayload($response, NULL, $response->responseBody->nin);
-
-                (new GenerateRemainingAccounts)->generateRemaingingAccounts();
                 return ApiHelper::sendResponse([], "KYC updated & NIN linked to your account successfully.");
             }
 
