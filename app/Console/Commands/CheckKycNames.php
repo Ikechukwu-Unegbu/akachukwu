@@ -99,6 +99,9 @@ class CheckKycNames extends Command
                 $delay = rand(5, 7);
                 $this->newLine();
                 $this->line(sprintf('⏳ Pausing for %d seconds...', $delay));
+
+                Auth::logout();
+                
                 sleep($delay);
 
             } catch (\Exception $e) {
