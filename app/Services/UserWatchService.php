@@ -9,7 +9,7 @@ use App\Services\Admin\Activity\ActivityLogService;
 class UserWatchService
 {
 
-    protected CONST MAX_BALANCE = 10000;
+    protected const MAX_BALANCE = 10000;
 
     /**
      * Run full user watch process: match name, flag user, handle wallet control
@@ -17,34 +17,49 @@ class UserWatchService
     public static function processKycValidation(User $user, array $kycResponse)
     {
         try {
-            $firstName = strtolower(trim($kycResponse['firstName']));
-            $lastName = strtolower(trim($kycResponse['lastName']));
-            $kycFullName1 = "{$firstName} {$lastName}";
-            $kycFullName2 = "{$lastName} {$firstName}";
-            $userName = strtolower(trim($user->name));
+            if (isset($kycResponse['firstName']) && isset($kycResponse['lastName'])) {
+                $firstName = strtolower(trim($kycResponse['firstName']));
+                $lastName = strtolower(trim($kycResponse['lastName']));
+                $kycFullName1 = "{$firstName} {$lastName}";
+                $kycFullName2 = "{$lastName} {$firstName}";
+                $user->kyc_name = "{$kycResponse['firstName']} {$kycResponse['lastName']}";
 
-            $user->kyc_name = $kycResponse['firstName'] . ' ' . $kycResponse['lastName'];
+            } elseif (isset($kycResponse['accountName'])) {
+
+                $accountName = strtolower(trim($kycResponse['accountName']));
+                $nameParts = explode(' ', $accountName);
+
+                $firstName = $nameParts[0] ?? '';
+                $lastName = $nameParts[count($nameParts) - 1] ?? '';
+                $kycFullName1 = "{$firstName} {$lastName}";
+                $kycFullName2 = "{$lastName} {$firstName}";
+                $user->kyc_name = ucwords($accountName);
+                
+            } else {
+                throw new \Exception('KYC response does not contain recognizable name fields.');
+            }
+
+            $userName = strtolower(trim($user->name));
             $user->save();
 
-            // If user name does not match either "First Last" or "Last First", flag
             if ($userName !== $kycFullName1 && $userName !== $kycFullName2) {
                 $user->is_flagged = true;
                 $user->save();
 
-
                 ActivityLogService::log([
-                    'actor_id'   =>  $user->id,
-                    'activity'   =>  'flag',
-                    'description'   =>  "KYC name mismatch. KYC: '{$firstName} {$lastName}', User: '{$user->name}'",
-                    'type'          =>  'KYC',
-                    'raw_response'  =>  json_encode(($kycResponse))
+                    'actor_id' => $user->id,
+                    'activity' => 'flag',
+                    'description' => "KYC name mismatch. KYC: '{$user->kyc_name}', User: '{$user->name}'",
+                    'type' => 'KYC',
+                    'raw_response' => json_encode($kycResponse),
                 ]);
             }
 
         } catch (\Throwable $th) {
-            Log::error($th->getMessage());
+            Log::error("KYC validation error: " . $th->getMessage());
         }
     }
+
 
 
     /**
@@ -61,10 +76,10 @@ class UserWatchService
             $user->save();
 
             ActivityLogService::log([
-                'actor_id'   =>  $user->id,
-                'activity'   =>  'post no debit',
-                'description'   =>  "Post No Debit applied to User {$user->id} due to flagged balance > 10k",
-                'type'          =>  'PostNoDebit',
+                'actor_id' => $user->id,
+                'activity' => 'post no debit',
+                'description' => "Post No Debit applied to User {$user->id} due to flagged balance > 10k",
+                'type' => 'PostNoDebit',
             ]);
         }
     }
@@ -79,10 +94,10 @@ class UserWatchService
         $user->save();
 
         ActivityLogService::log([
-            'actor_id'   =>  $user->id,
-            'activity'   =>  'flag',
-            'description'   =>  "Post No Debit applied to User {$user->id} by support verification.",
-            'type'          =>  'PostNoDebit',
+            'actor_id' => $user->id,
+            'activity' => 'flag',
+            'description' => "Post No Debit applied to User {$user->id} by support verification.",
+            'type' => 'PostNoDebit',
         ]);
     }
 
@@ -95,10 +110,10 @@ class UserWatchService
         $user->save();
 
         ActivityLogService::log([
-            'actor_id'   =>  $user->id,
-            'activity'   =>  'flag',
-            'description'   =>  "User {$user->id} blacklisted and marked as refunded.",
-            'type'          =>  'RefundToVictim',
+            'actor_id' => $user->id,
+            'activity' => 'flag',
+            'description' => "User {$user->id} blacklisted and marked as refunded.",
+            'type' => 'RefundToVictim',
         ]);
     }
 
