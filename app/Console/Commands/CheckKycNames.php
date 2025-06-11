@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use App\Models\User;
+use Auth;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use App\Services\Payment\MonnifyService;
@@ -57,6 +58,9 @@ class CheckKycNames extends Command
             $progressBar->setMessage("Processing User #{$user->id}...");
 
             try {
+
+                Auth::loginUsingId($user->id);
+
                 $result = MonnifyService::verifyNin($user->nin, NULL, true);
 
                 $result = (array) $result;

@@ -493,7 +493,7 @@ class MonnifyService implements Payment
 
                 $user = Auth::user();
 
-                UserWatchService::processKycValidation($user, (array) $response->responseBody);
+                UserWatchService::processKycValidation($user, json_decode($response->responseBody, true));
 
                 if ($dob && $dob !== $response->responseBody->dateOfBirth) {
                     $errorResponse = [
