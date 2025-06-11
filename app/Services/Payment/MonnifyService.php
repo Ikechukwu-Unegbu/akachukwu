@@ -394,7 +394,7 @@ class MonnifyService implements Payment
 
                 $user = Auth::user();
 
-                UserWatchService::processKycValidation($user, json_decode($response->responseBody, true));
+                UserWatchService::processKycValidation($user, (array) $response->responseBody);
 
                 self::updateAccountBvn($response->responseBody->bvn);
 
@@ -444,7 +444,7 @@ class MonnifyService implements Payment
 
                 $user = Auth::user();
 
-                UserWatchService::processKycValidation($user, json_decode($response->responseBody, true));
+                UserWatchService::processKycValidation($user, (array) $response->responseBody);
 
                 self::updateAccountBvn($response->responseBody->bvn);
 
@@ -493,7 +493,7 @@ class MonnifyService implements Payment
 
                 $user = Auth::user();
 
-                UserWatchService::processKycValidation($user, json_decode($response->responseBody, true));
+                UserWatchService::processKycValidation($user, (array) $response->responseBody);
 
                 if ($dob && $dob !== $response->responseBody->dateOfBirth) {
                     $errorResponse = [
@@ -553,7 +553,7 @@ class MonnifyService implements Payment
 
                 $user = Auth::user();
 
-                UserWatchService::processKycValidation($user, json_decode($response->responseBody, true));
+                UserWatchService::processKycValidation($user, (array) $response->responseBody);
 
                 if ($dob && $dob !== $response->responseBody->dateOfBirth) {
                     $errorResponse = [
