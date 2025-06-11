@@ -487,7 +487,7 @@ class MonnifyService implements Payment
 
             $response = $response->object();
 
-            Log::info('Vendor response: ', (array) $response);
+            // Log::info('Vendor response: ', (array) $response);
 
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
 
