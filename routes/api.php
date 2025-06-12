@@ -3,6 +3,7 @@
 use App\Http\Controllers\V1\API\AnnouncementApiController;
 use App\Http\Controllers\V1\API\BankTransferApiController;
 use App\Models\User;
+use App\Services\Cowrywise\CowrywiseOnboardService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -134,3 +135,11 @@ Route::get('sitesetting', [SiteSettingsApiController::class, '__invoke']);
 Route::get('active-virtual-accounts', [SiteSettingsApiController::class, 'activeVirtualAccounts']);
 Route::get('bank-list', [BankTransferApiController::class, 'banks']);
 
+
+Route::prefix('savings')->middleware('auth:sanctum')->as('saving.')->group(function() {
+    Route::get('accounts', [CowrywiseOnboardService::class, 'retrieveAllAccount']);
+    Route::get('accounts/{accountId}', [CowrywiseOnboardService::class, 'retrieveSingleAccount']);
+    Route::get('portfolio/{accountId}', [CowrywiseOnboardService::class, 'getPortfolio']);
+    Route::post('onboading', [CowrywiseOnboardService::class, 'onboardingNewUser']);
+    Route::post('identity/{accountId}/update', [CowrywiseOnboardService::class, 'updateIdentity']);
+});
