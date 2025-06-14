@@ -1,5 +1,5 @@
 @php
-    $statusColor = match (Str::lower($transactionDetails->transfer_status)) {
+    $statusColor = match (Str::lower($transactionDetails?->transfer_status)) {
         'successful' => 'green',
         'failed' => 'red',
         'processing' => 'yellow',
@@ -9,7 +9,7 @@
         '' => 'red',
         'default' => 'red'
     };
-    $textColor = match (Str::lower($transactionDetails->transfer_status)) {
+    $textColor = match (Str::lower($transactionDetails?->transfer_status)) {
         'successful' => 'white',
         'failed' => 'white',
         'processing' => 'black',
