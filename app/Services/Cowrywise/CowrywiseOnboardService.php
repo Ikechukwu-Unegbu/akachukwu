@@ -9,14 +9,8 @@ use Illuminate\Support\Facades\Http;
 
 class CowrywiseOnboardService extends CowrywiseBaseService
 {
-    public static function onboardingNewUser(Request $request)
+    public static function onboardingNewUser(array $data)
     {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-        ]);
-
         $token = static::getToken();
 
         if (!$token) {
@@ -28,9 +22,9 @@ class CowrywiseOnboardService extends CowrywiseBaseService
             $response = Http::withToken($token)
                 ->asMultipart()
                 ->post(static::getUrl() . 'api/v1/accounts', [
-                    ['name' => 'first_name', 'contents' => $validated['first_name']],
-                    ['name' => 'last_name', 'contents' => $validated['last_name']],
-                    ['name' => 'email', 'contents' => $validated['email']],
+                    ['name' => 'first_name', 'contents' => $data['first_name']],
+                    ['name' => 'last_name', 'contents' => $data['last_name']],
+                    ['name' => 'email', 'contents' => $data['email']],
                     ['name' => 'terms_of_use_accepted', 'contents' => 'True']
                 ]);
 
@@ -57,144 +51,35 @@ class CowrywiseOnboardService extends CowrywiseBaseService
         }
     }
 
-    public static function updateIdentity(Request $request, $accountId)
+    public static function updateIdentity($data, $accountId)
     {
-        $validated = $request->validate([
-            'identity_type' => 'required|string|in:BVN,NIN',
-            'identity_value' => 'required|string|max:50',
-        ]);
-
-        $token = static::getToken();
-
-        if (!$token) {
-            Log::error('Cowrywise token unavailable while updating identity');
-            return ApiHelper::sendError(['Token Error!'], ['Could not retrieve API token.'], 500);
-        }
-
-        try {
-            $response = Http::withToken($token)
-                ->asMultipart()
-                ->post(static::getUrl() . "api/v1/accounts/{$accountId}/identity", [
-                    ['name' => 'identity_type', 'contents' => $validated['identity_type']],
-                    ['name' => 'identity_value', 'contents' => $validated['identity_value']],
-                ]);
-
-            if ($response->failed()) {
-                Log::error('Cowrywise identity update failed', [
-                    'account_id' => $accountId,
-                    'request' => $validated,
-                    'response' => $response->json(),
-                ]);
-
-                return ApiHelper::sendError(['Account Creation Failed!'], [
-                    'error' => 'Failed to update identity',
-                    'details' => $response->json(),
-                ], code: $response->status());
-            }
-
-            $data = $response->json();
-
-            return ApiHelper::sendResponse($data, 'Identity updated successfully');
-
-        } catch (\Throwable $th) {
-            Log::critical('Exception while updating Cowrywise identity', [
-                'account_id' => $accountId,
-                'error' => $th->getMessage(),
-            ]);
-
-            return ApiHelper::sendError(['Unexpected server error'], [$th->getMessage()], code: 500);
-        }
+        return static::cowryWiseAccountApiCall(
+            $data,
+            $accountId,
+            'identity',
+            'Identity updated successfully'
+        );
     }
 
     public static function retrieveAllAccount()
     {
-        $token = static::getToken();
-
-        if (!$token) {
-            Log::error('Cowrywise token missing while fetching account details.');
-            return ApiHelper::sendError(['Token Error!'], ['Could not retrieve API token.'], 500);
-        }
-
-        try {
-            $response = Http::withToken($token)
-                ->get(static::getUrl() . "api/v1/accounts");
-
-            if ($response->failed()) {
-                Log::error('Failed to fetch Cowrywise account details', [
-                    'status' => $response->status(),
-                    'response' => $response->json(),
-                ]);
-
-                return ApiHelper::sendError(['Account Creation Failed!'], [
-                    'error' => 'Failed to update identity',
-                    'details' => $response->json(),
-                ], code: $response->status());
-            }
-
-            $data = $response->json();
-
-            return ApiHelper::sendResponse($data, 'Accounts retrieved successfully');
-
-        } catch (\Throwable $th) {
-            Log::critical('Exception while fetching Cowrywise account', [
-                'error' => $th->getMessage(),
-            ]);
-
-            return ApiHelper::sendError(['Unexpected server error'], [$th->getMessage()], code: 500);
-        }
+        return static::cowryWiseGeApiCall(
+            'api/v1/accounts',
+            'Accounts retrieved successfully'
+        );
     }
 
     public static function retrieveSingleAccount($accountId)
     {
-        if (!$accountId)
-            return abort(404);
-
-        $token = static::getToken();
-
-        if (!$token) {
-            Log::error('Cowrywise token missing while fetching account details.');
-            return ApiHelper::sendError(['Token Error!'], ['Could not retrieve API token.'], 500);
-        }
-
-        try {
-            $response = Http::withToken($token)
-                ->get(static::getUrl() . "api/v1/accounts/{$accountId}");
-
-            if ($response->failed()) {
-                Log::error('Failed to fetch Cowrywise account details', [
-                    'account_id' => $accountId,
-                    'status' => $response->status(),
-                    'response' => $response->json(),
-                ]);
-
-                return ApiHelper::sendError(['Failed to update identity!'], [
-                    'error' => 'Failed to update identity',
-                    'details' => $response->json(),
-                ], code: $response->status());
-            }
-
-            $data = $response->json();
-
-            return ApiHelper::sendResponse($data, 'Account details retrieved successfully');
-
-        } catch (\Throwable $th) {
-            Log::critical('Exception while fetching Cowrywise account', [
-                'account_id' => $accountId,
-                'error' => $th->getMessage(),
-            ]);
-
-            return ApiHelper::sendError(['Unexpected server error'], [$th->getMessage()], code: 500);
-        }
+        return static::cowryWiseGeApiCall(
+            "api/v1/accounts/{$accountId}",
+            'Account details retrieved successfully',
+            ['account_id' => $accountId]
+        );
     }
 
-    public static function getPortfolio(Request $request, $accountId)
+    public static function getPortfolio($data, $accountId)
     {
-        if (!$accountId) return abort(404);
-
-        $validated = $request->validate([
-            'asset_id' => 'required|string'
-        ]);
-
         $token = static::getToken();
 
         if (!$token) {
@@ -208,13 +93,13 @@ class CowrywiseOnboardService extends CowrywiseBaseService
                     'Content-Type' => 'application/json'
                 ])
                 ->send('GET', static::getUrl() . "api/v1/accounts/{$accountId}/portfolio", [
-                    'body' => json_encode(['asset_id' => $validated['asset_id']])
+                    'body' => json_encode(['asset_id' => $data['asset_id']])
                 ]);
 
             if ($response->failed()) {
                 Log::error('Failed to fetch Cowrywise portfolio', [
                     'account_id' => $accountId,
-                    'asset_id' => $validated['asset_id'],
+                    'asset_id' => $data['asset_id'],
                     'status' => $response->status(),
                     'response' => $response->json()
                 ]);
@@ -225,14 +110,9 @@ class CowrywiseOnboardService extends CowrywiseBaseService
                 ], code: $response->status());
             }
 
-            $data = $response->json();
+            $response = $response->json();
 
-            Log::info('Cowrywise portfolio retrieved', [
-                'account_id' => $accountId,
-                'asset_id' => $validated['asset_id']
-            ]);
-
-            return ApiHelper::sendResponse($data, 'Portfolio fetched successfully');
+            return ApiHelper::sendResponse($response, 'Portfolio fetched successfully');
 
         } catch (\Throwable $th) {
             Log::critical('Exception while retrieving Cowrywise portfolio', [
@@ -242,5 +122,46 @@ class CowrywiseOnboardService extends CowrywiseBaseService
 
             return ApiHelper::sendError(['Unexpected server error'], [$th->getMessage()], code: 500);
         }
+    }
+
+    public static function updateAddress(array $data, $accountId)
+    {
+        return static::cowryWiseAccountApiCall(
+            $data,
+            $accountId,
+            'address',
+            'Address updated successfully',
+            ['country' => static::COUNTRY_CODE]
+        );
+    }
+
+    public static function updateNextOfKin(array $data, $accountId)
+    {
+        return static::cowryWiseAccountApiCall(
+            $data,
+            $accountId,
+            'nok',
+            'Next of Kin updated successfully'
+        );
+    }
+
+    public static function updateProfile(array $data, $accountId)
+    {
+        return static::cowryWiseAccountApiCall(
+            $data,
+            $accountId,
+            'profile',
+            'Profile updated successfully'
+        );
+    }
+
+    public static function addBank(array $data, $accountId)
+    {
+        return static::cowryWiseAccountApiCall(
+            $data,
+            $accountId,
+            'bank',
+            'Bank added successfully'
+        );
     }
 }
