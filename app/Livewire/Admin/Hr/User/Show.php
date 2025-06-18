@@ -78,6 +78,19 @@ class Show extends Component
     }
 
 
+    public function dropAllFlags()
+    {
+        // dd('good');
+           $this->user->update([
+                'is_flagged' => false,
+                'post_no_debit' => false,
+                'is_blacklisted' => false,
+            ]);
+        $this->dispatch('success-toastr','All flags dropped.');
+        $this->mount($this->user->username);
+    }
+
+
     public function unBlockUser()
     {
 
