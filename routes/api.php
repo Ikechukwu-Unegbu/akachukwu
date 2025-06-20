@@ -138,23 +138,23 @@ Route::get('active-virtual-accounts', [SiteSettingsApiController::class, 'active
 Route::get('bank-list', [BankTransferApiController::class, 'banks']);
 
 
-Route::prefix('investments')->middleware('auth:sanctum')->as('saving.')->group(function() {
+Route::prefix('investments')->middleware('auth:sanctum')->group(function() {
     Route::prefix('onboarding')->group(function() {
-        Route::get('accounts', [CowrywiseOnboardController::class, 'get']);
+        // Route::get('fetch-all-accounts', [CowrywiseOnboardController::class, 'get']);
         Route::post('create', [CowrywiseOnboardController::class, 'create']);
-        Route::get('accounts/{accountId}', [CowrywiseOnboardController::class, 'retrieveSingleAccount']);
-        Route::get('portfolio/{accountId}', [CowrywiseOnboardController::class, 'getPortfolio']);
-        Route::post('identity/{accountId}/update', [CowrywiseOnboardController::class, 'updateIdentity']);
-        Route::post('address/{accountId}/update', [CowrywiseOnboardController::class, 'updateAddress']);
-        Route::post('nok/{accountId}/update', [CowrywiseOnboardController::class, 'updateNextOfKin']);
-        Route::post('profile/{accountId}/update', [CowrywiseOnboardController::class, 'updateProfile']);
-        Route::post('bank/{accountId}/create', [CowrywiseOnboardController::class, 'addBank']);
+        Route::post('profile/update', [CowrywiseOnboardController::class, 'updateProfile']);
+        Route::get('account', [CowrywiseOnboardController::class, 'retrieveSingleAccount']);
+        Route::get('portfolio', [CowrywiseOnboardController::class, 'getPortfolio']);
+        Route::post('identity/update', [CowrywiseOnboardController::class, 'updateIdentity']);
+        Route::post('address/update', [CowrywiseOnboardController::class, 'updateAddress']);
+        Route::post('nok/update', [CowrywiseOnboardController::class, 'updateNextOfKin']);
+        Route::post('bank/create', [CowrywiseOnboardController::class, 'addBank']);
     });
 
     Route::prefix('wallet')->group(function() {
         Route::get('/', [CowrywiseWalletController::class, 'fetchAllWallet']);
         Route::get('/{walletId}', [CowrywiseWalletController::class, 'fetchWallet']);
-        Route::post('{accountId}/create', [CowrywiseWalletController::class, 'create']);
+        Route::post('/create', [CowrywiseWalletController::class, 'create']);
     });
 
     Route::prefix('savings')->group(function() {

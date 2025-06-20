@@ -1,6 +1,9 @@
 <?php
 namespace App\Services\Cowrywise;
 
+use App\Models\CowryWiseIdentity;
+use App\Models\CowrywiseNextOfKin;
+use App\Models\User;
 use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -47,6 +50,86 @@ class CowrywiseBaseService
         })->values()->toArray();
     }
 
+    protected static function cowryWiseNewAccount(User $user, array $data)
+    {
+        $user->cowryWiseAccount()->updateOrCreate(
+            ['account_id' => $data['account_id']],
+            [
+                'account_type' => $data['account_type'],
+                'account_status' => $data['account_status'],
+                'is_verified' => $data['is_verified'],
+                'risk_appetite' => $data['risk_appetite'],
+                'account_number' => $data['account_number'],
+                'is_proprietary' => $data['is_proprietary'],
+                'verification_status' => $data['verification_status'],
+                'date_joined' => $data['date_joined'],
+                'street' => $data['address']['street'],
+                'lga' => $data['address']['lga'],
+                'area_code' => $data['address']['area_code'],
+                'city' => $data['address']['city'],
+                'state' => $data['address']['state'],
+                'date_of_birth' => $data['date_of_birth'],
+                'gender' => $data['gender'],
+            ]
+        );
+
+        return true;
+    }
+
+    protected static function cowryWiseAccountIdentity($accountId, array $data)
+    {
+        CowryWiseIdentity::create([
+            'cowry_wise_account_id' => $accountId,
+            'type' => $data['type'],
+            'value' => $data['value'],
+            'verification_status' => $data['verification_status'],
+        ]);
+
+        return true;
+    }
+
+    protected static function cowryWiseAccountNok($accountId, array $data)
+    {
+        CowrywiseNextOfKin::updateOrCreate(['cowry_wise_account_id' => $accountId], [
+            'first_name' => $data['next_of_kin']['first_name'],
+            'last_name' => $data['next_of_kin']['last_name'],
+            'email' => $data['next_of_kin']['email'],
+            'phone_number' => $data['next_of_kin']['phone_number'],
+            'relationship' => $data['next_of_kin']['relationship'],
+            'gender' => $data['next_of_kin']['gender'],
+        ]);
+
+        return true;
+    }
+
+    protected static function cowryWiseAccountBank($accountId, array $data)
+    {
+        CowrywiseNextOfKin::updateOrCreate(['cowry_wise_account_id' => $accountId], [
+            'account_name' => $data['account_name'],
+            'account_number' => $data['account_number'],
+            'bank_name' => $data['bank_name'],
+            'bank_code' => $data['bank_code'],
+        ]);
+
+        return true;
+    }
+
+     protected static function cowryWiseWallet($accountId, array $data)
+    {
+        CowrywiseNextOfKin::updateOrCreate(['cowry_wise_account_id' => $accountId], [
+            'wallet_id' => $data['wallet_id'],
+            'name' => $data['name'],
+            'bank_name' => $data['bank_name'],
+            'product_code' => $data['product_code'],
+            'currency' => $data['currency'],
+            'balance' => $data['balance'],
+            'account_number' => $data['account_number'],
+            'account_name' => $data['account_name'],
+        ]);
+
+        return true;
+    }
+
     protected static function causer($error, $attempt = null): void
     {
         $log = [
@@ -76,19 +159,16 @@ class CowrywiseBaseService
                 ->post(static::getUrl() . "api/v1/accounts/{$accountId}/{$endpointSuffix}", static::formatToMultipart($requestData));
 
             if ($response->failed()) {
-                Log::error("Failed to update {$endpointSuffix}", [
-                    'status' => $response->status(),
-                    'response' => $response->json(),
+                return collect([
+                    'status' => false,
+                    'response' => []
                 ]);
-
-                return ApiHelper::sendError(["Failed to update {$endpointSuffix}!"], [
-                    'error' => "Failed to update {$endpointSuffix}",
-                    'details' => $response->json(),
-                ], 401);
             }
 
-            $data = $response->json();
-            return ApiHelper::sendResponse($data, $successMessage);
+            return collect([
+                'status' => true,
+                'response' => $response->json()
+            ]);
 
         } catch (\Throwable $th) {
             self::causer($th->getMessage(), "Exception on ({$endpointSuffix})");
@@ -150,19 +230,17 @@ class CowrywiseBaseService
                 ->post(static::getUrl() . "api/v1/{$endpointSuffix}", static::formatToMultipart($requestData));
 
             if ($response->failed()) {
-                Log::error("Failed to {$errorMessage}", [
-                    'status' => $response->status(),
-                    'response' => $response->json(),
+                return collect([
+                    'status' => false,
+                    'response' => []
                 ]);
-
-                return ApiHelper::sendError(["Failed to {$errorMessage}!"], [
-                    'error' => "Failed to {$errorMessage}",
-                    'details' => $response->json(),
-                ], 401);
             }
 
-            $data = $response->json();
-            return ApiHelper::sendResponse($data, $successMessage);
+
+            return collect([
+                'status' => true,
+                'response' => $response->json()
+            ]);
 
         } catch (\Throwable $th) {
             self::causer($th->getMessage(), "Exception on ({$endpointSuffix})");

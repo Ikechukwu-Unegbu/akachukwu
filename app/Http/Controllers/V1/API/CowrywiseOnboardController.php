@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers\V1\API;
 
-use App\Http\Controllers\Controller;
-use App\Services\Cowrywise\CowrywiseOnboardService;
+use App\Models\User;
+use App\Helpers\ApiHelper;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Services\Cowrywise\CowrywiseOnboardService;
 
 class CowrywiseOnboardController extends Controller
 {
@@ -24,46 +28,63 @@ class CowrywiseOnboardController extends Controller
     {
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'last_name' => 'required|string|max:255'
         ]);
 
-        return $this->cowrywiseOnboardService::onboardingNewUser($validated);
+        return $this->cowrywiseOnboardService::onboardingUser($validated);
     }
 
-    public function retrieveSingleAccount($accountId)
+    public function retrieveSingleAccount()
     {
-        if (!$accountId) return abort(404);
+        $user = User::findOrFail(Auth::id());
+
+        if (!$user->cowryWiseAccount) {
+            return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
+        }
+
+        $accountId = $user->cowryWiseAccount->account_id;
 
         return $this->cowrywiseOnboardService::retrieveSingleAccount($accountId);
     }
 
-    public function getPortfolio(Request $request, $accountId)
+    public function getPortfolio(Request $request)
     {
-        if (!$accountId) return abort(404);
+        $user = User::findOrFail(Auth::id());
 
-        $validated = $request->validate([
-            'asset_id' => 'required|string'
-        ]);
+        if (!$user->cowryWiseAccount) {
+            return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
+        }
 
-        return $this->cowrywiseOnboardService::getPortfolio($validated, $accountId);
+        $data = ['asset_id' => Str::uuid()];
+
+        $accountId = $user->cowryWiseAccount->account_id;
+
+        return $this->cowrywiseOnboardService::getPortfolio($data, $accountId);
     }
 
-    public function updateIdentity(Request $request, $accountId)
+    public function updateIdentity(Request $request)
     {
-        if (!$accountId) return abort(404);
+        $user = User::findOrFail(Auth::id());
+
+        if (!$user->cowryWiseAccount) {
+            return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
+        }
 
         $validated = $request->validate([
             'identity_type' => 'required|string|in:BVN,NIN',
             'identity_value' => 'required|string|max:50',
         ]);
 
-        return $this->cowrywiseOnboardService::updateIdentity($validated, $accountId);
+        return $this->cowrywiseOnboardService::updateIdentity($validated, $user);
     }
 
-    public function updateAddress(Request $request, $accountId)
+    public function updateAddress(Request $request)
     {
-        if (!$accountId) return abort(404);
+        $user = User::findOrFail(Auth::id());
+
+        if (!$user->cowryWiseAccount) {
+            return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
+        }
 
         $validated = $request->validate([
             'street'    => 'required|string',
@@ -73,12 +94,16 @@ class CowrywiseOnboardController extends Controller
             'state'     => 'required|string|max:50',
         ]);
 
-        return $this->cowrywiseOnboardService::updateAddress($validated, $accountId);
+        return $this->cowrywiseOnboardService::updateAddress($validated, $user);
     }
 
-    public function updateNextOfKin(Request $request, $accountId)
+    public function updateNextOfKin(Request $request)
     {
-        if (!$accountId) return abort(404);
+        $user = User::findOrFail(Auth::id());
+
+        if (!$user->cowryWiseAccount) {
+            return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
+        }
 
         $validated = $request->validate([
             'relationship' => 'required|string',
@@ -89,35 +114,42 @@ class CowrywiseOnboardController extends Controller
             'gender'       => 'required|in:F,M',
         ]);
 
-        return $this->cowrywiseOnboardService::updateNextOfKin($validated, $accountId);
+        return $this->cowrywiseOnboardService::updateNextOfKin($validated, $user);
     }
 
-    public function updateProfile(Request $request, $accountId)
+    public function updateProfile(Request $request)
     {
-        if (!$accountId) return abort(404);
+        $user = User::findOrFail(Auth::id());
+
+        if (!$user->cowryWiseAccount) {
+            return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
+        }
 
         $validated = $request->validate([
             'first_name'    => 'required|string|max:50',
             'last_name'     => 'required|string|max:50',
-            'email'         => 'required|email|max:50',
             'phone_number'  => 'required|numeric|digits:11',
             'gender'        => 'required|in:F,M',
             'date_of_birth' => 'required|date|before:today',
         ]);
 
-        return $this->cowrywiseOnboardService::updateProfile($validated, $accountId);
+        return $this->cowrywiseOnboardService::updateProfile($validated, $user);
     }
 
-    
-    public function addBank(Request $request, $accountId)
+
+    public function addBank(Request $request)
     {
-        if (!$accountId) return abort(404);
+        $user = User::findOrFail(Auth::id());
+
+        if (!$user->cowryWiseAccount) {
+            return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
+        }
 
         $validated = $request->validate([
             'bank_code'      => 'required|string|max:3',
             'account_number' => 'required|numeric|digits:10',
         ]);
 
-        return $this->cowrywiseOnboardService::addBank($validated, $accountId);
+        return $this->cowrywiseOnboardService::addBank($validated, $user);
     }
 }

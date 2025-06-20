@@ -3,13 +3,16 @@
 namespace App\Services\Cowrywise;
 
 use App\Helpers\ApiHelper;
+use App\Models\CowryWiseAccount;
+use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
 class CowrywiseOnboardService extends CowrywiseBaseService
 {
-    public static function onboardingNewUser(array $data)
+    public static function onboardingUser(array $data)
     {
         $token = static::getToken();
 
@@ -19,12 +22,15 @@ class CowrywiseOnboardService extends CowrywiseBaseService
         }
 
         try {
+
+            $user = User::find(Auth::id());
+
             $response = Http::withToken($token)
                 ->asMultipart()
                 ->post(static::getUrl() . 'api/v1/accounts', [
                     ['name' => 'first_name', 'contents' => $data['first_name']],
                     ['name' => 'last_name', 'contents' => $data['last_name']],
-                    ['name' => 'email', 'contents' => $data['email']],
+                    ['name' => 'email', 'contents' => $user->email],
                     ['name' => 'terms_of_use_accepted', 'contents' => 'True']
                 ]);
 
@@ -40,7 +46,9 @@ class CowrywiseOnboardService extends CowrywiseBaseService
 
             $data = $response->json();
 
-            return ApiHelper::sendResponse($data, 'Account created successfully');
+            static::cowryWiseNewAccount($user, $data['data']);
+
+            return ApiHelper::sendResponse($data['data'], 'Account created successfully');
 
         } catch (\Throwable $th) {
             Log::critical('Exception while creating Cowrywise account', [
@@ -51,14 +59,24 @@ class CowrywiseOnboardService extends CowrywiseBaseService
         }
     }
 
-    public static function updateIdentity($data, $accountId)
+    public static function updateIdentity($data, User $user)
     {
-        return static::cowryWiseAccountApiCall(
+        $response = static::cowryWiseAccountApiCall(
             $data,
-            $accountId,
+            $user->cowryWiseAccount->account_id,
             'identity',
             'Identity updated successfully'
         );
+
+        if (isset($response['status']) && $response['status']) {
+            self::cowryWiseAccountIdentity($user->cowryWiseAccount->id, $response['response']['data']);
+            return ApiHelper::sendResponse($response['response']['data'], "Account Identity added successfully");
+        }
+
+        return ApiHelper::sendError(["Failed to add Identity!"], [
+            'error' => "Failed to update Account",
+            'details' => $response,
+        ], 401);
     }
 
     public static function retrieveAllAccount()
@@ -71,11 +89,8 @@ class CowrywiseOnboardService extends CowrywiseBaseService
 
     public static function retrieveSingleAccount($accountId)
     {
-        return static::cowryWiseGeApiCall(
-            "api/v1/accounts/{$accountId}",
-            'Account details retrieved successfully',
-            ['account_id' => $accountId]
-        );
+        $response = CowryWiseAccount::with(['banks', 'nextOfKin', 'identities'])->where('account_id', $accountId)->first();
+        return ApiHelper::sendResponse($response, 'Account retrieved successfully');
     }
 
     public static function getPortfolio($data, $accountId)
@@ -124,44 +139,85 @@ class CowrywiseOnboardService extends CowrywiseBaseService
         }
     }
 
-    public static function updateAddress(array $data, $accountId)
+    public static function updateAddress(array $data, User $user)
     {
-        return static::cowryWiseAccountApiCall(
+        $response = static::cowryWiseAccountApiCall(
             $data,
-            $accountId,
+            $user->cowryWiseAccount->account_id,
             'address',
             'Address updated successfully',
             ['country' => static::COUNTRY_CODE]
         );
+
+        if (isset($response['status']) && $response['status']) {
+            self::cowryWiseNewAccount($user, $response['response']['data']);
+            return ApiHelper::sendResponse($response['response']['data'], "Account address added successfully");
+        }
+
+        return ApiHelper::sendError(["Failed to add Account address!"], [
+            'error' => "Failed to update Account address",
+            'details' => $response,
+        ], 401);
     }
 
-    public static function updateNextOfKin(array $data, $accountId)
+    public static function updateNextOfKin(array $data, User $user)
     {
-        return static::cowryWiseAccountApiCall(
+        $response =  static::cowryWiseAccountApiCall(
             $data,
-            $accountId,
+            $user->cowryWiseAccount->account_id,
             'nok',
             'Next of Kin updated successfully'
         );
+
+        if (isset($response['status']) && $response['status']) {
+            self::cowryWiseAccountNok($user->cowryWiseAccount->id, $response['response']['data']);
+            return ApiHelper::sendResponse($response['response']['data'], "Account updated successfully");
+        }
+
+        return ApiHelper::sendError(["Failed to update Address!"], [
+            'error' => "Failed to update Address",
+            'details' => $response,
+        ], 401);
     }
 
-    public static function updateProfile(array $data, $accountId)
+    public static function updateProfile(array $data, User $user)
     {
-        return static::cowryWiseAccountApiCall(
+        $response =  static::cowryWiseAccountApiCall(
             $data,
-            $accountId,
+            $user->cowryWiseAccount->account_id,
             'profile',
-            'Profile updated successfully'
+            'Account updated successfully',
+            ['email' => $user->email]
         );
+
+        if (isset($response['status']) && $response['status']) {
+            self::cowryWiseNewAccount($user, $response['response']['data']);
+            return ApiHelper::sendResponse($response['response']['data'], "Account updated successfully");
+        }
+
+        return ApiHelper::sendError(["Failed to update Account!"], [
+            'error' => "Failed to update Account",
+            'details' => $response,
+        ], 401);
     }
 
-    public static function addBank(array $data, $accountId)
+    public static function addBank(array $data, $user)
     {
-        return static::cowryWiseAccountApiCall(
+        $response = static::cowryWiseAccountApiCall(
             $data,
-            $accountId,
+            $user->cowryWiseAccount->account_id,
             'bank',
             'Bank added successfully'
         );
+
+        if (isset($response['status']) && $response['status']) {
+            self::cowryWiseAccountBank($user, $response['response']['data']);
+            return ApiHelper::sendResponse($response['response']['data'], "Bank added successfully");
+        }
+
+        return ApiHelper::sendError(["Failed to update bank!"], [
+            'error' => "Failed to update bank",
+            'details' => $response,
+        ], 401);
     }
 }

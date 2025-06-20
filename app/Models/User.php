@@ -665,6 +665,8 @@ class User extends Authenticatable
         return $this->os_player_id;
     }
 
-
-
+    public function cowryWiseAccount()
+    {
+        return $this->hasOne(CowryWiseAccount::class);
+    }
 }
