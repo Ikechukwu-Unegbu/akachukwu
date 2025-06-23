@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cowry_wise_account_id')->constrained()->onDelete('cascade');
             $table->string('wallet_id')->unique();
+            $table->string('name')->nullable();
             $table->string('bank_name')->nullable();
             $table->string('product_code')->nullable();
             $table->string('currency')->nullable();
+            $table->decimal('balance', 20 ,2)->default(0.00);
             $table->string('account_number')->nullable();
             $table->string('account_name')->nullable();
             $table->timestamps();

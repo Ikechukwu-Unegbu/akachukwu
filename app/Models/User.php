@@ -669,4 +669,9 @@ class User extends Authenticatable
     {
         return $this->hasOne(CowryWiseAccount::class);
     }
+
+    public function savings()
+    {
+        return $this->hasMany(CowryWiseSaving::class);
+    }
 }

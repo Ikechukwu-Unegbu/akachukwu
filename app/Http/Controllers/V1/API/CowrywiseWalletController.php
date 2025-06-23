@@ -20,12 +20,16 @@ class CowrywiseWalletController extends Controller
 
     public function fetchAllWallet()
     {
-        return $this->cowrywiseWalletService::fetchAlleWallet();
+        return $this->cowrywiseWalletService::fetchAllWallet();
     }
 
-    public function fetchWallet($walletId)
+    public function fetchWallet()
     {
-        return $this->cowrywiseWalletService::fetchSingleWallet($walletId);
+        $user = User::findOrFail(Auth::id());
+        if (!$user->cowryWiseAccount) {
+            return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
+        }
+        return $this->cowrywiseWalletService::fetchSingleWallet($user);
     }
 
     public function create()

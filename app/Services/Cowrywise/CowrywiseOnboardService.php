@@ -2,11 +2,12 @@
 
 namespace App\Services\Cowrywise;
 
-use App\Helpers\ApiHelper;
-use App\Models\CowryWiseAccount;
-use App\Models\User;
 use Auth;
+use App\Models\User;
+use App\Helpers\ApiHelper;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use App\Models\CowryWiseAccount;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
@@ -30,7 +31,7 @@ class CowrywiseOnboardService extends CowrywiseBaseService
                 ->post(static::getUrl() . 'api/v1/accounts', [
                     ['name' => 'first_name', 'contents' => $data['first_name']],
                     ['name' => 'last_name', 'contents' => $data['last_name']],
-                    ['name' => 'email', 'contents' => $user->email],
+                    ['name' => 'email', 'contents' => fake()->email],
                     ['name' => 'terms_of_use_accepted', 'contents' => 'True']
                 ]);
 
@@ -46,10 +47,18 @@ class CowrywiseOnboardService extends CowrywiseBaseService
 
             $data = $response->json();
 
-            static::cowryWiseNewAccount($user, $data['data']);
+            $account = static::cowryWiseNewAccount($user, $data['data']);
+
+            $accountId = $data['data']['account_id'];
+            $assetId = ['asset_id' => Str::uuid()];
+
+            $response = (array) self::getPortfolio($assetId, $accountId);
+
+            if (isset($response['data'])) {
+                self::cowryWiseWallet($account->id, $response['data']['assets']['wallets']);
+            }
 
             return ApiHelper::sendResponse($data['data'], 'Account created successfully');
-
         } catch (\Throwable $th) {
             Log::critical('Exception while creating Cowrywise account', [
                 'message' => $th->getMessage(),
@@ -127,7 +136,7 @@ class CowrywiseOnboardService extends CowrywiseBaseService
 
             $response = $response->json();
 
-            return ApiHelper::sendResponse($response, 'Portfolio fetched successfully');
+            return $response;
 
         } catch (\Throwable $th) {
             Log::critical('Exception while retrieving Cowrywise portfolio', [

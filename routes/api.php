@@ -152,16 +152,16 @@ Route::prefix('investments')->middleware('auth:sanctum')->group(function() {
     });
 
     Route::prefix('wallet')->group(function() {
-        Route::get('/', [CowrywiseWalletController::class, 'fetchAllWallet']);
-        Route::get('/{walletId}', [CowrywiseWalletController::class, 'fetchWallet']);
-        Route::post('/create', [CowrywiseWalletController::class, 'create']);
+        // Route::get('/', [CowrywiseWalletController::class, 'fetchAllWallet']);
+        Route::get('/', [CowrywiseWalletController::class, 'fetchWallet']);
+        // Route::post('/create', [CowrywiseWalletController::class, 'create']);
     });
 
     Route::prefix('savings')->group(function() {
         Route::get('/', [CowrywiseSavingsController::class, 'fetchAllSavings']);
         Route::get('rates', [CowrywiseSavingsController::class, 'getSavingRates']);
-        Route::get('/{savingId}', [CowrywiseSavingsController::class, 'retrieveSingleSavings']);
-        Route::post('{accountId}/create', [CowrywiseSavingsController::class, 'createSavings']);
+        Route::get('/{savingId}/fetch-savings', [CowrywiseSavingsController::class, 'retrieveSingleSavings']);
+        Route::post('/create', [CowrywiseSavingsController::class, 'createSavings']);
         Route::post('{savingId}/fund', [CowrywiseSavingsController::class, 'fundSavings']);
         Route::get('{savingId}/performance', [CowrywiseSavingsController::class, 'getPerformance']);
         Route::post('{savingId}/withdraw', [CowrywiseSavingsController::class, 'withdrawToWallet']);

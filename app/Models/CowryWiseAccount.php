@@ -37,4 +37,9 @@ class CowryWiseAccount extends Model
     {
         return $this->hasMany(CowryWiseIdentity::class);
     }
+
+    public function wallets()
+    {
+        return $this->hasMany(CowryWallet::class, 'cowry_wise_account_id')->where('currency', config('app.currency'));
+    }
 }

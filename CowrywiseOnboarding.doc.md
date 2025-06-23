@@ -1,7 +1,7 @@
 # Cowrywise Investment Account Onboarding API
 
 ## Create Account Endpoint
-`POST {{base_url}}/investments/investments/onboarding/create`
+`POST {{base_url}}/investments/onboarding/create`
 
 ## Description
 This endpoint creates a new Investment Account which serves as the foundation for various investment products. The account holds core user information and serves as the primary container for all investment activities.
@@ -433,5 +433,24 @@ Create a new wallet
 `GET {{base_url}}/investments/wallet`
 ## Response Structure
 ```json
-
+    {
+    "status": true,
+    "response": [
+        {
+            "id": 3,
+            "cowry_wise_account_id": 19,
+            "wallet_id": "bc03729baa3842148acf2cef6aa62182",
+            "name": "NGN-Wallet",
+            "bank_name": "",
+            "product_code": "PRCDE6608556312",
+            "currency": "NGN",
+            "balance": "50000000.00",
+            "account_number": "",
+            "account_name": "",
+            "created_at": "2025-06-23T00:36:14.000000Z",
+            "updated_at": "2025-06-23T00:36:14.000000Z"
+        }
+    ],
+    "message": "Wallet retrieved successfully"
+}
 ```

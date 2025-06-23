@@ -1,6 +1,7 @@
 <?php
 namespace App\Services\Cowrywise;
 
+use App\Models\CowryWallet;
 use App\Models\CowryWiseIdentity;
 use App\Models\CowrywiseNextOfKin;
 use App\Models\User;
@@ -52,7 +53,7 @@ class CowrywiseBaseService
 
     protected static function cowryWiseNewAccount(User $user, array $data)
     {
-        $user->cowryWiseAccount()->updateOrCreate(
+        return $user->cowryWiseAccount()->updateOrCreate(
             ['account_id' => $data['account_id']],
             [
                 'account_type' => $data['account_type'],
@@ -72,8 +73,6 @@ class CowrywiseBaseService
                 'gender' => $data['gender'],
             ]
         );
-
-        return true;
     }
 
     protected static function cowryWiseAccountIdentity($accountId, array $data)
@@ -114,20 +113,38 @@ class CowrywiseBaseService
         return true;
     }
 
-     protected static function cowryWiseWallet($accountId, array $data)
+    protected static function cowryWiseWallet($accountId, array $data)
     {
-        CowrywiseNextOfKin::updateOrCreate(['cowry_wise_account_id' => $accountId], [
-            'wallet_id' => $data['wallet_id'],
-            'name' => $data['name'],
-            'bank_name' => $data['bank_name'],
-            'product_code' => $data['product_code'],
-            'currency' => $data['currency'],
-            'balance' => $data['balance'],
-            'account_number' => $data['account_number'],
-            'account_name' => $data['account_name'],
-        ]);
+        foreach ($data as $d) {
+            CowryWallet::updateOrCreate(['wallet_id' => $d['wallet_id']], [
+                'cowry_wise_account_id' => $accountId,
+                'name' => $d['name'],
+                'bank_name' => $d['bank_name'],
+                'product_code' => $d['product_code'],
+                'currency' => $d['currency'],
+                'balance' => $d['balance'],
+                'account_number' => $d['account_number'],
+                'account_name' => $d['account_name'],
+            ]);
+        }
 
         return true;
+    }
+
+    protected static function cowryWiseNewSavings(User $user, array $data)
+    {
+        return $user->savings()->create([
+            'savings_id' => $data['savings_id'],
+            'cowry_wise_account_id' => $user->cowryWiseAccount->id,
+            'name' => $data['name'],
+            'product_code' => $data['product_code'],
+            'principal' => $data['principal'],
+            'returns' => $data['returns'],
+            'balance' => $data['balance'],
+            'interest_enabled' => $data['balance'],
+            'interest_rate' => $data['interest_rate'],
+            'maturity_date' => $data['maturity_date'],
+        ]);
     }
 
     protected static function causer($error, $attempt = null): void
@@ -187,7 +204,8 @@ class CowrywiseBaseService
 
         try {
             $response = Http::withToken($token)
-                ->get(static::getUrl() . $endpoint, static::formatToMultipart($payload));
+                ->asMultipart()
+                ->get(static::getUrl() . $endpoint, $payload);
 
             if ($response->failed()) {
                 Log::error("Failed to fetch {$endpoint}", array_merge([
