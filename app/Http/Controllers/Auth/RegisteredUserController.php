@@ -48,8 +48,8 @@ class RegisteredUserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
+            // 'first_name' => ['required', 'string', 'max:255'],
+            // 'last_name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'min:3', 'max:255', 'alpha_dash', 'unique:' . User::class],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class],
             'password' => [
@@ -75,10 +75,10 @@ class RegisteredUserController extends Controller
         if ($request->filled('honey_field')) {
             return back()->withErrors(['error' => 'Bot detected']);
         }
-        
+
         return DB::transaction(function () use ($request) {
             $user = User::create([
-                'name' => $request->first_name . ' ' . $request->last_name,
+                // 'name' => $request->first_name . ' ' . $request->last_name,
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
@@ -95,7 +95,7 @@ class RegisteredUserController extends Controller
             // MonnifyService::createVirtualAccount($user);
             // $activeGateway = PaymentGateway::where('va_status', true)->first();
             // $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
-            // $virtualAccountFactory::createVirtualAccount($user); 
+            // $virtualAccountFactory::createVirtualAccount($user);
 
             event(new Registered($user));
 

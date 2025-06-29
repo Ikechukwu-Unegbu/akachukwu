@@ -63,14 +63,14 @@
     <!-- ===============================================-->
     <!--    Main Content-->
     <!-- ===============================================-->
-   
+
 
     <div class="flex flex-col md:flex-row h-full">
         <!-- Sidebar -->
         <nav
             class="bg-vastel_blue text-white  w-full hidden md:w-16 lg:w-64 md:flex flex-row md:flex-col justify-between md:justify-start ">
             <div class="flex items-center mb-8 py-[5px] border-b border-b-2 h-[5rem]">
-               
+
               <a @guest href="/" @else href="{{route('dashboard')}}" @endguest>
                 <svg width="86" height="66" viewBox="0 0 86 66" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <rect x="0.5" width="85" height="65.4317" fill="url(#pattern0_954_10208)"/>
@@ -85,7 +85,7 @@
 
             </div>
             <div class="flex md:flex-col space-x-4 md:space-x-0 md:space-y-6">
-    
+
                 <a href="{{ route('dashboard') }}"
                     class="flex flex-col items-center  w-[80%] py-[1rem] text-white hover:text-vastel_blue hover:bg-white hover:rounded-tr-lg hover:rounded-br-lg p-2 {{ Route::currentRouteName() == 'dashboard' ? 'active' : '' }}">
                     <i class="fas fa-home fa-3x"></i>
@@ -137,7 +137,7 @@
             <header
                 class="flex justify-between text-vastel_blue bg-white items-center mb-8 py-[5px] border-b border-b-2 h-[5rem] px-[1rem] md:px-[2rem]">
                 <div class="">
-                    <h1 class="text-2xl hidden md:inline  font-bold">Hi @if(Auth::check()) , {{ auth()->user()->name }} @endif</h1>
+                    <h1 class="text-2xl hidden md:inline  font-bold">Hi, {{ auth()->check() ? (auth()->user()->name ?? Str::ucfirst(auth()->user()->username)) : '' }}</h1>
                     <div class="flex flex-row-reverse items-center justify-center md:hidden">
                         <img class="h-[3rem] w-[3rem]" src="{{asset('images/clear-log.svg')}}" class="w-[3rem] h-[3rem]" alt="">
                         <button data-drawer-target="drawer-example" data-drawer-show="drawer-example" aria-controls="drawer-example" type="button" class="inline-flex items-center justify-center p-2 w-10 h-10 text-sm text-gray-500 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" >
@@ -153,9 +153,9 @@
                     <i class="far fa-bell text-xl"></i>
                     <a href="{{route('settings.support')}}"><i class="far fa-question-circle text-xl"></i></a>
                     <button class=" bg-red-500 rounded-full" data-dropdown-toggle="dropdown" type="button">
-                    <img 
-                            src="{{ auth()->check() ? auth()->user()->profilePicture : asset('path/to/placeholder-image.jpg') }}" 
-                            class="rounded-full w-12 h-12" 
+                    <img
+                            src="{{ auth()->check() ? auth()->user()->profilePicture : asset('path/to/placeholder-image.jpg') }}"
+                            class="rounded-full w-12 h-12"
                             alt="User Profile Picture"
                         />
 
@@ -185,17 +185,17 @@
             {{ $slot ?? '' }}
         </main>
     </div>
- 
 
 
 
- 
+
+
 
     <!-- off can vas -->
 
     <div id="drawer-example" class="fixed top-0 left-0 z-50 h-screen p-4 overflow-y-auto transition-transform -translate-x-full bg-white w-80" tabindex="-1" aria-labelledby="drawer-label">
         <img class="h-[4rem] w-[4rem]" src="{{ asset('images/vastel-logo.svg') }}" alt="Vastel Logo">
-        
+
         <button type="button" data-drawer-hide="drawer-example" aria-controls="drawer-example" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 absolute top-2.5 end-2.5 flex items-center justify-center">
             <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
@@ -206,15 +206,15 @@
         <nav class="flex flex-col text-blue-800 space-y-2 p-4">
             <a href="/" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fas  fa-home"></i>
-                <span>Home</span>   
+                <span>Home</span>
             </a>
-        
+
             <a href="{{route('services')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fa-solid fa-cubes-stacked"></i>
                 <!-- <img class="h-[3rem] w-[3rem]" src="{{asset('images/other-services.svg')}}" alt=""> -->
                 <span>Services</span>
             </a>
-        
+
             <a href="{{route('dashboard')}}" class="flex items-center space-x-2 hover:vastel_blue">
                 <i class="fas fa-tachometer-alt"></i>
                  <!-- <img class="h-[3rem] w-[3rem]" src="{{asset('images/home.svg')}}" alt=""> -->
@@ -237,7 +237,7 @@
             </a>
 
             @guest
-        
+
                 <ul class="flex flex-col gap-[1rem]">
                     <li><a href="{{ route('register') }}" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">Register</a></li>
                     <li><a href="{{ route('login') }}" class="bg-vastel_blue text-white py-2 px-4 rounded hover:bg-blue-600">Login</a></li>
@@ -256,7 +256,7 @@
     </div>
 
     <!-- end off can vas -->
-   
+
     <x-toastr />
 
     @stack('scripts')

@@ -23,9 +23,9 @@ class UserWatchService
                 $kycFullName1 = "{$firstName} {$lastName}";
                 $kycFullName2 = "{$lastName} {$firstName}";
                 $user->kyc_name = "{$kycResponse['firstName']} {$kycResponse['lastName']}";
+                $user->name = ucwords("{$kycResponse['firstName']} {$kycResponse['lastName']}");
 
             } elseif (isset($kycResponse['accountName'])) {
-
                 $accountName = strtolower(trim($kycResponse['accountName']));
                 $nameParts = explode(' ', $accountName);
 
@@ -34,7 +34,8 @@ class UserWatchService
                 $kycFullName1 = "{$firstName} {$lastName}";
                 $kycFullName2 = "{$lastName} {$firstName}";
                 $user->kyc_name = ucwords($accountName);
-                
+                $user->name = ucwords($accountName);
+
             } else {
                 throw new \Exception('KYC response does not contain recognizable name fields.');
             }
