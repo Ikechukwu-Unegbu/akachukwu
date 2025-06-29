@@ -111,7 +111,7 @@ class CowrywiseSavingsService extends CowrywiseBaseService
                 return ApiHelper::sendError(['Savings Creation Failed!'], [
                     'status' => $status,
                     'errorBody' => $errorBody
-                ], code: $status);
+                ], $status);
             }
 
             $data = $response->json();
@@ -198,7 +198,6 @@ class CowrywiseSavingsService extends CowrywiseBaseService
 
     protected static function initiateTransaction($savingId, $walletId, array $data)
     {
-        Log::info(json_encode($data));
         return CowryWiseSavingTransaction::create([
             'reference'   =>    $data['reference'],
             'description' =>    $data['description'],
