@@ -146,7 +146,7 @@ class User extends Authenticatable
             return $this->image;
         }
 
-        $nameParts = explode(' ', $this->name);
+        $nameParts = explode(' ', $this->name ?? $this->username);
         $alias = substr($nameParts[0], 0, 1);
         if (isset($nameParts[1])) {
             $alias .= substr($nameParts[1], 0, 1);
