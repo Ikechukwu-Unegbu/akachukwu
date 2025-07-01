@@ -33,7 +33,7 @@ class RegisterUserController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            // 'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'min:3', 'max:255', 'alpha_dash', 'unique:'.User::class],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -47,7 +47,7 @@ class RegisterUserController extends Controller
 
         return DB::transaction(function()use($request){
             $user = User::create([
-                // 'name' => $request->name,
+                'name' => $request->name,
                 'username' => $request->username,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
