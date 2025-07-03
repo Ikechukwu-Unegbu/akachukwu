@@ -53,7 +53,40 @@
                     <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#undoFlagsModal">
                     Undo All Flags
                     </button>
-                    @endif 
+                    @endif
+
+                    @if(!$user->post_no_debit)
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#activatePostNoDebit">
+                    Activate Post No Debit
+                    </button>
+                    <div class="modal fade" id="activatePostNoDebit" tabindex="-1" aria-labelledby="activatePostNoDebitLabel" aria-hidden="true">
+                    <div class="modal-dialog" wire:ignore.self>
+                        <div class="modal-content border-0 rounded-4 shadow">
+                        <div class="modal-header bg-danger text-white rounded-top-4">
+                            <h5 class="modal-title" id="activatePostNoDebitLabel">Post No Debit</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form wire:submit.prevent="handlePostNoDebit">
+                            @csrf
+                            @method('PATCH')
+                            <div class="modal-body">
+                                <p>Are you sure you want to activate post no debit for this user?</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="text-danger me-1 fa fa-ban"></i> Post No Debit</li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" wire:loading.remove wire:target="handlePostNoDebit">No, Cancel</button>
+                            <button type="submit" class="btn btn-danger" wire:loading.disabled>
+                                <span wire:loading.remove wire:target="handlePostNoDebit">Yes, Proceed</span>
+                                <span wire:loading wire:target="handlePostNoDebit"><i class="fa fa-spinner animate"></i> Processing</span>
+                            </button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                    @endif
 
                     <!-- Modal -->
                     <div class="modal fade" id="undoFlagsModal" tabindex="-1" aria-labelledby="undoFlagsModalLabel" aria-hidden="true">
@@ -63,7 +96,7 @@
                             <h5 class="modal-title" id="undoFlagsModalLabel">Undo All User Flags</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        
+
                         <form action="" method="POST">
                             @csrf
                             @method('PATCH') <!-- Or PUT, based on your routing -->

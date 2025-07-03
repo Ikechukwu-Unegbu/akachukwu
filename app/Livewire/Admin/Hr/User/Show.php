@@ -23,7 +23,7 @@ class Show extends Component
             'type'=>'Users',
         ]);
         $this->user = User::withTrashed()->where('username', $user)->first();
-        $this->authorize('view users'); 
+        $this->authorize('view users');
 
         //$this->user = User::withTrashed()->where('username', $user)->firstOrFail();
         //$this->authorize('view users');
@@ -34,7 +34,7 @@ class Show extends Component
     {
         $user = User::withTrashed()->find($this->user->id);
         DB::transaction(function()use($user){
-           
+
             $user->blocked_by_admin = true;
             $user->save();
             $this->dispatch('success-toastr', ['message' => "This user has been blocked"]);
@@ -44,7 +44,7 @@ class Show extends Component
                 'type'=>'Users',
             ]);
         });
-    
+
         $this->mount($user->username);
     }
 
@@ -53,9 +53,9 @@ class Show extends Component
 
         $user = User::withTrashed()->find($this->user->id);
 
-    
+
         DB::transaction(function()use($user){
-         
+
             if ($user->deleted_at) {
                 $user->deleted_at = null;
                 $message = "This user has been restored.";
@@ -63,7 +63,7 @@ class Show extends Component
                 $user->deleted_at = now();
                 $message = "This user has been deleted.";
             }
-        
+
             $user->save();
             ActivityLogService::log([
                 'activity'=>"Blocking",
@@ -71,7 +71,7 @@ class Show extends Component
                 'type'=>'Users',
             ]);
         });
-      
+
 
         $this->dispatch('success-toastr', ['message' => $message]);
         $this->mount($user->username);
@@ -135,6 +135,24 @@ class Show extends Component
         } else {
             $this->dispatch('error-toastr', ['message' => "Failed to send password reset link."]);
         }
+    }
+
+    public function handlePostNoDebit()
+    {
+        $user = User::withTrashed()->find($this->user->id);
+        DB::transaction(function()use($user){
+            $user->post_no_debit = true;
+            $user->save();
+
+            ActivityLogService::log([
+                'activity'=> "Post No Debit Activation",
+                'description'=> $user->name.' activated Post No Debit for '.$user->name."'s profile.",
+                'type'=> 'Users',
+            ]);
+        });
+
+        $this->dispatch('success-toastr', ['message' => "Post No Debit activated for user."]);
+        $this->redirect(url()->previous());
     }
 
     public function render()
