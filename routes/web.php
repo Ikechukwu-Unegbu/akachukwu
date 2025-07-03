@@ -26,6 +26,7 @@ use App\Http\Controllers\V1\BonusWithdrawalController;
 use App\Http\Controllers\V1\Utilities\AirtimeController;
 use App\Http\Controllers\V1\Utilities\ElectricityController;
 use App\Http\Controllers\V1\Education\ResultCheckerController;
+use App\Http\Controllers\SystemUser\WalletFundingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -209,6 +210,7 @@ Route::post('update-password', [SettingsController::class, 'updatePassword'])->n
 
 Route::get('/mtn/subscription-plans', [MtnDevController::class, 'listSubscriptionPlans']);
 
+Route::get('system-user/wallet-funding/{transaction_id}', [WalletFundingController::class, 'show'])->name('system-user.wallet-funding.show');
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';

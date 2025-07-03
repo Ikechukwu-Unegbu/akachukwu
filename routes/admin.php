@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\SystemUser\ScheduledTransactionController;
 use App\Http\Controllers\SystemUser\InAppTransferController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
+use App\Http\Controllers\SystemUser\WalletFundingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemUser\UserCrdDbtController;
 use App\Livewire\Admin\CrdDbt\Create as CrdDbtCreate;
@@ -235,6 +236,11 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::get('/', [BankController::class, 'showBankConfig'])->name('index');
                 Route::post('/update', [BankController::class, 'updateBankConfig'])->name('update');
             });
+        });
+
+        Route::prefix('wallet-funding')->as('admin.wallet-funding.')->group(function() {
+            Route::get('/', [WalletFundingController::class,'index'])->name('index');
+            Route::get('{transaction_id}/show', [App\Http\Controllers\SystemUser\WalletFundingController::class, 'show'])->name('show');
         });
     });
 
