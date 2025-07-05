@@ -38,19 +38,11 @@ class AdminTopupNotification extends Notification
     {
         return (new MailMessage)
                     ->subject('Your Vastel wallet has been credited')
-                    ->greeting('Hi ' . Str::title($notifiable->username) . ',')
-                    ->line('Your Vastel wallet has been credited with NGN ' . number_format($this->data['amount']))
-                    ->line('Remark: ' . $this->data['reason'])
-                    ->line('You can now use your balance to buy data, airtime, pay bills, save, or transfer to others.')
-                    ->line('')
-                    ->line('🎉 Earn More with Referrals!')
-                    ->line('Invite your friends to join Vastel and get rewarded when they buy data.')
-                    ->line('')
-                    ->line('Share your referral link in the app to start earning!')
-                    ->line('')
-                    ->line(line: 'Thank you for choosing Vastel — your world of possibilities.')
-                    ->line('Warm regards,')
-                    ->salutation('The Vastel Team');
+                    ->view('emails.admin-topup', [
+                        'user' => $notifiable,
+                        'amount' => $this->data['amount'],
+                        'reason' => $this->data['reason']
+                    ]);
     }
 
     /**
