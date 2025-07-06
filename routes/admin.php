@@ -112,23 +112,23 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('transaction', App\Livewire\Admin\Transaction\Index::class)->name('admin.transaction');
         ## Transaction - Airtime
         Route::get('transaction/airtime', App\Livewire\Admin\Transaction\Airtime\Index::class)->name('admin.transaction.airtime');
-        Route::get('transaction/airtime/{airtime:id}/show', App\Livewire\Admin\Transaction\Airtime\Show::class)->name('admin.transaction.airtime.show');
+        Route::get('transaction/airtime/{id}/show', App\Livewire\Admin\Transaction\Airtime\Show::class)->name('admin.transaction.airtime.show');
 
         ## Transaction - Data
         Route::get('transaction/data', App\Livewire\Admin\Transaction\Data\Index::class)->name('admin.transaction.data');
-        Route::get('transaction/data/{data:id}/show', App\Livewire\Admin\Transaction\Data\Show::class)->name('admin.transaction.data.show');
+        Route::get('transaction/data/{id}/show', App\Livewire\Admin\Transaction\Data\Show::class)->name('admin.transaction.data.show');
 
         ## Transaction - Cable
         Route::get('transaction/cable', App\Livewire\Admin\Transaction\Cable\Index::class)->name('admin.transaction.cable');
-        Route::get('transaction/cable/{cable:id}/show', App\Livewire\Admin\Transaction\Cable\Show::class)->name('admin.transaction.cable.show');
+        Route::get('transaction/cable/{id}/show', App\Livewire\Admin\Transaction\Cable\Show::class)->name('admin.transaction.cable.show');
 
         ## Transaction - Electricity
         Route::get('transaction/electricity', App\Livewire\Admin\Transaction\Electricity\Index::class)->name('admin.transaction.electricity');
-        Route::get('transaction/electricity/{electricity:id}/show', App\Livewire\Admin\Transaction\Electricity\Show::class)->name('admin.transaction.electricity.show');
+        Route::get('transaction/electricity/{id}/show', App\Livewire\Admin\Transaction\Electricity\Show::class)->name('admin.transaction.electricity.show');
 
         ## Transaction - Result-Checker
         Route::get('transaction/result-checker', App\Livewire\Admin\Transaction\ResultChecker\Index::class)->name('admin.transaction.result-checker');
-        Route::get('transaction/result-checker/{resultChecker:id}/show', App\Livewire\Admin\Transaction\ResultChecker\Show::class)->name('admin.transaction.result-checker.show');
+        Route::get('transaction/result-checker/{id}/show', App\Livewire\Admin\Transaction\ResultChecker\Show::class)->name('admin.transaction.result-checker.show');
 
         ## Transaction - Reseller
         Route::get('transaction/resellers', App\Livewire\Admin\Transaction\Reseller\Index::class)->name('admin.transaction.reseller');
