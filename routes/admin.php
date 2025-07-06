@@ -130,6 +130,10 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('transaction/result-checker', App\Livewire\Admin\Transaction\ResultChecker\Index::class)->name('admin.transaction.result-checker');
         Route::get('transaction/result-checker/{id}/show', App\Livewire\Admin\Transaction\ResultChecker\Show::class)->name('admin.transaction.result-checker.show');
 
+        ## Transaction - Money Transfer
+        Route::get('transaction/money-transfer', App\Livewire\Admin\Transaction\MoneyTransfer\Index::class)->name('admin.transaction.money-transfer');
+        Route::get('transaction/money-transfer/{id}/show', App\Livewire\Admin\Transaction\MoneyTransfer\Show::class)->name('admin.transaction.money-transfer.show');
+
         ## Transaction - Reseller
         Route::get('transaction/resellers', App\Livewire\Admin\Transaction\Reseller\Index::class)->name('admin.transaction.reseller');
         Route::get('transaction/resellers/create', App\Livewire\Admin\Transaction\Reseller\Create::class)->name('admin.transaction.reseller.create');
