@@ -9,9 +9,11 @@ class Show extends Component
 {
     public $electricity;
 
-    public function mount(ElectricityTransaction $electricity)
+    public function mount($id)
     {
-        $this->electricity = $electricity;
+        $this->electricity = ElectricityTransaction::with(['user' => function($query) {
+            $query->withTrashed();
+        }, 'vendor'])->findOrFail($id);
         $this->authorize('view electricity transaction');
     }
 

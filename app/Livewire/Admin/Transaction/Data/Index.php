@@ -92,7 +92,9 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.transaction.data.index', [
-            'data_transactions' =>  DataTransaction::with(['user', 'data_plan'])->search($this->search)->latest('created_at')->paginate($this->perPage)
+            'data_transactions' =>  DataTransaction::with(['user' => function ($query) {
+                    $query->withTrashed();
+                }, 'data_plan'])->search($this->search)->latest('created_at')->paginate($this->perPage)
         ]);
     }
 }

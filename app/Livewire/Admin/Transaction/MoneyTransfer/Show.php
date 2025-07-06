@@ -10,9 +10,11 @@ class Show extends Component
 
     public $moneyTransfer;
 
-    public function mount(MoneyTransfer $moneyTransfer)
+    public function mount($id)
     {
-        $this->moneyTransfer = $moneyTransfer;
+        $this->moneyTransfer = MoneyTransfer::with(['user' => function($query) {
+            $query->withTrashed();
+        }])->findOrFail($id);
         // $this->authorize('view money transaction');
     }
 

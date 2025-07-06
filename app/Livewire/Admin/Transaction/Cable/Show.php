@@ -9,9 +9,11 @@ class Show extends Component
 {
     public $cable;
 
-    public function mount(CableTransaction $cable)
+    public function mount($id)
     {
-        $this->cable = $cable;
+        $this->cable = CableTransaction::with(['user' => function($query) {
+            $query->withTrashed();
+        }, 'vendor'])->findOrFail($id);
         $this->authorize('view cable transaction');
     }
 

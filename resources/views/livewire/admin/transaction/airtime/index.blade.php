@@ -97,12 +97,8 @@
                                     </div>
                                 </th>
                                 <td>{{ $airtime_transaction->transaction_id }}</td>
-                                <td>
-                                    @if ($airtime_transaction->user)
-                                        <a href="{{ route('admin.hr.user.show', [$airtime_transaction->user->username]) }}">{{ $airtime_transaction->user->username }}</a>
-                                    @else
-                                        'N/A'
-                                    @endif
+                                <td> <a
+                                        href="{{ route('admin.hr.user.show', [$airtime_transaction->user->username]) }}">{{ $airtime_transaction->user->username }}</a>
                                 </td>
 
                                 <td>{{ $airtime_transaction->mobile_number }}</td>

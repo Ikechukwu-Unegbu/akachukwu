@@ -90,7 +90,9 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.transaction.cable.index', [
-            'cable_transactions' =>  CableTransaction::with(['user'])->search($this->search)->latest('created_at')->paginate($this->perPage)
+            'cable_transactions' =>  CableTransaction::with(['user' => function ($query) {
+                    $query->withTrashed();
+                }])->search($this->search)->latest('created_at')->paginate($this->perPage)
         ]);
     }
 }

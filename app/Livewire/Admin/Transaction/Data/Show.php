@@ -10,9 +10,11 @@ class Show extends Component
 {
     public $data;
 
-    public function mount(DataTransaction $data)
+    public function mount($id)
     {
-        $this->data = $data;
+        $this->data = DataTransaction::with(['user' => function($query) {
+            $query->withTrashed();
+        }, 'vendor'])->findOrFail($id);
         $this->authorize('view data transaction');
     }
 
