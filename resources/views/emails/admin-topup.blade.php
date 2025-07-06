@@ -10,7 +10,7 @@
 
         <!-- Header Section -->
         <div style="text-align: center; padding: 24px;">
-            <img src="https://vastel-uploads.fra1.cdn.digitaloceanspaces.com/production/vastel-logo.svg" alt="Vastel Logo" width="80" style="display: block; margin: 0 auto;">
+            <img src="{{ asset('images/vastel-logo.png') }}" alt="Vastel Logo" width="80" style="display: block; margin: 0 auto;">
         </div>
 
         <!-- Main Content -->
