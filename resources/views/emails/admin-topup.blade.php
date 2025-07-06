@@ -15,12 +15,9 @@
 
         <!-- Main Content -->
         <div style="padding: 24px; color: #1f2937;">
-            <h1 style="font-size: 20px; font-weight: 600; text-align: center; color: #0018A8; margin-bottom: 16px;">
-                Your Vastel wallet has been credited
-            </h1>
 
             <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-                Hi {{ Str::ucfirst($user->username) }},
+                Hi {{ Str::ucfirst($user->name) ?? Str::ucfirst($user->username) }},
             </p>
 
             <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
