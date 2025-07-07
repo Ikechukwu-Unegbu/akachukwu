@@ -202,6 +202,21 @@ class User extends Authenticatable
         return $this->hasMany(Beneficiary::class);
     }
 
+    public function flaggedByAdmin()
+    {
+        return $this->belongsTo(User::class, 'flagged_by_admin_id');
+    }
+
+    public function postNoDebitByAdmin()
+    {
+        return $this->belongsTo(User::class, 'post_no_debit_by_admin_id');
+    }
+
+    public function blacklistedByAdmin()
+    {
+        return $this->belongsTo(User::class, 'blacklisted_by_admin_id');
+    }
+
     public function virtualAccounts() : HasMany
     {
         return $this->hasMany(VirtualAccount::class);

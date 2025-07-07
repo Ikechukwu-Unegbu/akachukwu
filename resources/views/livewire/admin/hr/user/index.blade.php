@@ -15,12 +15,16 @@
                 <option value="">All Users</option>
                 <option value="blocked">Blocked Users</option>
                 <option value="negative-balance">Negative Balance</option>
+                <option value="flagged">FLAGGED</option>
+                <option value="post-no-debit">POST NO DEBIT</option>
+                <option value="balance-high">BALANCE (high)</option>
+                <option value="balance-low">BALANCE (low)</option>
             </select>
 
 
 
         </div>
-        <div class="container p-3 bg-light border rounded">
+        <div class="container p-3 border rounded bg-light">
             <form method="GET" class="row align-items-end gx-3">
                 <div class="col-md-4">
                     <label for="start-date" class="form-label">Start Date</label>
@@ -30,7 +34,7 @@
                     <label for="end-date" class="form-label">End Date</label>
                     <input type="date" id="end-date" name="endDate" class="form-control">
                 </div>
-                <div class="col-md-4 d-flex justify-content-start mt-md-0 mt-2">
+                <div class="mt-2 col-md-4 d-flex justify-content-start mt-md-0">
                     <button type="submit" class="btn btn-primary w-100">
                         Filter
                     </button>
@@ -55,9 +59,24 @@
                                 <td>
                                     {{ $user->name }}
                                     <div class="d-flex">
-                                        @if ($user->is_flagged)<span class="badge bg-danger me-2">Flagged</span>@endif
-                                        @if ($user->post_no_debit)<span class="badge bg-danger me-2">Post no Debit</span>@endif
-                                        @if ($user->is_blacklisted)<span class="badge bg-danger me-2">Blacklisted</span>@endif
+                                        @if ($user->is_flagged)
+                                            <span class="badge bg-danger me-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                  title="{{ $user->flaggedByAdmin ? 'Flagged by: ' . $user->flaggedByAdmin->name : 'Flagged by: Unknown' }}">
+                                                <i class="bi bi-info-circle me-1"></i>Flagged {{ $user->flaggedByAdmin ? 'Flagged by: ' . $user->flaggedByAdmin->name : 'Flagged by: System' }}
+                                            </span>
+                                        @endif
+                                        @if ($user->post_no_debit)
+                                            <span class="badge bg-danger me-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                  title="{{ $user->postNoDebitByAdmin ? 'Post no Debit by: ' . $user->postNoDebitByAdmin->username : 'Post no Debit by: Unknown' }}">
+                                                <i class="bi bi-info-circle me-1"></i>Post no Debit {{ $user->postNoDebitByAdmin ? 'Post no Debit by: ' . $user->postNoDebitByAdmin->username : 'Post no Debit by: System' }}
+                                            </span>
+                                        @endif
+                                        @if ($user->is_blacklisted)
+                                            <span class="badge bg-danger me-2" data-bs-toggle="tooltip" data-bs-placement="top"
+                                                  title="{{ $user->blacklistedByAdmin ? 'Blacklisted by: ' . $user->blacklistedByAdmin->username : 'Blacklisted by: Unknown' }}">
+                                                <i class="bi bi-info-circle me-1"></i>Blacklisted {{ $user->blacklistedByAdmin ? 'Blacklisted by: ' . $user->blacklistedByAdmin->username : 'Blacklisted by: System' }}
+                                            </span>
+                                        @endif
                                     </div>
                                 </td>
                                 <td>{{ $user->username }}</td>
@@ -120,6 +139,14 @@
         }
 
         window.location.href = url.toString(); // Navigate to the updated URL
+    });
+
+    // Initialize tooltips
+    document.addEventListener('DOMContentLoaded', function() {
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
     });
 </script>
 @push('title')
