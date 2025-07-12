@@ -27,7 +27,8 @@ class WalletFundingController extends Controller
             'amountFrom',
             'amountTo',
             'vendor',
-            'perPage'
+            'perPage',
+            'search'
         ]);
 
         $query = DB::table(DB::raw('(
@@ -44,7 +45,20 @@ class WalletFundingController extends Controller
             SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, amount, status, api_status as vendor_status, "bank" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "palmpay" as vendor FROM palm_pay_transactions
         ) as transactions'))
             ->leftJoin('users', 'transactions.user_id', '=', 'users.id')
-            ->select('transactions.*', 'users.username as username');
+            ->select('transactions.*', 'users.username as username', 'users.email as email', 'users.name as user_name');
+
+        // Apply search filter
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('transactions.transaction_id', 'LIKE', "%{$search}%")
+                  ->orWhere('users.username', 'LIKE', "%{$search}%")
+                  ->orWhere('users.email', 'LIKE', "%{$search}%")
+                  ->orWhere('users.name', 'LIKE', "%{$search}%")
+                  ->orWhere('transactions.amount', 'LIKE', "%{$search}%")
+                  ->orWhere('transactions.vendor', 'LIKE', "%{$search}%");
+            });
+        }
 
         // Apply filters
         if ($request->filled('status')) {
@@ -92,7 +106,7 @@ class WalletFundingController extends Controller
             SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, amount, status, api_status as vendor_status, "bank" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "palmpay" as vendor FROM palm_pay_transactions
         ) as transactions'))
             ->leftJoin('users', 'transactions.user_id', '=', 'users.id')
-            ->select('transactions.*', 'users.username as username')
+            ->select('transactions.*', 'users.username as username', 'users.email as email', 'users.name as user_name')
             ->where('transactions.transaction_id', $transaction_id)
             ->first();
 
