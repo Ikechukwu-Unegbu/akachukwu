@@ -39,7 +39,7 @@
             <div class="row">
               <div class="col-lg-3 col-md-4 label ">Amount</div>
               <div class="col-lg-9 col-md-8">₦ {{ $airtime->amount }}</div>
-            </div>           
+            </div>
             <div class="row">
               <div class="col-lg-3 col-md-4 label ">Date</div>
               <div class="col-lg-9 col-md-8">{{ $airtime->created_at->format('M d, Y. h:ia') }}</div>
@@ -58,11 +58,11 @@
             <div class="row">
               <div class="col-lg-3 col-md-4 label ">Balance Before</div>
               <div class="col-lg-9 col-md-8">₦ {{ $airtime->balance_before }}</div>
-            </div> 
+            </div>
             <div class="row">
               <div class="col-lg-3 col-md-4 label ">Balance After</div>
               <div class="col-lg-9 col-md-8">{{ $airtime->balance_after ? "₦ {$airtime->balance_after}" : 'N/A' }}</div>
-            </div> 
+            </div>
           </div>
         </div>
 

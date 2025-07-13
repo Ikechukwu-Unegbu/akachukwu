@@ -6,6 +6,7 @@ use App\Helpers\ApiHelper;
 use App\Models\SiteSetting;
 use App\Models\MoneyTransfer;
 use App\Helpers\GeneralHelpers;
+use App\Traits\HandlesPostNoDebit;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,8 @@ use App\Actions\Idempotency\IdempotencyCheck;
 use App\Services\Account\AccountBalanceService;
 
 class VastelMoneyTransfer{
+
+    use HandlesPostNoDebit;
 
     public $helper;
     public $accountBalanceService;
@@ -45,6 +48,11 @@ class VastelMoneyTransfer{
     public function transfer(array $data)
     {
         try {
+
+            if ( self::ensurePostNoDebitIsAllowed()) {
+                return ApiHelper::sendError([], 'Your account is restricted from performing debit operations.', 403);
+            }
+
             /** Random Delay */
             GeneralHelpers::randomDelay();
 
@@ -151,15 +159,17 @@ class VastelMoneyTransfer{
 
             $sender = User::where('id', $transfer->sender->id)->lockForUpdate()->firstOrFail();
             $transfer->update(['sender_balance_before' => $sender->account_balance]);
-
-            $senderAccount = (new AccountBalanceService($transfer->sender))->updateAccountBalance($transfer->amount);
+            $amount = $transfer->amount + $transfer->charges;
+            $senderAccount = (new AccountBalanceService($transfer->sender))->updateAccountBalance($amount);
             $sender = User::where('id', $transfer->sender->id)->firstOrFail();
 
             $transfer->update(['sender_balance_after' => $sender->account_balance]);
 
+            $transfer->update(['balance_after_refund' => $amount]);
+
             DB::commit();
 
-            return ApiHelper::sendResponse($transfer->sender, "The amount of {$transfer->amount} has been successfully reversed to {$transfer->sender->name}.");
+            return ApiHelper::sendResponse($transfer->sender, "The amount of {$amount} has been successfully reversed to {$transfer->sender->name}.");
         } catch (\Throwable $th) {
             DB::rollBack();
             Log::error($th->getMessage());
@@ -231,6 +241,11 @@ class VastelMoneyTransfer{
 
         if (!GeneralHelpers::minimumTransaction($totalAmount)) {
             return ApiHelper::sendError([], "The amount is below the minimum transfer limit.");
+        }
+
+        $singleLimit = GeneralHelpers::singleTransactionLimit($totalAmount, $user->id);
+        if (!$singleLimit->status) {
+            return ApiHelper::sendError([], "The maximum single transfer limit is ₦" . number_format($singleLimit->limit, 2));
         }
 
         if (!GeneralHelpers::dailyTransactionLimit(MoneyTransfer::class, $totalAmount, $user->id)) {

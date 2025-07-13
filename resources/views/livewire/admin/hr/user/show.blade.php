@@ -13,27 +13,120 @@
                 <div class="card mb-0 pb-0">
                     <div class="pt-4 card-body profile-card d-flex flex-column align-items-center">
                         <img src="{{ $user->profilePicture }}" alt="Profile" class="rounded-circle">
-                        <h2>{{ $user->name }} <span>@if($user->blocked_by_admin ==true) <i class="fa-solid fa-lock"></i> @else <i class="fa-solid fa-check"></i>@endif</span></h2>
-                        <h3>{{ $user->username }}</h3>
-                        <h3>{{ $user->email }}</h3>
+                        <h2>Fullname: {{ $user->name }}
+                            <span>
+                                @if($user->blocked_by_admin)
+                                    <i class="fa-solid fa-lock"></i>
+                                @else
+                                    <i class="fa-solid fa-check"></i>
+                                @endif
+                            </span>
+                        </h2>
+
+                        <h3>Username: {{ $user->username }}</h3>
+                        <h3>Email: {{ $user->email }}</h3>
+
                     </div>
                     @if($user->blocked_by_admin == false)
                     <button type="button"  class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#block_modal">
                         Block this user
                     </button>
-                    @else 
+                    @else
                     <button type="button"  class="btn btn-success" data-bs-toggle="modal" data-bs-target="#unblock_modal">
                         Unblock User
                     </button>
-                    @endif 
+                    @endif
                     <button type="button"  class="btn btn-{{ $user->deleted_at ? 'success' : 'danger' }} mt-5" data-bs-toggle="modal" data-bs-target="#soft-delete">
                         {{ $user->deleted_at ? 'Undo Soft Deleted' : 'Soft Delete This User' }}
                     </button>
 
 
-                    <button type="button"  class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#reset-email">
+                    <!-- <button type="button"  class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#reset-email">
                       Send Password Reset Email
+                    </button> -->
+
+
+                    <!-- undo flags -->
+                     <br>
+                        <!-- Trigger Button -->
+                    @if($user->post_no_debit == true || $user->is_blacklisted == true)
+                    <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#undoFlagsModal">
+                    Undo All Flags
                     </button>
+                    @endif
+
+                    @if(!$user->post_no_debit)
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#activatePostNoDebit">
+                    Activate Post No Debit
+                    </button>
+                    <div class="modal fade" id="activatePostNoDebit" tabindex="-1" aria-labelledby="activatePostNoDebitLabel" aria-hidden="true">
+                    <div class="modal-dialog" wire:ignore.self>
+                        <div class="modal-content border-0 rounded-4 shadow">
+                        <div class="modal-header bg-danger text-white rounded-top-4">
+                            <h5 class="modal-title" id="activatePostNoDebitLabel">Post No Debit</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form wire:submit.prevent="handlePostNoDebit">
+                            @csrf
+                            @method('PATCH')
+                            <div class="modal-body">
+                                <p>Are you sure you want to activate post no debit for this user?</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="text-danger me-1 fa fa-ban"></i> Post No Debit</li>
+                                </ul>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" wire:loading.remove wire:target="handlePostNoDebit">No, Cancel</button>
+                            <button type="submit" class="btn btn-danger" wire:loading.disabled>
+                                <span wire:loading.remove wire:target="handlePostNoDebit">Yes, Proceed</span>
+                                <span wire:loading wire:target="handlePostNoDebit"><i class="fa fa-spinner animate"></i> Processing</span>
+                            </button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                    @endif
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="undoFlagsModal" tabindex="-1" aria-labelledby="undoFlagsModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content border-0 rounded-4 shadow">
+                        <div class="modal-header bg-warning text-dark rounded-top-4">
+                            <h5 class="modal-title" id="undoFlagsModalLabel">Undo All User Flags</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <form action="" method="POST">
+                            @csrf
+                            @method('PATCH') <!-- Or PUT, based on your routing -->
+
+                            <div class="modal-body">
+                            <p>Are you sure you want to remove all restrictions from this user?</p>
+                            <ul class="list-unstyled">
+                                @if($user->is_flagged)
+                                <li><i class="text-danger me-1 fa fa-flag"></i> Currently flagged</li>
+                                @endif
+                                @if($user->post_no_debit)
+                                <li><i class="text-danger me-1 fa fa-ban"></i> Post No Debit active</li>
+                                @endif
+                                @if($user->is_blacklisted)
+                                <li><i class="text-danger me-1 fa fa-user-slash"></i> Blacklisted</li>
+                                @endif
+                            </ul>
+                            </div>
+
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No, Cancel</button>
+                            <button type="button" data-bs-dismiss="modal" wire:click="dropAllFlags" class="btn btn-danger">Yes, Undo All</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+
+
+                    <!-- end undo flags -->
 
 
                     <button type="button"  class="btn btn-secondary mt-5" data-bs-toggle="modal" data-bs-target="#reset-email">
@@ -50,7 +143,7 @@
                             <h4>User Details</h4>
                             @can('impersonate')
                             <div class="filter">
-                                <a class="btn btn-primary btn-sm" href="#" data-bs-toggle="dropdown">Action</a>                                
+                                <a class="btn btn-primary btn-sm" href="#" data-bs-toggle="dropdown">Action</a>
                                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                     <li><a href="#" class="dropdown-item text-success" data-bs-toggle="modal"
                                             data-bs-target="#impersonateUserModal">Login as {{ $user->name }}</a></li>
@@ -61,8 +154,25 @@
                     </div>
                     <div class="pt-2 card-body profile-overview">
                         <div class="row">
-                            <div class="col-lg-3 col-md-4 label ">Level</div>
-                            <div class="col-lg-9 col-md-8">{{ Str::title($user->user_level) }}</div>
+                            <div class="col-lg-3 col-md-4 label ">Role</div>
+                            <div class="col-lg-9 col-md-8">
+                                @php
+                                    $roleLabels = [
+                                        'user' => 'User',
+                                        'admin' => 'Administrator',
+                                        'superadmin' => 'Super Administrator',
+                                    ];
+                                    $roleClasses = [
+                                        'user' => 'text-secondary',
+                                        'admin' => 'text-primary fw-bold',
+                                        'superadmin' => 'text-danger fw-bold',
+                                    ];
+                                    $role = $user->role;
+                                @endphp
+                                <span class="{{ $roleClasses[$role] ?? 'text-dark' }}">
+                                    {{ $roleLabels[$role] ?? Str::title($role) }}
+                                </span>
+                            </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Address</div>
@@ -89,6 +199,10 @@
                             <div class="col-lg-9 col-md-8">{{ $user->created_at->format('d M, Y') }}</div>
                         </div>
                         <div class="row">
+                            <div class="col-lg-3 col-md-4 label ">KYC Name</div>
+                            <div class="col-lg-9 col-md-8">{{ $user->kyc_name ?? 'N/A'}}</div>
+                        </div>
+                        <div class="row">
                             <div class="col-lg-3 col-md-4 label ">BVN</div>
                             <div class="col-lg-9 col-md-8">{{ $user->bvn}}</div>
                         </div>
@@ -96,12 +210,18 @@
                             <div class="col-lg-3 col-md-4 label ">NIN</div>
                             <div class="col-lg-9 col-md-8">{{ $user->nin}}</div>
                         </div>
-                
+
                         <div class="row">
                             <div class="col-lg-3 col-md-4 label ">Deleted At: </div>
                             <div class="col-lg-9 col-md-8">{{ $user->deleted_at}}</div>
                         </div>
-              
+
+                    </div>
+                    <div class="card-footer">
+                        <div class="d-flex justify-content-between">
+                            <div></div>
+                            <a href="{{ route('admin.hr.user.upgrade', $user->username) }}" class="btn btn-primary">Update User</a>
+                        </div>
                     </div>
                 </div>
 
@@ -125,7 +245,7 @@
                                 <td>₦ {{ isset($transaction->balance_before) ? $transaction->balance_before : 'NA' }}</td>
                                 <td>₦ {{ isset($transaction->balance_after) ? $transaction->balance_after : 'NA' }}</td>
 
-                              
+
                                 <td>
                                     <small>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</small>
                                 </td>
@@ -233,7 +353,7 @@
                     </div>
                 </div>
             </div>
-     
+
     </div>
 
 
@@ -261,7 +381,7 @@
             </div>
         </div>
     </div>
-   
+
 
 </div>
 

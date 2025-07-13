@@ -46,6 +46,11 @@ class BankTransferAPIRequest extends FormRequest
                         $fail("The minimum transfer amount is ₦" . number_format($settings->minimum_transfer, 2));
                     }
 
+                    $singleLimit = GeneralHelpers::singleTransactionLimit($value, $user->id);
+                    if (!$singleLimit->status) {
+                        $fail("The maximum single transfer limit is ₦" . number_format($singleLimit->limit, 2));
+                    }
+
                     if (!GeneralHelpers::dailyTransactionLimit(MoneyTransfer::class, $value, $user->id)) {
                         $fail("You have exceeded your daily transaction limit.");
                     }

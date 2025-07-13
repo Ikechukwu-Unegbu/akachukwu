@@ -5,6 +5,7 @@ namespace App\Services\Money;
 use Illuminate\Http\Request;
 use App\Models\VirtualAccount;
 use App\Models\PalmPayTransaction;
+use App\Services\UserWatchService;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -40,7 +41,7 @@ class PalmPayFundingService extends BasePalmPayService
             if ($checkTransaction && !$checkTransaction->status) {
                 $amountPaid = $checkTransaction->amount;
             }
-    
+
             if ($request->appId === $headers['appid'][0] && $request->sign === $headers['sign'][0]) {
                 $virtualAccount = VirtualAccount::where('reference', $accountReference)->first();
 
@@ -61,6 +62,8 @@ class PalmPayFundingService extends BasePalmPayService
                     $user->setAccountBalance($amountPaid);
                     $transaction->success();
 
+                    UserWatchService::enforcePostNoDebit($user);
+
                     return response()->json([
                         'status'   =>    true,
                         'error'    =>    NULL,
@@ -69,7 +72,7 @@ class PalmPayFundingService extends BasePalmPayService
                     ], 200)->getData();
                 }
             }
-    
+
             return response()->json([
                 'status'   =>    false,
                 'error'    =>    "User not found",
@@ -93,13 +96,13 @@ class PalmPayFundingService extends BasePalmPayService
     {
         $filename = 'palmpay-payload.json';
         $payloadString = json_encode($payload, JSON_PRETTY_PRINT);
-    
+
         if (Storage::disk('webhooks')->exists($filename)) {
 
             $existingContent = Storage::disk('webhooks')->get($filename);
-    
+
             $existingContent = rtrim($existingContent, "\n]");
-    
+
             if (strlen($existingContent) > 1) {
                 $existingContent .= ",\n";
             }

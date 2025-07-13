@@ -67,7 +67,7 @@
             <div class="card-header">
                 <x-admin.perpage :perPages=$perPages wirePageAction="wire:model.live=perPage" wireSearchAction="wire:model.live=search"  />
             </div>
-            <div class="card-body">                
+            <div class="card-body">
                 <x-admin.table>
                     <x-admin.table-header :headers="['#', 'Trx. ID','Vendor', 'User', 'Card Name', 'Card No.', 'Cable Plan', 'Amount','Bal B4', 'Bal After', 'After Refund','IUC', 'Date', 'Status', 'Action']" />
                     <x-admin.table-body>
@@ -75,13 +75,13 @@
                             <tr>
                                 <th scope="row">
                                     <div class="form-check">
-                                        <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $cable_transaction->id }}">
-                                    </div>    
+                                        <input class="form-check-input form-check-lg" type="checkbox" wire:model="transactions.{{ $cable_transaction->id }}" @disabled(Str::lower($cable_transaction->vendor_status) === 'refunded')>
+                                    </div>
                                 </th>
                                 <td>{{$cable_transaction->transaction_id}}</td>
-                                <td><a href="{{route('admin.hr.user.show', [$cable_transaction->user->username])}}">{{$cable_transaction->vendor->name}}</a></td>
+                                <td>{{$cable_transaction->vendor->name}}</td>
+                                <td><a href="{{route('admin.hr.user.show', [$cable_transaction->user->username])}}">{{ $cable_transaction->user->username }}</a></td>
                                 <td>{{$cable_transaction->customer_name}}</td>
-                                <td>{{ $cable_transaction->user->name }}</td>
                                 <td>{{ $cable_transaction->smart_card_number }}</td>
                                 <td>
                                     {{ $cable_transaction->cable_name  }} - <small style="font-size: 13px">({{ $cable_transaction->cable_plan_name }})</small>
@@ -100,7 +100,7 @@
                                 <td>
                                     <div class="filter">
                                         <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">                                            
+                                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                             <li><a href="{{ route('admin.transaction.cable.show', $cable_transaction->id) }}" class="dropdown-item text-primary"><i class="bx bx-list-ul"></i> View</a></li>
                                             <li><a href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#action-{{ $cable_transaction->id }}" class="dropdown-item text-success"><i class="bx bx-code-curly"></i> Vendor Response</a></li>
                                         </ul>
@@ -116,7 +116,7 @@
                         @endforelse
                     </x-admin.table-body>
                 </x-admin.table>
-                <x-admin.paginate :paginate=$cable_transactions /> 
+                <x-admin.paginate :paginate=$cable_transactions />
             </div>
         </div>
     </section>

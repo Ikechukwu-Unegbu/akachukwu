@@ -7,22 +7,22 @@
 </head>
 <body style="background-color: #e5e7eb; margin: 0; padding: 20px; font-family: Arial, sans-serif;">
     <div style="max-width: 400px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden;">
-        
+
         <!-- Header Section -->
         <div style="text-align: center; padding: 24px;">
-            <img src="https://vastel-uploads.fra1.cdn.digitaloceanspaces.com/production/vastel-logo.svg" alt="Vastel Logo" width="80" style="display: block; margin: 0 auto;">
-        
+            <img src="{{ asset('images/vastel-logo.png') }}" alt="Vastel Logo" width="80" style="display: block; margin: 0 auto;">
+
 
         </div>
-        
+
         <!-- Main Content -->
         <div style="padding: 24px; color: #1f2937;">
             <h1 style="font-size: 20px; font-weight: 600; text-align: center; color: #0018A8; margin-bottom: 16px;">
                 Welcome to Vastel
             </h1>
-            
+
             <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-                Hi {{ $user->name }}!!
+                Hi {{ $user->username }}!!
             </p>
 
             <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
@@ -44,7 +44,7 @@
             <p style="font-size: 14px;">Best Regards,<br>The Vastel Team</p>
         </div>
 
-        
+
         <!-- Footer Section -->
         <div style="background-color: #0018A8; color: white; text-align: center; padding: 16px; font-size: 12px;">
             <p style="margin: 0;">&copy; 2024 Vastel.io</p>
@@ -63,7 +63,7 @@
                 </a> -->
             </div>
         </div>
-        
+
     </div>
 </body>
 </html>

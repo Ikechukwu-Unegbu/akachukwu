@@ -86,6 +86,28 @@
                     ]" />
                     <x-admin.table-body>
                         @forelse ($money_transactions as $money_transaction)
+                        @php
+                            $statusColor = match (Str::lower($money_transaction->transfer_status)) {
+                                'successful' => 'green',
+                                'failed'     => 'red',
+                                'processing' => 'yellow',
+                                'refunded'   => 'yellow',
+                                'pending'    => 'yellow',
+                                'n/a'    => 'red',
+                                ''    => 'red',
+                                'default'    => 'red'
+                            };
+                            $textColor = match (Str::lower($money_transaction->transfer_status)) {
+                                'successful' => 'white',
+                                'failed'     => 'white',
+                                'processing' => 'black',
+                                'refunded'   => 'black',
+                                'pending'    => 'black',
+                                'n/a'    => 'white',
+                                ''    => 'white',
+                                'default'    => 'white'
+                            };
+                        @endphp
                             <tr>
                                 <th scope="row">
                                     <div class="form-check">
@@ -101,9 +123,9 @@
                                 <td>₦{{ number_format($money_transaction->balance_after_refund, 2)  }}</td>
                                 <td>{{ $money_transaction->created_at->format('M d, Y. h:ia') }}</td>
                                 <td>
-                                    <span
-                                        class="badge bg-{{ $money_transaction->status === 1 ? 'success' : ($money_transaction->status === 0 ? 'danger' : 'warning') }}">
-                                        {{ Str::title($money_transaction->transfer_status) ?? 'N/A' }}</span>
+                                    <span class="badge" style="background-color: {{ $statusColor }}; color: {{ $textColor }};">
+                                        {{ $money_transaction->transfer_status ? Str::title($money_transaction->transfer_status) : 'N/A' }}
+                                    </span>
                                 </td>
                                 <td>
                                     <div class="filter">

@@ -4,6 +4,13 @@ namespace App\Livewire\Admin\Utility\Airtime;
 
 use App\Models\Vendor;
 use Livewire\Component;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Data\DataNetwork;
+use App\Helpers\ActivityConstants;
+
+use App\Services\Admin\Activity\ActivityLogService;
+
 
 class Discount extends Component
 {
@@ -28,9 +35,20 @@ class Discount extends Component
             'discounts.*.min' => 'The discount must be at least :min.',
         ]);
 
-        foreach ($this->discounts as $key => $value) {
-            $this->vendor->networks->find($key)?->update(['airtime_discount' => $value]);
-        }
+        DB::transaction(function(){
+            foreach ($this->discounts as $key => $value) {
+                ActivityLogService::log([
+                    'activity'=>"Update",
+                    'description'=>'Updating '.DataNetwork::find($key)->name.' Airtime Discount - '.DataNetwork::find($key)->vendor->name,
+                    'type'=>ActivityConstants::DATANETWORK,
+                    'resource'=>serialize(DataNetwork::find($key))
+                ]);
+                $this->vendor->networks->find($key)?->update(['airtime_discount' => $value]);
+            }
+
+        });
+
+    
 
         $this->dispatch('success-toastr', ['message' => 'Airtime Network Discount Updated Successfully']);
         session()->flash('success', 'Airtime Network Discount Updated Successfully');

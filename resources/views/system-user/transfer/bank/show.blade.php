@@ -157,10 +157,12 @@
                         {{-- <button type="submit" name="action" value="retry" class="btn btn-sm btn-primary">
                             Retry Transfer
                         </button> --}}
-                        <button type="submit" name="action" value="reverse" class="btn btn-sm btn-warning">
+                        @if ($transfer->transfer_status !== 'refunded')
+                        <button type="submit" name="action" value="reverse" class="btn btn-sm btn-warning" onclick="return confirm('Are you sure you want to reverse this transfer? This action cannot be undone.');">
                             Reverse Transfer
                         </button>
-                        <button type="submit" name="action" value="flag" class="btn btn-sm btn-danger">
+                        @endif
+                        <button type="submit" name="action" value="flag" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to flag this transaction? This action will mark the transaction for further review.');">
                             Flag Transaction
                         </button>
                     </div>

@@ -130,5 +130,7 @@ Route::post('webhook/payvessel', PayVesselWebhookController::class);
 Route::post('exams', [EducationController::class, 'index']);
 Route::get('banks', [VirtualAccountController::class, 'banks']);
 Route::post('webhook/palmpay', PalmPayWebhookController::class)->name('webhook.palmpay');
-Route::get('sitesetting', SiteSettingsApiController::class);
+Route::get('sitesetting', [SiteSettingsApiController::class, '__invoke']);
+Route::get('active-virtual-accounts', [SiteSettingsApiController::class, 'activeVirtualAccounts']);
 Route::get('bank-list', [BankTransferApiController::class, 'banks']);
+

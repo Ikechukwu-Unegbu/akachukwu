@@ -15,7 +15,7 @@ use App\Notifications\FundDeductionNotification;
 class Index extends Component
 {
     use WithPagination;
-    
+
     public $perPage = 50;
     public $perPages = [50, 100, 200];
     public $search;
@@ -36,15 +36,20 @@ class Index extends Component
 
         return DB::transaction(function () {
             foreach (array_keys(array_filter($this->transactions)) as $key => $value) {
-                $transaction = AirtimeTransaction::where('id', $value)->first();    
+                $transaction = AirtimeTransaction::where('id', $value)->first();
+
+                if ($transaction->vendor_status === 'refunded') {
+                    return $this->dispatch('error-toastr', ['message' => "Transaction {$transaction->id} has not been refunded."]);
+                }
+
                 $amount = CalculateDiscount::calculate($transaction->amount, $transaction->discount);
 
                 $user = User::where('id', $transaction->user_id)->lockForUpdate()->first();
 
                 if ($this->action === 'debit')
-                    $this->debited($transaction, $user, $amount);   
+                    $this->debited($transaction, $user, $amount);
 
-                if ($this->action === 'refund') 
+                if ($this->action === 'refund')
                     $this->refunded($transaction, $user, $amount);
             }
 
@@ -53,7 +58,7 @@ class Index extends Component
             $this->dispatch('success-toastr', ['message' => "Transaction {$message} Successfully"]);
             session()->flash('success', "Transaction {$message} Successfully");
             $this->redirect(url()->previous());
-        });        
+        });
     }
 
     private function debited($transaction, $user, $amount) : void
@@ -85,7 +90,9 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.transaction.airtime.index', [
-            'airtime_transactions' =>  AirtimeTransaction::with(['user', 'network'])->search($this->search)->latest('created_at')->paginate($this->perPage)
+            'airtime_transactions' =>  AirtimeTransaction::with(['user' => function ($query) {
+                    $query->withTrashed();
+                }, 'network'])->search($this->search)->latest('created_at')->paginate($this->perPage)
         ]);
     }
 }

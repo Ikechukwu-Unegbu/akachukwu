@@ -9,7 +9,7 @@ use App\Models\Utility\AirtimeTransaction;
 class Index extends Component
 {
     use WithPagination;
-    
+
     public $perPage = 20;
     public $perPages = [20, 50];
     public $search;

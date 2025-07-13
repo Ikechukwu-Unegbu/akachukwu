@@ -27,7 +27,7 @@ class UtilitySubscriptionNotification extends Notification
         $this->icon = $icon;
     }
 
-     public function via($notifiable)
+    public function via($notifiable)
     {
         return [OneSignalChannel::class];
     }
@@ -40,4 +40,6 @@ class UtilitySubscriptionNotification extends Notification
             ->setUrl($this->link)
             ->setIcon($this->icon);
     }
+
+
 }

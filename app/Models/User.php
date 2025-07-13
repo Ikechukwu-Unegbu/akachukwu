@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Models\Data\DataTransaction;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Facades\DB;
-use Spatie\Activitylog\LogOptions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Utility\UpgradeRequest;
@@ -28,33 +27,6 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles, SoftDeletes;
 
-    use LogsActivity;
-
-    protected $fillable = [
-        'name',
-        'username',
-        'email',
-        'role',
-        'email_verified_at',
-        'password',
-        'image',
-        'address',
-        'mobile',
-        'referer_username',
-        'gender',
-        'account_balance',
-        'wallet_balance',
-        'bonus_balance',
-        'remember_token',
-        'phone',
-        'user_level',
-        'pin',
-        'bvn',
-        'nin',
-        'os_player_id',
-        'device_type',
-    ];
-
     public function isBlocked()
     {
         return $this->blocked_by_admin;
@@ -63,13 +35,6 @@ class User extends Authenticatable
     public function getAuthIdentifier()
     {
         return $this->isBlocked() ? null : parent::getAuthIdentifier();
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logOnly(['name', ]);
-        // Chain fluent methods for configuration options
     }
 
     public function upgradeRequests()
@@ -181,7 +146,7 @@ class User extends Authenticatable
             return $this->image;
         }
 
-        $nameParts = explode(' ', $this->name);
+        $nameParts = explode(' ', $this->name ?? $this->username);
         $alias = substr($nameParts[0], 0, 1);
         if (isset($nameParts[1])) {
             $alias .= substr($nameParts[1], 0, 1);
@@ -235,6 +200,21 @@ class User extends Authenticatable
     public function beneficiaries() : HasMany
     {
         return $this->hasMany(Beneficiary::class);
+    }
+
+    public function flaggedByAdmin()
+    {
+        return $this->belongsTo(User::class, 'flagged_by_admin_id');
+    }
+
+    public function postNoDebitByAdmin()
+    {
+        return $this->belongsTo(User::class, 'post_no_debit_by_admin_id');
+    }
+
+    public function blacklistedByAdmin()
+    {
+        return $this->belongsTo(User::class, 'blacklisted_by_admin_id');
     }
 
     public function virtualAccounts() : HasMany
@@ -542,12 +522,12 @@ class User extends Authenticatable
                         DB::raw('"N/A" as balance_before'),
                         DB::raw('"N/A" as balance_after'),
                         'user_id', 'amount', 'status',
-                        // DB::raw('"N/A" as vendor_status'),
-                        DB::raw('CASE
-                            WHEN status = 1 THEN "Successful"
-                            WHEN status = 0 THEN "Failed"
-                            ELSE "N/A"
-                        END as b'),
+                        DB::raw('transfer_status as vendor_status'),
+                        // DB::raw('CASE
+                        //     WHEN status = 1 THEN "Successful"
+                        //     WHEN status = 0 THEN "Failed"
+                        //     ELSE "N/A"
+                        // END as b'),
                         // DB::raw('IF(user_id = ' . (int)$userId . ' OR recipient = ' . (int)$userId . ', recipient, user_id) as subscribed_to'),
                         DB::raw('CASE WHEN user_id = ' . (int)$userId . ' OR recipient = ' . (int)$userId . ' THEN recipient ELSE user_id END as subscribed_to'),
                         DB::raw('"Transfer" as plan_name'),
@@ -697,7 +677,7 @@ class User extends Authenticatable
 
     public function routeNotificationForOneSignal()
     {
-        return $this->os_player_id ?? 'd39957ea-aa71-4dca-b179-48a79d053e1a';
+        return $this->os_player_id;
     }
 
 

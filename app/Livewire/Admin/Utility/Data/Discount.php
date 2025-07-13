@@ -4,6 +4,11 @@ namespace App\Livewire\Admin\Utility\Data;
 
 use App\Models\Vendor;
 use Livewire\Component;
+use App\Services\Admin\Activity\ActivityLogService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Helpers\ActivityConstants;
+use App\Helpers\GeneralHelpers;
 
 class Discount extends Component
 {
@@ -28,8 +33,15 @@ class Discount extends Component
             'discounts.*.min' => 'The discount must be at least :min.',
         ]);
 
+        $batchId = GeneralHelpers::generateUniqueNumericRef('activity_logs');
         foreach ($this->discounts as $key => $value) {
             $this->vendor->networks->find($key)?->update(['data_discount' => $value]);
+            ActivityLogService::log([
+                'activity'=>"Update",
+                'description'=>"Mass percentage update - vendor: ".$this->vendor->name." and network: ".$this->vendor->networks->find($key)?->name,
+                'ref_id'=>$batchId,
+                'type'=>ActivityConstants::DATANETWORK,
+            ]);
         }
 
         $this->dispatch('success-toastr', ['message' => 'Data Network Discount Updated Successfully']);

@@ -55,9 +55,6 @@
                 @can('view result-checker transaction')
                     <x-admin.dropdown-item title="E-PINs" link="{{ route('admin.transaction.result-checker') }}" />
                 @endcan
-                {{-- @can('view money transaction') --}}
-                <x-admin.dropdown-item title="Money Transfer" link="{{ route('admin.transaction.money-transfer') }}" />
-                {{-- @endcan --}}
                 <x-admin.dropdown-item title="Reseller Mgt." link="{{ route('admin.transaction.reseller') }}" />
             </x-admin.dropdown>
         @endif
@@ -78,10 +75,26 @@
             </x-admin.dropdown>
         @endif
 
+        <li class="nav-heading">Scheduled Mgt.</li>
+        <x-admin.menu title="Scheduled Transactions" icon="bi-arrow-clockwise" link="{{ route('admin.scheduled.index') }}" />
+
+        @if(auth()->user()->can('view banks'))
+            <li class="nav-heading">Bank Mgt</li>
+            <x-admin.dropdown title="Bank Settings" icon="bxs-cog">
+                @can('create banks')
+                    <x-admin.dropdown-item title="Add Bank" link="{{ route('admin.bank.create') }}" />
+                @endcan
+                @can('view banks')
+                    <x-admin.dropdown-item title="Manage Banks" link="{{ route('admin.bank.index') }}" />
+                @endcan
+            </x-admin.dropdown>
+        @endif
+
         <li class="nav-heading">Transfer Mgt.</li>
         <x-admin.dropdown title="Manage Transfers" icon="bi-recycle">
             <x-admin.dropdown-item title="In-App Transfers" link="{{ route('admin.transfer.in-app') }}" />
             <x-admin.dropdown-item title="External Bank Transfers" link="{{ route('admin.transfer.bank') }}" />
+            <x-admin.dropdown-item title="Wallet Funding" link="{{ route('admin.wallet-funding.index') }}" />
         </x-admin.dropdown>
 
         @if(auth()->user()->can('view vendor api') || auth()->user()->can('view payment api'))

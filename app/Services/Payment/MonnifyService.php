@@ -2,6 +2,8 @@
 
 namespace App\Services\Payment;
 
+use App\Services\UserWatchService;
+use DB;
 use Exception;
 use App\Models\User;
 use App\Helpers\ApiHelper;
@@ -360,13 +362,18 @@ class MonnifyService implements Payment
     {
         $user = User::where('username', $username)->first();
         $monnifyGatewayModel = PaymentGateway::where('name', 'Monnify')->first();
-        $virtualAccount = VirtualAccount::where('user_id', $user->id)->where('payment_id', $monnifyGatewayModel->id)->first();
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => 'Bearer ' . self::token(),
-        ])->get(self::getUrl() . "api/v2/bank-transfer/reserved-accounts/" . $virtualAccount?->reference);
-        $response = $response->object();
-        return $response;
+        $virtualAccount = DB::table('virtual_accounts')->where('user_id', $user->id)->where('payment_id', $monnifyGatewayModel->id)->first();
+
+        if ($virtualAccount) {
+            $response = Http::withHeaders([
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . self::token(),
+            ])->get(self::getUrl() . "api/v2/bank-transfer/reserved-accounts/" . $virtualAccount?->reference);
+            $response = $response->object();
+            return $response;
+        }
+
+        return response()->json('virtual account not found!');
     }
 
     public static function verifyBvn($bvn, $code, $accountNumber)
@@ -384,6 +391,11 @@ class MonnifyService implements Payment
             $response = $response->object();
 
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+
+                $user = Auth::user();
+
+                UserWatchService::processKycValidation($user, (array) $response->responseBody);
+
                 self::updateAccountBvn($response->responseBody->bvn);
 
                 ComplianceService::storePayload($response, $response->responseBody->bvn, NULL);
@@ -395,13 +407,13 @@ class MonnifyService implements Payment
             if (isset($response->requestSuccessful) && !$response->requestSuccessful) {
                 $errorResponse = [
                     'error' => "Invalid BVN.",
-                    'message' => "Service not available. Please try again later",
+                    'message' => "KYC not available at the moment, please contact support",
                 ];
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
             $errorResponse = [
                 'error' => "API Endpoint error.",
-                'message' => "Service not available. Please try again later",
+                'message' => "KYC not available at the moment, please contact support",
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
@@ -429,6 +441,11 @@ class MonnifyService implements Payment
             $response = $response->object();
 
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+
+                $user = Auth::user();
+
+                UserWatchService::processKycValidation($user, (array) $response->responseBody);
+
                 self::updateAccountBvn($response->responseBody->bvn);
 
                 ComplianceService::storePayload($response, $response->responseBody->bvn, NULL);
@@ -439,13 +456,13 @@ class MonnifyService implements Payment
             if (isset($response->requestSuccessful) && !$response->requestSuccessful) {
                 $errorResponse = [
                     'error' => "Invalid BVN.",
-                    'message' => "Service not available. Please try again later",
+                    'message' => "KYC not available at the moment, please contact support",
                 ];
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
             $errorResponse = [
                 'error' => "API Endpoint error.",
-                'message' => "Service not available. Please try again later",
+                'message' => "KYC not available at the moment, please contact support",
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
@@ -458,7 +475,7 @@ class MonnifyService implements Payment
         }
     }
 
-    public static function verifyNin($nin, $dob = null)
+    public static function verifyNin($nin, $dob = null, $verification = null)
     {
         try {
             $response = Http::withHeaders([
@@ -470,7 +487,13 @@ class MonnifyService implements Payment
 
             $response = $response->object();
 
+            // Log::info('Vendor response: ', (array) $response);
+
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
+
+                $user = Auth::user();
+
+                UserWatchService::processKycValidation($user, (array) $response->responseBody);
 
                 if ($dob && $dob !== $response->responseBody->dateOfBirth) {
                     $errorResponse = [
@@ -480,25 +503,28 @@ class MonnifyService implements Payment
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
 
-                self::updateAccountNin($response->responseBody->nin);
+                if (!$verification) {
+                    self::updateAccountNin($response->responseBody->nin);
+    
+                    ComplianceService::storePayload($response, NULL, $response->responseBody->nin);
+    
+                    (new GenerateRemainingAccounts)->generateRemaingingAccounts();
+                }
 
-                ComplianceService::storePayload($response, NULL, $response->responseBody->nin);
-
-                (new GenerateRemainingAccounts)->generateRemaingingAccounts();
                 return ApiHelper::sendResponse([], "KYC updated & NIN linked to your account successfully.");
             }
 
             if (isset($response->requestSuccessful) && !$response->requestSuccessful) {
                 $errorResponse = [
                     'error' => "Invalid NIN.",
-                    'message' => "Service not available. Please try again later",
+                    'message' => "KYC not available at the moment, please contact support",
                 ];
                 Log::warning($response->body());
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
             $errorResponse = [
                 'error' => "API Endpoint error.",
-                'message' => "Service not available. Please try again later",
+                'message' => "KYC not available at the moment, please contact support",
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
@@ -525,6 +551,10 @@ class MonnifyService implements Payment
 
             if (isset($response->requestSuccessful) && $response->requestSuccessful === true) {
 
+                $user = Auth::user();
+
+                UserWatchService::processKycValidation($user, (array) $response->responseBody);
+
                 if ($dob && $dob !== $response->responseBody->dateOfBirth) {
                     $errorResponse = [
                         'error' => "Invalid Date of Birth.",
@@ -543,14 +573,14 @@ class MonnifyService implements Payment
             if (isset($response->requestSuccessful) && !$response->requestSuccessful) {
                 $errorResponse = [
                     'error' => "Invalid NIN.",
-                    'message' => "Service not available. Please try again later",
+                    'message' => "KYC not available at the moment, please contact support",
                 ];
                 Log::warning($response->body());
                 return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
             }
             $errorResponse = [
                 'error' => "API Endpoint error.",
-                'message' => "Service not available. Please try again later",
+                'message' => "KYC not available at the moment, please contact support",
             ];
             return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
         } catch (\Throwable $th) {
@@ -641,6 +671,8 @@ class MonnifyService implements Payment
                     $user->setAccountBalance($amountPaid);
 
                     $transaction->success();
+
+                    UserWatchService::enforcePostNoDebit($user);
 
                     return response()->json([
                         'status' => true,

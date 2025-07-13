@@ -6,6 +6,10 @@ use Livewire\Component;
 use App\Models\Data\DataType;
 use App\Models\Data\DataVendor;
 use App\Models\Data\DataNetwork;
+use App\Services\Admin\Activity\ActivityLogService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Helpers\ActivityConstants;
 
 class Edit extends Component
 {
@@ -35,11 +39,22 @@ class Edit extends Component
             'data_type_percentage_referall_pay'=>'required'
         ]);
 
-        $this->type->update([
-            'name'      =>  trim($this->data_type_title),
-            'status'    =>  $this->status,
-            'referral_pay' => $this->data_type_percentage_referall_pay
-        ]);
+        DB::transaction(function(){
+         
+            ActivityLogService::log([
+                'activity'=>"Update",
+                'description'=>"Updating ".$this->type->name ." of ".$this->network->name." of ". $this->network->vendor->name,
+                'type'=>ActivityConstants::DATATYPE,
+                'resource'=>serialize($this->type)
+            ]);
+            $this->type->update([
+                'name'      =>  trim($this->data_type_title),
+                'status'    =>  $this->status,
+                'referral_pay' => $this->data_type_percentage_referall_pay
+            ]);
+        });
+
+  
 
         $this->dispatch('success-toastr', ['message' => 'Data Type Updated Successfully']);
         session()->flash('success', 'Data Type Updated Successfully');

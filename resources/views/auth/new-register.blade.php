@@ -38,7 +38,7 @@
                     </div>
                 </div>
 
-                <div class="relative mb-6">
+                {{-- <div class="relative mb-6">
                     <input type="text" id="first-name"  value="{{old('first_name')}}" name="first_name" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
                     <label for="first-name" class="absolute left-10 top-3 text-gray-500 transition-all">First Name</label>
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -52,7 +52,7 @@
                     <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                         <i class="fas fa-user text-gray-400"></i>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="relative mb-6">
                     <input type="email" id="email" name="email"  value="{{old('email')}}" placeholder=" " class="floating-label-input block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
@@ -70,7 +70,7 @@
                     </div>
                 </div>
 
-              
+
 
                 <div class="relative mb-6">
                     <input type="password" id="password" name="password" placeholder=" " class="floating-label-input block w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" />
@@ -114,7 +114,7 @@
             <a href="#"><img src="{{asset('images/applestore.svg')}}" alt="Google Play" class="w-24"></a>
         </div>
     </div>
-    
+
     <!-- Right Section -->
     <div class="hidden md:w-[50%] lg:flex flex-1 items-center justify-center bg-gray-100 p-12">
         <div class="">
