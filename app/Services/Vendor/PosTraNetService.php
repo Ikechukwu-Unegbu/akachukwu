@@ -239,7 +239,9 @@ class PosTraNetService
                         'error' => 'API response Error',
                         'message' => "Airtime purchase failed. Please try again later.",
                     ];
-                    self::$authUser->initiatePending($discountedAmount, $transaction);
+
+                    self::$authUser->initiateDebit($discountedAmount, $transaction);
+
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
 
@@ -363,7 +365,7 @@ class PosTraNetService
                         'error' => 'API response Error',
                         'message' => "Bill purchase failed. Please try again later.",
                     ];
-                    self::$authUser->initiatePending($discountedAmount, $transaction);
+                    self::$authUser->initiateDebit($discountedAmount, $transaction);
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
 
@@ -479,7 +481,7 @@ class PosTraNetService
                         'message' => "Cable purchase failed. Please try again later.",
                     ];
 
-                    self::$authUser->initiatePending($discountedAmount, $transaction);
+                    self::$authUser->initiateDebit($discountedAmount, $transaction);
 
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
@@ -650,7 +652,7 @@ class PosTraNetService
                         'error' => 'API Error',
                         'message' => 'Data purchase failed. Please try again later.',
                     ];
-                    self::$authUser->initiatePending($discountedAmount, $transaction);
+                    self::$authUser->initiateDebit($discountedAmount, $transaction);
                     return ApiHelper::sendError($errorResponse['error'], $errorResponse['message']);
                 }
             });  // End of DB transaction
