@@ -18,6 +18,7 @@
         "livewire/livewire": "^3.1",
         "maatwebsite/excel": "^3.1",
         "opcodesio/log-viewer": "^3.17",
+        "resend/resend-php": "^0.18.1",
         "sentry/sentry-laravel": "^4.6",
         "spatie/laravel-activitylog": "^4.8",
         "spatie/laravel-permission": "^6.3",
