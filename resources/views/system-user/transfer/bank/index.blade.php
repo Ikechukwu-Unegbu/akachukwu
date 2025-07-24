@@ -186,8 +186,9 @@
                                     </td>
                                     <td>{{ $transfer->reference_id }}</td>
                                     <td>{{ $transfer->sender->username ?? 'N/A' }}</td>
-                                    <td> {{ json_decode($transfer->meta ?? '', true)['payeeName'] . '<br />' . $transfer->bank_name ?? 'N/A' }}
-                                        <br> {{ $transfer->account_number }}
+                                    <td> {{ json_decode($transfer->meta ?? '', true)['payeeName'] }} <br>
+                                        {{ $transfer->bank_name }} <br>
+                                        {{ $transfer->account_number }}
                                     </td>
                                     <td>₦{{ number_format($transfer->amount, 2) }}</td>
                                     <td>{{ $transfer->created_at->format('M d, Y h:i A') }}</td>
