@@ -208,10 +208,11 @@
                     <td>{{ $index + 1 }}</td>
                     <td>{{ $transfer->reference_id }}</td>
                     <td>{{ $transfer->sender->username ?? 'N/A' }}</td>
-                    <td><strong>{{ json_decode($transfer->meta ?? '', true)['payeeName'] . '/' }}</strong>
+                    <td>
                         {{ $transfer->bank_name ?? 'N/A' }}
                     </td>
-                    <td>{{ $transfer->account_number ?? 'N/A' }}</td>
+                    <td><strong>{{ json_decode($transfer->meta ?? '', true)['payeeName'] . '/' }}</strong>
+                        {{ $transfer->account_number ?? 'N/A' }}</td>
                     <td>N{{ number_format($transfer->amount, 2) }}</td>
                     <td>
                         <span class="status-badge status-{{ $transfer->transfer_status }}">
