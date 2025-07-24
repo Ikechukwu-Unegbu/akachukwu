@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\SystemUser;
 
-use Log;
 use App\Models\Bank;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\MoneyTransfer;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Services\Payment\Transfer\VastelMoneyTransfer;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class BankTransferController extends Controller
 {
@@ -24,6 +25,11 @@ class BankTransferController extends Controller
 
     public function index(Request $request)
     {
+        // Check if export is requested
+        if ($request->has('export') && $request->export === 'pdf') {
+            return $this->exportPdf($request);
+        }
+
         $perPage = $request->input('perPage', 50);
         $perPages = [50, 100, 200];
 
@@ -193,29 +199,29 @@ class BankTransferController extends Controller
         ]);
 
         try {
-                DB::beginTransaction();
-                foreach ($request->transactions as $key => $value) {
-                    $transaction = MoneyTransfer::findOrFail($value);
+            DB::beginTransaction();
+            foreach ($request->transactions as $key => $value) {
+                $transaction = MoneyTransfer::findOrFail($value);
 
-                    $amount = $transaction->amount+$transaction->charges;
+                $amount = $transaction->amount + $transaction->charges;
 
-                    $user = User::where('id', $transaction->user_id)->lockForUpdate()->first();
+                $user = User::where('id', $transaction->user_id)->lockForUpdate()->first();
 
-                    if ($request->action === 'debit')
-                        $this->debited($transaction, $user, $amount);
+                if ($request->action === 'debit')
+                    $this->debited($transaction, $user, $amount);
 
-                    if ($request->action === 'refund')
-                        $this->refunded($transaction, $user, $amount);
-                }
-                DB::commit();
-                $message = ($request->action === 'debit') ? 'Debited' : ($request->action === 'refund' ? 'Refunded' : '');
+                if ($request->action === 'refund')
+                    $this->refunded($transaction, $user, $amount);
+            }
+            DB::commit();
+            $message = ($request->action === 'debit') ? 'Debited' : ($request->action === 'refund' ? 'Refunded' : '');
 
-                session()->flash('success', "Transaction {$message} Successfully");
+            session()->flash('success', "Transaction {$message} Successfully");
 
-                return response()->json([
-                    'status' => true,
-                    'message' => "Transaction {$message} Successfully"
-                ]);
+            return response()->json([
+                'status' => true,
+                'message' => "Transaction {$message} Successfully"
+            ]);
 
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -227,20 +233,20 @@ class BankTransferController extends Controller
         }
     }
 
-    private function debited($transaction, $user, $amount) : void
+    private function debited($transaction, $user, $amount): void
     {
         $transaction->update(['sender_balance_before' => $user->account_balance]);
 
         $user->account_balance -= $amount;
         $user->save();
         $transaction->update([
-            'status'            =>  0,
-            'transfer_status'   =>  'failed',
+            'status' => 0,
+            'transfer_status' => 'failed',
             'sender_balance_after' => $user->account_balance
         ]);
     }
 
-    private function refunded($transaction, $user, $amount) : void
+    private function refunded($transaction, $user, $amount): void
     {
         $transaction->update(['sender_balance_before' => $user->account_balance]);
 
@@ -248,10 +254,124 @@ class BankTransferController extends Controller
         $user->save();
 
         $transaction->update([
-            'status'            =>  2,
-            'transfer_status'   =>  'refunded',
+            'status' => 2,
+            'transfer_status' => 'refunded',
             'balance_after_refund' => $amount,
             'sender_balance_after' => $user->account_balance
         ]);
+    }
+
+    public function exportPdf(Request $request)
+    {
+        $query = MoneyTransfer::query()
+            ->with(['sender', 'receiver'])
+            ->isExternal()
+            ->orderBy('created_at', 'desc');
+
+        // Apply search filter
+        if ($request->filled('search')) {
+            $query->search($request->search);
+        }
+
+        // Apply status filter
+        if ($request->filled('status')) {
+            $query->where('transfer_status', $request->status);
+        }
+
+        // Apply date filters
+        if ($request->filled('dateFrom')) {
+            $query->whereDate('created_at', '>=', $request->dateFrom);
+        }
+
+        if ($request->filled('dateTo')) {
+            $query->whereDate('created_at', '<=', $request->dateTo);
+        }
+
+        // Apply amount filters
+        if ($request->filled('amountFrom')) {
+            $query->where('amount', '>=', $request->amountFrom);
+        }
+
+        if ($request->filled('amountTo')) {
+            $query->where('amount', '<=', $request->amountTo);
+        }
+
+        // Apply bank filter
+        if ($request->filled('bank')) {
+            $query->where('bank_code', $request->bank);
+        }
+
+        $transfers = $query->get();
+        $banks = Bank::isPalmPay()->orderBy('name')->get();
+
+        // Get filter summary
+        $filterSummary = $this->getFilterSummary($request);
+
+        $pdf = Pdf::loadView('system-user.transfer.bank.pdf', [
+            'transfers' => $transfers,
+            'banks' => $banks,
+            'statuses' => $this->statuses,
+            'filters' => $request->only([
+                'search',
+                'status',
+                'dateFrom',
+                'dateTo',
+                'amountFrom',
+                'amountTo',
+                'bank',
+                'perPage'
+            ]),
+            'filterSummary' => $filterSummary
+        ]);
+
+        $filename = 'bank-transfers-' . date('Y-m-d-H-i-s') . '.pdf';
+
+        return $pdf->download($filename);
+    }
+
+    private function getFilterSummary(Request $request)
+    {
+        $summary = [];
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            // Try to find user by search term
+            $user = User::where('username', 'LIKE', "%{$search}%")
+                ->orWhere('email', 'LIKE', "%{$search}%")
+                ->orWhere('name', 'LIKE', "%{$search}%")
+                ->first();
+
+            if ($user) {
+                $summary[] = "Report for: {$user->name} ({$user->username})";
+            } else {
+                $summary[] = "Search: {$search}";
+            }
+        }
+
+        if ($request->filled('status')) {
+            $summary[] = "Status: " . ucfirst($request->status);
+        }
+
+        if ($request->filled('dateFrom')) {
+            $summary[] = "Date From: " . date('M d, Y', strtotime($request->dateFrom));
+        }
+
+        if ($request->filled('dateTo')) {
+            $summary[] = "Date To: " . date('M d, Y', strtotime($request->dateTo));
+        }
+
+        if ($request->filled('amountFrom')) {
+            $summary[] = "Amount From: N" . number_format($request->amountFrom, 2);
+        }
+
+        if ($request->filled('amountTo')) {
+            $summary[] = "Amount To: N" . number_format($request->amountTo, 2);
+        }
+
+        if ($request->filled('bank')) {
+            $summary[] = "Bank: " . ucfirst($request->bank);
+        }
+
+        return $summary;
     }
 }
