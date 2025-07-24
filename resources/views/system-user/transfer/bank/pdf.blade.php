@@ -211,7 +211,7 @@
                     <td>
                         {{ $transfer->bank_name ?? 'N/A' }}
                     </td>
-                    <td><strong>{{ json_decode($transfer->meta ?? '', true)['payeeName'] . '/' }}</strong>
+                    <td><strong>{{ json_decode($transfer->meta ?? '', true)['payeeName'] . ' / ' }}</strong>
                         {{ $transfer->account_number ?? 'N/A' }}</td>
                     <td>N{{ number_format($transfer->amount, 2) }}</td>
                     <td>
