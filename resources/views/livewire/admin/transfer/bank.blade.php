@@ -14,25 +14,27 @@
         </div>
         <div>
             <div class="card">
-                <div class="card-body p-4">
-                    <div class="row mb-4">
-                        <div class="col-12 col-md-3 mb-3">
+                <div class="p-4 card-body">
+                    <div class="mb-4 row">
+                        <div class="mb-3 col-12 col-md-3">
                             <label class="form-label">From Date</label>
                             <input type="date" wire:model.live="dateFrom" class="form-control">
                         </div>
-                        <div class="col-12 col-md-3 mb-3">
+                        <div class="mb-3 col-12 col-md-3">
                             <label class="form-label">To Date</label>
                             <input type="date" wire:model.live="dateTo" class="form-control">
                         </div>
-                        <div class="col-12 col-md-3 mb-3">
+                        <div class="mb-3 col-12 col-md-3">
                             <label class="form-label">Amount From</label>
-                            <input type="number" wire:model.live="amountFrom" placeholder="Min amount" class="form-control">
+                            <input type="number" wire:model.live="amountFrom" placeholder="Min amount"
+                                class="form-control">
                         </div>
-                        <div class="col-12 col-md-3 mb-3">
+                        <div class="mb-3 col-12 col-md-3">
                             <label class="form-label">Amount To</label>
-                            <input type="number" wire:model.live="amountTo" placeholder="Max amount" class="form-control">
+                            <input type="number" wire:model.live="amountTo" placeholder="Max amount"
+                                class="form-control">
                         </div>
-                        <div class="col-12 col-md-3 mb-3">
+                        <div class="mb-3 col-12 col-md-3">
                             <label class="form-label">Bank</label>
                             <select name="bank" id="bank" class="form-select" wire:model.live="bank">
                                 <option value=""></option>
@@ -41,7 +43,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-12 col-md-3 mb-3">
+                        <div class="mb-3 col-12 col-md-3">
                             <label class="form-label">Status</label>
                             <select name="status" id="status" class="form-select" wire:model.live="status">
                                 <option value=""></option>
@@ -88,7 +90,8 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('admin.transfer.bank.details', $transfer->reference_id) }}"  class="btn btn-primary btn-sm">View</a>
+                                    <a href="{{ route('admin.transfer.bank.details', $transfer->reference_id) }}"
+                                        class="btn btn-primary btn-sm">View</a>
                                 </td>
                             </tr>
                         @empty

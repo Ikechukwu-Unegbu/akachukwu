@@ -25,6 +25,7 @@ class SiteSettingsController extends Controller
             'linkedin' => 'nullable|string|max:255',
             'airtime_limit' => 'required|numeric',
             'money_transfer_status' => 'required|integer|boolean',
+            'bank_transfer_status' => 'required|integer|boolean',
             'transfer_charges' => 'required|numeric',
             'minimum_transfer' => 'required|numeric',
             'maximum_transfer' => 'required|numeric',
@@ -61,6 +62,7 @@ class SiteSettingsController extends Controller
         $siteSettings->linkedin = $validatedData['linkedin'];
         $siteSettings->airtime_limit = $validatedData['airtime_limit'];
         $siteSettings->money_transfer_status = $validatedData['money_transfer_status'];
+        $siteSettings->bank_transfer_status = $validatedData['bank_transfer_status'];
         $siteSettings->transfer_charges = $validatedData['transfer_charges'];
         $siteSettings->minimum_transfer = $validatedData['minimum_transfer'];
         $siteSettings->maximum_transfer = $validatedData['maximum_transfer'];

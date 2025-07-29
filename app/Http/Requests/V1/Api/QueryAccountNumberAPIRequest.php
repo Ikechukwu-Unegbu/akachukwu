@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\V1\Api;
 
+use App\Services\Money\BasePalmPayService;
 use Illuminate\Foundation\Http\FormRequest;
 
 class QueryAccountNumberAPIRequest extends FormRequest
@@ -22,7 +23,11 @@ class QueryAccountNumberAPIRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'account_number' => ['required', 'numeric', 'digits:10'],
+            'account_number' => ['required', 'numeric', 'digits:10', function ($attribute, $value, $fail) {
+                if (!BasePalmPayService::isBankTransferAvailable()) {
+                    $fail("Bank transfer is not available. Please try again later.");
+                }
+            }],
             'bank_code'      => ['required', 'exists:banks,code']
         ];
     }
