@@ -20,6 +20,8 @@ use App\Providers\RouteServiceProvider;
 use App\Services\Payment\MonnifyService;
 use Illuminate\Support\Facades\Notification;
 use App\Services\Payment\VirtualAccountServiceFactory;
+
+use App\Services\BranchReferralService;
 class RegisteredUserController extends Controller
 {
 
@@ -96,6 +98,13 @@ class RegisteredUserController extends Controller
             // $activeGateway = PaymentGateway::where('va_status', true)->first();
             // $virtualAccountFactory = VirtualAccountServiceFactory::make($activeGateway);
             // $virtualAccountFactory::createVirtualAccount($user);
+            $referralService = new BranchReferralService();
+            $referralLink = $referralService->createReferralLink($user->username);
+
+            if ($referralLink) {
+                $user->update(['referral_link' => $referralLink]);
+            }
+
 
             event(new Registered($user));
 
