@@ -30,7 +30,7 @@ class KycVerificationService
             if ($data['identification_type'] === 'bvn') {
                 $bvnVerification = (array) MonnifyService::verifyBvn($data['identification_number'], NULL, $user->phone);
 
-                if ($bvnVerification['status']) {
+                if (isset($bvnVerification['status']) && $bvnVerification['status']) {
                     $user->update([
                         'bvn' => $data['identification_number'],
                         'nin' => null,
@@ -40,7 +40,7 @@ class KycVerificationService
             if ($data['identification_type'] === 'nin') {
                 $ninVerification = (array) MonnifyService::verifyNin($data['identification_number'], $data['date_of_birth'] ?? null, $user->phone);
 
-                if ($ninVerification['status']) {
+                if (isset($ninVerification['status']) && $ninVerification['status']) {
                     $user->update([
                         'nin' => $data['identification_number'],
                         'bvn' => null,
