@@ -28,7 +28,7 @@ class KycVerificationService
 
             // Handle identification (BVN or NIN)
             if ($data['identification_type'] === 'bvn') {
-                $bvnVerification = MonnifyService::verifyBvn($data['identification_number'], NULL, $user->phone);
+                $bvnVerification = (array) MonnifyService::verifyBvn($data['identification_number'], NULL, $user->phone);
 
                 if ($bvnVerification['status']) {
                     $user->update([
@@ -38,7 +38,7 @@ class KycVerificationService
                 }
             }
             if ($data['identification_type'] === 'nin') {
-                $ninVerification = MonnifyService::verifyNin($data['identification_number'], $data['date_of_birth'] ?? null, $user->phone);
+                $ninVerification = (array) MonnifyService::verifyNin($data['identification_number'], $data['date_of_birth'] ?? null, $user->phone);
 
                 if ($ninVerification['status']) {
                     $user->update([
