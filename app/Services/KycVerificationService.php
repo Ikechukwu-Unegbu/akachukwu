@@ -3,9 +3,10 @@
 namespace App\Services;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use App\Services\Payment\MonnifyService;
 
 class KycVerificationService
 {
@@ -19,24 +20,32 @@ class KycVerificationService
 
             // Update user's personal information
             $user->update([
-                'first_name' => $data['first_name'],
-                'last_name' => $data['last_name'],
-                'phone_number' => $data['phone_number'],
+                // 'name' => $data['first_name'] . ' ' . $data['last_name'],
+                'phone' => $data['phone_number'],
                 'gender' => $data['gender'],
                 'date_of_birth' => $data['date_of_birth'] ?? null,
             ]);
 
             // Handle identification (BVN or NIN)
             if ($data['identification_type'] === 'bvn') {
-                $user->update([
-                    'bvn' => $data['identification_number'],
-                    'nin' => null, // Clear NIN if BVN is provided
-                ]);
-            } else {
-                $user->update([
-                    'nin' => $data['identification_number'],
-                    'bvn' => null, // Clear BVN if NIN is provided
-                ]);
+                $bvnVerification = MonnifyService::verifyBvn($data['identification_number'], NULL, $user->phone);
+
+                if ($bvnVerification['status']) {
+                    $user->update([
+                        'bvn' => $data['identification_number'],
+                        'nin' => null,
+                    ]);
+                }
+            }
+            if ($data['identification_type'] === 'nin') {
+                $ninVerification = MonnifyService::verifyNin($data['identification_number'], $data['date_of_birth'] ?? null, $user->phone);
+
+                if ($ninVerification['status']) {
+                    $user->update([
+                        'nin' => $data['identification_number'],
+                        'bvn' => null,
+                    ]);
+                }
             }
 
             // Mark Tier 1 as completed
@@ -85,6 +94,7 @@ class KycVerificationService
                 'area_code' => $data['area_code'],
                 'city' => $data['city'],
                 'state' => $data['state'],
+                'address' => $data['street_address'], // Update existing 'address' field with street address
             ]);
 
             // Update next of kin information
@@ -209,7 +219,7 @@ class KycVerificationService
                 'completed' => (bool) $user->tier_1_completed,
                 'completed_at' => $user->tier_1_completed_at,
                 'requirements' => [
-                    'personal_info' => !empty($user->first_name) && !empty($user->last_name),
+                    'personal_info' => !empty($user->name) && !empty($user->phone),
                     'identification' => !empty($user->bvn) || !empty($user->nin),
                 ]
             ],

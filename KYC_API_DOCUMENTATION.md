@@ -35,8 +35,6 @@ Authorization: Bearer {your_token}
 **Request Body:**
 ```json
 {
-    "first_name": "Joyce",
-    "last_name": "Johnson",
     "phone_number": "+2348012345678",
     "gender": "female",
     "identification_type": "bvn",
@@ -46,8 +44,6 @@ Authorization: Bearer {your_token}
 ```
 
 **Field Descriptions:**
-- `first_name` (required): User's first name
-- `last_name` (required): User's last name
 - `phone_number` (required): User's phone number
 - `gender` (required): Gender selection (male, female, other)
 - `identification_type` (required): Type of identification (bvn, nin)
@@ -327,55 +323,3 @@ file: [file upload]
 6. **Security**: All endpoints require authentication and validate user ownership
 
 ---
-
-## Example Usage
-
-### Complete KYC Flow
-
-```javascript
-// 1. Submit Tier 1
-const tier1Response = await fetch('/api/v1/kyc/tier-1', {
-    method: 'POST',
-    headers: {
-        'Authorization': 'Bearer ' + token,
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-        first_name: 'Joyce',
-        last_name: 'Johnson',
-        phone_number: '+2348012345678',
-        gender: 'female',
-        identification_type: 'bvn',
-        identification_number: '12345678901'
-    })
-});
-
-// 2. Submit Tier 2
-const formData = new FormData();
-formData.append('house_number', '123');
-formData.append('street_address', '123 Main Street');
-// ... other fields
-formData.append('utility_bill_file', fileInput.files[0]);
-
-const tier2Response = await fetch('/api/v1/kyc/tier-2', {
-    method: 'POST',
-    headers: {
-        'Authorization': 'Bearer ' + token
-    },
-    body: formData
-});
-
-// 3. Submit Tier 3
-const tier3FormData = new FormData();
-tier3FormData.append('id_type', 'national_id');
-tier3FormData.append('id_file', idFileInput.files[0]);
-tier3FormData.append('bvn_number', '12345678901');
-
-const tier3Response = await fetch('/api/v1/kyc/tier-3', {
-    method: 'POST',
-    headers: {
-        'Authorization': 'Bearer ' + token
-    },
-    body: tier3FormData
-});
-``` 

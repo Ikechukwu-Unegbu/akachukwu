@@ -11,14 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            // Personal Information (Tier 1)
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->string('phone_number')->nullable();
-            $table->enum('gender', ['male', 'female', 'other'])->nullable();
             $table->date('date_of_birth')->nullable();
-
-            // Address Information (Tier 2)
             $table->string('house_number')->nullable();
             $table->text('street_address')->nullable();
             $table->string('local_government')->nullable();
@@ -61,10 +54,6 @@ return new class extends Migration {
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
-                'first_name',
-                'last_name',
-                'phone_number',
-                'gender',
                 'date_of_birth',
                 'house_number',
                 'street_address',

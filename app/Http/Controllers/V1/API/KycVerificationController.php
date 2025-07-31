@@ -27,9 +27,9 @@ class KycVerificationController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'first_name' => 'required|string|max:255',
-                'last_name' => 'required|string|max:255',
-                'phone_number' => 'required|string|max:20',
+                // 'first_name' => 'required|string|max:255',
+                // 'last_name' => 'required|string|max:255',
+                'phone_number' => ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
                 'gender' => 'required|in:male,female,other',
                 'identification_type' => 'required|in:bvn,nin',
                 'identification_number' => 'required|string|max:20',
@@ -120,7 +120,7 @@ class KycVerificationController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'id_type' => 'required|in:national_id,voters_card,drivers_license,international_passport',
-                'id_file' => 'required|file|mimes:svg,png,jpg,jpeg,gif|max:5120', // 5MB max
+                'id_file' => 'required|file|mimes:svg,png,jpg,jpeg,gif|max:5120',
                 'bvn_number' => 'required|string|max:20',
             ]);
 
