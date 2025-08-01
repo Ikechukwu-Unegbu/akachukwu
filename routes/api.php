@@ -32,6 +32,7 @@ use App\Http\Controllers\V1\API\Auth\ChangePasswordController;
 use App\Http\Controllers\V1\API\Auth\ForgotPasswordController;
 use App\Http\Controllers\V1\API\Auth\AuthenticateUserController;
 use App\Http\Controllers\V1\API\SiteSettingsApiController;
+use App\Http\Controllers\V1\API\KycVerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,14 +59,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return User::with('virtualAccounts')->find(Auth::user()->id);
 });
 
-Route::group(['middleware' => ['auth:sanctum'],], function() {
+Route::group(['middleware' => ['auth:sanctum'],], function () {
     //protected auth routes
     Route::post('logout', [AuthenticateUserController::class, 'logout']);
     Route::post('/change-password', [ChangePasswordController::class, 'changePassword']);
 
 
     //image uload
-    Route::post('/upload-avatar',[FileUploadController::class, 'store']);
+    Route::post('/upload-avatar', [FileUploadController::class, 'store']);
 
     //fetch logos
     Route::get('logo', [AppAssetsController::class, 'getSpecifiedColumn']);
@@ -108,9 +109,18 @@ Route::group(['middleware' => ['auth:sanctum'],], function() {
         Route::post('/generate', [VirtualAccountController::class, 'createSpecificVirtualAccount']);
     });
 
-    Route::prefix('bank')->group(function() {
+    Route::prefix('bank')->group(function () {
         Route::post('query-account-number', [BankTransferApiController::class, 'queryAccountNumber']);
         Route::post('process-transaction', [BankTransferApiController::class, 'processTransfer']);
+    });
+
+    // KYC Verification Routes
+    Route::prefix('kyc')->group(function () {
+        Route::post('tier-1', [KycVerificationController::class, 'submitTier1']);
+        Route::post('tier-2', [KycVerificationController::class, 'submitTier2']);
+        Route::post('tier-3', [KycVerificationController::class, 'submitTier3']);
+        Route::get('status', [KycVerificationController::class, 'getVerificationStatus']);
+        Route::post('upload-document', [KycVerificationController::class, 'uploadDocument']);
     });
 
     Route::get('announcements', [AnnouncementApiController::class, 'show']);
