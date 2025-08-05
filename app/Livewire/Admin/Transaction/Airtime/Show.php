@@ -9,9 +9,11 @@ class Show extends Component
 {
     public $airtime;
 
-    public function mount(AirtimeTransaction $airtime)
+    public function mount($id)
     {
-        $this->airtime = $airtime;
+        $this->airtime = AirtimeTransaction::with(['user' => function($query) {
+            $query->withTrashed();
+        }, 'vendor'])->findOrFail($id);
         $this->authorize('view airtime transaction');
     }
 

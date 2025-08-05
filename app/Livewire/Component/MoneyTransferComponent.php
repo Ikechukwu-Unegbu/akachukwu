@@ -67,6 +67,11 @@ class MoneyTransferComponent extends Component
      */
     public function handleVerifyRecipient()
     {
+        if (!$this->settings->money_transfer_status) {
+            $this->dispatch('error-toastr', ['message' => 'Transfer is not available. Please try again later.']);
+            return;
+        }
+
         $this->validate();
         $this->error_msg = "";
         $recipient = $this->vastelMoneyTransfer->getRecipient($this->username);
@@ -94,6 +99,10 @@ class MoneyTransferComponent extends Component
                     $user = auth()->user();
                     if ($value > $user->account_balance) {
                         $fail("The {$attribute} exceeds your available balance of ₦" . number_format($user->account_balance, 2));
+                    }
+
+                    if (!$this->settings->money_transfer_status) {
+                        $fail("Transfer is not available. Please try again later.");
                     }
 
                     if (!GeneralHelpers::minimumTransaction($value)) {
@@ -208,6 +217,11 @@ class MoneyTransferComponent extends Component
             'bank'           =>  ['required', 'exists:banks,id']
         ]);
 
+        if (!$this->settings->bank_transfer_status) {
+            $this->dispatch('error-toastr', ['message' => 'Bank transfer is not available. Please try again later.']);
+            return;
+        }
+
         if (!auth()->user()->isKycDone()) {
             $this->dispatch('error-toastr', ['message' => 'To use service, please complete your KYC by providing your BVN or NIN.']);
             session()->flash('error', 'To use service, please complete your KYC by providing your BVN or NIN.');
@@ -255,6 +269,10 @@ class MoneyTransferComponent extends Component
                     $user = auth()->user();
                     if ($value > $user->account_balance) {
                         $fail("The {$attribute} exceeds your available balance of ₦" . number_format($user->account_balance, 2));
+                    }
+
+                    if (!$this->settings->bank_transfer_status) {
+                        $fail("Bank transfer is not available. Please try again later.");
                     }
 
                     if (!GeneralHelpers::minimumTransaction($value)) {

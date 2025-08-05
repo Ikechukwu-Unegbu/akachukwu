@@ -84,7 +84,11 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.transaction.money-transfer.index', [
-            'money_transactions' =>  MoneyTransfer::with(['sender', 'receiver'])->search($this->search)->latest('created_at')->paginate($this->perPage)
+            'money_transactions' =>  MoneyTransfer::with(['sender' => function ($query) {
+                    $query->withTrashed();
+                }, 'receiver' => function ($query) {
+                    $query->withTrashed();
+                }])->search($this->search)->latest('created_at')->paginate($this->perPage)
         ]);
     }
 }

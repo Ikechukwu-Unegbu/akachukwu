@@ -47,5 +47,9 @@ return [
         'rest_api_key' => env('ONESIGNAL_REST_API_KEY'),
         'guzzle_client_timeout' => env('ONESIGNAL_GUZZLE_CLIENT_TIMEOUT', 0),
     ],
+    'branch' => [
+        'key' => env('BRANCH_KEY'),
+        'url' => env('BRANCH_API_URL', 'https://api2.branch.io/v1/url'),
+    ],
 
 ];

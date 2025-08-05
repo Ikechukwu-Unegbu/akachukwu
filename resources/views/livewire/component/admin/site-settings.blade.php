@@ -64,8 +64,15 @@
             <div class="mb-3">
                 <label for="money_transfer_status" class="form-label">Vastel Money Transfer</label>
                 <select class="form-select" id="money_transfer_status" required="" name="money_transfer_status">
-                    <option value="1" @selected($setting->money_transfer_status === 1)>Activated</option>
-                    <option value="0" @selected($setting->money_transfer_status === 0)>Deactivated</option>
+                    <option value="1" @selected((int)$setting->money_transfer_status === 1)>Activated</option>
+                    <option value="0" @selected((int)$setting->money_transfer_status === 0)>Deactivated</option>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="bank_transfer_status" class="form-label">Bank Transfer</label>
+                <select class="form-select" id="bank_transfer_status" required="" name="bank_transfer_status">
+                    <option value="1" @selected((int)$setting->bank_transfer_status === 1)>Activated</option>
+                    <option value="0" @selected((int)$setting->bank_transfer_status === 0)>Deactivated</option>
                 </select>
             </div>
             <div class="mb-3">
@@ -125,7 +132,7 @@
                 <label for="linkedin" class="form-label">LinkedIn</label>
                 <input type="text" class="form-control" id="linkedin" name="linkedin" value="{{$setting->linkedin}}">
             </div>
-            <button type="submit" class="btn btn-primary float-right">Submit</button>
+            <button type="submit" class="float-right btn btn-primary">Submit</button>
         </form>
     </section>
 

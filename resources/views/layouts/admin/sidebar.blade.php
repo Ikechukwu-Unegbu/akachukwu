@@ -94,6 +94,7 @@
         <x-admin.dropdown title="Manage Transfers" icon="bi-recycle">
             <x-admin.dropdown-item title="In-App Transfers" link="{{ route('admin.transfer.in-app') }}" />
             <x-admin.dropdown-item title="External Bank Transfers" link="{{ route('admin.transfer.bank') }}" />
+            <x-admin.dropdown-item title="Wallet Funding" link="{{ route('admin.wallet-funding.index') }}" />
         </x-admin.dropdown>
 
         @if(auth()->user()->can('view vendor api') || auth()->user()->can('view payment api'))
@@ -112,7 +113,7 @@
             <li class="nav-heading">Activity Logger</li>
             <x-admin.dropdown title="Activity Logs" icon="bi-clock-history">
                 @can('view logs')
-                    <x-admin.dropdown-item title="Logs" link="{{ route('admin.activity') }}" />
+                    <x-admin.dropdown-item title="Logs" link="{{ route('admin.logs') }}" />
                 @endcan
             </x-admin.dropdown>
         @endif

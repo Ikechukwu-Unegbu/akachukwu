@@ -22,8 +22,10 @@ class Show extends Component
             'description'=>Auth::user()->name.' viewed '.$user."'s profile.",
             'type'=>'Users',
         ]);
-        $this->user = User::withTrashed()->where('username', $user)->first();
-        $this->authorize('view users'); 
+        $this->user = User::withTrashed()
+            ->with(['flaggedByAdmin', 'postNoDebitByAdmin', 'blacklistedByAdmin'])
+            ->where('username', $user)->first();
+        $this->authorize('view users');
 
         //$this->user = User::withTrashed()->where('username', $user)->firstOrFail();
         //$this->authorize('view users');
@@ -34,7 +36,7 @@ class Show extends Component
     {
         $user = User::withTrashed()->find($this->user->id);
         DB::transaction(function()use($user){
-           
+
             $user->blocked_by_admin = true;
             $user->save();
             $this->dispatch('success-toastr', ['message' => "This user has been blocked"]);
@@ -44,7 +46,7 @@ class Show extends Component
                 'type'=>'Users',
             ]);
         });
-    
+
         $this->mount($user->username);
     }
 
@@ -52,10 +54,10 @@ class Show extends Component
     {
 
         $user = User::withTrashed()->find($this->user->id);
+        $message = "";
 
-    
-        DB::transaction(function()use($user){
-         
+        DB::transaction(function()use($user, &$message){
+
             if ($user->deleted_at) {
                 $user->deleted_at = null;
                 $message = "This user has been restored.";
@@ -63,7 +65,7 @@ class Show extends Component
                 $user->deleted_at = now();
                 $message = "This user has been deleted.";
             }
-        
+
             $user->save();
             ActivityLogService::log([
                 'activity'=>"Blocking",
@@ -71,10 +73,29 @@ class Show extends Component
                 'type'=>'Users',
             ]);
         });
-      
+
 
         $this->dispatch('success-toastr', ['message' => $message]);
         $this->mount($user->username);
+    }
+
+
+    public function dropAllFlags()
+    {
+        // dd('good');
+           $this->user->update([
+                'is_flagged' => false,
+                'flagged_by_admin_id' => null,
+                'flagged_at' => null,
+                'post_no_debit' => false,
+                'post_no_debit_by_admin_id' => null,
+                'post_no_debit_at' => null,
+                'is_blacklisted' => false,
+                'blacklisted_by_admin_id' => null,
+                'blacklisted_at' => null,
+            ]);
+        $this->dispatch('success-toastr','All flags dropped.');
+        $this->mount($this->user->username);
     }
 
 
@@ -122,6 +143,66 @@ class Show extends Component
         } else {
             $this->dispatch('error-toastr', ['message' => "Failed to send password reset link."]);
         }
+    }
+
+    public function handlePostNoDebit()
+    {
+        $user = User::withTrashed()->find($this->user->id);
+        DB::transaction(function()use($user){
+            $user->post_no_debit = true;
+            $user->post_no_debit_by_admin_id = Auth::id();
+            $user->post_no_debit_at = now();
+            $user->save();
+
+            ActivityLogService::log([
+                'activity'=> "Post No Debit Activation",
+                'description'=> Auth::user()->name.' activated Post No Debit for '.$user->name."'s profile.",
+                'type'=> 'Users',
+            ]);
+        });
+
+        $this->dispatch('success-toastr', ['message' => "Post No Debit activated for user."]);
+        $this->redirect(url()->previous());
+    }
+
+    public function handleFlag()
+    {
+        $user = User::withTrashed()->find($this->user->id);
+        DB::transaction(function()use($user){
+            $user->is_flagged = true;
+            $user->flagged_by_admin_id = Auth::id();
+            $user->flagged_at = now();
+            $user->save();
+
+            ActivityLogService::log([
+                'activity'=> "Flag User",
+                'description'=> Auth::user()->name.' flagged '.$user->name."'s profile.",
+                'type'=> 'Users',
+            ]);
+        });
+
+        $this->dispatch('success-toastr', ['message' => "User flagged successfully."]);
+        $this->mount($user->username);
+    }
+
+    public function handleBlacklist()
+    {
+        $user = User::withTrashed()->find($this->user->id);
+        DB::transaction(function()use($user){
+            $user->is_blacklisted = true;
+            $user->blacklisted_by_admin_id = Auth::id();
+            $user->blacklisted_at = now();
+            $user->save();
+
+            ActivityLogService::log([
+                'activity'=> "Blacklist User",
+                'description'=> Auth::user()->name.' blacklisted '.$user->name."'s profile.",
+                'type'=> 'Users',
+            ]);
+        });
+
+        $this->dispatch('success-toastr', ['message' => "User blacklisted successfully."]);
+        $this->mount($user->username);
     }
 
     public function render()

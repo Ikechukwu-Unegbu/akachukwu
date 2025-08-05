@@ -9,9 +9,11 @@ class Show extends Component
 {
     public $resultChecker;
 
-    public function mount(ResultCheckerTransaction $resultChecker)
+    public function mount($id)
     {
-        $this->resultChecker = $resultChecker;
+        $this->resultChecker = ResultCheckerTransaction::with(['user' => function($query) {
+            $query->withTrashed();
+        }])->findOrFail($id);
         $this->authorize('view result-checker transaction');
     }
 

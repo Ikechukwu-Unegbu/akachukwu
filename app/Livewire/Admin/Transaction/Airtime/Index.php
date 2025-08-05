@@ -90,7 +90,9 @@ class Index extends Component
     public function render()
     {
         return view('livewire.admin.transaction.airtime.index', [
-            'airtime_transactions' =>  AirtimeTransaction::with(['user', 'network'])->search($this->search)->latest('created_at')->paginate($this->perPage)
+            'airtime_transactions' =>  AirtimeTransaction::with(['user' => function ($query) {
+                    $query->withTrashed();
+                }, 'network'])->search($this->search)->latest('created_at')->paginate($this->perPage)
         ]);
     }
 }

@@ -2,10 +2,11 @@
 
 namespace App\Notifications;
 
+use Illuminate\Support\Str;
 use Illuminate\Bus\Queueable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Notification;
 
 class AdminTopupNotification extends Notification
 {
@@ -36,12 +37,12 @@ class AdminTopupNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-
-                    ->line('You have been credited NGN '.$this->data['amount'].'by our admin.')
-                    // ->action('Notification Action', url('/'))
-                    ->line('Reason:')
-                    ->line('"'.$this->data['reason'].'"')
-                    ->line('Thank you for using our application!');
+                    ->subject('Your Vastel wallet has been credited')
+                    ->view('emails.admin-topup', [
+                        'user' => $notifiable,
+                        'amount' => $this->data['amount'],
+                        'reason' => $this->data['reason']
+                    ]);
     }
 
     /**

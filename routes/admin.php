@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\SystemUser\ScheduledTransactionController;
 use App\Http\Controllers\SystemUser\InAppTransferController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
+use App\Http\Controllers\SystemUser\WalletFundingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemUser\UserCrdDbtController;
 use App\Livewire\Admin\CrdDbt\Create as CrdDbtCreate;
@@ -111,23 +112,27 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('transaction', App\Livewire\Admin\Transaction\Index::class)->name('admin.transaction');
         ## Transaction - Airtime
         Route::get('transaction/airtime', App\Livewire\Admin\Transaction\Airtime\Index::class)->name('admin.transaction.airtime');
-        Route::get('transaction/airtime/{airtime:id}/show', App\Livewire\Admin\Transaction\Airtime\Show::class)->name('admin.transaction.airtime.show');
+        Route::get('transaction/airtime/{id}/show', App\Livewire\Admin\Transaction\Airtime\Show::class)->name('admin.transaction.airtime.show');
 
         ## Transaction - Data
         Route::get('transaction/data', App\Livewire\Admin\Transaction\Data\Index::class)->name('admin.transaction.data');
-        Route::get('transaction/data/{data:id}/show', App\Livewire\Admin\Transaction\Data\Show::class)->name('admin.transaction.data.show');
+        Route::get('transaction/data/{id}/show', App\Livewire\Admin\Transaction\Data\Show::class)->name('admin.transaction.data.show');
 
         ## Transaction - Cable
         Route::get('transaction/cable', App\Livewire\Admin\Transaction\Cable\Index::class)->name('admin.transaction.cable');
-        Route::get('transaction/cable/{cable:id}/show', App\Livewire\Admin\Transaction\Cable\Show::class)->name('admin.transaction.cable.show');
+        Route::get('transaction/cable/{id}/show', App\Livewire\Admin\Transaction\Cable\Show::class)->name('admin.transaction.cable.show');
 
         ## Transaction - Electricity
         Route::get('transaction/electricity', App\Livewire\Admin\Transaction\Electricity\Index::class)->name('admin.transaction.electricity');
-        Route::get('transaction/electricity/{electricity:id}/show', App\Livewire\Admin\Transaction\Electricity\Show::class)->name('admin.transaction.electricity.show');
+        Route::get('transaction/electricity/{id}/show', App\Livewire\Admin\Transaction\Electricity\Show::class)->name('admin.transaction.electricity.show');
 
         ## Transaction - Result-Checker
         Route::get('transaction/result-checker', App\Livewire\Admin\Transaction\ResultChecker\Index::class)->name('admin.transaction.result-checker');
-        Route::get('transaction/result-checker/{resultChecker:id}/show', App\Livewire\Admin\Transaction\ResultChecker\Show::class)->name('admin.transaction.result-checker.show');
+        Route::get('transaction/result-checker/{id}/show', App\Livewire\Admin\Transaction\ResultChecker\Show::class)->name('admin.transaction.result-checker.show');
+
+        ## Transaction - Money Transfer
+        Route::get('transaction/money-transfer', App\Livewire\Admin\Transaction\MoneyTransfer\Index::class)->name('admin.transaction.money-transfer');
+        Route::get('transaction/money-transfer/{id}/show', App\Livewire\Admin\Transaction\MoneyTransfer\Show::class)->name('admin.transaction.money-transfer.show');
 
         ## Transaction - Reseller
         Route::get('transaction/resellers', App\Livewire\Admin\Transaction\Reseller\Index::class)->name('admin.transaction.reseller');
@@ -235,6 +240,11 @@ Route::group(['prefix' => 'admin'], function () {
                 Route::get('/', [BankController::class, 'showBankConfig'])->name('index');
                 Route::post('/update', [BankController::class, 'updateBankConfig'])->name('update');
             });
+        });
+
+        Route::prefix('wallet-funding')->as('admin.wallet-funding.')->group(function() {
+            Route::get('/', [WalletFundingController::class,'index'])->name('index');
+            Route::get('{transaction_id}/show', [App\Http\Controllers\SystemUser\WalletFundingController::class, 'show'])->name('show');
         });
     });
 

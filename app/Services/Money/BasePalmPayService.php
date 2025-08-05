@@ -187,6 +187,10 @@ class BasePalmPayService
             return ApiHelper::sendError([], "To continue enjoying our services, please complete your KYC by providing your BVN or NIN.");
         }
 
+        if (!self::isBankTransferAvailable()) {
+            return ApiHelper::sendError([], "Bank transfer is not available. Please try again later.");
+        }
+
         if (!GeneralHelpers::minimumTransaction($totalAmount)) {
             return ApiHelper::sendError([], "The amount is below the minimum transfer limit.");
         }
@@ -210,6 +214,11 @@ class BasePalmPayService
     protected static function checkIfAccountExists($user): bool
     {
         return $user->virtualAccounts->where('bank_code', self::BANK_CODE)->isNotEmpty();
+    }
+
+    public static function isBankTransferAvailable(): bool
+    {
+        return (bool) optional(SiteSetting::find(1))->bank_transfer_status ?? true;
     }
 
     public static function createSpecificVirtualAccount($user, $accountId = null)

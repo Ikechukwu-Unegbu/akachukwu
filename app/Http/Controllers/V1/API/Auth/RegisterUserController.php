@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Notification;
 use App\Services\OneSignalNotificationService;
 use Illuminate\Validation\ValidationException;
 use App\Notifications\RegistrationOSNotification;
-
+use App\Services\BranchReferralService;
 
 class RegisterUserController extends Controller
 {
@@ -58,6 +58,13 @@ class RegisterUserController extends Controller
             GeneralHelpers::checkReferrer($request, $user);
 
             Notification::sendNow($user, new WelcomeEmail($otp, $user));
+
+            $referralService = new BranchReferralService();
+            $referralLink = $referralService->createReferralLink($user->username);
+
+            if ($referralLink) {
+                $user->update(['referral_link' => $referralLink]);
+            }
 
             if ($request->os_player_id) {
                 $this->userDeviceRepository->updateOrCreate($user, ['os_player_id' => $request->os_player_id]);

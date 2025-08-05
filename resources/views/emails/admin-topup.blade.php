@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Email</title>
+    <title>Wallet Credited</title>
 </head>
 <body style="background-color: #e5e7eb; margin: 0; padding: 20px; font-family: Arial, sans-serif;">
     <div style="max-width: 400px; margin: 0 auto; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); overflow: hidden;">
@@ -11,39 +11,45 @@
         <!-- Header Section -->
         <div style="text-align: center; padding: 24px;">
             <img src="{{ asset('images/vastel-logo.png') }}" alt="Vastel Logo" width="80" style="display: block; margin: 0 auto;">
-
-
         </div>
 
         <!-- Main Content -->
         <div style="padding: 24px; color: #1f2937;">
-            <h1 style="font-size: 20px; font-weight: 600; text-align: center; color: #0018A8; margin-bottom: 16px;">
-                Welcome to Vastel
-            </h1>
 
             <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-                Hi {{ $user->username }}!!
+                Hi {{ Str::ucfirst($user->name) ?? Str::ucfirst($user->username) }},
             </p>
 
             <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-                Your Vastel Account is ready. Thank you for using Vastel! We’re thrilled to have you on board. With our app, you can easily buy airtime, subscribe to internet services, cable TV, and educational services, send money — all at your fingertips!
-            </p>
-
-            <p style="font-size: 14px; font-weight: 600; color: #0018A8; text-align: center;">
-                Your OTP is: <span style="font-size: 16px; font-weight: bold;">{{ $otp }}</span>
+                Your Vastel wallet has been credited with <strong>NGN {{ number_format($amount) }}</strong>
             </p>
 
             <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
-                To get started, download the app and explore the various services we offer. If you have any questions, our support team is just a tap away.
+                <strong>Remark:</strong> {{ $reason }}
             </p>
 
-            <p style="font-size: 14px; font-weight: 600; margin-bottom: 16px;">
-                Once again, thank you for using our application!
+            <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
+                You can now use your balance to buy data, airtime, pay bills, save, or transfer to others.
             </p>
 
-            <p style="font-size: 14px;">Best Regards,<br>The Vastel Team</p>
+            <div style="background-color: #f3f4f6; padding: 16px; border-radius: 8px; margin-bottom: 16px; text-align: center;">
+                <p style="font-size: 14px; font-weight: 600; color: #0018A8; margin-bottom: 8px;">
+                    🎉 Earn More with Referrals!
+                </p>
+                <p style="font-size: 14px; line-height: 1.6; margin-bottom: 8px;">
+                    Invite your friends to join Vastel and get rewarded when they buy data.
+                </p>
+                <p style="font-size: 14px; line-height: 1.6; margin-bottom: 0;">
+                    Share your referral link in the app to start earning!
+                </p>
+            </div>
+
+            <p style="font-size: 14px; line-height: 1.6; margin-bottom: 16px;">
+                Thank you for choosing Vastel — your world of possibilities.
+            </p>
+
+            <p style="font-size: 14px;">Warm regards,<br>The Vastel Team</p>
         </div>
-
 
         <!-- Footer Section -->
         <div style="background-color: #0018A8; color: white; text-align: center; padding: 16px; font-size: 12px;">
