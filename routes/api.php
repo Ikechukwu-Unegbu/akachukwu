@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\V1\API\AnnouncementApiController;
-use App\Http\Controllers\V1\API\BankTransferApiController;
+use App\Http\Controllers\V1\API\CowrywiseSavingsController;
+use App\Http\Controllers\V1\API\CowrywiseWalletController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,12 +20,16 @@ use App\Http\Controllers\V1\API\FileUploadController;
 use App\Http\Controllers\V1\PalmPayWebhookController;
 use App\Http\Controllers\V1\API\NewtworkApiController;
 use App\Http\Controllers\V1\API\UserProfileController;
-// use Livewire\Features\SupportFileUploads\FileUploadController;
 use App\Http\Controllers\V1\PayVesselWebhookController;
 use App\Http\Controllers\V1\API\NotificationsController;
+// use Livewire\Features\SupportFileUploads\FileUploadController;
 use App\Http\Controllers\V1\API\ElectricityApiController;
 use App\Http\Controllers\V1\API\VirtualAccountController;
+use App\Http\Controllers\V1\API\AnnouncementApiController;
+use App\Http\Controllers\V1\API\BankTransferApiController;
+use App\Http\Controllers\V1\API\SiteSettingsApiController;
 use App\Http\Controllers\V1\API\TransactionsApiController;
+use App\Http\Controllers\V1\API\CowrywiseOnboardController;
 use App\Http\Controllers\V1\API\AccountManagementContorller;
 use App\Http\Controllers\V1\API\Auth\RegisterUserController;
 use App\Http\Controllers\V1\API\Auth\ChangePasswordController;
@@ -144,3 +148,33 @@ Route::get('sitesetting', [SiteSettingsApiController::class, '__invoke']);
 Route::get('active-virtual-accounts', [SiteSettingsApiController::class, 'activeVirtualAccounts']);
 Route::get('bank-list', [BankTransferApiController::class, 'banks']);
 
+
+Route::prefix('investments')->middleware('auth:sanctum')->group(function() {
+    Route::prefix('onboarding')->group(function() {
+        // Route::get('fetch-all-accounts', [CowrywiseOnboardController::class, 'get']);
+        Route::post('create', [CowrywiseOnboardController::class, 'create']);
+        Route::post('profile/update', [CowrywiseOnboardController::class, 'updateProfile']);
+        Route::get('account', [CowrywiseOnboardController::class, 'retrieveSingleAccount']);
+        Route::get('portfolio', [CowrywiseOnboardController::class, 'getPortfolio']);
+        Route::post('identity/update', [CowrywiseOnboardController::class, 'updateIdentity']);
+        Route::post('address/update', [CowrywiseOnboardController::class, 'updateAddress']);
+        Route::post('nok/update', [CowrywiseOnboardController::class, 'updateNextOfKin']);
+        Route::post('bank/create', [CowrywiseOnboardController::class, 'addBank']);
+    });
+
+    Route::prefix('wallet')->group(function() {
+        // Route::get('/', [CowrywiseWalletController::class, 'fetchAllWallet']);
+        Route::get('/', [CowrywiseWalletController::class, 'fetchWallet']);
+        // Route::post('/create', [CowrywiseWalletController::class, 'create']);
+    });
+
+    Route::prefix('savings')->group(function() {
+        Route::get('/', [CowrywiseSavingsController::class, 'fetchAllSavings']);
+        Route::get('rates', [CowrywiseSavingsController::class, 'getSavingRates']);
+        Route::get('/{savingId}/fetch-savings', [CowrywiseSavingsController::class, 'retrieveSingleSavings']);
+        Route::post('/create', [CowrywiseSavingsController::class, 'createSavings']);
+        Route::post('{savingId}/fund', [CowrywiseSavingsController::class, 'fundSavings']);
+        Route::get('{savingId}/performance', [CowrywiseSavingsController::class, 'getPerformance']);
+        Route::post('{savingId}/withdraw', [CowrywiseSavingsController::class, 'withdrawToWallet']);
+    });
+});
