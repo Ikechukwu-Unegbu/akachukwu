@@ -1,24 +1,24 @@
 <?php
 namespace App\Services\Cowrywise;
 
+use App\Helpers\ApiHelper;
 use App\Models\CowryWallet;
 use App\Models\CowryWiseIdentity;
 use App\Models\CowrywiseNextOfKin;
 use App\Models\User;
-use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class CowrywiseBaseService
 {
-    protected const SANDBOX_URL = "https://sandbox.embed.cowrywise.com/";
-    protected const PRODUCTION_URL = "https://production.embed.cowrywise.com/";
+    protected const SANDBOX_URL = 'https://sandbox.embed.cowrywise.com/';
+    protected const PRODUCTION_URL = 'https://production.embed.cowrywise.com/';
+    protected const COUNTRY_CODE = 'NG';
+    protected const CURRENCY = 'NGN';
 
-    protected const COUNTRY_CODE = "NG";
-    protected const CURRENCY = "NGN";
     public static function getToken(): ?string
     {
         try {
@@ -186,7 +186,6 @@ class CowrywiseBaseService
                 'status' => true,
                 'response' => $response->json()
             ]);
-
         } catch (\Throwable $th) {
             self::causer($th->getMessage(), "Exception on ({$endpointSuffix})");
             return ApiHelper::sendError(["Exception on ({$endpointSuffix})"], [$th->getMessage()], code: 500);
@@ -221,7 +220,6 @@ class CowrywiseBaseService
 
             $data = $response->json();
             return ApiHelper::sendResponse($data, $successMessage);
-
         } catch (\Throwable $th) {
             Log::critical("Exception while fetching {$endpoint}", array_merge([
                 'error' => $th->getMessage(),
@@ -254,12 +252,10 @@ class CowrywiseBaseService
                 ]);
             }
 
-
             return collect([
                 'status' => true,
                 'response' => $response->json()
             ]);
-
         } catch (\Throwable $th) {
             self::causer($th->getMessage(), "Exception on ({$endpointSuffix})");
             return ApiHelper::sendError(["Exception on ({$endpointSuffix})"], [$th->getMessage()], code: 500);
