@@ -1,53 +1,52 @@
 <?php
 
+use App\Http\Controllers\V1\API\AirtimeApiController;
+use App\Http\Controllers\V1\API\AppAssetsController;
+use App\Http\Controllers\V1\API\CableApiController;
 use App\Http\Controllers\V1\API\CowrywiseSavingsController;
 use App\Http\Controllers\V1\API\CowrywiseWalletController;
+use App\Http\Controllers\V1\API\DataApiController;
+use App\Http\Controllers\V1\API\EducationController;
+use App\Http\Controllers\V1\API\FileUploadController;
+use App\Http\Controllers\V1\API\NewtworkApiController;
+use App\Http\Controllers\V1\API\NotificationsController;
+use App\Http\Controllers\V1\API\ReferralController;
+use App\Http\Controllers\V1\API\TransferController;
+use App\Http\Controllers\V1\API\UpgradeController;
+use App\Http\Controllers\V1\API\UserPinController;
+use App\Http\Controllers\V1\API\UserProfileController;
+use App\Http\Controllers\V1\PalmPayWebhookController;
+use App\Http\Controllers\V1\PayVesselWebhookController;
+use App\Http\Controllers\V1\WebhookController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\V1\WebhookController;
-use App\Http\Controllers\V1\API\DataApiController;
-use App\Http\Controllers\V1\API\UpgradeController;
-use App\Http\Controllers\V1\API\UserPinController;
-use App\Http\Controllers\V1\API\CableApiController;
-use App\Http\Controllers\V1\API\ReferralController;
-use App\Http\Controllers\V1\API\TransferController;
-use App\Http\Controllers\V1\API\AppAssetsController;
-use App\Http\Controllers\V1\API\EducationController;
-use App\Http\Controllers\V1\API\AirtimeApiController;
-use App\Http\Controllers\V1\API\FileUploadController;
-use App\Http\Controllers\V1\PalmPayWebhookController;
-use App\Http\Controllers\V1\API\NewtworkApiController;
-use App\Http\Controllers\V1\API\UserProfileController;
-use App\Http\Controllers\V1\PayVesselWebhookController;
-use App\Http\Controllers\V1\API\NotificationsController;
 // use Livewire\Features\SupportFileUploads\FileUploadController;
-use App\Http\Controllers\V1\API\ElectricityApiController;
-use App\Http\Controllers\V1\API\VirtualAccountController;
-use App\Http\Controllers\V1\API\AnnouncementApiController;
-use App\Http\Controllers\V1\API\BankTransferApiController;
-use App\Http\Controllers\V1\API\SiteSettingsApiController;
-use App\Http\Controllers\V1\API\TransactionsApiController;
-use App\Http\Controllers\V1\API\CowrywiseOnboardController;
-use App\Http\Controllers\V1\API\AccountManagementContorller;
-use App\Http\Controllers\V1\API\Auth\RegisterUserController;
+use App\Http\Controllers\V1\API\Auth\AuthenticateUserController;
 use App\Http\Controllers\V1\API\Auth\ChangePasswordController;
 use App\Http\Controllers\V1\API\Auth\ForgotPasswordController;
-use App\Http\Controllers\V1\API\Auth\AuthenticateUserController;
-use App\Http\Controllers\V1\API\SiteSettingsApiController;
+use App\Http\Controllers\V1\API\Auth\RegisterUserController;
+use App\Http\Controllers\V1\API\AccountManagementContorller;
+use App\Http\Controllers\V1\API\AnnouncementApiController;
+use App\Http\Controllers\V1\API\BankTransferApiController;
+use App\Http\Controllers\V1\API\CowrywiseOnboardController;
+use App\Http\Controllers\V1\API\ElectricityApiController;
 use App\Http\Controllers\V1\API\KycVerificationController;
+use App\Http\Controllers\V1\API\SiteSettingsApiController;
+use App\Http\Controllers\V1\API\TransactionsApiController;
+use App\Http\Controllers\V1\API\VirtualAccountController;
 
 /*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+ * |--------------------------------------------------------------------------
+ * | API Routes
+ * |--------------------------------------------------------------------------
+ * |
+ * | Here is where you can register API routes for your application. These
+ * | routes are loaded by the RouteServiceProvider and all of them will
+ * | be assigned to the "api" middleware group. Make something great!
+ * |
+ */
 
 Route::post('/register', [RegisterUserController::class, 'register']);
 Route::post('/login', [AuthenticateUserController::class, 'login']);
@@ -58,23 +57,22 @@ Route::get('/user/{username}', [UserProfileController::class, 'show']);
 Route::post('/verify-otp', [AuthenticateUserController::class, 'verifyOtp']);
 Route::post('/resend-otp', [AuthenticateUserController::class, 'resendOtp']);
 
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return User::with('virtualAccounts')->find(Auth::user()->id);
 });
 
-Route::group(['middleware' => ['auth:sanctum'],], function () {
-    //protected auth routes
+Route::group([
+    'middleware' => ['auth:sanctum'],
+], function () {
+    // protected auth routes
     Route::post('logout', [AuthenticateUserController::class, 'logout']);
     Route::post('/change-password', [ChangePasswordController::class, 'changePassword']);
 
-
-    //image uload
+    // image uload
     Route::post('/upload-avatar', [FileUploadController::class, 'store']);
 
-    //fetch logos
+    // fetch logos
     Route::get('logo', [AppAssetsController::class, 'getSpecifiedColumn']);
-
 
     Route::post('user', [UserProfileController::class, 'update']);
     Route::get('delete-user', [AccountManagementContorller::class, 'initiateAccountDeletion']);
@@ -102,7 +100,7 @@ Route::group(['middleware' => ['auth:sanctum'],], function () {
 
     Route::post('/transfer', TransferController::class);
 
-    //notification
+    // notification
     Route::get('/notifications', [NotificationsController::class, 'index']);
     Route::get('/referrer', [ReferralController::class, 'index']);
     Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_wallet']);
@@ -130,9 +128,6 @@ Route::group(['middleware' => ['auth:sanctum'],], function () {
     Route::get('announcements', [AnnouncementApiController::class, 'show']);
 });
 
-
-
-
 Route::post('networks', [NewtworkApiController::class, 'index']);
 Route::post('datatypes', [DataApiController::class, 'index']);
 Route::post('dataplans', [DataApiController::class, 'plan']);
@@ -148,9 +143,8 @@ Route::get('sitesetting', [SiteSettingsApiController::class, '__invoke']);
 Route::get('active-virtual-accounts', [SiteSettingsApiController::class, 'activeVirtualAccounts']);
 Route::get('bank-list', [BankTransferApiController::class, 'banks']);
 
-
-Route::prefix('investments')->middleware('auth:sanctum')->group(function() {
-    Route::prefix('onboarding')->group(function() {
+Route::prefix('investments')->middleware('auth:sanctum')->group(function () {
+    Route::prefix('onboarding')->group(function () {
         // Route::get('fetch-all-accounts', [CowrywiseOnboardController::class, 'get']);
         Route::post('create', [CowrywiseOnboardController::class, 'create']);
         Route::post('profile/update', [CowrywiseOnboardController::class, 'updateProfile']);
@@ -162,13 +156,13 @@ Route::prefix('investments')->middleware('auth:sanctum')->group(function() {
         Route::post('bank/create', [CowrywiseOnboardController::class, 'addBank']);
     });
 
-    Route::prefix('wallet')->group(function() {
+    Route::prefix('wallet')->group(function () {
         // Route::get('/', [CowrywiseWalletController::class, 'fetchAllWallet']);
         Route::get('/', [CowrywiseWalletController::class, 'fetchWallet']);
         // Route::post('/create', [CowrywiseWalletController::class, 'create']);
     });
 
-    Route::prefix('savings')->group(function() {
+    Route::prefix('savings')->group(function () {
         Route::get('/', [CowrywiseSavingsController::class, 'fetchAllSavings']);
         Route::get('rates', [CowrywiseSavingsController::class, 'getSavingRates']);
         Route::get('/{savingId}/fetch-savings', [CowrywiseSavingsController::class, 'retrieveSingleSavings']);
