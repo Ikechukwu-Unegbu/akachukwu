@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\V1\API;
 
-use App\Models\User;
 use App\Helpers\ApiHelper;
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use App\Services\Cowrywise\CowrywiseOnboardService;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class CowrywiseOnboardController extends Controller
 {
@@ -26,12 +26,7 @@ class CowrywiseOnboardController extends Controller
 
     public function create(Request $request)
     {
-        $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255'
-        ]);
-
-        return $this->cowrywiseOnboardService::onboardingUser($validated);
+        return $this->cowrywiseOnboardService::onboardingUser();
     }
 
     public function retrieveSingleAccount()
@@ -70,15 +65,10 @@ class CowrywiseOnboardController extends Controller
             return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
         }
 
-        $validated = $request->validate([
-            'identity_type' => 'required|string|in:BVN,NIN',
-            'identity_value' => 'required|string|max:50',
-        ]);
-
-        return $this->cowrywiseOnboardService::updateIdentity($validated, $user);
+        return $this->cowrywiseOnboardService::updateIdentity($user);
     }
 
-    public function updateAddress(Request $request)
+    public function updateAddress()
     {
         $user = User::findOrFail(Auth::id());
 
@@ -86,18 +76,18 @@ class CowrywiseOnboardController extends Controller
             return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
         }
 
-        $validated = $request->validate([
-            'street'    => 'required|string',
-            'lga'       => 'required|string|max:50',
-            'area_code' => 'required|numeric|digits_between:2,10',
-            'city'      => 'required|string|max:50',
-            'state'     => 'required|string|max:50',
-        ]);
+        $data = [
+            'street' => $user->street_address,
+            'lga' => $user->local_government,
+            'area_code' => $user->area_code,
+            'city' => $user->city,
+            'state' => $user->state,
+        ];
 
-        return $this->cowrywiseOnboardService::updateAddress($validated, $user);
+        return $this->cowrywiseOnboardService::updateAddress($data, $user);
     }
 
-    public function updateNextOfKin(Request $request)
+    public function updateNextOfKin()
     {
         $user = User::findOrFail(Auth::id());
 
@@ -105,19 +95,19 @@ class CowrywiseOnboardController extends Controller
             return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
         }
 
-        $validated = $request->validate([
-            'relationship' => 'required|string',
-            'first_name'   => 'required|string|max:50',
-            'last_name'    => 'required|string|max:50',
-            'email'        => 'required|email|max:50',
-            'phone_number' => 'required|numeric|digits:11',
-            'gender'       => 'required|in:F,M',
-        ]);
+        $data = [
+            'relationship' => $user->next_of_kin_relationship,
+            'first_name' => $user->next_of_kin_first_name,
+            'last_name' => $user->next_of_kin_last_name,
+            'email' => $user->next_of_kin_email,
+            'phone_number' => $user->next_of_kin_phone,
+            'gender' => $user->next_of_kin_gender === 'male' ? 'M' : 'F',
+        ];
 
-        return $this->cowrywiseOnboardService::updateNextOfKin($validated, $user);
+        return $this->cowrywiseOnboardService::updateNextOfKin($data, $user);
     }
 
-    public function updateProfile(Request $request)
+    public function updateProfile()
     {
         $user = User::findOrFail(Auth::id());
 
@@ -125,17 +115,16 @@ class CowrywiseOnboardController extends Controller
             return ApiHelper::sendError(['Account does not exists'], ['Account does not exists']);
         }
 
-        $validated = $request->validate([
-            'first_name'    => 'required|string|max:50',
-            'last_name'     => 'required|string|max:50',
-            'phone_number'  => 'required|numeric|digits:11',
-            'gender'        => 'required|in:F,M',
-            'date_of_birth' => 'required|date|before:today',
-        ]);
+        $data = [
+            'first_name' => $user->name,
+            'last_name' => $user->name,
+            'phone_number' => $user->phone,
+            'gender' => $user->gender === 'male' ? 'M' : 'F',
+            'date_of_birth' => $user->date_of_birth,
+        ];
 
-        return $this->cowrywiseOnboardService::updateProfile($validated, $user);
+        return $this->cowrywiseOnboardService::updateProfile($data, $user);
     }
-
 
     public function addBank(Request $request)
     {
@@ -146,7 +135,7 @@ class CowrywiseOnboardController extends Controller
         }
 
         $validated = $request->validate([
-            'bank_code'      => 'required|string|max:3',
+            'bank_code' => 'required|string|max:3',
             'account_number' => 'required|numeric|digits:10',
         ]);
 
