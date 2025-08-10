@@ -1,5 +1,6 @@
 <?php 
 namespace App\Services\Referral;
+use App\Models\RferralContest;
 
 use App\Services\Referral\ReferralContestConditionService;
 

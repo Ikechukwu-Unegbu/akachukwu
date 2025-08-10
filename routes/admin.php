@@ -15,6 +15,7 @@ use App\Http\Controllers\SystemUser\ScheduledTransactionController;
 use App\Http\Controllers\SystemUser\InAppTransferController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
 use App\Http\Controllers\SystemUser\WalletFundingController;
+use App\Http\Controllers\SystemUser\ReferralContestManagementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemUser\UserCrdDbtController;
 use App\Livewire\Admin\CrdDbt\Create as CrdDbtCreate;
@@ -77,6 +78,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
         ## Dashboard Route
         Route::get('dashboard', AdminDashboardController::class)->name('admin.dashboard');
+
+        ##Referral Contest
+        Route::get('referral-contest', [ReferralContestManagementController::class, 'index'])->name('referral-contest.index');
+
 
         ## Utility Routes
         ## Utility - Data Routes

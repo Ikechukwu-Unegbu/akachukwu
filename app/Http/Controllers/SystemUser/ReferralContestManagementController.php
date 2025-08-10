@@ -4,6 +4,7 @@ namespace App\Http\Controllers\SystemUser;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\ReferralContest;
 
 class ReferralContestManagementController extends Controller
 {
@@ -13,7 +14,7 @@ class ReferralContestManagementController extends Controller
     public function index()
     {
         $contests = ReferralContest::latest()->paginate(10);
-        return view('admin.referral_contests.index', compact('contests'));
+        return view('system-user.referral.referral-contest-index', compact('contests'));
     }
 
     /**
