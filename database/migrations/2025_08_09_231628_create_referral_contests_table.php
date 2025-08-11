@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('referral_contests', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->nullable();
             $table->dateTime('start_date');
             $table->dateTime('end_date');
-            $table->boolean('active');
+            $table->string('active');
             $table->unsignedBigInteger('created_by');
             $table->timestamps();
         });

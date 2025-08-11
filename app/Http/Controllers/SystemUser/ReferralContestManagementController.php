@@ -5,6 +5,10 @@ namespace App\Http\Controllers\SystemUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\ReferralContest;
+// use App\Http\Controllers\SystemUser\Auth;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class ReferralContestManagementController extends Controller
 {
@@ -23,15 +27,16 @@ class ReferralContestManagementController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
+            'name'        => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'start_date'  => 'required|date|before_or_equal:end_date',
-            'end_date'    => 'required|date|after_or_equal:start_date',
+            'start_date'  => 'required|date',
+            'end_date'    => 'required|date',
+            'active'=>'required|string'
         ]);
-
+   
         $validated['created_by'] = Auth::id();
-        $validated['status'] = 'pending';
-        $validated['active'] = false;
+        // $validated['status'] = 'pending';
+       
 
         ReferralContest::create($validated);
 
@@ -44,14 +49,15 @@ class ReferralContestManagementController extends Controller
     public function update(Request $request, ReferralContest $referralContest)
     {
         $validated = $request->validate([
-            'name'        => 'required|string|max:255',
+            'name'        => 'nullable|string|max:255',
             'description' => 'nullable|string',
-            'start_date'  => 'required|date|before_or_equal:end_date',
-            'end_date'    => 'required|date|after_or_equal:start_date',
+            'start_date'  => 'required|date',
+            'end_date'    => 'required|date',
             'status'      => 'in:pending,active,ended',
-            'active'      => 'boolean',
+            'active'      => 'string',
         ]);
 
+            // dd($validated);
         $referralContest->update($validated);
 
         return redirect()->back()->with('success', 'Referral contest updated successfully.');

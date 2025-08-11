@@ -80,7 +80,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('dashboard', AdminDashboardController::class)->name('admin.dashboard');
 
         ##Referral Contest
-        Route::get('referral-contest', [ReferralContestManagementController::class, 'index'])->name('referral-contest.index');
+        Route::get('referral-contest', [ReferralContestManagementController::class, 'index'])->name('admin.referral-contest.index');
+        Route::post('referral-contest', [ReferralContestManagementController::class, 'store'])->name('admin.referral-contest.store');
+         Route::put('referral-contest/{id}', [ReferralContestManagementController::class, 'update'])->name('referral-contest.update');
 
 
         ## Utility Routes
