@@ -1,5 +1,5 @@
-<?php 
-namespace App\Services\Referral;
+<?php
+namespace App\Services\Referrals;
 use App\Models\User;
 use App\Models\Data\DataTransaction;
 use App\Models\Utility\AirtimeTransaction;
@@ -65,8 +65,8 @@ class ReferralContestConditionService{
         return $totalFunded >= $threshold;
     }
 
-    
-    
+
+
     public function hasNinOrBvn($username)
     {
         $user = User::where('username', $username)->first();

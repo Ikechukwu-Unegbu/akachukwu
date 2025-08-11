@@ -82,7 +82,11 @@ Route::group(['prefix' => 'admin'], function () {
         ##Referral Contest
         Route::get('referral-contest', [ReferralContestManagementController::class, 'index'])->name('admin.referral-contest.index');
         Route::post('referral-contest', [ReferralContestManagementController::class, 'store'])->name('admin.referral-contest.store');
-         Route::put('referral-contest/{id}', [ReferralContestManagementController::class, 'update'])->name('referral-contest.update');
+        Route::put('referral-contest/{referralContest:id}', [ReferralContestManagementController::class, 'update'])->name('admin.referral-contest.update');
+        Route::delete('referral-contest/{referralContest:id}', [ReferralContestManagementController::class, 'destroy'])->name('admin.referral-contest.destroy');
+        Route::patch('referral-contest/{referralContest:id}/activate', [ReferralContestManagementController::class, 'activate'])->name('admin.referral-contest.activate');
+        Route::patch('referral-contest/{referralContest:id}/deactivate', [ReferralContestManagementController::class, 'deactivate'])->name('admin.referral-contest.deactivate');
+        Route::get('referral-contest/{referralContest:id}/leaderboard', [ReferralContestManagementController::class, 'leaderboard'])->name('admin.referral-contest.leaderboard');
 
 
         ## Utility Routes

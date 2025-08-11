@@ -1,38 +1,53 @@
-<?php 
-namespace App\Services\Referral;
-use App\Models\RferralContest;
+<?php
+namespace App\Services\Referrals;
+use App\Models\User;
+use App\Models\ReferralContest;
+use App\Models\Referral;
+use App\Services\Referrals\ReferralContestConditionService;
 
-use App\Services\Referral\ReferralContestConditionService;
 
 class ReferralContestService{
 
     public $conditions;
 
-    public function __construct(ReferralContestCondtionService $conditions)
+    public function __construct(ReferralContestConditionService $conditions)
     {
         $this->conditions = $conditions;
     }
 
-   
+
     public function findUsersInRange($id)
     {
         $referralContest = ReferralContest::findOrFail($id);
 
-        $users = User::whereNotNull('referer_username')
+        // Get referrals within the contest date range
+        $referrals = Referral::where('status', 'completed')
             ->whereBetween('created_at', [
                 $referralContest->start_date,
                 $referralContest->end_date
             ])
-            ->get()
-            ->groupBy('referer_username')
-            ->map(function ($group) {
-                return [
-                    'total_referred' => $group->count(),
-                    'users' => $group->pluck('username')->toArray()
-                ];
-            });
+            ->with(['referrer', 'referredUser'])
+            ->get();
 
-        return $users;
+        // Group by referrer and count their referrals
+        $referrers = $referrals->groupBy('referrer_id')
+            ->map(function ($referralGroup, $referrerId) {
+                $referrer = $referralGroup->first()->referrer;
+                $referrerUsername = $referrer ? $referrer->username : 'Unknown';
+
+                return [
+                    $referrerUsername => [
+                        'total_referred' => $referralGroup->count(),
+                        'users' => $referralGroup->map(function ($referral) {
+                            return $referral->referredUser ? $referral->referredUser->username : 'Unknown';
+                        })->filter()->toArray()
+                    ]
+                ];
+            })
+            ->collapse()
+            ->toArray();
+
+        return $referrers;
     }
 
 
@@ -45,7 +60,7 @@ class ReferralContestService{
                 }
                 if(!$this->conditions->hasFundedAccount($user)){
                     unset($referrer['users'][$key]); // remove just this user
-                }   
+                }
                 if(!$this->conditions->hasBillableTransaction($user)){
                      unset($referrer['users'][$key]); // remove just this user
                 }
@@ -53,6 +68,9 @@ class ReferralContestService{
 
             // Re-index the users array (optional)
             $referrer['users'] = array_values($referrer['users']);
+
+            // Add qualified_count based on remaining users
+            $referrer['qualified_count'] = count($referrer['users']);
         }
 
         return $referrers;
@@ -70,6 +88,6 @@ class ReferralContestService{
     }
 
 
-    
+
 
 }
