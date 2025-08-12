@@ -15,6 +15,7 @@ use App\Http\Controllers\SystemUser\ScheduledTransactionController;
 use App\Http\Controllers\SystemUser\InAppTransferController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
 use App\Http\Controllers\SystemUser\WalletFundingController;
+use App\Http\Controllers\SystemUser\ReferralContestManagementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemUser\UserCrdDbtController;
 use App\Livewire\Admin\CrdDbt\Create as CrdDbtCreate;
@@ -77,6 +78,16 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
         ## Dashboard Route
         Route::get('dashboard', AdminDashboardController::class)->name('admin.dashboard');
+
+        ##Referral Contest
+        Route::get('referral-contest', [ReferralContestManagementController::class, 'index'])->name('admin.referral-contest.index');
+        Route::post('referral-contest', [ReferralContestManagementController::class, 'store'])->name('admin.referral-contest.store');
+        Route::put('referral-contest/{referralContest:id}', [ReferralContestManagementController::class, 'update'])->name('admin.referral-contest.update');
+        Route::delete('referral-contest/{referralContest:id}', [ReferralContestManagementController::class, 'destroy'])->name('admin.referral-contest.destroy');
+        Route::patch('referral-contest/{referralContest:id}/activate', [ReferralContestManagementController::class, 'activate'])->name('admin.referral-contest.activate');
+        Route::patch('referral-contest/{referralContest:id}/deactivate', [ReferralContestManagementController::class, 'deactivate'])->name('admin.referral-contest.deactivate');
+        Route::get('referral-contest/{referralContest:id}/leaderboard', [ReferralContestManagementController::class, 'leaderboard'])->name('admin.referral-contest.leaderboard');
+
 
         ## Utility Routes
         ## Utility - Data Routes
