@@ -97,6 +97,9 @@
             <x-admin.dropdown-item title="Wallet Funding" link="{{ route('admin.wallet-funding.index') }}" />
         </x-admin.dropdown>
 
+        <li class="nav-heading">Referral Contest Mgt.</li>
+        <x-admin.menu title="Referral Contest" icon="bi-award" link="{{ route('admin.referral-contest.index') }}" />
+
         @if(auth()->user()->can('view vendor api') || auth()->user()->can('view payment api'))
             <li class="nav-heading">Manage APIs</li>
             <x-admin.dropdown title="APIs" icon="bx-code-curly">
