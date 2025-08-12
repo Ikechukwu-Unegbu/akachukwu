@@ -36,6 +36,7 @@ use App\Http\Controllers\V1\API\KycVerificationController;
 use App\Http\Controllers\V1\API\SiteSettingsApiController;
 use App\Http\Controllers\V1\API\TransactionsApiController;
 use App\Http\Controllers\V1\API\VirtualAccountController;
+use App\Http\Controllers\V1\ReferralContestApiController;
 
 /*
  * |--------------------------------------------------------------------------
@@ -103,7 +104,14 @@ Route::group([
     // notification
     Route::get('/notifications', [NotificationsController::class, 'index']);
     Route::get('/referrer', [ReferralController::class, 'index']);
-    Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_wallet']);
+Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_wallet']);
+
+    // Referral Contest Routes
+    Route::prefix('referral-contest')->group(function () {
+        Route::get('/', [ReferralContestApiController::class, 'index']);
+        Route::get('/leaderboard/{contestId}', [ReferralContestApiController::class, 'leaderboard']);
+        Route::get('/active', [ReferralContestApiController::class, 'activeContest']);
+    });
 
     Route::prefix('virtual-accounts')->group(function () {
         Route::get('/', [VirtualAccountController::class, 'index']);

@@ -30,8 +30,7 @@ class Referral extends Model
 
     public function referredUser()
     {
-        return $this->hasMany(User::class, Referral::class, 'referred_user_id');
-
+        return $this->belongsTo(User::class, 'referred_user_id');
     }
 
 
