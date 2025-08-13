@@ -29,32 +29,12 @@ class ReferralContestApiController extends Controller
     }
 
     /**
-     * Get leaderboard for a specific referral contest
+     * Get leaderboard for the active referral contest
      */
-    public function leaderboard($contestId)
+    public function leaderboard()
     {
         try {
-            // Find users in range for the contest
-            $usersInRange = $this->referralContestService->findUsersInRange($contestId);
-
-            // Process referrers based on conditions
-            $processedReferrers = $this->referralContestService->processReferrees($usersInRange);
-
-            // Sort referrers by count
-            $sortedReferrers = $this->referralContestService->sortReferrersByCount($processedReferrers);
-
-            return ApiHelper::sendResponse($sortedReferrers, 'Referrals retrieved successfully');
-        } catch (\Exception $e) {
-            return ApiHelper::sendError([], 'Failed to retrieve Referrals: ' . $e->getMessage(), 500);
-        }
-    }
-
-    /**
-     * Get currently active referral contest
-     */
-    public function activeContest()
-    {
-        try {
+            // Find the active contest
             $activeContest = ReferralContest::active()
                 ->where('start_date', '<=', now())
                 ->where('end_date', '>=', now())
@@ -64,9 +44,20 @@ class ReferralContestApiController extends Controller
                 return ApiHelper::sendError([], 'No active referral contest found', 404);
             }
 
-            return ApiHelper::sendResponse($activeContest, 'Active contest retrieved successfully');
+            // Find users in range for the contest
+            $usersInRange = $this->referralContestService->findUsersInRange($activeContest->id);
+
+            // Process referrers based on conditions
+            $processedReferrers = $this->referralContestService->processReferrees($usersInRange);
+
+            // Sort referrers by count
+            $sortedReferrers = $this->referralContestService->sortReferrersByCount($processedReferrers);
+
+            return ApiHelper::sendResponse($sortedReferrers, 'Leaderboard retrieved successfully');
         } catch (\Exception $e) {
-            return ApiHelper::sendError([], 'Failed to retrieve active contest: ' . $e->getMessage(), 500);
+            return ApiHelper::sendError([], 'Failed to retrieve leaderboard: ' . $e->getMessage(), 500);
         }
     }
+
+
 }

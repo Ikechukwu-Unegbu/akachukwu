@@ -109,8 +109,7 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
     // Referral Contest Routes
     Route::prefix('referral-contest')->group(function () {
         Route::get('/', [ReferralContestApiController::class, 'index']);
-        Route::get('/leaderboard/{contestId}', [ReferralContestApiController::class, 'leaderboard']);
-        Route::get('/active', [ReferralContestApiController::class, 'activeContest']);
+        Route::get('/leaderboard', [ReferralContestApiController::class, 'leaderboard']);
     });
 
     Route::prefix('virtual-accounts')->group(function () {
