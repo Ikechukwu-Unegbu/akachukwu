@@ -6,7 +6,7 @@
 GET /api/referral-contest/leaderboard
 ```
 
-## Data Structure
+## Data Structure_
 
 ### Leaderboard Response Format
 ```json
