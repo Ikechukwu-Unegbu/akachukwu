@@ -29,42 +29,42 @@
     <div class="grid grid-cols-3 gap-4 mb-8 md:grid-cols-6">
         <a href="{{ route('airtime.index') }}">
             <div class="flex flex-col items-center text-vastel_blue">
-                <!-- <i class="mb-2  fas fa-mobile-alt fa-4x text-vastel_blue"></i> -->
+                <!-- <i class="mb-2 fas fa-mobile-alt fa-4x text-vastel_blue"></i> -->
                 <img src="{{ asset('images/phonez.svg') }}" alt="">
                 <span class="text-sm">Airtime</span>
             </div>
         </a>
         <a href="{{ route('data.index') }}">
             <div class="flex flex-col items-center text-vastel_blue">
-                <!-- <i class="mb-2 text-3xl  fas fa-wifi text-vastel_blue"></i> -->
+                <!-- <i class="mb-2 text-3xl fas fa-wifi text-vastel_blue"></i> -->
                 <img src="{{ asset('images/internet.svg') }}" alt="">
                 <span class="text-sm">Data</span>
             </div>
         </a>
         <a href="{{ route('cable.index') }}">
             <div class="flex flex-col items-center text-vastel_blue">
-                <!-- <i class="mb-2 text-3xl  fas fa-tv text-vastel_blue"></i> -->
+                <!-- <i class="mb-2 text-3xl fas fa-tv text-vastel_blue"></i> -->
                 <img src="{{ asset('images/tv.svg') }}" alt="">
                 <span class="text-sm">TV</span>
             </div>
         </a>
         <a href="{{ route('electricity.index') }}">
             <div class="flex flex-col items-center text-vastel_blue">
-                <!-- <i class="mb-2 text-3xl  fas fa-bolt text-vastel_blue"></i> -->
+                <!-- <i class="mb-2 text-3xl fas fa-bolt text-vastel_blue"></i> -->
                 <img src="{{ asset('images/electricity.svg') }}" alt="">
                 <span class="text-sm">Electricity</span>
             </div>
         </a>
         <a href="{{ route('education.result.index') }}">
             <div class="flex flex-col items-center text-vastel_blue">
-                <i class="mb-2  fas fa-globe fa-4x text-vastel_blue"></i>
+                <i class="mb-2 fas fa-globe fa-4x text-vastel_blue"></i>
                 <span class="text-sm">E-PINS</span>
             </div>
         </a>
         <a href="{{ route('services') }}">
             <div class="flex flex-col items-center text-vastel_blue">
-                <!-- <i class="mb-2 text-3xl text-blue-500  fas fa-ellipsis-h"></i> -->
-                <!-- <i class="text-3xl  fa-solid text-vastel_blue fa-cubes-stacked"></i> -->
+                <!-- <i class="mb-2 text-3xl text-blue-500 fas fa-ellipsis-h"></i> -->
+                <!-- <i class="text-3xl fa-solid text-vastel_blue fa-cubes-stacked"></i> -->
                 <img src="{{ asset('images/other-services.svg') }}" alt="">
                 <span class="text-sm">All Services</span>
             </div>

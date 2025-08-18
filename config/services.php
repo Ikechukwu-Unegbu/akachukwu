@@ -52,4 +52,10 @@ return [
         'url' => env('BRANCH_API_URL', 'https://api2.branch.io/v1/url'),
     ],
 
+    'quidax' => [
+        'api_key' => env('QUIDAX_API_KEY'),
+        'secret_key' => env('QUIDAX_SECRET_KEY'),
+        'test_mode' => env('QUIDAX_TEST_MODE', false),
+    ],
+
 ];

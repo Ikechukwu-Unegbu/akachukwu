@@ -36,6 +36,8 @@ use App\Http\Controllers\V1\API\KycVerificationController;
 use App\Http\Controllers\V1\API\SiteSettingsApiController;
 use App\Http\Controllers\V1\API\TransactionsApiController;
 use App\Http\Controllers\V1\API\VirtualAccountController;
+use App\Http\Controllers\V1\QuidaxController;
+use App\Http\Controllers\V1\QuidaxWebhookController;
 use App\Http\Controllers\V1\ReferralContestApiController;
 
 /*
@@ -133,6 +135,18 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
     });
 
     Route::get('announcements', [AnnouncementApiController::class, 'show']);
+
+    // Quidax Crypto Wallet Routes
+    Route::prefix('quidax')->group(function () {
+        // Account and Wallet Management
+        Route::post('users/create', [QuidaxController::class, 'createUser']);
+        Route::get('/account', [QuidaxController::class, 'getAccountInfo']);
+        Route::get('/wallets', [QuidaxController::class, 'getUserWallets']);
+        // Route::post('/wallets/generate', [QuidaxController::class, 'generateWalletAddress']);
+        Route::get('/wallets/{currency}', [QuidaxController::class, 'getWalletBalance']);
+        Route::get('/balance-summary', [QuidaxController::class, 'getAccountBalanceSummary']);
+        Route::get('/wallet-stats', [QuidaxController::class, 'getWalletStats']);
+    });
 });
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
@@ -143,6 +157,7 @@ Route::post('cableplans', [CableApiController::class, 'plan']);
 Route::post('electricity/discos', [ElectricityApiController::class, 'index']);
 Route::post('webhook/monnify', WebhookController::class);
 Route::post('webhook/payvessel', PayVesselWebhookController::class);
+Route::post('webhook/quidax', QuidaxWebhookController::class)->name('webhook.quidax');
 Route::post('exams', [EducationController::class, 'index']);
 Route::get('banks', [VirtualAccountController::class, 'banks']);
 Route::post('webhook/palmpay', PalmPayWebhookController::class)->name('webhook.palmpay');
