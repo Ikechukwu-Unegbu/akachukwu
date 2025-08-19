@@ -490,7 +490,7 @@
         $('.handleOtp').each(function(index) {
             $(this).on('click', function() {
                 $.ajax({
-                    url: "{{ route('pin.send-otp') }}",
+                    url: "{{ secure_url(route('pin.send-otp')) }}",
                     type: 'POST',
                     data: JSON.stringify({
                         email: "{{ auth()->user()->email }}"
