@@ -30,7 +30,7 @@ class QuidaxxService
         return [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->apiKey,
+            'Authorization' => 'Bearer ' . $this->secretKey,
         ];
     }
 
@@ -47,6 +47,11 @@ class QuidaxxService
                 ->$method($url, $data);
 
             $responseData = $response->json();
+            Log::info('Quidax API Response', [
+                'endpoint' => $endpoint,
+                'status' => $response->status(),
+                'response' => $responseData
+            ]);
 
             if ($response->successful()) {
                 return ApiHelper::sendResponse($responseData, 'Request successful');
@@ -105,13 +110,13 @@ class QuidaxxService
     {
         $response = $this->makeRequest('post', '/users', $data);
 
-        if ($response['status']) {
-            $user->quidax_id = $response['data']['id'];
-            $user->quidax_sn = $response['data']['sn'];
-            $user->quidax_display_name = $response['data']['display_name'];
-            $user->quidax_reference = $response['data']['reference'];
-            $user->quidax_created_at = $response['data']['created_at'];
-            $user->quidax_updated_at = $response['data']['updated_at'];
+        if ($response->status) {
+            $user->quidax_id = $response->data->id;
+            $user->quidax_sn = $response->data->sn;
+            $user->quidax_display_name = $response->data->display_name;
+            $user->quidax_reference = $response->data->reference;
+            $user->quidax_created_at = $response->data->created_at;
+            $user->quidax_updated_at = $response->data->updated_at;
             $user->save();
         }
 

@@ -55,6 +55,7 @@ return [
     'quidax' => [
         'api_key' => env('QUIDAX_API_KEY'),
         'secret_key' => env('QUIDAX_SECRET_KEY'),
+        'public_key' => env('QUIDAX_PUBLIC_KEY'),
         'test_mode' => env('QUIDAX_TEST_MODE', false),
     ],
 
