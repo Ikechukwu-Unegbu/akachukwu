@@ -264,7 +264,7 @@
             <div class="bg-white p-6 rounded-lg shadow-lg w-[80%] md:w-[40%] text-center">
                 <h2 class="text-lg font-semibold">Change Transaction Pin</h2>
                 <p class="mt-2 text-sm text-gray-600">4-digit new transaction pin</p>
-            
+
                 <!-- New Pin Inputs -->
                 <div class="flex justify-center mt-4 space-x-2">
                   <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
@@ -272,9 +272,9 @@
                   <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
                   <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
                 </div>
-            
+
                 <p class="mt-4 text-sm text-gray-600">Confirm your transaction pin</p>
-            
+
                 <!-- Confirm Pin Inputs -->
                 <div class="flex justify-center mt-4 space-x-2">
                     <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
@@ -282,7 +282,7 @@
                     <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
                     <input type="text" class="w-12 h-12 text-center border rounded-md" maxlength="1">
                 </div>
-            
+
                 <button id="closeChangePinModal" class="mt-6 bg-vastel_blue text-white py-2 px-4 rounded hover:bg-vastel_blue">
                   Continue
                 </button>
@@ -486,6 +486,32 @@
 @endsection
 @push('scripts')
     <script>
+
+        $('.handleOtp').each(function(index) {
+            $(this).on('click', function() {
+                $.ajax({
+                    url: "{{ route('pin.send-otp') }}",
+                    type: 'POST',
+                    data: JSON.stringify({
+                        email: "{{ auth()->user()->email }}"
+                    }),
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    headers: {
+                        'X-CSRF-TOKEN': "{{ csrf_token() }}",
+                        'Content-Type': 'application/json'
+                    },
+                    success: function(response) {
+                        // Handle successful response
+                        const responseMessage = $('#responseMessage');
+                        // Process the response data here
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(`Failed to send OTP. Error: ${xhr.status}`);
+                    }
+                });
+            });
+        });
         // const openChangePinResetBtn = document.getElementById('openChangePinResetBtn');
         // const pinModal = document.getElementById('pinModal');
         // openChangePinResetBtn.addEventListener('click', function () {
@@ -500,31 +526,7 @@
         //     }
         // });
 
-        const handleOtps = document.querySelectorAll('.handleOtp');
-        handleOtps.forEach((handleOtp, index) => {
-            handleOtp.addEventListener('click', function() {
-                const xhr = new XMLHttpRequest();
-                const url = "{{ route('pin.send-otp') }}";
 
-                xhr.open('POST', url, true);
-                xhr.setRequestHeader('X-CSRF-TOKEN', "{{ csrf_token() }}");
-                xhr.setRequestHeader('Content-Type', 'application/json');
-
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        const responseMessage = document.getElementById('responseMessage');
-                        if (xhr.status === 200) {
-                            const response = JSON.parse(xhr.responseText);
-
-                        } else {
-                            console.log(`Failed to send OTP. Error: ${xhr.status}`);
-                        }
-                    }
-                };
-
-                xhr.send();
-            });
-        });
 
         function setupOtpForm(formId, inputClass, hiddenInputId) {
             const otpForm = document.getElementById(formId);
