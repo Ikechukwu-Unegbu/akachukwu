@@ -139,13 +139,18 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
     // Quidax Crypto Wallet Routes
     Route::prefix('quidax')->group(function () {
         // Account and Wallet Management
-        Route::post('users/create', [QuidaxController::class, 'createUser']);
-        Route::get('/account', [QuidaxController::class, 'getAccountInfo']);
-        Route::get('/wallets', [QuidaxController::class, 'getUserWallets']);
+        Route::get('users', [QuidaxController::class, 'getUsers']); // Fetch all Sub-accounts.
+        Route::post('users/create', [QuidaxController::class, 'createUser']); // Create a Sub-account
+        Route::get('/account', [QuidaxController::class, 'getAccountInfo']); // Fetch Details of Subaccount
+        Route::get('/wallets', [QuidaxController::class, 'getUserWallets']); // Fetch user wallets
+
+        Route::prefix('webhook')->group(function () {
+            Route::any('/handler', QuidaxWebhookController::class);
+        });
         // Route::post('/wallets/generate', [QuidaxController::class, 'generateWalletAddress']);
-        Route::get('/wallets/{currency}', [QuidaxController::class, 'getWalletBalance']);
-        Route::get('/balance-summary', [QuidaxController::class, 'getAccountBalanceSummary']);
-        Route::get('/wallet-stats', [QuidaxController::class, 'getWalletStats']);
+        // Route::get('/wallets/{currency}', [QuidaxController::class, 'getWalletBalance']);
+        // Route::get('/balance-summary', [QuidaxController::class, 'getAccountBalanceSummary']);
+        // Route::get('/wallet-stats', [QuidaxController::class, 'getWalletStats']);
     });
 });
 

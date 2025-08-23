@@ -81,10 +81,16 @@ class QuidaxxService
     /**
      * Get user account information
      */
-    public function getAccountInfo()
+    public function getAccountInfo($quidaxId)
     {
-        return $this->makeRequest('get', '/users/me');
+        return $this->makeRequest('get', "/users/{$quidaxId}");
     }
+
+    public function fetchUsers()
+    {
+        return $this->makeRequest('get', "/users");
+    }
+
 
     /**
      * Get user wallets
@@ -94,6 +100,7 @@ class QuidaxxService
         $user = auth()->user();
         return $this->makeRequest('get', "/users/{$user->quidax_id}/wallets");
     }
+
 
     /**
      * Get specific wallet balance
@@ -144,7 +151,8 @@ class QuidaxxService
      */
     public function initializeQuidaxx()
     {
-        return $this->getAccountInfo();
+        $user = auth()->user();
+        return $this->getAccountInfo($user->quidax_id);
     }
 
     /**
@@ -170,5 +178,23 @@ class QuidaxxService
         }
 
         return ApiHelper::sendResponse($balanceSummary, 'Balance summary retrieved successfully');
+    }
+
+    /**
+     * Get last traded price for a market (e.g., btcngn, ethngn)
+     */
+    public function getLastPrice(string $market)
+    {
+        $ticker = $this->makeRequest('get', "/markets/{$market}/ticker");
+        if (!($ticker->status ?? false)) {
+            return $ticker;
+        }
+
+        $payload = $ticker->response ?? null;
+        if (!$payload || !isset($payload['last'])) {
+            return ApiHelper::sendError([], 'Unable to fetch market price');
+        }
+
+        return ApiHelper::sendResponse((float) $payload['last'], 'Price fetched');
     }
 }
