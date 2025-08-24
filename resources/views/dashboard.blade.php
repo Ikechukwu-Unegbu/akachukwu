@@ -5,66 +5,66 @@
 @section('body')
     <!-- Wallet Balance -->
     <div class="px-[2rem] bg-white  shadow-xl p-6 mb-8">
-        <p class="text-sm mb-2 text-vastel_blue ml-5 md:ml-0">Wallet Balance</p>
-        <div class="flex items-center justify-start md:justify-between flex-col md:flex-row">
+        <p class="mb-2 ml-5 text-sm text-vastel_blue md:ml-0">Wallet Balance</p>
+        <div class="flex flex-col items-center justify-start md:justify-between md:flex-row">
             <div class="text-vastel_blue w-[100%] pl-5 md:pl-0  md:w-[50%] flex flex-col justify-end">
                 <h2 class="text-3xl font-bold">₦ {{ number_format(auth()->user()->account_balance, 2) }}</h2>
-                <p class="text-sm text-blue-600 mt-1">Referral Bonus: ₦ {{ auth()->user()->bonus_balance }} <i
+                <p class="mt-1 text-sm text-blue-600">Referral Bonus: ₦ {{ auth()->user()->bonus_balance }} <i
                         class="fas fa-chevron-right"></i></p>
             </div>
             <div class="flex justify-between gap-[2rem]">
                 <button data-modal-target="addMoneyModal" data-modal-toggle="addMoneyModal"
                     class="bg-vastel_blue shadow-lg text-white px-4 py-[0.7rem] rounded-[5px] flex items-center justify-center w-[8.8rem] ">
-                    <i class="fas fa-plus mr-2"></i> Add Money
+                    <i class="mr-2 fas fa-plus"></i> Add Money
                 </button>
                 <button data-modal-target="transfer-modal" data-modal-toggle="transfer-modal"
                     class="bg-vastel_blue shadow-lg text-white px-4 py-[0.7rem] rounded-[5px] flex items-center justify-center w-[8.8rem] ">
-                    <i class="fas fa-exchange-alt mr-2"></i> Transfer
+                    <i class="mr-2 fas fa-exchange-alt"></i> Transfer
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Services -->
-    <div class="grid grid-cols-3 md:grid-cols-6 gap-4 mb-8">
+    <div class="grid grid-cols-3 gap-4 mb-8 md:grid-cols-6">
         <a href="{{ route('airtime.index') }}">
-            <div class="flex flex-col  items-center text-vastel_blue">
-                <!-- <i class=" fas fa-mobile-alt fa-4x text-vastel_blue mb-2"></i> -->
+            <div class="flex flex-col items-center text-vastel_blue">
+                <!-- <i class="mb-2 fas fa-mobile-alt fa-4x text-vastel_blue"></i> -->
                 <img src="{{ asset('images/phonez.svg') }}" alt="">
                 <span class="text-sm">Airtime</span>
             </div>
         </a>
         <a href="{{ route('data.index') }}">
-            <div class="flex flex-col  items-center text-vastel_blue">
-                <!-- <i class=" fas fa-wifi text-3xl  text-vastel_blue mb-2"></i> -->
+            <div class="flex flex-col items-center text-vastel_blue">
+                <!-- <i class="mb-2 text-3xl fas fa-wifi text-vastel_blue"></i> -->
                 <img src="{{ asset('images/internet.svg') }}" alt="">
                 <span class="text-sm">Data</span>
             </div>
         </a>
         <a href="{{ route('cable.index') }}">
-            <div class="flex flex-col  items-center text-vastel_blue">
-                <!-- <i class=" fas fa-tv text-3xl text-vastel_blue mb-2"></i> -->
+            <div class="flex flex-col items-center text-vastel_blue">
+                <!-- <i class="mb-2 text-3xl fas fa-tv text-vastel_blue"></i> -->
                 <img src="{{ asset('images/tv.svg') }}" alt="">
                 <span class="text-sm">TV</span>
             </div>
         </a>
         <a href="{{ route('electricity.index') }}">
-            <div class="flex flex-col  items-center text-vastel_blue">
-                <!-- <i class=" fas fa-bolt text-3xl text-vastel_blue mb-2"></i> -->
+            <div class="flex flex-col items-center text-vastel_blue">
+                <!-- <i class="mb-2 text-3xl fas fa-bolt text-vastel_blue"></i> -->
                 <img src="{{ asset('images/electricity.svg') }}" alt="">
                 <span class="text-sm">Electricity</span>
             </div>
         </a>
         <a href="{{ route('education.result.index') }}">
-            <div class="flex flex-col  items-center text-vastel_blue">
-                <i class=" fas fa-globe fa-4x  text-vastel_blue mb-2"></i>
+            <div class="flex flex-col items-center text-vastel_blue">
+                <i class="mb-2 fas fa-globe fa-4x text-vastel_blue"></i>
                 <span class="text-sm">E-PINS</span>
             </div>
         </a>
         <a href="{{ route('services') }}">
-            <div class="flex flex-col  items-center text-vastel_blue">
-                <!-- <i class=" fas fa-ellipsis-h text-3xl text-blue-500 mb-2"></i> -->
-                <!-- <i class=" fa-solid text-3xl text-vastel_blue fa-cubes-stacked"></i> -->
+            <div class="flex flex-col items-center text-vastel_blue">
+                <!-- <i class="mb-2 text-3xl text-blue-500 fas fa-ellipsis-h"></i> -->
+                <!-- <i class="text-3xl fa-solid text-vastel_blue fa-cubes-stacked"></i> -->
                 <img src="{{ asset('images/other-services.svg') }}" alt="">
                 <span class="text-sm">All Services</span>
             </div>
@@ -77,9 +77,9 @@
 
     <!-- Recent Transactions -->
     <div class="px-[2rem] bg-white rounded-lg shadow p-6">
-        <div class="flex justify-between items-center mb-4">
+        <div class="flex items-center justify-between mb-4">
             <h3 class="text-lg font-semibold">Recent Transactions</h3>
-            <a href="{{ route('transactions') }}" class="text-blue-600 text-sm">See all Transactions</a>
+            <a href="{{ route('transactions') }}" class="text-sm text-blue-600">See all Transactions</a>
         </div>
         <div class="space-y-4">
             @forelse ($transactions as $transaction)
@@ -87,25 +87,26 @@
                     $isFunding = $transaction->type === 'funding';
                     $isTransfer = $transaction->plan_name === 'Transfer';
                     $isCredit = $isFunding ? true : ($transaction->vendor_status === 'refunded' ? true : false);
-                    $statusColor = match (Str::lower($transaction->vendor_status)) {
+                    $statusColor = match (Str::lower($transaction->vendor_status ?? '')) {
                         'successful' => 'green',
                         'failed' => 'red',
                         'processing' => 'yellow',
                         'refunded' => 'yellow',
                         'pending' => 'yellow',
                         'n/a' => 'red',
-                        'default' => 'red',
+                        '' => 'red',
+                        default => 'red',
                     };
                 @endphp
 
-                <div class="flex justify-between items-center rounded-lg transition-colors">
+                <div class="flex items-center justify-between transition-colors rounded-lg">
                     <div class="flex items-center space-x-4">
                         <!-- Dynamic Icon with different colors based on type -->
                         <div class="flex-shrink-0">
                             @if ($isFunding)
-                                <i class="fas fa-wallet text-green-500 text-xl bg-green-50 p-3 rounded-full"></i>
+                                <i class="p-3 text-xl text-green-500 rounded-full fas fa-wallet bg-green-50"></i>
                             @elseif($isTransfer)
-                                <i class="fas fa-exchange-alt text-blue-500 text-xl bg-blue-50 p-3 rounded-full"></i>
+                                <i class="p-3 text-xl text-blue-500 rounded-full fas fa-exchange-alt bg-blue-50"></i>
                             @else
                                 <i
                                     class="fas {{ $transaction->icon }} text-blue-500 text-xl bg-blue-50 p-3 rounded-full"></i>
@@ -113,10 +114,10 @@
                         </div>
 
                         <div>
-                            <div class="flex items-center flex-wrap gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
                                 <p class="font-semibold text-gray-800">{{ Str::title($transaction->title) }}</p>
                             </div>
-                            <p class="text-xs text-gray-400 mt-1">
+                            <p class="mt-1 text-xs text-gray-400">
                                 {{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y · h:i A') }}
                             </p>
                         </div>
@@ -134,14 +135,14 @@
                 </div>
 
                 @if (!$loop->last)
-                    <hr class="border-gray-100 mx-4">
+                    <hr class="mx-4 border-gray-100">
                 @endif
 
             @empty
-                <div class="text-center py-8">
-                    <i class="fas fa-exchange-alt text-gray-300 text-4xl mb-3"></i>
-                    <h4 class="text-gray-500 font-semibold">No Transactions Found</h4>
-                    <p class="text-gray-400 text-sm mt-1">Your transaction history will appear here</p>
+                <div class="py-8 text-center">
+                    <i class="mb-3 text-4xl text-gray-300 fas fa-exchange-alt"></i>
+                    <h4 class="font-semibold text-gray-500">No Transactions Found</h4>
+                    <p class="mt-1 text-sm text-gray-400">Your transaction history will appear here</p>
                 </div>
             @endforelse
         </div>
@@ -151,7 +152,7 @@
 
     <!-- modals -->
     <div id="addMoneyModal" tabindex="-1" aria-hidden="true"
-        class="fixed inset-0 z-50 hidden items-center justify-center p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-50">
+        class="fixed inset-0 z-50 items-center justify-center hidden p-4 overflow-x-hidden overflow-y-auto bg-gray-800 bg-opacity-50">
         <div class="relative w-full max-w-md">
             <!-- Modal content -->
             <div class="bg-white rounded-lg shadow">
@@ -183,23 +184,23 @@
                             <div class="flex items-center justify-between p-4 mb-3 bg-gray-100 rounded-lg">
                                 <div>
                                     <dl class="text-sm font-medium text-gray-800">
-                                        <div class="flex justify-left gap-4 py-1">
+                                        <div class="flex gap-4 py-1 justify-left">
                                             <dt class="font-bold">Account Name:</dt>
                                             <dd>{{ $account->account_name }}</dd>
                                         </div>
-                                        <div class="flex justify-left gap-4 py-1">
+                                        <div class="flex gap-4 py-1 justify-left">
                                             <dt class="font-bold">Account Number:</dt>
                                             <dd id="account-number-{{ $count }}" class="account-number">
                                                 {{ $account->account_number }}</dd>
                                         </div>
-                                        <div class="flex justify-left gap-4 py-1">
+                                        <div class="flex gap-4 py-1 justify-left">
                                             <dt class="font-bold">Bank Name:</dt>
                                             <dd>{{ $account->bank_name }}</dd>
                                         </div>
                                     </dl>
 
                                 </div>
-                                <button type="button" class="text-indigo-600 text-sm font-medium copy-button"
+                                <button type="button" class="text-sm font-medium text-indigo-600 copy-button"
                                     data-target="account-number-{{ $count }}">Copy</button>
                             </div>
                         @empty
@@ -214,7 +215,7 @@
                         <a href="{{ route('settings.kyc') }}" class="text-blue-700">Complete KYC Now</a>
                     @endif
 
-                    <div class="card-funding-notice text-red-600" style="margin-top: 10px; font-size: 14px;">
+                    <div class="text-red-600 card-funding-notice" style="margin-top: 10px; font-size: 14px;">
                         <p>
                             Please note: A <strong>{{ $settings?->card_charges }}% charge</strong> will be applied to all
                             card funding transactions.
@@ -227,7 +228,7 @@
                         </div>
                         <a href="{{ route('payment.index') }}">
                             <div class="flex items-center p-4 bg-gray-100 rounded-lg">
-                                <i class="fas fa-credit-card text-indigo-600"></i>
+                                <i class="text-indigo-600 fas fa-credit-card"></i>
                                 <button class="ml-3 text-sm font-medium text-indigo-600">Top-up with Card</button>
                             </div>
                         </a>
