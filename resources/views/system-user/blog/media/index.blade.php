@@ -29,6 +29,18 @@
                         <option value="video">Video</option>
                     </select>
                 </div>
+   
+
+<div class="mb-3">
+    <label for="usage" class="form-label">Select Usage</label>
+    <select class="form-select" id="usage" name="usage" required>
+        <option value="" disabled selected>-- Choose Usage --</option>
+        @foreach (\App\Models\Blog\Media::USAGES as $key => $value)
+            <option value="{{ $value }}">{{ ucfirst(str_replace('_', ' ', strtolower($key))) }}</option>
+        @endforeach
+    </select>
+</div>
+
                 <button type="submit" class="btn btn-primary">Upload</button>
             </form>
         </div>

@@ -123,6 +123,10 @@
         @if(auth()->user()->can('view post') || auth()->user()->can('view faq') || auth()->user()->can('view post category') || auth()->user()->can('view media') || auth()->user()->can('view announcement'))
             <li class="nav-heading">Content</li>
             <x-admin.dropdown title="Content" icon="bi-clock-history">
+                   @can('view post')
+                    <x-admin.dropdown-item title="Documents" link="{{ route('admin.documents.index') }}" />
+                @endcan
+                <hr>
                 @can('view post')
                     <x-admin.dropdown-item title="Blog" link="{{ route('admin.blog.index') }}" />
                 @endcan

@@ -43,7 +43,10 @@ class MediaController extends Controller
         $model->name = $request->name;
         $model->type = $request->media_type;
         $model->user_id = Auth::user()->id;
+        $model->useage = $request->usage;
         $model->save();
+
+      
         $imageService->fileUploader($request, '/media', $model, 'path');
         return redirect()->back()->with('success', 'Blog post created successfully.');
     }

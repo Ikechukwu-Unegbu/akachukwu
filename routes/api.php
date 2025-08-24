@@ -39,6 +39,7 @@ use App\Http\Controllers\V1\API\VirtualAccountController;
 use App\Http\Controllers\V1\QuidaxController;
 use App\Http\Controllers\V1\QuidaxWebhookController;
 use App\Http\Controllers\V1\ReferralContestApiController;
+use App\Http\Controllers\V1\API\MediaApiController;
 
 /*
  * |--------------------------------------------------------------------------
@@ -153,6 +154,9 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
         // Route::get('/wallet-stats', [QuidaxController::class, 'getWalletStats']);
     });
 });
+
+
+Route::apiResource('media', MediaApiController::class);
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
 Route::post('datatypes', [DataApiController::class, 'index']);

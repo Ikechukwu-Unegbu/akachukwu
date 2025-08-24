@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Blog\BlogController;
+use App\Http\Controllers\SystemUser\DocumentController;
 use App\Http\Controllers\Blog\CategoryController;
 use App\Http\Controllers\Blog\FaqController;
 use App\Http\Controllers\Blog\MediaController;
@@ -66,6 +67,8 @@ Route::group(['prefix' => 'admin'], function () {
        Route::resource('category', CategoryController::class);
        Route::resource('media', MediaController::class);
        Route::resource('faq', FaqController::class);
+
+        Route::resource('documents', DocumentController::class);
     });
 
     Route::group(['as' => 'admin.', 'middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
