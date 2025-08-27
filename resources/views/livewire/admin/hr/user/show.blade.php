@@ -231,45 +231,7 @@
         <!-- <div class="card mt-5"> -->
 
             <!-- <div class="card-body"> -->
-               {{-- <x-table>
-                    <x-table-header :headers="['#', 'Reference', 'Type', 'Amount','Bal B4', 'Bal After', 'Date', 'Status']" />
-                    <x-table-body class="text-sm">
-                        @forelse ($user->checkUserTransactionHistories(10, $user->id) as $transaction)
-                            <tr style="font-size: 8px;">
-                                <th scope="row">{{ $transaction?->id}}</th>
-                                <td>
-                                    <small>{{ $transaction->transaction_id }}</small>
-                                </td>
-                                <td>{{ Str::title($transaction->utility) }}</td>
-                                <td>₦ {{ number_format($transaction->amount, 2) }}</td>
-                                <td>₦ {{ isset($transaction->balance_before) ? $transaction->balance_before : 'NA' }}</td>
-                                <td>₦ {{ isset($transaction->balance_after) ? $transaction->balance_after : 'NA' }}</td>
-
-
-                                <td>
-                                    <small>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y. h:ia') }}</small>
-                                </td>
-                                <td>
-                                    <span class="badge bg-{{ $transaction->status === 1 ? 'success' : ($transaction->status === 0 ? 'danger' : 'warning') }}">
-                                        {{ Str::title($transaction->vendor_status) }}
-                                    </span>
-                                </td>
-                            </tr>
-                            @if ($loop->last)
-                                <tr>
-                                    <td colspan="7">
-                                        <a href="{{ route('admin.wallet.history', $user->username) }}"
-                                            class="btn btn-sm btn-primary">Show More</a>
-                                    </td>
-                                </tr>
-                            @endif
-                        @empty
-                            <tr>
-                                <td colspan="7">No Records Found!</td>
-                            </tr>
-                        @endforelse
-                    </x-table-body>
-                </x-table>--}}
+              
                 <livewire:admin.wallet.index :user="$user"/>
             <!-- </div> -->
         <!-- </div> -->

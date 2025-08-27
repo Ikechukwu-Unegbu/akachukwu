@@ -43,7 +43,7 @@ use App\Models\PalmPayTransaction;
 
 
 Route::get('/palmpay/transaction/{reference}', function ($reference) {
-    $transaction = PalmPayTransaction::where('reference_id', $reference)->first();
+    $transaction = PalmPayTransaction::where('id', $reference)->first();
 
     if (! $transaction) {
         return response()->json([

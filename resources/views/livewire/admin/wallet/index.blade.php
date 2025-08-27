@@ -55,9 +55,9 @@
                             @endphp
 
                             <tr style="font-size: 10px;">
-                                <th scope="row">{{ $loop->index + $walletHistories->firstItem() }}</th>
+                                <th scope="row">{{ $transaction->id  }}</th>
                                 <td>
-                                    <small>{{ $transactionId }} --- {{ $wallet_transaction->title }}</small>
+                                    <small>{{ $transactionId }} </small>
                                 </td>
                                 <td>{{ Str::title($wallet_transaction->utility) }}</td>
                                 <td>₦ {{ number_format($wallet_transaction->amount, 2) }}</td>
