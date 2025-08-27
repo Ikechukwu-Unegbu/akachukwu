@@ -47,6 +47,7 @@ class QuidaxxService
                 ->$method($url, $data);
 
             $responseData = $response->json();
+            // dd($responseData);
 
             if ($response->successful()) {
                 return ApiHelper::sendResponse($responseData, 'Request successful');
@@ -103,17 +104,25 @@ class QuidaxxService
      */
     public function createUser($data, $user)
     {
+      
         $response = $this->makeRequest('post', '/users', $data);
 
-        if ($response['status']) {
-            $user->quidax_id = $response['data']['id'];
-            $user->quidax_sn = $response['data']['sn'];
-            $user->quidax_display_name = $response['data']['display_name'];
-            $user->quidax_reference = $response['data']['reference'];
-            $user->quidax_created_at = $response['data']['created_at'];
-            $user->quidax_updated_at = $response['data']['updated_at'];
+        // dd($response);
+
+        if ($response->status === true && isset($response->response->data)) {
+            $quidaxUser = $response->response->data;
+
+            $user->quidax_id          = $quidaxUser->id;
+            $user->quidax_sn          = $quidaxUser->sn;
+            $user->quidax_display_name= $quidaxUser->display_name;
+            $user->quidax_reference   = $quidaxUser->reference;
+            $user->quidax_created_at  = $quidaxUser->created_at;
+            $user->quidax_updated_at  = $quidaxUser->updated_at;
+
             $user->save();
         }
+
+        
 
         return $response;
     }
@@ -145,25 +154,23 @@ class QuidaxxService
     /**
      * Get account balance summary
      */
+   
     public function getAccountBalanceSummary()
     {
         $wallets = $this->getUserWallets();
+        // dd($wallets);
+        $walletsData = $wallets->response->data;
 
-        if (!$wallets['status']) {
+
+        if (!$wallets->status) {
             return $wallets;
         }
 
-        $balanceSummary = [];
-        foreach ($wallets['data'] as $wallet) {
-            if ($wallet['balance'] > 0) {
-                $balanceSummary[] = [
-                    'currency' => $wallet['currency'],
-                    'balance' => $wallet['balance'],
-                    'locked' => $wallet['locked'] ?? 0
-                ];
-            }
-        }
-
-        return ApiHelper::sendResponse($balanceSummary, 'Balance summary retrieved successfully');
+        return ApiHelper::sendResponse(
+            $walletsData,
+            'Balance summary retrieved successfully'
+        );
     }
+
+
 }

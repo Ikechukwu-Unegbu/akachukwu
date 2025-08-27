@@ -142,7 +142,7 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
         Route::post('users/create', [QuidaxController::class, 'createUser']);
         Route::get('/account', [QuidaxController::class, 'getAccountInfo']);
         Route::get('/wallets', [QuidaxController::class, 'getUserWallets']);
-        // Route::post('/wallets/generate', [QuidaxController::class, 'generateWalletAddress']);
+        Route::post('/wallets/generate', [QuidaxController::class, 'generateWalletAddress']);
         Route::get('/wallets/{currency}', [QuidaxController::class, 'getWalletBalance']);
         Route::get('/balance-summary', [QuidaxController::class, 'getAccountBalanceSummary']);
         Route::get('/wallet-stats', [QuidaxController::class, 'getWalletStats']);
