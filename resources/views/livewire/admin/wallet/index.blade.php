@@ -61,8 +61,8 @@
                                 </td>
                                 <td>{{ Str::title($wallet_transaction->utility) }}</td>
                                 <td>₦ {{ number_format($wallet_transaction->amount, 2) }}</td>
-                                <td>₦ {{ $balanceBefore ?? 'N/A' }}</td>
-                                <td>₦ {{ $balanceAfter ?? 'NA' }}</td>
+                                <td>₦ {{ $wallet_transaction->balance_before ?? 'N/A' }}</td>
+                                <td>₦ {{ $wallet_transaction->balance_after ?? 'NA' }}</td>
                                 <td>
                                     {{ \Carbon\Carbon::parse($wallet_transaction->created_at)->format('M d, Y. h:ia') }}
                                 </td>
