@@ -236,7 +236,7 @@
                     <x-table-body class="text-sm">
                         @forelse ($user->checkUserTransactionHistories(10, $user->id) as $transaction)
                             <tr style="font-size: 8px;">
-                                <th scope="row">{{ $loop->index + 1 }}</th>
+                                <th scope="row">{{ $transaction?->id}}</th>
                                 <td>
                                     <small>{{ $transaction->transaction_id }}</small>
                                 </td>
