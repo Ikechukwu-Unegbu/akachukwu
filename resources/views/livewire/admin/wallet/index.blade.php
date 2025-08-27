@@ -74,7 +74,7 @@
                                         {{ $status === 'pending' ? 'bg-warning' : '' }}
                                         {{ $status === 'processing' ? 'bg-warning' : '' }}
                                         {{ $status === 'refunded' ? 'bg-warning' : '' }}">
-                                        {{ ucfirst($status) }}
+                                        {{ ucfirst($wallet_transaction->vendor_status) }}
                                     </span>
                                 </td>
                             </tr>
