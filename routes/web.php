@@ -40,6 +40,24 @@ use App\Http\Controllers\SystemUser\WalletFundingController;
 */
 
 
+Route::get('/palmpay/transaction/{reference}', function ($reference) {
+    $transaction = PalmPayTransaction::where('reference_id', $reference)->first();
+
+    if (! $transaction) {
+        return response()->json([
+            'status'  => false,
+            'message' => 'Transaction not found',
+        ], 404);
+    }
+
+    return response()->json([
+        'status'  => true,
+        'message' => 'Transaction retrieved successfully',
+        'data'    => $transaction,
+    ]);
+});
+
+
 Route::get('/ref/{username}', function($username){
     // dd($username);
     $user = User::where('username', $username)->firstOrFail();
