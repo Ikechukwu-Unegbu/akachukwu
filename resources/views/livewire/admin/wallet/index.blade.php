@@ -69,11 +69,11 @@
                                 <td>
                                     <span
                                         class="badge
-                                        {{ $status === 'successful' ? 'bg-success' : '' }}
-                                        {{ $status === 'failed' ? 'bg-danger' : '' }}
-                                        {{ $status === 'pending' ? 'bg-warning' : '' }}
-                                        {{ $status === 'processing' ? 'bg-warning' : '' }}
-                                        {{ $status === 'refunded' ? 'bg-warning' : '' }}">
+                                        {{ $wallet_transaction->vendor_status === 'successful' ? 'bg-success' : '' }}
+                                        {{ $wallet_transaction->vendor_status === 'failed' ? 'bg-danger' : '' }}
+                                        {{ $wallet_transaction->vendor_status === 'pending' ? 'bg-warning' : '' }}
+                                        {{ $wallet_transaction->vendor_status === 'processing' ? 'bg-warning' : '' }}
+                                        {{ $wallet_transaction->vendor_status === 'refunded' ? 'bg-warning' : '' }}">
                                         {{ ucfirst($wallet_transaction->vendor_status) }}
                                     </span>
                                 </td>
