@@ -28,6 +28,8 @@ use App\Http\Controllers\V1\Utilities\ElectricityController;
 use App\Http\Controllers\V1\Education\ResultCheckerController;
 use App\Http\Controllers\SystemUser\WalletFundingController;
 
+use App\Models\PalmPayTransaction;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
