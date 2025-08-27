@@ -35,7 +35,24 @@ class RegisterUserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'min:3', 'max:255', 'alpha_dash', 'unique:'.User::class],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class, 
+            function ($attribute, $value, $fail) {
+                // Top 5 popular providers (you can tweak this list)
+                $allowedDomains = [
+                    'gmail.com',
+                    'yahoo.com',
+                    'outlook.com',
+                    'hotmail.com',
+                    'icloud.com',
+                ];
+
+                $domain = strtolower(substr(strrchr($value, "@"), 1));
+
+                if (!in_array($domain, $allowedDomains)) {
+                    $fail("The $attribute must be from a supported provider (Gmail, Yahoo, Outlook/Hotmail, iCloud).");
+                }
+            },
+        ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'phone'=>['required'],
             'terms_and_conditions'=>['nullable']
