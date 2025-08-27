@@ -55,7 +55,7 @@
                             @endphp
 
                             <tr style="font-size: 10px;">
-                                <th scope="row">{{ $transaction->id  }}</th>
+                                <th scope="row">{{ $wallet_transaction->id   }}</th>
                                 <td>
                                     <small>{{ $transactionId }} </small>
                                 </td>
