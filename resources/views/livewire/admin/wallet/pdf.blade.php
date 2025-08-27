@@ -223,11 +223,11 @@
                     <td>{{ $transactionId }} - {{ $wallet_transaction->title }}</td>
                     <td>{{ Str::title($wallet_transaction->utility) }}</td>
                     <td>N{{ number_format((float) $wallet_transaction->amount, 2) }}</td>
-                    <td>N{{ number_format((float) ($balanceBefore ?? 0), 2) }}</td>
-                    <td>N{{ number_format((float) ($balanceAfter ?? 0), 2) }}</td>
+                    <td>N {{ $wallet_transaction->balance_before ?? 'N/A' }}</td>
+                    <td>N {{ $wallet_transaction->balance_after ?? 'NA' }}</td>
                     <td>
-                        <span class="status-badge status-{{ $status }}">
-                            {{ ucfirst($status) }}
+                        <span class="status-badge status-{{ $wallet_transaction->vendor_status }}">
+                            {{ ucfirst($wallet_transaction->vendor_status) }}
                         </span>
                     </td>
                     <td>{{ \Carbon\Carbon::parse($wallet_transaction->created_at)->format('M d, Y h:i A') }}</td>
