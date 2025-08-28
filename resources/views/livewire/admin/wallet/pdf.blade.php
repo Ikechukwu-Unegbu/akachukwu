@@ -226,7 +226,12 @@
                     <td>N {{ $wallet_transaction->balance_before ?? 'N/A' }}</td>
                     <td>N {{ $wallet_transaction->balance_after ?? 'NA' }}</td>
                     <td>
-                        <span class="status-badge status-{{ $wallet_transaction->vendor_status }}">
+                        <span  class="badge
+                                        {{ $wallet_transaction->vendor_status === 'successful' ? 'bg-success' : '' }}
+                                        {{ $wallet_transaction->vendor_status === 'failed' ? 'bg-danger' : '' }}
+                                        {{ $wallet_transaction->vendor_status === 'pending' ? 'bg-warning' : '' }}
+                                        {{ $wallet_transaction->vendor_status === 'processing' ? 'bg-warning' : '' }}
+                                        {{ $wallet_transaction->vendor_status === 'refunded' ? 'bg-warning' : '' }}">
                             {{ ucfirst($wallet_transaction->vendor_status) }}
                         </span>
                     </td>
