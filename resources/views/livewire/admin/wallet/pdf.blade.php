@@ -220,7 +220,7 @@
                     }
                 @endphp
                 <tr>
-                    <td>{{ $transactionId}}</td>
+                    <td>{{ $wallet_transaction->id}}</td>
                     <td> {{$wallet_transaction->source_table}} </td>
                     <td>{{ $wallet_transaction->transaction_id }}</td>
                     <td>{{ Str::title($wallet_transaction->utility) }}</td>
