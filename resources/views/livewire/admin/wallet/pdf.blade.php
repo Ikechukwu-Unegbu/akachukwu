@@ -220,18 +220,13 @@
                 @endphp
                 <tr>
                     <td>{{ $wallet_transaction->id}}</td>
-                    <td>{{ $transactionId }}</td>
+                    <td>{{ $wallet_transaction->transaction_id }}</td>
                     <td>{{ Str::title($wallet_transaction->utility) }}</td>
                     <td>N{{ number_format((float) $wallet_transaction->amount, 2) }}</td>
                     <td>N {{ $wallet_transaction->balance_before ?? 'N/A' }}</td>
                     <td>N {{ $wallet_transaction->balance_after ?? 'NA' }}</td>
                     <td>
-                        <span  class="badge
-                                        {{ $wallet_transaction->vendor_status === 'successful' ? 'bg-success' : '' }}
-                                        {{ $wallet_transaction->vendor_status === 'failed' ? 'bg-danger' : '' }}
-                                        {{ $wallet_transaction->vendor_status === 'pending' ? 'bg-warning' : '' }}
-                                        {{ $wallet_transaction->vendor_status === 'processing' ? 'bg-warning' : '' }}
-                                        {{ $wallet_transaction->vendor_status === 'refunded' ? 'bg-warning' : '' }}">
+                        <span class="status-badge status-{{ $wallet_transaction->vendor_status }}">
                             {{ ucfirst($wallet_transaction->vendor_status) }}
                         </span>
                     </td>
