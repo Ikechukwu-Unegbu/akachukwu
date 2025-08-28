@@ -219,8 +219,8 @@
                     }
                 @endphp
                 <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $transactionId }} - {{ $wallet_transaction->title }}</td>
+                    <td>{{ $wallet_transaction->id}}</td>
+                    <td>{{ $transactionId }}</td>
                     <td>{{ Str::title($wallet_transaction->utility) }}</td>
                     <td>N{{ number_format((float) $wallet_transaction->amount, 2) }}</td>
                     <td>N {{ $wallet_transaction->balance_before ?? 'N/A' }}</td>
