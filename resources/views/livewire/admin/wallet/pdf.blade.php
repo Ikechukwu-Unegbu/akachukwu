@@ -201,8 +201,8 @@
                     $balanceAfter = $wallet_transaction->balance_after;
                     $status = $wallet_transaction->vendor_status;
 
-                    if ($wallet_transaction->title === 'debit' || $wallet_transaction->title === 'wallet funding') {
-                        $moneyTransfer = \App\Models\MoneyTransfer::where('', $wallet_transaction->id);
+                   if($wallet_transaction->source_table == 'money_transfers'){
+                         $moneyTransfer = \App\Models\MoneyTransfer::find($wallet_transaction->id);
                         if ($moneyTransfer) {
                             $transactionId = $moneyTransfer->reference_id;
                             if ($moneyTransfer->transfer_status) {
@@ -225,8 +225,8 @@
                     <td>{{ $wallet_transaction->transaction_id }}</td>
                     <td>{{ Str::title($wallet_transaction->utility) }}</td>
                     <td>N{{ number_format((float) $wallet_transaction->amount, 2) }}</td>
-                    <td>N {{ $wallet_transaction->balance_before ?? 'N/A' }}</td>
-                    <td>N {{ $wallet_transaction->balance_after ?? 'NA' }}</td>
+                    <td>N {{ $balanceBefore ?? 'N/A' }}</td>
+                    <td>N {{ $balanceAfter ?? 'NA' }}</td>
                     <td>
                         <span class="status-badge status-{{ $wallet_transaction->vendor_status }}">
                             {{ ucfirst($wallet_transaction->vendor_status) }}
