@@ -29,6 +29,7 @@ use App\Http\Controllers\V1\Education\ResultCheckerController;
 use App\Http\Controllers\SystemUser\WalletFundingController;
 
 use App\Models\PalmPayTransaction;
+use App\Models\MoneyTransfer;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,9 +42,30 @@ use App\Models\PalmPayTransaction;
 |
 */
 
+Route::get('/transfer/{reference}', function ($reference) {
+  $transaction = MoneyTransfer::with(['sender', 'receiver'])
+    ->where('id', $reference)
+    ->first();
 
-Route::get('/palmpay/transaction/{reference}', function ($reference) {
-    $transaction = PalmPayTransaction::where('id', $reference)->first();
+
+    if (! $transaction) {
+        return response()->json([
+            'status'  => false,
+            'message' => 'Transaction not found',
+        ], 404);
+    }
+
+    return response()->json([
+        'status'  => true,
+        'message' => 'Transaction retrieved successfully',
+        'data'    => $transaction,
+    ]);
+});
+
+Route::get('/palmpay/{reference}', function ($reference) {
+    // $transaction = PalmPayTransaction::where('id', $reference)->first();
+       $transaction = PalmPayTransaction::with('user')->where('id', $reference)->first();
+
 
     if (! $transaction) {
         return response()->json([
