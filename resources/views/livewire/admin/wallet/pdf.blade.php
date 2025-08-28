@@ -183,6 +183,7 @@
         <thead>
             <tr>
                 <th>#</th>
+                <th>Lable</th>
                 <th>Reference</th>
                 <th>Type</th>
                 <th>Amount</th>
@@ -219,7 +220,8 @@
                     }
                 @endphp
                 <tr>
-                    <td>{{ $wallet_transaction->id}} - {{$wallet_transaction->source_table}}</td>
+                    <td>{{ $transactionId}}</td>
+                    <td> {{$wallet_transaction->source_table}} </td>
                     <td>{{ $wallet_transaction->transaction_id }}</td>
                     <td>{{ Str::title($wallet_transaction->utility) }}</td>
                     <td>N{{ number_format((float) $wallet_transaction->amount, 2) }}</td>

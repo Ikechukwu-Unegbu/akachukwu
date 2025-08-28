@@ -23,7 +23,7 @@
             </div>
             <div class="card-body">
                 <x-table>
-                    <x-table-header :headers="['#', 'Reference', 'Type', 'Amount', 'Bal B4', 'Bal After', 'Date', 'Status']" />
+                    <x-table-header :headers="['#', 'Label', 'Reference', 'Type', 'Amount', 'Bal B4', 'Bal After', 'Date', 'Status']" />
                     <x-table-body>
                         @forelse ($walletHistories as $wallet_transaction)
                             @php
@@ -55,7 +55,8 @@
                             @endphp
 
                             <tr style="font-size: 10px;">
-                                <th scope="row">{{ $wallet_transaction->id   }}</th>
+                                <th scope="row">{{ $transactionId   }}</th>
+                                <td>{{$wallet_transaction->source_table}}</td>
                                 <td>
                                     <small>{{ $transactionId }} </small>
                                 </td>
