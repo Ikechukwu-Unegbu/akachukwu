@@ -219,7 +219,7 @@
                     }
                 @endphp
                 <tr>
-                    <td>{{ $wallet_transaction->id}}</td>
+                    <td>{{ $wallet_transaction->id}} - {{$wallet_transaction->source_table}}</td>
                     <td>{{ $wallet_transaction->transaction_id }}</td>
                     <td>{{ Str::title($wallet_transaction->utility) }}</td>
                     <td>N{{ number_format((float) $wallet_transaction->amount, 2) }}</td>
