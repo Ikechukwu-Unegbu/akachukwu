@@ -519,6 +519,7 @@ class User extends Authenticatable
                 DB::raw('"data" as utility'),
                 DB::raw('"fa-wifi" as icon'),
                 DB::raw('"Data Purchased" as title'),
+                DB::raw('"data_transactions" as source_table'),
                 'created_at'
             ])
             ->unionAll(
@@ -538,6 +539,7 @@ class User extends Authenticatable
                         DB::raw('"airtime" as utility'),
                         DB::raw('"fa-mobile-alt" as icon'),
                         DB::raw('"Airtime Purchased" as title'),
+                        DB::raw('"airtime_transactions" as source_table'),
                         'created_at'
                     ])
             )
@@ -585,6 +587,7 @@ class User extends Authenticatable
                             WHEN recipient = ' . (int) $userId . ' THEN "wallet funding"
                             ELSE "Transaction"
                         END as title'),
+                        DB::raw('"money_transfers" as source_table'),
                         'created_at'
                     ])
             )
@@ -605,6 +608,7 @@ class User extends Authenticatable
                         DB::raw('"cable" as utility'),
                         DB::raw('"fa-tv" as icon'),
                         DB::raw('"Cable TV Purchased" as title'),
+                        DB::raw('"cable_transactions" as source_table'),
                         'created_at'
                     ])
             )
@@ -625,6 +629,7 @@ class User extends Authenticatable
                         DB::raw('"electricity" as utility'),
                         DB::raw('"fa-tv" as icon'),
                         DB::raw('"Electricity Purchased" as title'),
+                        DB::raw('"electricity_transactions" as source_table'),
                         'created_at'
                     ])
             )
@@ -645,6 +650,7 @@ class User extends Authenticatable
                         DB::raw('"wallet funding" as utility'),
                         DB::raw('"fa-exchange-alt" as icon'),
                         DB::raw('"wallet funding" as title'),
+                        DB::raw('"flutterwave_transactions" as source_table'),
                         'created_at'
                     ])
             )
@@ -665,6 +671,7 @@ class User extends Authenticatable
                         DB::raw('"wallet funding" as utility'),
                         DB::raw('"fa-exchange-alt" as icon'),
                         DB::raw('"wallet funding" as title'),
+                        DB::raw('"paystack_transactions" as source_table'),
                         'created_at'
                     ])
             )
@@ -685,6 +692,7 @@ class User extends Authenticatable
                         DB::raw('"wallet funding" as utility'),
                         DB::raw('"fa-exchange-alt" as icon'),
                         DB::raw('"wallet funding" as title'),
+                        DB::raw('"pay_vessel_transactions" as source_table'),
                         'created_at'
                     ])
             )
@@ -705,6 +713,7 @@ class User extends Authenticatable
                         DB::raw('"wallet funding" as utility'),
                         DB::raw('"fa-exchange-alt" as icon'),
                         DB::raw('"wallet funding" as title'),
+                        DB::raw('"monnify_transactions" as source_table'),
                         'created_at'
                     ])
             )
@@ -725,6 +734,7 @@ class User extends Authenticatable
                         DB::raw('"wallet funding" as utility'),
                         DB::raw('"fa-exchange-alt" as icon'),
                         DB::raw('"wallet funding" as title'),
+                        DB::raw('"vastel_transactions" as source_table'),
                         'created_at'
                     ])
                     ->whereRaw(auth()->user()->role === 'user' ? 'record = 1' : 'record IN (0,1)')
@@ -746,6 +756,7 @@ class User extends Authenticatable
                         DB::raw('"wallet funding" as utility'),
                         DB::raw('"fa-exchange-alt" as icon'),
                         DB::raw('"wallet funding" as title'),
+                        DB::raw('"palm_pay_transactions" as source_table'),
                         'created_at'
                     ])
             );
