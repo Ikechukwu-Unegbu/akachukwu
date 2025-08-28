@@ -187,8 +187,8 @@
                 <th>Reference</th>
                 <th>Type</th>
                 <th>Amount</th>
-                <th>Bal B4</th>
-                <th>Bal After</th>
+                <!-- <th>Bal B4</th>
+                <th>Bal After</th> -->
                 <th>Status</th>
                 <th>Date</th>
             </tr>
@@ -225,8 +225,8 @@
                     <td>{{ $wallet_transaction->transaction_id }}</td>
                     <td>{{ Str::title($wallet_transaction->utility) }}</td>
                     <td>N{{ number_format((float) $wallet_transaction->amount, 2) }}</td>
-                    <td>N {{ $balanceBefore ?? 'N/A' }}</td>
-                    <td>N {{ $balanceAfter ?? 'NA' }}</td>
+                    {{--<td>N {{ $balanceBefore ?? 'N/A' }}</td>
+                    <td>N {{ $balanceAfter ?? 'NA' }}</td>--}}
                     <td>
                         <span class="status-badge status-{{ $wallet_transaction->vendor_status }}">
                             {{ ucfirst($wallet_transaction->vendor_status) }}
