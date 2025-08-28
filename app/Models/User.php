@@ -547,7 +547,7 @@ class User extends Authenticatable
                 DB::table('money_transfers')
                     ->select([
                         'id',
-                         DB::raw('"id" as transaction_id'),
+                         DB::raw('id as transaction_id'),
                         // DB::raw('"N/A" as transaction_id'),
                         DB::raw('"N/A" as balance_before'),
                         DB::raw('"N/A" as balance_after'),
