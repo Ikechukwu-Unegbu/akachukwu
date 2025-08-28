@@ -32,10 +32,8 @@
                                 $balanceAfter = $wallet_transaction->balance_after;
                                 $status = $wallet_transaction->vendor_status;
 
-                                if (
-                                    $wallet_transaction->title === 'debit' ||
-                                    $wallet_transaction->title === 'wallet funding'
-                                ) {
+                              
+                                if($wallet_transaction->source_table == 'money_transfers'){
                                     $moneyTransfer = \App\Models\MoneyTransfer::find($wallet_transaction->id);
                                     if ($moneyTransfer) {
                                         $transactionId = $moneyTransfer->reference_id;

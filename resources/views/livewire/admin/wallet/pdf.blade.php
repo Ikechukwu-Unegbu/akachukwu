@@ -202,7 +202,7 @@
                     $status = $wallet_transaction->vendor_status;
 
                     if ($wallet_transaction->title === 'debit' || $wallet_transaction->title === 'wallet funding') {
-                        $moneyTransfer = \App\Models\MoneyTransfer::find($wallet_transaction->id);
+                        $moneyTransfer = \App\Models\MoneyTransfer::where('', $wallet_transaction->id);
                         if ($moneyTransfer) {
                             $transactionId = $moneyTransfer->reference_id;
                             if ($moneyTransfer->transfer_status) {
