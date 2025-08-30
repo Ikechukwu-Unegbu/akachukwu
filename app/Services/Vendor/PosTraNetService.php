@@ -208,7 +208,7 @@ class PosTraNetService
                 // Handle the response from the API
                 if (isset($response->error)) {
                     // Handle API wallet balance issues
-                    self::$authUser->initiateRefund($user, $amount, $transaction);
+                    self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
                     $errorResponse = [
                         'error' => 'Insufficient Balance From API.',
                         'message' => "An error occurred during the Airtime request. Please try again later."
