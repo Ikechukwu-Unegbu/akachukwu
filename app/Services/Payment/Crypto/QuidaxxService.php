@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use App\Helpers\ApiHelper;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 class QuidaxxService
 {
     protected $apiKey;
@@ -115,6 +118,7 @@ class QuidaxxService
      */
     public function createUser($data, $user)
     {
+        
         $response = $this->makeRequest('post', '/users', $data);
 
         if ($response->status) {

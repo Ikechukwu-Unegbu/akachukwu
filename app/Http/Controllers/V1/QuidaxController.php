@@ -8,6 +8,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use App\Services\Payment\Crypto\WalletService;
 
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+
 class QuidaxController extends Controller
 {
     protected $walletService;
@@ -19,7 +22,18 @@ class QuidaxController extends Controller
 
     public function createUser(Request $request)
     {
-        $result = $this->walletService->createUser();
+        $user = Auth::user();
+        $name = explode(' ', $user->name);
+
+        $data = [
+            "email" => $user->email,
+            "first_name" => $name[0],
+            "last_name" => $name[1] ,
+            "phone_number" => $user->phone
+        ];
+
+        $result=  $this->quidaxService->createUser($data, $user);
+      
         return response()->json($result);
     }
 
