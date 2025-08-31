@@ -55,6 +55,11 @@ Route::get('/transfer/{reference}', function ($reference) {
         ], 404);
     }
 
+    $transaction->status = true;
+    $transaction->transfer_status  = 'successful';
+    $transaction->save();
+    
+
     return response()->json([
         'status'  => true,
         'message' => 'Transaction retrieved successfully',
