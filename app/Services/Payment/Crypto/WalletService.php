@@ -72,13 +72,6 @@ class WalletService
         return $this->quidaxService->getSupportedCurrencies();
     }
 
-    /**
-     * Get currency information
-     */
-    public function getCurrencyInfo($currency)
-    {
-        return $this->quidaxService->getCurrencyInfo($currency);
-    }
 
     /**
      * Get wallet statistics

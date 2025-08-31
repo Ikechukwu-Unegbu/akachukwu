@@ -34,10 +34,17 @@ class QuidaxxService
         ];
     }
 
+
+    public function getPrice($currency)
+    {
+        $response = $this->makeRequest('GET', "https://app.quidax.io/api/v1/markets/tickers/btcngn");
+        
+    }
+
     /**
-     * Make API request with error handling
+     * Make API request with error handlingg
      */
-    protected function makeRequest($method, $endpoint, $data = [])
+    public function makeRequest($method, $endpoint, $data = [])
     {
         try {
             $url = $this->baseUrl . $endpoint;
@@ -47,12 +54,13 @@ class QuidaxxService
                 ->$method($url, $data);
 
             $responseData = $response->json();
-            // dd($responseData);
+        
 
             if ($response->successful()) {
                 return ApiHelper::sendResponse($responseData, 'Request successful');
             }
 
+            // dd($response);
             Log::error('Quidax API Error', [
                 'endpoint' => $endpoint,
                 'status' => $response->status(),
@@ -92,7 +100,17 @@ class QuidaxxService
     }
 
     /**
-     * Get specific wallet balance
+     * Get user wallets
+    */
+    public function getUserWalletsAddress($currency)
+    {
+        $user = auth()->user();
+        // dd($user->quidax_id);
+        return $this->makeRequest('get', "/users/{$user->quidax_id}/wallets/{$currency}/address");
+    }
+
+    /**
+     * Ma specific wallet balance
      */
     public function getWalletBalance($currency)
     {

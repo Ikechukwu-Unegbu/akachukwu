@@ -62,9 +62,21 @@ class QuidaxController extends Controller
     /**
      * 
      * **/ 
-    public function generateWalletAddress()
+    public function generateWalletAddress($currency)
     {
+        // dd('hello');
+         $result = $this->quidaxService->getUserWalletsAddress($currency);
+        return response()->json($result);
+    }
 
+    public function generateWalletAddressess($currency)
+    {
+        // dd('hello');
+         $user = auth()->user();
+        // dd($user->quidax_id);
+        $result =  $this->quidaxService->makeRequest('get', "/users/{$user->quidax_id}/{$currency}/btc/addresses");
+      
+        return response()->json($result);
     }
 
     /**
@@ -72,7 +84,7 @@ class QuidaxController extends Controller
      */
     public function getAccountBalanceSummary()
     {
-        $result = $this->walletService->getAccountBalanceSummary();
+        $result = $this->quidaxService->getAccountBalanceSummary();
         return response()->json($result);
     }
 
@@ -81,7 +93,7 @@ class QuidaxController extends Controller
      */
     public function getSupportedCurrencies()
     {
-        $result = $this->walletService->getSupportedCurrencies();
+        $result = $this->quidaxService->getSupportedCurrencies();
         return response()->json($result);
     }
 
@@ -90,7 +102,7 @@ class QuidaxController extends Controller
      */
     public function getCurrencyInfo(Request $request, $currency)
     {
-        $result = $this->walletService->getCurrencyInfo($currency);
+        $result = $this->quidaxService->getCurrencyInfo($currency);
         return response()->json($result);
     }
 
