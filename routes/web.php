@@ -208,6 +208,8 @@ Route::post('update-password', [SettingsController::class, 'updatePassword'])->n
 // });
 
 
+// Route::post('webhook/quidax', QuidaxWebhookController::class)->name('webhook.quidax');
+
 Route::get('/mtn/subscription-plans', [MtnDevController::class, 'listSubscriptionPlans']);
 
 Route::get('system-user/wallet-funding/{transaction_id}', [WalletFundingController::class, 'show'])->name('system-user.wallet-funding.show');

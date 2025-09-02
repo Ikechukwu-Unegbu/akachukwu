@@ -11,6 +11,15 @@ class QuidaxWebhookController extends Controller
 {
     public function __invoke(Request $request)
     {
+            // Log request content to a dedicated file
+            $logFile = storage_path('logs/quidax_webhook.log');
+            file_put_contents(
+                $logFile,
+                "[" . now() . "] Incoming Webhook: " . $request->all() . PHP_EOL,
+                FILE_APPEND
+            );
+
+            dd('die here');
         // Optional: verify signature
         if (!CryptoFundingWebhookService::verifySignature($request)) {
             Log::warning('Invalid Quidax webhook signature');

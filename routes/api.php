@@ -160,7 +160,9 @@ Route::post('cableplans', [CableApiController::class, 'plan']);
 Route::post('electricity/discos', [ElectricityApiController::class, 'index']);
 Route::post('webhook/monnify', WebhookController::class);
 Route::post('webhook/payvessel', PayVesselWebhookController::class);
+
 Route::post('webhook/quidax', QuidaxWebhookController::class)->name('webhook.quidax');
+
 Route::post('exams', [EducationController::class, 'index']);
 Route::get('banks', [VirtualAccountController::class, 'banks']);
 Route::post('webhook/palmpay', PalmPayWebhookController::class)->name('webhook.palmpay');
