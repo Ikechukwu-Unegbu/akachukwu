@@ -59,15 +59,19 @@ class QuidaxWebhookController extends Controller
         if($event == 'deposit.successful'){
             Log::info('Requerying deposite.successful event with id: '[$eventId]);
             $this->requeryService->reQueryDeposit($eventId);
-            CryptoFundingWebhookService::requeryEvent($eventId);
-            
+        
+        }
+        if($event == 'deposit.deposite.successful'){
+            Log::info('Requerying deposite.successful event with id: '[$eventId]);
+            $this->requeryService->reQueryDeposit($eventId);
+        
         }
         // Handle deposit events
-        if (in_array($event, ['deposit.successful', 'wallet.deposit.successful', 'transaction.deposit.successful'])) {
-            $result = CryptoFundingWebhookService::handleDeposit($data);
-            // Always return 200 to acknowledge receipt
-            return response()->json($result, 200);
-        }
+        // if (in_array($event, ['deposit.successful', 'wallet.deposit.successful', 'transaction.deposit.successful'])) {
+        //     $result = CryptoFundingWebhookService::handleDeposit($data);
+        //     // Always return 200 to acknowledge receipt
+        //     return response()->json($result, 200);
+        // }
 
         return response()->json(['ok' => true], 200);
     }
