@@ -9,6 +9,17 @@ use App\Services\Payment\Crypto\CryptoFundingWebhookService;
 
 class QuidaxWebhookController extends Controller
 {
+    protected $requeryService;
+
+    public function __construct(RequeryService $requeryService)
+    {
+        $this->requeryService = $requeryService;
+
+        // Example: protect with middleware
+        // $this->middleware('auth:sanctum')->only('__invoke');
+    }
+
+
     public function __invoke(Request $request)
     {
             // Log request content to a dedicated file
@@ -27,10 +38,10 @@ class QuidaxWebhookController extends Controller
 
 
         // Optional: verify signature
-        if (!CryptoFundingWebhookService::verifySignature($request)) {
-            Log::warning('Invalid Quidax webhook signature');
-            // return response()->json(['ok' => false], 401);
-        }
+        // if (!CryptoFundingWebhookService::verifySignature($request)) {
+        //     Log::warning('Invalid Quidax webhook signature');
+        //     // return response()->json(['ok' => false], 401);
+        // }
 
 
         // Log::info('Quidax signature is working');
@@ -41,10 +52,16 @@ class QuidaxWebhookController extends Controller
 
         // Requery can be triggered with event id if provided
         $eventId = $request->input('id') ?? ($data['data']['id'] ?? null);
-        if ($eventId) {
-            CryptoFundingWebhookService::requeryEvent($eventId);
-        }
+      
 
+        Log::info('Quidax Data Payload:', $data);
+
+        if($event == 'deposit.successful'){
+            Log::info('Requerying deposite.successful event with id: '[$eventId]);
+            $this->requeryService->reQueryDeposit($eventId);
+            CryptoFundingWebhookService::requeryEvent($eventId);
+            
+        }
         // Handle deposit events
         if (in_array($event, ['deposit.successful', 'wallet.deposit.successful', 'transaction.deposit.successful'])) {
             $result = CryptoFundingWebhookService::handleDeposit($data);
