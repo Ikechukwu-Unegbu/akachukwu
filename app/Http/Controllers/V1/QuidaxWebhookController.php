@@ -12,13 +12,16 @@ class QuidaxWebhookController extends Controller
     public function __invoke(Request $request)
     {
             // Log request content to a dedicated file
-            $logFile = storage_path('logs/quidax_webhook.log');
+            // $logFile = storage_path('logs/quidax_webhook.log');
       
-            file_put_contents(
-                $logFile,
-                "[" . now() . "] Incoming Webhook: " . print_r($request->all(), true) . PHP_EOL,
-                FILE_APPEND
-            );
+            // file_put_contents(
+            //     $logFile,
+            //     "[" . now() . "] Incoming Webhook: " . print_r($request->all(), true) . PHP_EOL,
+            //     FILE_APPEND
+            // );
+
+
+            Log::info('Incoming Quidax Webhook', $request->all());
 
 
         // Optional: verify signature
