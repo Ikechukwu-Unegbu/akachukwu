@@ -149,6 +149,8 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
         Route::get('/wallet-stats', [QuidaxController::class, 'getWalletStats']);
 
         Route::get('supported-currencies', [QuidaxController::class, 'getSupportedCurrencies']);
+        // test requry
+        Route::get('requry/{id}', [QuidaxController::class, 'reQueryDeposit']);
     });
 });
 

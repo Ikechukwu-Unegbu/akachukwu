@@ -29,11 +29,11 @@ class QuidaxWebhookController extends Controller
         // Optional: verify signature
         if (!CryptoFundingWebhookService::verifySignature($request)) {
             Log::warning('Invalid Quidax webhook signature');
-            return response()->json(['ok' => false], 401);
+            // return response()->json(['ok' => false], 401);
         }
 
 
-        Log::info('Quidax signature is working');
+        // Log::info('Quidax signature is working');
 
 
         $event = $request->input('event');

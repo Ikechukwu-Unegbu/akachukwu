@@ -79,6 +79,16 @@ class QuidaxController extends Controller
         return response()->json($result);
     }
 
+    public function reQueryDeposit($id)
+    {
+        // dd('hello');
+         $user = auth()->user();
+        // dd($user->quidax_id);
+        $result =  $this->quidaxService->makeRequest('get', "users/{$user->quidax_id}/deposits/f6f4c16f-a6b4-4d67-992e-5063ee0ccc15");
+      
+        return response()->json($result);
+    }
+
     /**
      * Get account balance summary
      */
