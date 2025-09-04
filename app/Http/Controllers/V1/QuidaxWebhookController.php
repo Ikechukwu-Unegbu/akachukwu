@@ -30,6 +30,10 @@ class QuidaxWebhookController extends Controller
             return response()->json(['ok' => false], 401);
         }
 
+
+        Log::info('Quidax signature is working');
+
+        
         $event = $request->input('event');
         $data = $request->all();
 
