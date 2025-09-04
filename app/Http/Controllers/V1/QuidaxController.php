@@ -85,7 +85,8 @@ class QuidaxController extends Controller
          $user = auth()->user();
         // dd($user->quidax_id);
         $result =  $this->quidaxService->makeRequest('get', "/users/{$user->quidax_id}/deposits/{$id}");
-        dd($result->response);
+        dd($result->response->status);
+         dd($result->response->data);
         return response()->json($result);
     }
 
