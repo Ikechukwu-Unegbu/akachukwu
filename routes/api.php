@@ -18,6 +18,7 @@ use App\Http\Controllers\V1\API\UserProfileController;
 use App\Http\Controllers\V1\PalmPayWebhookController;
 use App\Http\Controllers\V1\PayVesselWebhookController;
 use App\Http\Controllers\V1\WebhookController;
+use App\Http\Controllers\V1\QuidaxWebhookController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -37,7 +38,6 @@ use App\Http\Controllers\V1\API\SiteSettingsApiController;
 use App\Http\Controllers\V1\API\TransactionsApiController;
 use App\Http\Controllers\V1\API\VirtualAccountController;
 use App\Http\Controllers\V1\QuidaxController;
-use App\Http\Controllers\V1\QuidaxWebhookController;
 use App\Http\Controllers\V1\ReferralContestApiController;
 
 /*

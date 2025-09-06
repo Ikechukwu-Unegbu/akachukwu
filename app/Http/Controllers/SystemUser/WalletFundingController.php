@@ -49,6 +49,8 @@ class WalletFundingController extends Controller
             UNION ALL
             SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "vastel" as vendor FROM vastel_transactions
             UNION ALL
+            SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, naira_amount as amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "quidax" as vendor FROM quidax_transactions
+            UNION ALL
             SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, amount, status, api_status as vendor_status, "bank" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "palmpay" as vendor FROM palm_pay_transactions
         ) as transactions'))
             ->leftJoin('users', 'transactions.user_id', '=', 'users.id')
@@ -110,6 +112,8 @@ class WalletFundingController extends Controller
             UNION ALL
             SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "vastel" as vendor FROM vastel_transactions
             UNION ALL
+            SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, naira_amount as amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "quidax" as vendor FROM quidax_transactions
+            UNION ALL
             SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, amount, status, api_status as vendor_status, "bank" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "palmpay" as vendor FROM palm_pay_transactions
         ) as transactions'))
             ->leftJoin('users', 'transactions.user_id', '=', 'users.id')
@@ -138,6 +142,8 @@ class WalletFundingController extends Controller
             SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "monnify" as vendor FROM monnify_transactions
             UNION ALL
             SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "vastel" as vendor FROM vastel_transactions
+            UNION ALL
+            SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, naira_amount as amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "quidax" as vendor FROM quidax_transactions
             UNION ALL
             SELECT id, reference_id as transaction_id, balance_before, balance_after, user_id, amount, status, api_status as vendor_status, "bank" as subscribed_to, reference_id as plan_name, "funding" as type, "wallet funding" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at, "palmpay" as vendor FROM palm_pay_transactions
         ) as transactions'))

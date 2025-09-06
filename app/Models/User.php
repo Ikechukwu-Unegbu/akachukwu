@@ -265,6 +265,11 @@ class User extends Authenticatable
             ->where('user_id', $this->id))
             ->latest();
 
+        $transactions->union(DB::table('quidax_transactions')
+            ->select('id', 'reference_id', 'naira_amount as amount', 'status', 'api_status as api_status', 'created_at', DB::raw("'quidax' as gateway_type"))
+            ->where('user_id', $this->id))
+            ->latest();
+
         return $transactions; // Don't forget to actually execute the query
     }
 
@@ -369,6 +374,8 @@ class User extends Authenticatable
                 SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM pay_vessel_transactions
                 UNION ALL
                 SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM vastel_transactions
+                UNION ALL
+                SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, naira_amount as amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "quidax" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM quidax_transactions
                 UNION ALL
                 SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, "N/A" as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, type, "transfer" as utility, "fa-exchange-alt" as icon, "Money Transfer" as title, created_at
                 FROM money_transfers
