@@ -26,7 +26,12 @@ class QuidaxParentUserController extends Controller
     public function createAllParentWallets()
     {
         return $this->parentService->createAllParentWallets();
-        
+
+    }
+
+    public function fetchGivenCurrencyPaymentAddress($currency)
+    {
+        return $this->parentService->fetchGivenCurrencyPaymentAddress($currency);
     }
 
 }

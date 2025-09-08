@@ -162,6 +162,7 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
  * **/
 Route::get('parent/wallets', [QuidaxParentUserController::class, 'getAllParentWallets']);
 Route::get('parent/wallets-generate', [QuidaxParentUserController::class, 'createAllParentWallets']);
+Route::get('parent/wallets/{currency}', [QuidaxParentUserController::class, 'fetchGivenCurrencyPaymentAddress']);
 
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
