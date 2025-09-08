@@ -40,6 +40,7 @@ use App\Http\Controllers\V1\QuidaxController;
 use App\Http\Controllers\V1\QuidaxParentUserController;
 use App\Http\Controllers\V1\QuidaxWebhookController;
 use App\Http\Controllers\V1\ReferralContestApiController;
+use App\Http\Controllers\V1\QuidaxTransferController;
 
 /*
  * |--------------------------------------------------------------------------
@@ -163,6 +164,8 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
 Route::get('parent/wallets', [QuidaxParentUserController::class, 'getAllParentWallets']);
 Route::get('parent/wallets-generate', [QuidaxParentUserController::class, 'createAllParentWallets']);
 Route::get('parent/wallets/{currency}', [QuidaxParentUserController::class, 'fetchGivenCurrencyPaymentAddress']);
+
+Route::get('quidax-transfer', [QuidaxTransferController::class, 'transfer']);
 
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
