@@ -46,4 +46,6 @@ class QuidaxTransferService
         );
     }
 
+    public function 
+
 }

@@ -37,6 +37,7 @@ use App\Http\Controllers\V1\API\SiteSettingsApiController;
 use App\Http\Controllers\V1\API\TransactionsApiController;
 use App\Http\Controllers\V1\API\VirtualAccountController;
 use App\Http\Controllers\V1\QuidaxController;
+use App\Http\Controllers\V1\QuidaxParentUserController;
 use App\Http\Controllers\V1\QuidaxWebhookController;
 use App\Http\Controllers\V1\ReferralContestApiController;
 
@@ -151,8 +152,17 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
         Route::get('supported-currencies', [QuidaxController::class, 'getSupportedCurrencies']);
         // test requry
         Route::get('requry/{id}', [QuidaxController::class, 'reQueryDeposit']);
+
+
     });
 });
+
+/**
+ * Quidax parent routes
+ * **/
+Route::get('parent/wallets', [QuidaxParentUserController::class, 'getAllParentWallets']);
+Route::get('parent/wallets-generate', [QuidaxParentUserController::class, 'createAllParentWallets']);
+
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
 Route::post('datatypes', [DataApiController::class, 'index']);
