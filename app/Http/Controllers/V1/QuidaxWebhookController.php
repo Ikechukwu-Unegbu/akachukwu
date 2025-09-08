@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Services\Payment\Crypto\CryptoFundingWebhookService;
+use App\Services\Payment\Crypto\QuidaxRequeryService;
 
 class QuidaxWebhookController extends Controller
 {
@@ -14,37 +15,18 @@ class QuidaxWebhookController extends Controller
     public function __construct(RequeryService $requeryService)
     {
         $this->requeryService = $requeryService;
-
-        // Example: protect with middleware
-        // $this->middleware('auth:sanctum')->only('__invoke');
     }
 
 
     public function __invoke(Request $request)
     {
-            // Log request content to a dedicated file
-            // $logFile = storage_path('logs/quidax_webhook.log');
-      
-            // file_put_contents(
-            //     $logFile,
-            //     "[" . now() . "] Incoming Webhook: " . print_r($request->all(), true) . PHP_EOL,
-            //     FILE_APPEND
-            // );
-
-
-            Log::info('Incoming Quidax Webhook', $request->all());
-            Log::info('Incoming Quidax Webhook Headers', $request->headers->all());
+         
 
 
 
-        // Optional: verify signature
-        // if (!CryptoFundingWebhookService::verifySignature($request)) {
-        //     Log::warning('Invalid Quidax webhook signature');
-        //     // return response()->json(['ok' => false], 401);
-        // }
+        Log::info('Incoming Quidax Webhook', $request->all());
+        Log::info('Incoming Quidax Webhook Headers', $request->headers->all());
 
-
-        // Log::info('Quidax signature is working');
 
 
         $event = $request->input('event');

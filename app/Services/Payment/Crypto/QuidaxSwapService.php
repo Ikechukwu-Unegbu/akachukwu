@@ -18,7 +18,7 @@ class QuidaxSwapService{
      * **/ 
     public function generateSwapQuotation($userQuidaxId, $fromCurrency, $froAmount, $toCurrency, $toAmount=null)
     {
-        $response = $this->quidaxService->makeRequest('get', "users/{$userQuidaxId}/swap_quotation", [
+        $response = $this->quidaxService->makeRequest('get', "/users/{$userQuidaxId}/swap_quotation", [
             'from_currency'=>$fromCurrency,
             'from_amount'=>$froAmount,
             'to_currency'=>$toCurrency
@@ -32,6 +32,7 @@ class QuidaxSwapService{
     public function confirmQuidaxSwap($quotationId, $userQuidaxId)
     {
        
+        // auth()->user()->quidax_id
         $response = $this->quidaxService->makeRequest('POST', "/users/{$userQuidaxId}/swap_quotation/{$quotationId}/confirm");
         return $response;
     }
