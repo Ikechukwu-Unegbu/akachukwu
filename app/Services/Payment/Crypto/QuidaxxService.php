@@ -101,12 +101,22 @@ class QuidaxxService
 
     /**
      * Get user wallets
+     */
+    public function getUserWalletsCurrencyAddress($currency)
+    {
+        $user = auth()->user();
+        return $this->makeRequest('get', "/users/{$user->quidax_id}/wallets/{$currency}");
+    }
+    
+
+    /**
+     * Get user wallets
     */
     public function getUserWalletsAddress($currency)
     {
         $user = auth()->user();
         // dd($user->quidax_id);
-        return $this->makeRequest('get', "/users/{$user->quidax_id}/wallets/{$currency}/address");
+        return $this->makeRequest('get', "/users/{$user->quidax_id}/wallets/{$currency}");
     }
 
     /**

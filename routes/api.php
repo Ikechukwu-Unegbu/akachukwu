@@ -38,6 +38,7 @@ use App\Http\Controllers\V1\API\TransactionsApiController;
 use App\Http\Controllers\V1\API\VirtualAccountController;
 use App\Http\Controllers\V1\QuidaxController;
 use App\Http\Controllers\V1\QuidaxWebhookController;
+use App\Http\Controllers\V1\QuidaxSwapController;
 use App\Http\Controllers\V1\ReferralContestApiController;
 
 /*
@@ -142,6 +143,7 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
         Route::post('users/create', [QuidaxController::class, 'createUser']);
         Route::get('/account', [QuidaxController::class, 'getAccountInfo']);
         Route::get('/wallets', [QuidaxController::class, 'getUserWallets']);
+        Route::get('/wallets/{currency}/address', [QuidaxController::class, 'getUserWalletsCurrencyAddress']);
         Route::post('/wallets-generate/{currency}', [QuidaxController::class, 'generateWalletAddress']);
         Route::post('/wallets-generates/{currency}', [QuidaxController::class, 'generateWalletAddressess']);
         Route::get('/wallets/{currency}', [QuidaxController::class, 'getWalletBalance']);
@@ -151,6 +153,16 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
         Route::get('supported-currencies', [QuidaxController::class, 'getSupportedCurrencies']);
         // test requry
         Route::get('requry/{id}', [QuidaxController::class, 'reQueryDeposit']);
+
+        // Swap operations (quote and confirm)
+        Route::post('/swap/quote', [QuidaxSwapController::class, 'generateSwapQuotation']);
+        Route::post('/swap/confirm', [QuidaxSwapController::class, 'confirmSwap']);
+
+        // Transfer NGN from user's NGN wallet to platform NGN account
+        Route::post('/transfer/ngn-to-platform', [QuidaxController::class, 'transferToPlatformNgn']);
+
+        // Initiate deposit: ensure user and return/generate deposit address for chosen currency
+        Route::post('/deposit/initiate', [QuidaxController::class, 'initiateDeposit']);
     });
 });
 
