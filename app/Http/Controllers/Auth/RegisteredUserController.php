@@ -20,8 +20,6 @@ use App\Providers\RouteServiceProvider;
 use App\Services\Payment\MonnifyService;
 use Illuminate\Support\Facades\Notification;
 use App\Services\Payment\VirtualAccountServiceFactory;
-use App\Services\Payment\Crypto\WalletService as CryptoWalletService;
-use App\Services\Payment\Crypto\QuidaxxService;
 
 use App\Services\BranchReferralService;
 class RegisteredUserController extends Controller
@@ -111,22 +109,6 @@ class RegisteredUserController extends Controller
             event(new Registered($user));
 
             Auth::login($user);
-
-            // Provision Quidax user and ensure NGN wallet (non-blocking to user flow)
-            try {
-                $cryptoWalletService = new CryptoWalletService();
-                // Create Quidax user if missing
-                if (empty($user->quidax_id)) {
-                    $cryptoWalletService->createUser();
-                    $user->refresh();
-                }
-                // Ensure NGN wallet is initialized/available
-                $quidaxService = new QuidaxxService();
-                $quidaxService->getUserWalletsCurrencyAddress('NGN');
-            } catch (\Throwable $th) {
-                // Log silently; do not interrupt registration flow
-                \Log::warning('Quidax post-registration provisioning failed', ['error' => $th->getMessage()]);
-            }
 
             session()->flash('success', 'Your account has been created successfully. Please proceed to login.');
             return redirect($user->dashboard());
