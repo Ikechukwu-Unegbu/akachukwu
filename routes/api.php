@@ -39,6 +39,7 @@ use App\Http\Controllers\V1\API\VirtualAccountController;
 use App\Http\Controllers\V1\QuidaxController;
 use App\Http\Controllers\V1\QuidaxParentUserController;
 use App\Http\Controllers\V1\QuidaxWebhookController;
+use App\Http\Controllers\V1\QuidaxSwapController;
 use App\Http\Controllers\V1\ReferralContestApiController;
 use App\Http\Controllers\V1\QuidaxTransferController;
 
@@ -154,7 +155,9 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
         // test requry
         Route::get('requry/{id}', [QuidaxController::class, 'reQueryDeposit']);
 
-
+        // Swap quotation (testing only)
+        Route::post('/swap/quote', [QuidaxSwapController::class, 'generateSwapQuotation']);
+        
     });
 });
 
