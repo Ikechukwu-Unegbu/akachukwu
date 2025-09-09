@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Payment\Crypto\QuidaxSwapService;
 use App\Services\Payment\Crypto\WalletService;
+use App\Services\Payment\Crypto\QuidaxxService;
 
 class QuidaxSwapController extends Controller
 {
@@ -27,7 +28,7 @@ class QuidaxSwapController extends Controller
             $user->refresh();
         }
 
-        $service = new QuidaxSwapService(app(\App\Services\Payment\Crypto\QuidaxService::class));
+        $service = new QuidaxSwapService(new QuidaxxService());
         $result = $service->generateSwapQuotation(
             $user->quidax_id,
             strtoupper($request->input('from_currency')),

@@ -1,14 +1,14 @@
 <?php 
 namespace App\Services\Payment\Crypto;
 
-use App\Services\Payment\Crypto\QuidaxService;
+use App\Services\Payment\Crypto\QuidaxxService;
 
 class QuidaxSwapService{
 
 
     protected $quidaxService; 
 
-    public function __construct(QuidaxService $quidaxService)
+    public function __construct(QuidaxxService $quidaxService)
     {
         $this->quidaxService = $quidaxService;
     }
@@ -16,11 +16,11 @@ class QuidaxSwapService{
     /**
      * This method when called generates the rate for swapping the $fromCurrency to $toCurrency
      * **/ 
-    public function generateSwapQuotation($userQuidaxId, $fromCurrency, $froAmount, $toCurrency, $toAmount=null)
+    public function generateSwapQuotation($userQuidaxId, $fromCurrency, $fromAmount, $toCurrency, $toAmount=null)
     {
-        $response = $this->quidaxService->makeRequest('get', "/users/{$userQuidaxId}/swap_quotation", [
+        $response = $this->quidaxService->makeRequest('post', "/users/{$userQuidaxId}/swap_quotation", [
             'from_currency'=>$fromCurrency,
-            'from_amount'=>$froAmount,
+            'from_amount'=>$fromAmount,
             'to_currency'=>$toCurrency
         ]);
         return $response;
