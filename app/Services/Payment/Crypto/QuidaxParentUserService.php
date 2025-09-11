@@ -54,7 +54,7 @@ class QuidaxParentUserService{
     public function fetchGivenCurrencyPaymentAddress($currency)
     {
         $response = $this->quidaxxService->makeRequest('get', "/users/me/wallets/{$currency}");
-        return $response->response->data->deposit_address;
+        return $response->response;
     }
 
     

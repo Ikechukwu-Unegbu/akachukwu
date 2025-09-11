@@ -63,12 +63,12 @@ class QuidaxTransferService
      * @return mixed
      */
     public function transferFunds(
-        string $amount,
+        float $amount,
         string $currency,
         string $transactionNote,
         string $narration,
         string $reciever,
-        string $sendQuidaxId,
+        string $senderQuidaxId,
         ?string $network = null
     ) {
         // dd($this->generateReference($reciever));
@@ -80,6 +80,7 @@ class QuidaxTransferService
             'fund_uid'         => $reciever,//parentwalletId
             'reference'        => $this->generateReference($reciever), 
         ];
+        // dd($payload);
 
         if ($network !== null) {
             $payload['network'] = $network;
@@ -87,7 +88,7 @@ class QuidaxTransferService
 
         return $this->quidaxService->makeRequest(
             'post',
-            "/users/{$sendQuidaxId}/withdraws",
+            "/users/f723ef71-d748-4a54-bcf5-b1a6f0de2453/withdraws",
             $payload
         );
     }
