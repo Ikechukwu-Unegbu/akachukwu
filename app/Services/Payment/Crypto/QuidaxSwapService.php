@@ -18,6 +18,7 @@ class QuidaxSwapService{
      * **/ 
     public function generateSwapQuotation($userQuidaxId, $fromCurrency, $fromAmount, $toCurrency, $toAmount=null)
     {
+        
         $response = $this->quidaxService->makeRequest('post', "/users/{$userQuidaxId}/swap_quotation", [
             'from_currency'=>$fromCurrency,
             'from_amount'=>$fromAmount,

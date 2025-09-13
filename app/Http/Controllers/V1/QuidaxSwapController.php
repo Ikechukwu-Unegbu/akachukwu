@@ -16,11 +16,13 @@ class QuidaxSwapController extends Controller
      */
     public function generateSwapQuotation(Request $request)
     {
+    
         $request->validate([
             'from_currency' => 'required|string',
             'from_amount'   => 'required|numeric|min:0.00000001',
             'to_currency'   => 'required|string',
         ]);
+
 
         $user = auth()->user();
         if (empty($user->quidax_id)) {
@@ -31,11 +33,24 @@ class QuidaxSwapController extends Controller
         $service = new QuidaxSwapService(new QuidaxxService());
         $result = $service->generateSwapQuotation(
             $user->quidax_id,
-            strtoupper($request->input('from_currency')),
+            $request->input('from_currency'),
             (string) $request->input('from_amount'),
-            strtoupper($request->input('to_currency'))
+            $request->input('to_currency')
         );
+        // dd($result->response->data->user->id);
 
-        return response()->json($result);
+        if($result->response->status == true || $result->response->status == 'success'){
+            $swaid = $result->response->data->id;
+            $userQuidaxId = $result->response->data->user->id;
+            $confirm = $service->confirmQuidaxSwap($swaid, $userQuidaxId);
+            // return response()->json($confirm);
+
+            // move funds to parent account
+
+            
+        }
+        
     }
+
+
 }

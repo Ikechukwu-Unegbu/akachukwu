@@ -88,7 +88,7 @@ class QuidaxTransferService
 
         return $this->quidaxService->makeRequest(
             'post',
-            "/users/f723ef71-d748-4a54-bcf5-b1a6f0de2453/withdraws",
+            "/users/{$senderQuidaxId}/withdraws",
             $payload
         );
     }

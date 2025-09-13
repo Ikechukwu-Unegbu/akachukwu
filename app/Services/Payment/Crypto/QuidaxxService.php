@@ -54,6 +54,7 @@ class QuidaxxService
                 ->$method($url, $data);
 
             $responseData = $response->json();
+            // dd($responseData);
         
 
             if ($response->successful()) {

@@ -7,14 +7,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Services\Payment\Crypto\CryptoFundingWebhookService;
 use App\Services\Payment\Crypto\QuidaxRequeryService;
+use App\Services\Payment\Crypto\QuidaxTransferService;
 
 class QuidaxWebhookController extends Controller
 {
     protected $requeryService;
+    public $transferService;
 
-    public function __construct(RequeryService $requeryService)
+    public function __construct(RequeryService $requeryService, QuidaxTransferService $transferService)
     {
         $this->requeryService = $requeryService;
+         $this->transferService = $transferService;
     }
 
 
@@ -40,12 +43,33 @@ class QuidaxWebhookController extends Controller
 
         if($event == 'deposit.successful'){
             Log::info('Requerying deposite.successful event with id: '[$eventId]);
-            $this->requeryService->reQueryDeposit($eventId);
+            $requeryResult = $this->requeryService->reQueryDeposit($eventId);
+            if($requeryResult->status == 'success'){
+                $amount = $requeryResult->data->amount;
+                $currency = $requeryResult->data->currency;
+                $userQuidaxId = $requeryResult->data->wallet->user->id;
+
+                //transfer funds to master account
+                $narration = "Transfer from user {$userQuidaxId} after deposit";
+                $transactionNote = "Auto transfer from user {$userQuidaxId} after deposit";
+                $targetQuidaxId = config('services.quidax.master_account_id', env('QUIDAX_MASTER_ACCOUNT_ID'));
+                $transferResult = $this->transferService->transferFunds(
+                    $amount, 
+                    $currency,
+                    $transactionNote,
+                    $narration,
+                    $userQuidaxId,
+                    $targetQuidaxId,);
+
+            }
+
+          
         
         }
         if($event == 'deposit.deposite.successful'){
             Log::info('Requerying deposite.successful event with id: '[$eventId]);
-            $this->requeryService->reQueryDeposit($eventId);
+            $requeryResult = $this->requeryService->reQueryDeposit($eventId);
+
         
         }
         // Handle deposit events
