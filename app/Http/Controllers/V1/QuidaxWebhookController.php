@@ -48,7 +48,7 @@ class QuidaxWebhookController extends Controller
         if($event == 'deposit.successful'){
             Log::info('Requerying deposite.successful event with id: ', [$eventId]);
             $requeryResult = $this->requeryService->reQueryDeposit($eventId, $request->data['wallet']['user']['id']);
-            // dd($requeryResult);
+       
 
             if (($requeryResult->status ?? null) == 'success' || config('app.env') != 'production') {
                 $amount = $requeryResult->response->data->amount;
@@ -110,6 +110,13 @@ class QuidaxWebhookController extends Controller
                     $parentReciever,
                     $userQuidaxId
                 );
+                // credit the user local wallet with NGN
+                if($transferResult->status == true && $transferResult->response->status =='success'){
+                    $cryptoWallet = \App\Models\Payment\CryptoWallet::where('user_id', $localUser->id)->first();
+                    $cryptoWallet->balance += $confirm->response->data->received_amount;
+                    $cryptoWallet->save();
+                }
+
 
             }
 

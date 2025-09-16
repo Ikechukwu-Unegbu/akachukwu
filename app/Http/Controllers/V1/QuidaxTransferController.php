@@ -22,7 +22,7 @@ class QuidaxTransferController extends Controller
     public function transfer(Request $request)
     {
         // dd($request->all());
-        $response = $this->transferService->transferFunds(
+        $result = $this->transferService->transferFunds(
             0.5, "usdt", "Test transaction note",
             "Test narration",
             "f7739a42-91ff-4239-9295-17f0f69ae5e3",
@@ -30,7 +30,12 @@ class QuidaxTransferController extends Controller
             "bep20"
         );
 
-        return $response;
+         if($result->status == true && $result->response->status =='success'){
+            return $result;
+        }
+
+        // dd($result->response)
+       
     }
 
 
