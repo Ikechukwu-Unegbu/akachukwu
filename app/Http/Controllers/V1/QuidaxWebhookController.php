@@ -9,12 +9,18 @@ use App\Services\Payment\Crypto\CryptoFundingWebhookService;
 use App\Services\Payment\Crypto\QuidaxRequeryService;
 use App\Services\Payment\Crypto\QuidaxTransferService;
 
+
+use App\Services\Payment\Crypto\QuidaxSwapService;
+use App\Services\Payment\Crypto\WalletService;
+use App\Services\Payment\Crypto\QuidaxxService;
+
+
 class QuidaxWebhookController extends Controller
 {
     protected $requeryService;
     public $transferService;
 
-    public function __construct(RequeryService $requeryService, QuidaxTransferService $transferService)
+    public function __construct(QuidaxRequeryService $requeryService, QuidaxTransferService $transferService)
     {
         $this->requeryService = $requeryService;
          $this->transferService = $transferService;
@@ -37,47 +43,80 @@ class QuidaxWebhookController extends Controller
 
         // Requery can be triggered with event id if provided
         $eventId = $request->input('id') ?? ($data['data']['id'] ?? null);
-      
-
-        Log::info('Quidax Data Payload:', $data);
+       
 
         if($event == 'deposit.successful'){
-            Log::info('Requerying deposite.successful event with id: '[$eventId]);
-            $requeryResult = $this->requeryService->reQueryDeposit($eventId);
-            if($requeryResult->status == 'success'){
-                $amount = $requeryResult->data->amount;
-                $currency = $requeryResult->data->currency;
-                $userQuidaxId = $requeryResult->data->wallet->user->id;
+            Log::info('Requerying deposite.successful event with id: ', [$eventId]);
+            $requeryResult = $this->requeryService->reQueryDeposit($eventId, $request->data['wallet']['user']['id']);
+            // dd($requeryResult);
+
+            if (($requeryResult->status ?? null) == 'success' || config('app.env') != 'production') {
+                $amount = $requeryResult->response->data->amount;
+                $currency = $requeryResult->response->data->currency;
+                $userQuidaxId = $requeryResult->response->data->wallet->user->id;
+                $localUser = \App\Models\User::where('quidax_id', $userQuidaxId)->first();
+
+                //Log funding to CryptoTransactionsLog table
+               $exists = \App\Models\Payment\CryptoTransactionsLog::where('txid', $requeryResult->response->data->txid)
+                    ->where('transaction_id', $requeryResult->response->data->id)
+                    ->exists();
+
+                if ($exists) {
+                    abort(400, 'Duplicate crypto transaction log found.');
+                }
+
+                \App\Models\Payment\CryptoTransactionsLog::create([
+                    'txid'             => $requeryResult->response->data->txid,
+                    'transaction_id'   => $requeryResult->response->data->id,
+                    'user_id'          => $localUser->id,
+                    'amount_in_crypto' => $amount,
+                    'amount'           => $requeryResult->response->data->wallet->converted_balance,
+                    'fee'              => 0.00,
+                    'currency'         => $currency,
+                    'status'           => $requeryResult->response->data->status,
+                    'meta'             => json_encode($requeryResult->response->data),
+                ]);
+
+                // Swap funds to NGN 
+                $service = new QuidaxSwapService(new QuidaxxService());
+                $result = $service->generateSwapQuotation(
+                    $user->quidax_id,
+                    $requeryResult->response->data->currency,
+                    $requeryResult->response->data->amount,
+                    'ngn'
+                );
+                $confirm = null;
+                if($result->response->status == true || $result->response->status == 'success'){
+                    $swaid = $result->response->data->id;
+                    $userQuidaxId = $result->response->data->user->id;
+                    $confirm = $service->confirmQuidaxSwap($swaid, $userQuidaxId);
+
+                }else{
+                    Log::error('Error generating swap quotation: ', (array)$result->response);
+                }
+
 
                 //transfer funds to master account
                 $narration = "Transfer from user {$userQuidaxId} after deposit";
                 $transactionNote = "Auto transfer from user {$userQuidaxId} after deposit";
-                $targetQuidaxId = config('services.quidax.master_account_id', env('QUIDAX_MASTER_ACCOUNT_ID'));
+                $parentReciever = config('services.quidax.master_account_id', env('QUIDAX_MASTER_ACCOUNT_ID'));
+                
+
                 $transferResult = $this->transferService->transferFunds(
-                    $amount, 
-                    $currency,
+                    $$confirm->response->data->received_amount, 
+                    'ngn',
                     $transactionNote,
                     $narration,
-                    $userQuidaxId,
-                    $targetQuidaxId,);
+                    $parentReciever,
+                    $userQuidaxId
+                );
 
             }
 
           
         
         }
-        if($event == 'deposit.deposite.successful'){
-            Log::info('Requerying deposite.successful event with id: '[$eventId]);
-            $requeryResult = $this->requeryService->reQueryDeposit($eventId);
-
-        
-        }
-        // Handle deposit events
-        // if (in_array($event, ['deposit.successful', 'wallet.deposit.successful', 'transaction.deposit.successful'])) {
-        //     $result = CryptoFundingWebhookService::handleDeposit($data);
-        //     // Always return 200 to acknowledge receipt
-        //     return response()->json($result, 200);
-        // }
+      
 
         return response()->json(['ok' => true], 200);
     }

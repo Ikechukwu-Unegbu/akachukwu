@@ -56,6 +56,7 @@ return [
         'api_key' => env('QUIDAX_API_KEY'),
         'secret_key' => env('QUIDAX_SECRET_KEY'),
         'test_mode' => env('QUIDAX_TEST_MODE', false),
+        'master_account_id'=>env('QUIDAX_MASTER_ACCOUNT_ID'),
     ],
     'allowed_crypto' => [
         'USDT',

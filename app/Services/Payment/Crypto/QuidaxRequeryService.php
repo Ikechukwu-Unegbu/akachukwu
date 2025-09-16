@@ -19,13 +19,16 @@ class QuidaxRequeryService{
     }
 
 
-    public function reQueryDeposit($id)
+    public function reQueryDeposit($id, $userQuidaxId)
     {
       
-         $user = auth()->user();
     
-        $result =  $this->quidaxService->makeRequest('get', "/users/{$user->quidax_id}/deposits/{$id}");
+         $user = \App\Models\User::where('quidax_id', $userQuidaxId)->first();
+ 
+    
+        $result =  $this->quidaxService->makeRequest('get', "/users/{$user?->quidax_id}/deposits/{$id}");
       
-        return response()->json($result);
+        // dd($result->response->data);
+        return $result;
     }
 }

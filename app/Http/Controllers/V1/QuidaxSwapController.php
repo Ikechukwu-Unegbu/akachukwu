@@ -43,13 +43,15 @@ class QuidaxSwapController extends Controller
             $swaid = $result->response->data->id;
             $userQuidaxId = $result->response->data->user->id;
             $confirm = $service->confirmQuidaxSwap($swaid, $userQuidaxId);
-            // return response()->json($confirm);
+       
 
-            // move funds to parent account
-
-            
+            return response()->json([
+                'status'=>'success',
+                'message'=>'Swap successful',
+                'data'=> $confirm->response->data->received_amount,            ]);
         }
         
+        // return response
     }
 
 
