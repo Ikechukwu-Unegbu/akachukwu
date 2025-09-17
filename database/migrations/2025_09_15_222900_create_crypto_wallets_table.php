@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Drop the table if it already exists
+        Schema::dropIfExists('crypto_wallets');
+
         Schema::create('crypto_wallets', function (Blueprint $table) {
             $table->id();
             $table->decimal('balance', 20, 2);
             $table->string('currency')->default('ngn');
-            $table->string('wellet_type')->default('crypto_base');
+            $table->string('wallet_type')->default('crypto_base'); // fixed typo
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });
