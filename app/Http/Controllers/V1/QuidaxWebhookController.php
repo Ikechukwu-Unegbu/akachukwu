@@ -79,7 +79,7 @@ class QuidaxWebhookController extends Controller
                 // Swap funds to NGN 
                 $service = new QuidaxSwapService(new QuidaxxService());
                 $result = $service->generateSwapQuotation(
-                    $user->quidax_id,
+                    $localUser->quidax_id,
                     $requeryResult->response->data->currency,
                     $requeryResult->response->data->amount,
                     'ngn'
