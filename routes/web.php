@@ -48,6 +48,11 @@ Route::get('/ref/{username}', function($username){
     dd($user);
 });
 
+Route::get('/view-crypto-log', function(){
+    $log = \App\Models\Payment\CryptoTransactionsLog::all();
+    dd($log);
+});
+
 Route::get('savings', function () {
     return view('savings');
 })->name('savings');

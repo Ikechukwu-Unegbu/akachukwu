@@ -33,9 +33,7 @@ class QuidaxWebhookController extends Controller
 
 
         Log::info('Incoming Quidax Webhook', $request->all());
-        Log::info('Incoming Quidax Webhook Headers', $request->headers->all());
-
-
+   
 
         $event = $request->input('event');
         $data = $request->all();
