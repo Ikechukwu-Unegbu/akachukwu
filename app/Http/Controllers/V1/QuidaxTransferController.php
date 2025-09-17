@@ -23,10 +23,10 @@ class QuidaxTransferController extends Controller
     {
         // dd($request->all());
         $result = $this->transferService->transferFunds(
-            0.5, "usdt", "Test transaction note",
+            0.49, "usdt", "Test transaction note",
             "Test narration",
-            "f7739a42-91ff-4239-9295-17f0f69ae5e3",
-            "0b256bf0-90f0-4682-9c87-58f228852b2f",
+            "f723ef71-d748-4a54-bcf5-b1a6f0de2453",//reciever
+            "0b256bf0-90f0-4682-9c87-58f228852b2f",//sender
             "bep20"
         );
 

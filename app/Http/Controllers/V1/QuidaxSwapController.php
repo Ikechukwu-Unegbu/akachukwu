@@ -48,7 +48,7 @@ class QuidaxSwapController extends Controller
             return response()->json([
                 'status'=>'success',
                 'message'=>'Swap successful',
-                'data'=> $confirm->response->data->received_amount,            ]);
+                'data'=> $confirm       ]);
         }
         
         // return response
