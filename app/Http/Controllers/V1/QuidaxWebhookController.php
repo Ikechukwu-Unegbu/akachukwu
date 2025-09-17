@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Services\Payment\Crypto\CryptoFundingWebhookService;
 use App\Services\Payment\Crypto\QuidaxRequeryService;
 use App\Services\Payment\Crypto\QuidaxTransferService;
-
-
+use Illuminate\Support\Facades\DB;
 use App\Services\Payment\Crypto\QuidaxSwapService;
 use App\Services\Payment\Crypto\WalletService;
 use App\Services\Payment\Crypto\QuidaxxService;
@@ -41,7 +40,6 @@ class QuidaxWebhookController extends Controller
         $event = $request->input('event');
         $data = $request->all();
 
-        // Requery can be triggered with event id if provided
         $eventId = $request->input('id') ?? ($data['data']['id'] ?? null);
        
 
@@ -51,6 +49,7 @@ class QuidaxWebhookController extends Controller
        
 
             if (($requeryResult->status ?? null) == 'success' || config('app.env') != 'production') {
+                //defining variables from the deposite query result.
                 $amount = $requeryResult->response->data->amount;
                 $currency = $requeryResult->response->data->currency;
                 $userQuidaxId = $requeryResult->response->data->wallet->user->id;
@@ -103,7 +102,7 @@ class QuidaxWebhookController extends Controller
                 
 
                 $transferResult = $this->transferService->transferFunds(
-                    $$confirm->response->data->received_amount, 
+                    $confirm->response->data->received_amount, 
                     'ngn',
                     $transactionNote,
                     $narration,
@@ -111,12 +110,18 @@ class QuidaxWebhookController extends Controller
                     $userQuidaxId
                 );
                 // credit the user local wallet with NGN
-                if($transferResult->status == true && $transferResult->response->status =='success'){
-                    $cryptoWallet = \App\Models\Payment\CryptoWallet::where('user_id', $localUser->id)->first();
-                    $cryptoWallet->balance += $confirm->response->data->received_amount;
-                    $cryptoWallet->save();
-                }
+                if ($transferResult?->status === true && $transferResult?->response?->status === 'success') {
+                    DB::transaction(function () use ($localUser, $confirm) {
+                        $cryptoWallet = \App\Models\Payment\CryptoWallet::where('user_id', $localUser->id)
+                            ->lockForUpdate() // ⛔ locks the row until transaction ends
+                            ->first();
 
+                        $cryptoWallet->balance += $confirm->response->data->received_amount;
+                        $cryptoWallet->save();
+                    });
+                }else{
+                    Log::error('Error transferring funds to master account: ', (array)$transferResult->response);
+                }
 
             }
 
