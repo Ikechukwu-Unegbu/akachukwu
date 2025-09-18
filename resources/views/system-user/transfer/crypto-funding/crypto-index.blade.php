@@ -88,7 +88,7 @@
                         <thead>
                             <tr>
                                 <th>#</th>
-                                <th>Trx. ID</th>
+                               
                                 <th>User</th>
                                 <th>Email</th>
                                 <th>Amount</th>
@@ -102,8 +102,8 @@
                         <tbody>
                             @forelse ($transactions as $transaction)
                                 <tr>
-                                    <td>{{ ($transactions->firstItem() ?? 0) + $loop->index }}</td>
-                                    <td>{{ $transaction->transaction_id }}</td>
+                                    <td>{{ $transactions->id}}</td>
+                          
                                     <td>{{ $transaction->user->first_name }} {{ $transaction->user->last_name }}</td>
                                     <td>{{ $transaction->user->email }}</td>
                                     <td>₦{{ number_format($transaction->amount, 2) }}</td>
