@@ -105,10 +105,10 @@
                             
                                     <td>{{ $transaction->id}}</td>
                           
-                                    <td>{{ $transaction->user->first_name }} {{ $transaction->user->last_name }}</td>
+                                    <td>{{ $transaction->user->name }}</td>
                                     <td>{{ $transaction->user->email }}</td>
                                     <td>₦{{ number_format($transaction->amount, 2) }}</td>
-                                    <td>{{ $transaction->amount_in_crypto }} {{ strtoupper($transaction->crypto_currency) }}</td>
+                                    <td>{{ $transaction->amount_in_crypto }} {{ strtoupper($transaction->currency) }}</td>
                                     <td>{{ strtoupper($transaction->currency) }}</td>
                                     <td>{{ \Carbon\Carbon::parse($transaction->created_at)->format('M d, Y h:i A') }}</td>
                                     <td>
