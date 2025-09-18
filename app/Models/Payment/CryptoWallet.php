@@ -42,4 +42,10 @@ class CryptoWallet extends Model
         self::TRX,
         self::XRP,
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
+
 }

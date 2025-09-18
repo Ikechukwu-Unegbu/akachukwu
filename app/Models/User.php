@@ -281,7 +281,7 @@ class User extends Authenticatable
      */
     public function cryptoWallets()
     {
-        return $this->hasMany(CryptoWallet::class);
+        return $this->hasMany(\App\Models\Payment\CryptoWallet::class);
     }
 
     // Impersonate a user
