@@ -26,8 +26,7 @@ class QuidaxTransferController extends Controller
             1, "usdt", "Test transaction note",
             "Test narration",
             "f723ef71-d748-4a54-bcf5-b1a6f0de2453",//reciever
-            "f7739a42-91ff-4239-9295-17f0f69ae5e3",//sender
-            "bep20"
+            "me",//sender
         );
 
         
