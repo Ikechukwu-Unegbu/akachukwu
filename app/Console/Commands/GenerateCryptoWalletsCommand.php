@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Payment\CryptoWallet;
+use App\Models\User;
 
 class GenerateCryptoWalletsCommand extends Command
 {
@@ -19,24 +20,39 @@ class GenerateCryptoWalletsCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Ensure each user has exactly one base crypto wallet';
 
     /**
      * Execute the console command.
      */
     public function handle()
     {
-        $users = \App\Models\User::all();
-        foreach($users as $user){
-            if(!$user->quidax_id){
-                    CryptoWallet::create([
-                    'user_id' => $user->id,
-                    'currency' => CryptoWallet::NGN,
+        $users = User::all();
+        $created = 0;
+        $cleaned = 0;
+
+        foreach ($users as $user) {
+            $wallets = $user->cryptoWallets()->get(); // assuming relation exists
+
+            if ($wallets->count() === 0) {
+                // Create new wallet
+                CryptoWallet::create([
+                    'user_id'     => $user->id,
+                    'currency'    => CryptoWallet::USDT, // pick your default currency
                     'wallet_type' => 'crypto_base',
-                    'balance' => 0.0000000,
-                    
+                    'balance'     => 0.0,
                 ]);
+                $created++;
+            } elseif ($wallets->count() > 1) {
+                // Keep the first wallet, delete the rest
+                $walletsToDelete = $wallets->slice(1);
+                foreach ($walletsToDelete as $wallet) {
+                    $wallet->delete();
+                }
+                $cleaned++;
             }
         }
+
+        $this->info("✅ {$created} wallets created, {$cleaned} users had duplicates cleaned.");
     }
 }

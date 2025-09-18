@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Models\Payment\CryptoWallet;
 
 
 class User extends Authenticatable
@@ -275,6 +276,14 @@ class User extends Authenticatable
         return !is_null($user->nin) || !is_null($user->bvn);
     }
 
+    /**
+     * Get all crypto wallets for the user.
+     */
+    public function cryptoWallets()
+    {
+        return $this->hasMany(CryptoWallet::class);
+    }
+
     // Impersonate a user
     public function impersonate(User $user)
     {
@@ -312,39 +321,6 @@ class User extends Authenticatable
         return Session::has('impersonate');
     }
 
-    // public function transactionHistories($perPage = 5, $utility = '', $date = null)
-    // {
-    //     $query = DB::table(DB::raw('
-    //         (
-    //             SELECT id, transaction_id, balance_before, balance_after, user_id,  amount, status, vendor_status, mobile_number as subscribed_to, plan_network as plan_name, "Phone No." as type, "data" as utility, "fa-wifi" as icon, "Data Purchased" as title, created_at FROM data_transactions
-    //             UNION ALL
-    //             SELECT id, transaction_id, balance_before, balance_after, user_id,  amount, status, vendor_status, mobile_number as subscribed_to, network_name as plan_name, "Phone No." as type, "airtime" as utility, "fa-mobile-alt" as icon, "Airtime Purchased" as title, created_at FROM airtime_transactions
-    //             UNION ALL
-    //             SELECT id, transaction_id, balance_before, balance_after, user_id,  amount, status, vendor_status, smart_card_number as subscribed_to, cable_name as plan_name, "IUC" as type, "cable" as utility, "fa-tv" as icon, "Cable TV Purchased" as title, created_at FROM cable_transactions
-    //             UNION ALL
-    //             SELECT id, transaction_id, balance_before, balance_after, user_id,  amount, status, vendor_status, meter_number as subscribed_to, disco_name as plan_name, "Meter No." as type, "electricity" as utility, "fa-bolt" as icon, "Electricity Purchased" as title, created_at FROM electricity_transactions
-    //             UNION ALL
-    //             SELECT id, transaction_id, balance_before, balance_after, user_id,  amount, status, vendor_status, quantity as subscribed_to, exam_name as plan_name, "QTY" as type, "education" as utility, "fa-credit-card" as icon, "E-PINS Purchased" as title, created_at FROM result_checker_transactions
-    //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before,  "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "flutterwave" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM flutterwave_transactions
-    //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before,  "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "paystack" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM paystack_transactions
-    //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "monnify" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM monnify_transactions
-    //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "payvessel" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM pay_vessel_transactions
-    //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, api_status as vendor_status, "wallet" as subscribed_to, reference_id as plan_name, "funding" as type, "vastel" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM vastel_transactions
-    //             UNION ALL
-    //             SELECT id, reference_id as transaction_id, "N/A" as balance_before, "N/A" as balance_after, user_id, amount, status, "N/A" as api_status , "wallet" as subscribed_to, reference_id, type, "transfer" as utility, "fa-exchange-alt" as icon, "wallet funding" as title, created_at FROM money_transfers
-    //         ) as transactions
-    //     '))->where('transactions.user_id', '=', $this->id)->orderBy('transactions.created_at', 'desc');
-
-    //     if ($utility) $query->where('transactions.utility', $utility)->orWhere('transactions.type', $utility);
-    //     if ($date) $query->whereRaw("DATE_FORMAT(transactions.created_at, '%Y-%m') = ?", $date);
-
-    //     return $query->paginate($perPage);
-    // }
 
     public function transactionHistories($perPage = 5, $utility = '', $date = null)
     {
@@ -384,122 +360,7 @@ class User extends Authenticatable
         return $query->paginate($perPage);
     }
 
-    // public function checkUserTransactionHistories($perPage = 5, $userId, $utility = '', $date = null)
-    // {
-    //     $transactions = DB::table('data_transactions')
-    //         ->select([
-    //             'id', 'transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount',
-    //             'status', 'vendor_status', 'mobile_number as subscribed_to', 'plan_network as plan_name',
-    //             DB::raw('"Phone No." as type'), DB::raw('"data" as utility'), DB::raw('"fa-wifi" as icon'),
-    //             DB::raw('"Data Purchased" as title'), 'created_at'
-    //         ])
-    //         ->unionAll(
-    //             DB::table('airtime_transactions')
-    //                 ->select([
-    //                     'id', 'transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount',
-    //                     'status', 'vendor_status', 'mobile_number as subscribed_to', 'network_name as plan_name',
-    //                     DB::raw('"Phone No." as type'), DB::raw('"airtime" as utility'), DB::raw('"fa-mobile-alt" as icon'),
-    //                     DB::raw('"Airtime Purchased" as title'), 'created_at'
-    //                 ])
-    //         )
-    //         ->unionAll(
-    //             DB::table('cable_transactions')
-    //                 ->select([
-    //                     'id', 'transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount',
-    //                     'status', 'vendor_status', 'smart_card_number as subscribed_to', 'cable_name as plan_name',
-    //                     DB::raw('"IUC" as type'), DB::raw('"cable" as utility'), DB::raw('"fa-tv" as icon'),
-    //                     DB::raw('"Cable TV Purchased" as title'), 'created_at'
-    //                 ])
-    //         )
-    //         ->unionAll(
-    //             DB::table('electricity_transactions')
-    //                 ->select([
-    //                     'id', 'transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount',
-    //                     'status', 'vendor_status', 'meter_number as subscribed_to', 'disco_name as plan_name',
-    //                     DB::raw('"Meter No." as type'), DB::raw('"electricity" as utility'), DB::raw('"fa-bolt" as icon'),
-    //                     DB::raw('"Electricity Purchased" as title'), 'created_at'
-    //                 ])
-    //         )
-    //         ->unionAll(
-    //             DB::table('result_checker_transactions')
-    //                 ->select([
-    //                     'id', 'transaction_id', 'balance_before', 'balance_after', 'user_id', 'amount',
-    //                     'status', 'vendor_status', 'quantity as subscribed_to', 'exam_name as plan_name',
-    //                     DB::raw('"QTY" as type'), DB::raw('"education" as utility'), DB::raw('"fa-credit-card" as icon'),
-    //                     DB::raw('"E-PINS Purchased" as title'), 'created_at'
-    //                 ])
-    //         )
-    //         ->unionAll(
-    //             DB::table('flutterwave_transactions')
-    //                 ->select([
-    //                     'id', 'reference_id as transaction_id', DB::raw('"N/A" as balance_before'),
-    //                     DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status',
-    //                     'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
-    //                     DB::raw('"funding" as type'), DB::raw('"flutterwave" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-    //                     DB::raw('"wallet funding" as title'), 'created_at'
-    //                 ])
-    //         )
-    //         ->unionAll(
-    //             DB::table('paystack_transactions')
-    //                 ->select([
-    //                     'id', 'reference_id as transaction_id', DB::raw('"N/A" as balance_before'),
-    //                     DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status',
-    //                     'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
-    //                     DB::raw('"funding" as type'), DB::raw('"paystack" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-    //                     DB::raw('"wallet funding" as title'), 'created_at'
-    //                 ])
-    //         )
-    //         ->unionAll(
-    //             DB::table('monnify_transactions')
-    //                 ->select([
-    //                     'id', 'reference_id as transaction_id', DB::raw('"N/A" as balance_before'),
-    //                     DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status',
-    //                     'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
-    //                     DB::raw('"funding" as type'), DB::raw('"monnify" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-    //                     DB::raw('"wallet funding" as title'), 'created_at'
-    //                 ])
-    //         )
-    //         ->unionAll(
-    //             DB::table('pay_vessel_transactions')
-    //                 ->select([
-    //                     'id', 'reference_id as transaction_id', DB::raw('"N/A" as balance_before'),
-    //                     DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status',
-    //                     'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
-    //                     DB::raw('"funding" as type'), DB::raw('"payvessel" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-    //                     DB::raw('"wallet funding" as title'), 'created_at'
-    //                 ])
-    //         )
-    //         ->unionAll(
-    //             DB::table('vastel_transactions')
-    //                 ->select([
-    //                     'id', 'reference_id as transaction_id', DB::raw('"N/A" as balance_before'),
-    //                     DB::raw('"N/A" as balance_after'), 'user_id', 'amount', 'status',
-    //                     'api_status as vendor_status', DB::raw('"wallet" as subscribed_to'), 'reference_id as plan_name',
-    //                     DB::raw('"funding" as type'), DB::raw('"vastel" as utility'), DB::raw('"fa-exchange-alt" as icon'),
-    //                     DB::raw('"wallet funding" as title'), 'created_at'
-    //                 ])
-    //         );
-
-    //     // Add additional unions for other tables as needed...
-    //     $query = DB::table(DB::raw("({$transactions->toSql()}) as transactions"))
-    //         ->mergeBindings($transactions) // Merge bindings to ensure Laravel handles it properly
-    //         ->where('transactions.user_id', $userId)
-    //         ->orderBy('transactions.created_at', 'desc');
-
-    //     if (!empty($utility)) {
-    //         $query->where(function ($subQuery) use ($utility) {
-    //             $subQuery->where('transactions.utility', $utility)
-    //                 ->orWhere('transactions.type', $utility);
-    //         });
-    //     }
-
-    //     if (!empty($date)) {
-    //         $query->whereRaw("DATE_FORMAT(transactions.created_at, '%Y-%m') = ?", [$date]);
-    //     }
-
-    //     return $query->paginate($perPage);
-    // }
-
+  
     public function checkUserTransactionHistories($perPage = 5, $userId, $utility = '', $date = null)
     {
         // Base query for data transactions
