@@ -50,13 +50,16 @@ Route::get('/ref/{username}', function($username){
 
 use App\Models\Payment\CryptoTransactionsLog;
 use App\Models\Payment\CryptoWallet;
+// use App\Models\Payment\CryptoWallet;
 
 Route::get('/view-crypto-log', function () {
-    // fetch all logs with their users
-    $logs = CryptoTransactionsLog::with('user')->get();
+    // Get all logs
+    $logs = CryptoTransactionsLog::all();
 
-    // fetch all wallets belonging to those users
+    // Pluck unique user_ids
     $userIds = $logs->pluck('user_id')->unique();
+
+    // Fetch wallets for those users
     $wallets = CryptoWallet::whereIn('user_id', $userIds)->get();
 
     dd([
@@ -64,6 +67,7 @@ Route::get('/view-crypto-log', function () {
         'wallets' => $wallets,
     ]);
 });
+
 
 
 Route::get('savings', function () {
