@@ -62,7 +62,7 @@ class QuidaxWebhookController extends Controller
                     abort(400, 'Duplicate crypto transaction log found.');
                 }
 
-                \App\Models\Payment\CryptoTransactionsLog::create([
+                $cryptoTransactionLog = \App\Models\Payment\CryptoTransactionsLog::create([
                     'txid'             => $requeryResult->response->data->txid,
                     'transaction_id'   => $requeryResult->response->data->id,
                     'user_id'          => $localUser->id,
