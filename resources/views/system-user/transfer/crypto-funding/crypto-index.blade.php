@@ -102,7 +102,8 @@
                         <tbody>
                             @forelse ($transactions as $transaction)
                                 <tr>
-                                    <td>{{ $transactions->id}}</td>
+                            
+                                    <td>{{ $transaction->id}}</td>
                           
                                     <td>{{ $transaction->user->first_name }} {{ $transaction->user->last_name }}</td>
                                     <td>{{ $transaction->user->email }}</td>
