@@ -95,6 +95,7 @@
             <x-admin.dropdown-item title="In-App Transfers" link="{{ route('admin.transfer.in-app') }}" />
             <x-admin.dropdown-item title="External Bank Transfers" link="{{ route('admin.transfer.bank') }}" />
             <x-admin.dropdown-item title="Wallet Funding" link="{{ route('admin.wallet-funding.index') }}" />
+            <x-admin.dropdown-item title="Crypto Funding" link="{{ route('admin.wallet-funding.crypto.index') }}" />
         </x-admin.dropdown>
 
         <li class="nav-heading">Referral Contest Mgt.</li>
