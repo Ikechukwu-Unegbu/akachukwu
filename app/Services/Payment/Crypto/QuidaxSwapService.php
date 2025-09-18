@@ -58,7 +58,7 @@ class QuidaxSwapService{
             $userQuidaxId = $result->response->data->user->id;
             $confirm = $service->confirmQuidaxSwap($swaid, $userQuidaxId);
        
-
+            return $confirm;
 
         }
     }

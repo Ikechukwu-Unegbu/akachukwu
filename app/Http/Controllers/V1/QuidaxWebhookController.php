@@ -82,11 +82,13 @@ class QuidaxWebhookController extends Controller
                     $requeryResult->response->data->amount,
                     'ngn'
                 );
+                Log::warning('Swap Quotation Result: ', (array)$result->response);
                 $confirm = null;
-                if($result->response->status == true || $result->response->status == 'success'){
+                if($result?->response->status == true || $result?->response->status == 'success'){
                     $swaid = $result->response->data->id;
                     $userQuidaxId = $result->response->data->user->id;
                     $confirm = $service->confirmQuidaxSwap($swaid, $userQuidaxId);
+                    Log::warning('Swap Confirm Result: ', (array)$confirm->response);
 
                 }else{
                     Log::error('Error generating swap quotation: ', (array)$result->response);
