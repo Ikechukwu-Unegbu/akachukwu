@@ -172,6 +172,7 @@ Route::get('quidax-transfer', [QuidaxTransferController::class, 'transfer']);
 
 
 Route::post('networks', [NewtworkApiController::class, 'index']);
+Route::get('networks/{id}', [NewtworkApiController::class, 'show']);
 Route::post('datatypes', [DataApiController::class, 'index']);
 Route::post('dataplans', [DataApiController::class, 'plan']);
 Route::post('cables', [CableApiController::class, 'index']);
