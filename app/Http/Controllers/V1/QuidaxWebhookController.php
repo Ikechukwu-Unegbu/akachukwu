@@ -108,6 +108,7 @@ class QuidaxWebhookController extends Controller
                 $transactionNote = "Auto transfer from user {$userQuidaxId} after deposit";
                 $parentReciever = config('services.quidax.master_account_id', env('QUIDAX_MASTER_ACCOUNT_ID'));
                 
+                sleep(10);
 
                 $transferResult = $this->transferService->transferFunds(
                     $confirm->response->data->received_amount, 

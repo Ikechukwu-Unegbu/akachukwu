@@ -23,10 +23,11 @@ class QuidaxTransferController extends Controller
     {
      
         $result = $this->transferService->transferFunds(
-            0.97, "usdt", "Test transaction note",
+            1, "usdt", "Test transaction note",
             "Test narration",
-            config('services.quidax.master_account_id', env('QUIDAX_MASTER_ACCOUNT_ID')),//"f723ef71-d748-4a54-bcf5-b1a6f0de2453",//reciever
-            "f723ef71-d748-4a54-bcf5-b1a6f0de2453",//sender
+            "f723ef71-d748-4a54-bcf5-b1a6f0de2453",//reciever
+            "me",//config('services.quidax.master_account_id', env('QUIDAX_MASTER_ACCOUNT_ID')),//"f723ef71-d748-4a54-bcf5-b1a6f0de2453",//sender
+            // "f723ef71-d748-4a54-bcf5-b1a6f0de2453",//sender
         );
 
         

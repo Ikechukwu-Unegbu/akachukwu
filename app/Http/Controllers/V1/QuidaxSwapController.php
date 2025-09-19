@@ -39,6 +39,7 @@ class QuidaxSwapController extends Controller
             $request->input('to_currency')
         );
        Log::warning('Quidax swap gen: ',  (array)$result->response);
+       
         if($result->response->status == true || $result->response->status == 'success'){
             $swaid = $result->response->data->id;
             $userQuidaxId = $result->response->data->user->id;
