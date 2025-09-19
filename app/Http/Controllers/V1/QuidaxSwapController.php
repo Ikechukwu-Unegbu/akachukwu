@@ -16,7 +16,7 @@ class QuidaxSwapController extends Controller
      * Body: { from_currency, from_amount, to_currency }
      */
     public function generateSwapQuotation(Request $request)
-    {dd('what the fuck');
+    {
     
         $request->validate([
             'from_currency' => 'required|string',
