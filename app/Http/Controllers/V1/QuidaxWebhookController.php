@@ -58,9 +58,10 @@ class QuidaxWebhookController extends Controller
                     ->where('transaction_id', $requeryResult->response->data->id)
                     ->exists();
 
-                if ($exists) {
+                if ($exists && app()->environment('production')) {
                     abort(400, 'Duplicate crypto transaction log found.');
                 }
+
 
                 $cryptoTransactionLog = \App\Models\Payment\CryptoTransactionsLog::create([
                     'txid'             => $requeryResult->response->data->txid,
@@ -76,13 +77,20 @@ class QuidaxWebhookController extends Controller
 
                 // Swap funds to NGN 
                 $service = new QuidaxSwapService(new QuidaxxService());
+              
                 $result = $service->generateSwapQuotation(
                     $localUser->quidax_id,
                     $requeryResult->response->data->currency,
                     $requeryResult->response->data->amount,
                     'ngn'
                 );
-                Log::warning('Swap Quotation Result: ', (array)$result->response);
+                Log::warning('Swap Quotation Result: ', (array)$result);
+                if($result?->status == false){
+                    Log::error('Error generating swap quotation: ', (array)$result);
+                    return response()->json(['ok' => false], 200);
+                }
+
+
                 $confirm = null;
                 if($result?->response->status == true || $result?->response->status == 'success'){
                     $swaid = $result->response->data->id;
