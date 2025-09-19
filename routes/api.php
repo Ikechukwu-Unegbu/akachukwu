@@ -165,6 +165,8 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
  * Quidax parent routes
  * **/
 Route::get('parent/wallets', [QuidaxParentUserController::class, 'getAllParentWallets']);
+Route::get('parent/swap', [QuidaxParentUserController::class, 'generateSwapQuotation']);
+Route::get('parent/transfer', [QuidaxParentUserController::class, 'transfer']);
 Route::get('parent/wallets-generate', [QuidaxParentUserController::class, 'createAllParentWallets']);
 Route::get('parent/wallets/{currency}', [QuidaxParentUserController::class, 'fetchGivenCurrencyPaymentAddress']);
 
