@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Services\Payment\Crypto\QuidaxSwapService;
 use App\Services\Payment\Crypto\WalletService;
 use App\Services\Payment\Crypto\QuidaxxService;
+use Illuminate\Support\Facades\Log;
 
 class QuidaxSwapController extends Controller
 {
@@ -15,7 +16,7 @@ class QuidaxSwapController extends Controller
      * Body: { from_currency, from_amount, to_currency }
      */
     public function generateSwapQuotation(Request $request)
-    {
+    {dd('what the fuck');
     
         $request->validate([
             'from_currency' => 'required|string',
@@ -37,8 +38,7 @@ class QuidaxSwapController extends Controller
             (string) $request->input('from_amount'),
             $request->input('to_currency')
         );
-        // dd($result->response->data->user->id);
-
+       Log::warning('Quidax swap gen: ',  (array)$result->response);
         if($result->response->status == true || $result->response->status == 'success'){
             $swaid = $result->response->data->id;
             $userQuidaxId = $result->response->data->user->id;
