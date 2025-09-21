@@ -15,6 +15,7 @@ use App\Http\Controllers\SystemUser\ScheduledTransactionController;
 use App\Http\Controllers\SystemUser\InAppTransferController;
 use App\Http\Controllers\SystemUser\SiteSettingsController;
 use App\Http\Controllers\SystemUser\WalletFundingController;
+use App\Http\Controllers\SystemUser\CryptoWalletFundingController;
 use App\Http\Controllers\SystemUser\ReferralContestManagementController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SystemUser\UserCrdDbtController;
@@ -255,6 +256,7 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::prefix('wallet-funding')->as('admin.wallet-funding.')->group(function() {
             Route::get('/', [WalletFundingController::class,'index'])->name('index');
+            Route::get('crypto/wallet-funding', [CryptoWalletFundingController::class,'index'])->name('crypto.index');
             Route::get('{transaction_id}/show', [App\Http\Controllers\SystemUser\WalletFundingController::class, 'show'])->name('show');
         });
     });

@@ -54,4 +54,40 @@ class NewtworkApiController extends Controller
             return ApiHelper::sendError([$th->getMessage()], 'Unable to fetch network. Try again later');
         }
     }
+
+   public function show($id)
+    {
+        try {
+            // fetch first active vendor
+            $vendor = Vendor::where('status', true)->first();
+
+            if (!$vendor) {
+                return ApiHelper::sendError(
+                    ["No active vendor found"], 
+                    "Vendor is inactive or not available"
+                );
+            }
+
+            // only fetch network that belongs to active vendor
+            $network = DataNetwork::where('id', $id)
+                ->where('vendor_id', $vendor->id)
+                ->where('status', true)
+                ->first();
+
+            if (!$network) {
+                return ApiHelper::sendError(
+                    ["Network not found or does not belong to active vendor"], 
+                    "Invalid network ID or inactive vendor"
+                );
+            }
+
+            return ApiHelper::sendResponse($network, "Network fetched successfully");
+
+        } catch (\Throwable $th) {
+            return ApiHelper::sendError([$th->getMessage()], "Unable to fetch network. Try again later");
+        }
+    }
+
+
+
 }

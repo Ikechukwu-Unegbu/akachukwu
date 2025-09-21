@@ -57,6 +57,18 @@ return [
         'secret_key' => env('QUIDAX_SECRET_KEY'),
         'public_key' => env('QUIDAX_PUBLIC_KEY'),
         'test_mode' => env('QUIDAX_TEST_MODE', false),
+        'master_account_id'=>env('QUIDAX_MASTER_ACCOUNT_ID'),
+    ],
+    'allowed_crypto' => [
+        'USDT',
+        'USDC',
+        'BTC',
+        'ETH',
+        'BNB',
+        'SOL',
+        'DOGE',
+        'TRX',
+        'XRP',
     ],
 
 ];

@@ -65,24 +65,30 @@ Route::get('/ref/{username}', function($username){
     $user = User::where('username', $username)->firstOrFail();
     // $service = new MonnifyService();
     // return $service->getAllVirtualAccountsOfGivenUser($user->username);
-
-    try {
-        $validatedData = [
-           'amount' => 1000,
-           'reason' => 'Test debit',
-           'action' => 'debit',
-           'record' => true
-       ];
-
-       $user->notify(new AdminDebitUserNotification($validatedData));
-       return response()->json(['message' => 'Email sent successfully']);
-
-    } catch (\Exception $e) {
-        dd($e->getMessage());
-        return response()->json(['error' => 'An error occurred while processing your request.'], 500);
-    }
-
+    dd($user);
 });
+
+use App\Models\Payment\CryptoTransactionsLog;
+use App\Models\Payment\CryptoWallet;
+// use App\Models\Payment\CryptoWallet;
+
+Route::get('/view-crypto-log', function () {
+    // Get all logs
+    $logs = CryptoTransactionsLog::all();
+
+    // Pluck unique user_ids
+    $userIds = $logs->pluck('user_id')->unique();
+
+    // Fetch wallets for those users
+    $wallets = CryptoWallet::whereIn('user_id', $userIds)->get();
+
+    dd([
+        'logs' => $logs,
+        'wallets' => $wallets,
+    ]);
+});
+
+
 
 Route::get('savings', function () {
     return view('savings');
@@ -227,6 +233,8 @@ Route::post('update-password', [SettingsController::class, 'updatePassword'])->n
 //     return \App\Services\Money\PalmPayService::createSpecificVirtualAccount(auth()->user());
 // });
 
+
+// Route::post('webhook/quidax', QuidaxWebhookController::class)->name('webhook.quidax');
 
 Route::get('/mtn/subscription-plans', [MtnDevController::class, 'listSubscriptionPlans']);
 
