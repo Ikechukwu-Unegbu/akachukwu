@@ -31,16 +31,7 @@ class QuidaxWebhookController extends Controller
 
         Log::info('Incoming Quidax Webhook', $request->all());
 
-        try {
-            // Store webhook payload for debugging
-            $webhook = [
-                'ip' => $request->ip(),
-                'time' => date('H:i:s'),
-                'date' => date('d-m-Y'),
-                'payload' => $request->all(),
-                'headers' => $request->headers->all()
-            ];
->
+
         $eventId = $request->input('id') ?? ($data['data']['id'] ?? null);
        
 
@@ -142,10 +133,8 @@ class QuidaxWebhookController extends Controller
         }
       
 
-
-         
-        }
     }
+    
 }
 
 
