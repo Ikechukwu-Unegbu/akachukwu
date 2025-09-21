@@ -139,18 +139,23 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
     // Quidax Crypto Wallet Routes
     Route::prefix('quidax')->group(function () {
         // Account and Wallet Management
-        Route::get('users', [QuidaxController::class, 'getUsers']); // Fetch all Sub-accounts.
-        Route::post('users/create', [QuidaxController::class, 'createUser']); // Create a Sub-account
-        Route::get('/account', [QuidaxController::class, 'getAccountInfo']); // Fetch Details of Subaccount
-        Route::get('/wallets', [QuidaxController::class, 'getUserWallets']); // Fetch user wallets
-
-        Route::prefix('webhook')->group(function () {
-            Route::any('/handler', QuidaxWebhookController::class);
-        });
+      
         // Route::post('/wallets/generate', [QuidaxController::class, 'generateWalletAddress']);
         // Route::get('/wallets/{currency}', [QuidaxController::class, 'getWalletBalance']);
         // Route::get('/balance-summary', [QuidaxController::class, 'getAccountBalanceSummary']);
         // Route::get('/wallet-stats', [QuidaxController::class, 'getWalletStats']);
+        Route::post('users/create', [QuidaxController::class, 'createUser']);
+        Route::get('/account', [QuidaxController::class, 'getAccountInfo']);
+        Route::get('/wallets', [QuidaxController::class, 'getUserWallets']);
+        Route::post('/wallets-generate/{currency}', [QuidaxController::class, 'generateWalletAddress']);
+        Route::post('/wallets-generates/{currency}', [QuidaxController::class, 'generateWalletAddressess']);
+        Route::get('/wallets/{currency}', [QuidaxController::class, 'getWalletBalance']);
+        Route::get('/balance-summary', [QuidaxController::class, 'getAccountBalanceSummary']);
+        Route::get('/wallet-stats', [QuidaxController::class, 'getWalletStats']);
+
+        Route::get('supported-currencies', [QuidaxController::class, 'getSupportedCurrencies']);
+        // test requry
+        Route::get('requry/{id}', [QuidaxController::class, 'reQueryDeposit']);
     });
 });
 
@@ -162,7 +167,9 @@ Route::post('cableplans', [CableApiController::class, 'plan']);
 Route::post('electricity/discos', [ElectricityApiController::class, 'index']);
 Route::post('webhook/monnify', WebhookController::class);
 Route::post('webhook/payvessel', PayVesselWebhookController::class);
+
 Route::post('webhook/quidax', QuidaxWebhookController::class)->name('webhook.quidax');
+
 Route::post('exams', [EducationController::class, 'index']);
 Route::get('banks', [VirtualAccountController::class, 'banks']);
 Route::post('webhook/palmpay', PalmPayWebhookController::class)->name('webhook.palmpay');
@@ -199,3 +206,5 @@ Route::prefix('investments')->middleware('auth:sanctum')->group(function () {
         Route::post('{savingId}/withdraw', [CowrywiseSavingsController::class, 'withdrawToWallet']);
     });
 });
+
+

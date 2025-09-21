@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Helpers\ApiHelper;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use App\Services\Payment\Crypto\WalletService;
+use App\Services\Payment\Crypto\QuidaxxService;
+use Illuminate\Http\Request;
+// use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
+// use App\Services\Payment\Crypto\WalletService;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -14,32 +16,23 @@ use Illuminate\Support\Facades\Auth;
 class QuidaxController extends Controller
 {
     protected $walletService;
+    protected $quidaxService;
 
     public function __construct()
     {
         $this->walletService = new WalletService();
+        $this->quidaxService = new QuidaxxService();
     }
 
     public function createUser(Request $request)
     {
-        $user = Auth::user();
-        $name = explode(' ', $user->name);
-
-        $data = [
-            "email" => $user->email,
-            "first_name" => $name[0],
-            "last_name" => $name[1] ,
-            "phone_number" => $user->phone
-        ];
-
-        $result=  $this->quidaxService->createUser($data, $user);
-      
-        return response()->json($result);
-    }
-
-    public function getUsers(Request $request)
-    {
-        $result = $this->walletService->fetchUsers();
+        
+        $result = $this->walletService->createUser();
+        if($result->status==false){
+            return response()->json($result);
+        }
+        
+       
         return response()->json($result);
     }
 
@@ -61,7 +54,7 @@ class QuidaxController extends Controller
      */
     public function getUserWallets()
     {
-        $result = $this->walletService->getUserWallets();
+        $result = $this->quidaxService->getUserWallets();
         return response()->json($result);
     }
 
@@ -70,7 +63,39 @@ class QuidaxController extends Controller
      */
     public function getWalletBalance(Request $request, $currency)
     {
-        $result = $this->walletService->getWalletBalance($currency);
+        $result = $this->quidaxService->getWalletBalance($currency);
+        return response()->json($result);
+    }
+
+
+    /**
+     * 
+     * **/ 
+    public function generateWalletAddress($currency)
+    {
+        // dd('hello');
+         $result = $this->quidaxService->getUserWalletsAddress($currency);
+        return response()->json($result);
+    }
+
+    public function generateWalletAddressess($currency)
+    {
+        // dd('hello');
+         $user = auth()->user();
+        // dd($user->quidax_id);
+        $result =  $this->quidaxService->makeRequest('get', "/users/{$user->quidax_id}/{$currency}/btc/addresses");
+      
+        return response()->json($result);
+    }
+
+    public function reQueryDeposit($id)
+    {
+        // dd('hello');
+         $user = auth()->user();
+        // dd($user->quidax_id);
+        $result =  $this->quidaxService->makeRequest('get', "/users/{$user->quidax_id}/deposits/{$id}");
+       
+        //  dd();
         return response()->json($result);
     }
 
@@ -79,7 +104,7 @@ class QuidaxController extends Controller
      */
     public function getAccountBalanceSummary()
     {
-        $result = $this->walletService->getAccountBalanceSummary();
+        $result = $this->quidaxService->getAccountBalanceSummary();
         return response()->json($result);
     }
 
@@ -88,7 +113,7 @@ class QuidaxController extends Controller
      */
     public function getSupportedCurrencies()
     {
-        $result = $this->walletService->getSupportedCurrencies();
+        $result = $this->quidaxService->getSupportedCurrencies();
         return response()->json($result);
     }
 
@@ -97,7 +122,7 @@ class QuidaxController extends Controller
      */
     public function getCurrencyInfo(Request $request, $currency)
     {
-        $result = $this->walletService->getCurrencyInfo($currency);
+        $result = $this->quidaxService->getCurrencyInfo($currency);
         return response()->json($result);
     }
 

@@ -58,5 +58,16 @@ return [
         'public_key' => env('QUIDAX_PUBLIC_KEY'),
         'test_mode' => env('QUIDAX_TEST_MODE', false),
     ],
+    'allowed_crypto' => [
+        'USDT',
+        'USDC',
+        'BTC',
+        'ETH',
+        'BNB',
+        'SOL',
+        'DOGE',
+        'TRX',
+        'XRP',
+    ],
 
 ];

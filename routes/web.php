@@ -92,23 +92,7 @@ Route::get('/ref/{username}', function($username){
     $user = User::where('username', $username)->firstOrFail();
     // $service = new MonnifyService();
     // return $service->getAllVirtualAccountsOfGivenUser($user->username);
-
-    try {
-        $validatedData = [
-           'amount' => 1000,
-           'reason' => 'Test debit',
-           'action' => 'debit',
-           'record' => true
-       ];
-
-       $user->notify(new AdminDebitUserNotification($validatedData));
-       return response()->json(['message' => 'Email sent successfully']);
-
-    } catch (\Exception $e) {
-        dd($e->getMessage());
-        return response()->json(['error' => 'An error occurred while processing your request.'], 500);
-    }
-
+    dd($user);
 });
 
 Route::get('savings', function () {
@@ -254,6 +238,8 @@ Route::post('update-password', [SettingsController::class, 'updatePassword'])->n
 //     return \App\Services\Money\PalmPayService::createSpecificVirtualAccount(auth()->user());
 // });
 
+
+// Route::post('webhook/quidax', QuidaxWebhookController::class)->name('webhook.quidax');
 
 Route::get('/mtn/subscription-plans', [MtnDevController::class, 'listSubscriptionPlans']);
 
