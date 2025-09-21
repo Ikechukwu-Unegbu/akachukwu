@@ -33,7 +33,7 @@ class QuidaxWebhookController extends Controller
 
 
         $eventId = $request->input('id') ?? ($data['data']['id'] ?? null);
-       
+       $event = $request->input('event');
 
         if($event == 'deposit.successful'){
             Log::info('Requerying deposite.successful event with id: ', [$eventId]);
