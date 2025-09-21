@@ -6,12 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\Payment\Crypto\WalletService;
 use App\Services\Payment\Crypto\QuidaxxService;
 use Illuminate\Http\Request;
-// use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
-// use App\Services\Payment\Crypto\WalletService;
-
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
 
 class QuidaxController extends Controller
 {
@@ -26,7 +21,7 @@ class QuidaxController extends Controller
 
     public function createUser(Request $request)
     {
-        
+        // dd(config('services.quidax.api_key', env('QUIDAX_SECRET_KEY')));
         $result = $this->walletService->createUser();
         if($result->status==false){
             return response()->json($result);
@@ -41,12 +36,8 @@ class QuidaxController extends Controller
      */
     public function getAccountInfo()
     {
-        $user = auth()->user();
-        if ($user->quidax_id) {
-            $result = $this->walletService->getAccountInfo($user->quidax_id);
-            return response()->json($result);
-        }
-        return ApiHelper::sendError(['message' => 'User not found'], 'User not found');
+        $result = $this->walletService->getAccountInfo();
+        return response()->json($result);
     }
 
     /**
@@ -94,7 +85,7 @@ class QuidaxController extends Controller
          $user = auth()->user();
         // dd($user->quidax_id);
         $result =  $this->quidaxService->makeRequest('get', "/users/{$user->quidax_id}/deposits/{$id}");
-       
+        dd($result->response->status, $result->response->data);
         //  dd();
         return response()->json($result);
     }
