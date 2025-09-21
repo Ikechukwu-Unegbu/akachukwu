@@ -142,6 +142,7 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
     // Quidax Crypto Wallet Routes
     Route::prefix('quidax')->group(function () {
         // Account and Wallet Management
+
         Route::post('users/create', [QuidaxController::class, 'createUser']);
         Route::get('/account', [QuidaxController::class, 'getAccountInfo']);
         Route::get('/wallets', [QuidaxController::class, 'getUserWallets']);
@@ -158,6 +159,7 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
         // Swap quotation (testing only)
         Route::post('/swap/quote', [QuidaxSwapController::class, 'generateSwapQuotation']);
         
+
     });
 });
 

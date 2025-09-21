@@ -31,12 +31,17 @@ class WalletService
         return $this->quidaxService->createUser($data, $user);
     }
 
+    public function fetchUsers()
+    {
+        return $this->quidaxService->fetchUsers();
+    }
+
     /**
      * Get user account information
      */
-    public function getAccountInfo()
+    public function getAccountInfo($quidaxId)
     {
-        return $this->quidaxService->getAccountInfo();
+        return $this->quidaxService->getAccountInfo($quidaxId);
     }
 
     /**
@@ -102,4 +107,5 @@ class WalletService
             'currencies' => $currencies
         ], 'Wallet statistics retrieved successfully');
     }
+
 }

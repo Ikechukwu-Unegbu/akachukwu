@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\V1;
 
-use App\Http\Controllers\Controller;
-use App\Services\Payment\Crypto\WalletService;
+
 use App\Services\Payment\Crypto\QuidaxxService;
+use App\Helpers\ApiHelper;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Services\Payment\Crypto\WalletService;
 
 class QuidaxController extends Controller
 {
@@ -31,13 +33,23 @@ class QuidaxController extends Controller
         return response()->json($result);
     }
 
+    public function getUsers(Request $request)
+    {
+        $result = $this->walletService->fetchUsers();
+        return response()->json($result);
+    }
+
     /**
      * Get user account information
      */
     public function getAccountInfo()
     {
-        $result = $this->walletService->getAccountInfo();
-        return response()->json($result);
+        $user = auth()->user();
+        if ($user->quidax_id) {
+            $result = $this->walletService->getAccountInfo($user->quidax_id);
+            return response()->json($result);
+        }
+        return ApiHelper::sendError(['message' => 'User not found'], 'User not found');
     }
 
     /**

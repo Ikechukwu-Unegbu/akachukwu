@@ -30,7 +30,7 @@ class QuidaxxService
         return [
             'Accept' => 'application/json',
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->apiKey,
+            'Authorization' => 'Bearer ' . $this->secretKey,
         ];
     }
 
@@ -54,8 +54,14 @@ class QuidaxxService
                 ->$method($url, $data);
 
             $responseData = $response->json();
-            // dd($responseData);
-        
+
+
+            Log::info('Quidax API Response', [
+                'endpoint' => $endpoint,
+                'status' => $response->status(),
+                'response' => $responseData
+            ]);
+
 
             if ($response->successful()) {
                 return ApiHelper::sendResponse($responseData, 'Request successful');
@@ -86,10 +92,16 @@ class QuidaxxService
     /**
      * Get user account information
      */
-    public function getAccountInfo()
+    public function getAccountInfo($quidaxId)
     {
-        return $this->makeRequest('get', '/users/me');
+        return $this->makeRequest('get', "/users/{$quidaxId}");
     }
+
+    public function fetchUsers()
+    {
+        return $this->makeRequest('get', "/users");
+    }
+
 
     /**
      * Get user wallets
@@ -99,6 +111,7 @@ class QuidaxxService
         $user = auth()->user();
         return $this->makeRequest('get', "/users/{$user->quidax_id}/wallets");
     }
+
 
     /**
      * Get user wallets
@@ -125,8 +138,6 @@ class QuidaxxService
     {
       
         $response = $this->makeRequest('post', '/users', $data);
-
-        // dd($response);
 
         if ($response->status === true && isset($response->response->data)) {
             $quidaxUser = $response->response->data;
@@ -170,7 +181,8 @@ class QuidaxxService
      */
     public function initializeQuidaxx()
     {
-        return $this->getAccountInfo();
+        $user = auth()->user();
+        return $this->getAccountInfo($user->quidax_id);
     }
 
     /**

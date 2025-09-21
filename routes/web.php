@@ -28,6 +28,8 @@ use App\Http\Controllers\V1\Utilities\ElectricityController;
 use App\Http\Controllers\V1\Education\ResultCheckerController;
 use App\Http\Controllers\SystemUser\WalletFundingController;
 
+use App\Models\PalmPayTransaction;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -38,6 +40,24 @@ use App\Http\Controllers\SystemUser\WalletFundingController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+
+Route::get('/palmpay/transaction/{reference}', function ($reference) {
+    $transaction = PalmPayTransaction::where('reference_id', $reference)->first();
+
+    if (! $transaction) {
+        return response()->json([
+            'status'  => false,
+            'message' => 'Transaction not found',
+        ], 404);
+    }
+
+    return response()->json([
+        'status'  => true,
+        'message' => 'Transaction retrieved successfully',
+        'data'    => $transaction,
+    ]);
+});
 
 
 Route::get('/ref/{username}', function($username){

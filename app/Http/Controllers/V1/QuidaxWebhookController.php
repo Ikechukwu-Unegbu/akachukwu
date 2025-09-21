@@ -28,16 +28,19 @@ class QuidaxWebhookController extends Controller
 
     public function __invoke(Request $request)
     {
-         
-
-
 
         Log::info('Incoming Quidax Webhook', $request->all());
-   
 
-        $event = $request->input('event');
-        $data = $request->all();
-
+        try {
+            // Store webhook payload for debugging
+            $webhook = [
+                'ip' => $request->ip(),
+                'time' => date('H:i:s'),
+                'date' => date('d-m-Y'),
+                'payload' => $request->all(),
+                'headers' => $request->headers->all()
+            ];
+>
         $eventId = $request->input('id') ?? ($data['data']['id'] ?? null);
        
 
@@ -139,7 +142,9 @@ class QuidaxWebhookController extends Controller
         }
       
 
-        return response()->json(['ok' => true], 200);
+
+         
+        }
     }
 }
 
