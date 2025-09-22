@@ -30,12 +30,79 @@ class RegisterUserController extends Controller
         $this->notificationService = new OneSignalNotificationService();
     }
 
+    // public function register(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'name' => ['required', 'string', 'max:255'],
+    //         'username' => ['required', 'string', 'min:3', 'max:255', 'alpha_dash', 'unique:'.User::class],
+    //         'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+    //         'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    //         'phone'=>['required'],
+    //         'terms_and_conditions'=>['nullable']
+    //     ]);
+
+    //     if ($validator->fails()) {
+    //         throw ValidationException::withMessages($validator->errors()->toArray());
+    //     }
+
+    //     return DB::transaction(function()use($request){
+    //         $user = User::create([
+    //             'name' => $request->name,
+    //             'username' => $request->username,
+    //             'email' => $request->email,
+    //             'password' => Hash::make($request->password),
+    //             'role'  =>  'user'
+    //         ]);
+    //         $otp = $this->otpService->generateOTP($user);
+
+    //         GeneralHelpers::checkReferrer($request, $user);
+
+    //         Notification::sendNow($user, new WelcomeEmail($otp, $user));
+
+    //         $referralService = new BranchReferralService();
+    //         $referralLink = $referralService->createReferralLink($user->username);
+
+    //         if ($referralLink) {
+    //             $user->update(['referral_link' => $referralLink]);
+    //         }
+
+    //         if ($request->os_player_id) {
+    //             $this->userDeviceRepository->updateOrCreate($user, ['os_player_id' => $request->os_player_id]);
+    //         }
+
+    //         $this->notificationService->sendToUser($user, "Welcome to Vastel {$user->username}!", 'Your Vastel Account is ready. Thank you for using Vastel!');
+
+    //         return response()->json([
+    //             'message'=>'Account Created.',
+    //             'status'=>'success',
+    //             'user'=>$user
+    //         ], 200);
+    //     });
+    // }
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
             'username' => ['required', 'string', 'min:3', 'max:255', 'alpha_dash', 'unique:'.User::class],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class, 
+            function ($attribute, $value, $fail) {
+                // Top 5 popular providers (you can tweak this list)
+                $allowedDomains = [
+                    'gmail.com',
+                    'yahoo.com',
+                    'outlook.com',
+                    'hotmail.com',
+                    'icloud.com',
+                ];
+
+                $domain = strtolower(substr(strrchr($value, "@"), 1));
+
+                if (!in_array($domain, $allowedDomains)) {
+                    $fail("The $attribute must be from a supported provider (Gmail, Yahoo, Outlook/Hotmail, iCloud).");
+                }
+            },
+        ],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
             'phone'=>['required'],
             'terms_and_conditions'=>['nullable']
