@@ -20,10 +20,8 @@
                 <option value="balance-high">BALANCE (high)</option>
                 <option value="balance-low">BALANCE (low)</option>
             </select>
-
-
-
         </div>
+
         <div class="container p-3 border rounded bg-light">
             <form method="GET" class="row align-items-end gx-3">
                 <div class="col-md-4">
@@ -42,7 +40,34 @@
             </form>
         </div>
 
+        <!-- Bulk action toolbar -->
+        <div id="bulk-actions" class="mb-3 d-none">
+            <button class="btn btn-danger me-2" data-action="blacklist">Blacklist</button>
+            <button class="btn btn-warning me-2" data-action="block">Block (Post No Debit)</button>
+            <button class="btn btn-outline-danger me-2" data-action="unblacklist">Un-Blacklist</button>
+            <button class="btn btn-outline-warning" data-action="unblock">Un-Block</button>
+            <span id="selected-count" class="ms-3 text-muted"></span>
+        </div>
 
+        <!-- Confirm Modal -->
+        <div class="modal fade" id="bulkConfirmModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Confirm Bulk Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body">
+                You are about to <strong id="modal-action"></strong>
+                <span id="modal-count"></span> user(s). Continue?
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirm-bulk">Continue</button>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div class="card">
             <div class="card-header">
@@ -51,11 +76,16 @@
             </div>
             <div class="card-body">
                 <x-admin.table>
-                    <x-admin.table-header :headers="['#', 'Name', 'Username', 'Bal.', 'Level', 'Joined', 'Action']" />
+                    <x-admin.table-header :headers="['#', 'Check', 'Name', 'Username', 'Bal.', 'Level', 'Joined', 'Action']" />
                     <x-admin.table-body>
                         @forelse ($users as $user)
                             <tr>
                                 <th scope="row">{{ $loop->index + 1 }}</th>
+                                <td>
+                                    <input class="form-check-input" type="checkbox"
+                                        value="{{ $user->id }}">
+                                </td>
+
                                 <td>
                                     {{ $user->name }}
                                     <div class="d-flex">
@@ -98,7 +128,6 @@
                                                     class="dropdown-item text-success"><i
                                                         class="bx bx-vertical-top"></i>Upgrade</a></li>
                                         </ul>
-
                                     </div>
                                 </td>
                             </tr>
@@ -115,40 +144,103 @@
         </div>
     </section>
 </div>
+
 <script>
-    // Get the current URL and query parameters
+    // === Filter select keeps param in URL ===
     const url = new URL(window.location.href);
     const select = document.getElementById('filter-select');
     const param = url.searchParams.get('param');
-
-    // Set the initial value of the select input based on the URL
     if (param) {
         select.value = param;
     } else {
-        select.value = ""; // Default to the first option if no param is present
+        select.value = "";
     }
-
-    // Add event listener for select input changes
     select.addEventListener('change', function () {
         const selectedValue = this.value;
-
         if (selectedValue) {
-            url.searchParams.set('param', selectedValue); // Set or update the `param` query parameter
+            url.searchParams.set('param', selectedValue);
         } else {
-            url.searchParams.delete('param'); // Remove the `param` query parameter if the first option is selected
+            url.searchParams.delete('param');
         }
-
-        window.location.href = url.toString(); // Navigate to the updated URL
+        window.location.href = url.toString();
     });
 
-    // Initialize tooltips
+    // === Bulk Actions ===
     document.addEventListener('DOMContentLoaded', function() {
+        const checkboxes = document.querySelectorAll('input.form-check-input[type="checkbox"][value]');
+        const bulkActions = document.getElementById('bulk-actions');
+        const selectedCount = document.getElementById('selected-count');
+        const modalEl = document.getElementById('bulkConfirmModal');
+        const modalActionEl = document.getElementById('modal-action');
+        const modalCountEl = document.getElementById('modal-count');
+        const confirmBtn = document.getElementById('confirm-bulk');
+        let currentAction = null;
+
+        const modal = new bootstrap.Modal(modalEl);
+
+        function getSelectedIds() {
+            return Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+        }
+
+        function updateToolbar() {
+            const ids = getSelectedIds();
+            if (ids.length > 0) {
+                bulkActions.classList.remove('d-none');
+                selectedCount.textContent = ids.length + " selected";
+            } else {
+                bulkActions.classList.add('d-none');
+                selectedCount.textContent = "";
+            }
+        }
+
+        checkboxes.forEach(cb => cb.addEventListener('change', updateToolbar));
+
+        bulkActions.addEventListener('click', function(e) {
+            if (e.target.matches('button[data-action]')) {
+                currentAction = e.target.getAttribute('data-action');
+                const ids = getSelectedIds();
+                if (ids.length === 0) return;
+                modalActionEl.textContent = currentAction;
+                modalCountEl.textContent = ids.length;
+                modal.show();
+            }
+        });
+
+        confirmBtn.addEventListener('click', function() {
+            const ids = getSelectedIds();
+            fetch(`/admin/users/bulk-action`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    //'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: JSON.stringify({
+                    action: currentAction,
+                    user_ids: ids
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                modal.hide();
+                alert(data.message || 'Action completed');
+                window.location.reload();
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Something went wrong.');
+            });
+        });
+
+        // Tooltips
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl);
         });
     });
 </script>
+
 @push('title')
     Human Resource Mgt. / Users
 @endpush

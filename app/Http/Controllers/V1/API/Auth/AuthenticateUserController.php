@@ -77,7 +77,23 @@ class AuthenticateUserController extends Controller
     {
         $request->validate([
             'otp'=>'required|string',
-            'email'=>'required|string'
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:' . User::class, 
+            function ($attribute, $value, $fail) {
+                // Top 5 popular providers (you can tweak this list)
+                $allowedDomains = [
+                    'gmail.com',
+                    'yahoo.com',
+                    'outlook.com',
+                    'hotmail.com',
+                    'icloud.com',
+                ];
+
+                $domain = strtolower(substr(strrchr($value, "@"), 1));
+
+                if (!in_array($domain, $allowedDomains)) {
+                    $fail("The $attribute must be from a supported provider (Gmail, Yahoo, Outlook/Hotmail, iCloud).");
+                }
+            },]
         ]);
 
         $user = User::where('email', $request->email)->first();

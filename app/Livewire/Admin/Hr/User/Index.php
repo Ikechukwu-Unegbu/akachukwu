@@ -20,6 +20,9 @@ class Index extends Component
     public $param; // For query parameters
     public $startDate;
     public $endDate;
+    public array $selectedUsers = [];
+    public string $bulkAction = '';
+
 
 
     protected $queryString = [
@@ -86,4 +89,37 @@ class Index extends Component
 
         return view('livewire.admin.hr.user.index', compact('users'));
     }
+
+    public function confirmBulkAction($action)
+{
+    $this->bulkAction = $action;
+
+    // Trigger JS to show modal
+    $this->dispatchBrowserEvent('show-bulk-confirm-modal');
+}
+
+public function performBulkAction()
+{
+    if ($this->bulkAction === 'blacklist') {
+        User::whereIn('id', $this->selectedUsers)
+            ->update([
+                'is_blacklisted' => true,
+                'blacklisted_by' => auth()->id()
+            ]);
+    }
+
+    if ($this->bulkAction === 'block') {
+        User::whereIn('id', $this->selectedUsers)
+            ->update([
+                'post_no_debit' => true,
+                'post_no_debit_by' => auth()->id()
+            ]);
+    }
+
+    $this->selectedUsers = [];
+    $this->bulkAction = '';
+
+    $this->dispatchBrowserEvent('hide-bulk-confirm-modal');
+    session()->flash('success', 'Bulk action applied successfully.');
+}
 }
