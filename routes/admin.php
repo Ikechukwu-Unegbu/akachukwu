@@ -79,6 +79,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => ['auth', 'admin', 'testing', 'impersonate']], function() {
         ## Dashboard Route
         Route::get('dashboard', AdminDashboardController::class)->name('admin.dashboard');
+        // routes/web.php
+        Route::post('users/bulk-action', [\App\Http\Controllers\SystemUser\AdminUserController::class, 'bulkAction'])
+        ->name('admin.users.bulk');
+
 
         ##Referral Contest
         Route::get('referral-contest', [ReferralContestManagementController::class, 'index'])->name('admin.referral-contest.index');
