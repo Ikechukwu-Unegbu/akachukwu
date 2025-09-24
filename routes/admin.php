@@ -174,6 +174,8 @@ Route::group(['prefix' => 'admin'], function () {
 
         ## HR Routes
         ## HR - User
+        Route::get('hr/download/users', [\App\Http\Controllers\SystemUser\AdminUserController::class, 'download'])->name('admin.hr.users.download');
+        
         Route::get('hr/users', App\Livewire\Admin\Hr\User\Index::class)->name('admin.hr.user');
         Route::get('hr/user/{user:username}/show', App\Livewire\Admin\Hr\User\Show::class)->name('admin.hr.user.show');
         Route::get('hr/user/{user:username}/upgrade', App\Livewire\Admin\Hr\User\Upgrade::class)->name('admin.hr.user.upgrade');

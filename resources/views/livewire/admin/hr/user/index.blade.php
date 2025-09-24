@@ -22,6 +22,14 @@
             </select>
         </div>
 
+
+        <div class="d-flex justify-content-end mb-3">
+    <a href="{{ route('admin.hr.users.download') }}" class="btn btn-success">
+        <i class="bi bi-download me-1"></i> Download Users (CSV)
+    </a>
+</div>
+
+
         <div class="container p-3 border rounded bg-light">
             <form method="GET" class="row align-items-end gx-3">
                 <div class="col-md-4">

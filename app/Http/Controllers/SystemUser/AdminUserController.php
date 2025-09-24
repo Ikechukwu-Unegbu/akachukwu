@@ -5,7 +5,7 @@ namespace App\Http\Controllers\SystemUser;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
-
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class AdminUserController extends Controller
 {
@@ -36,6 +36,43 @@ class AdminUserController extends Controller
         }
 
         return response()->json(['message' => 'Bulk action performed successfully.']);
+    }
+
+
+    public function download(): StreamedResponse
+    {
+        $fileName = 'users_' . now()->format('Y-m-d_H-i-s') . '.csv';
+
+        $headers = [
+            "Content-type"        => "text/csv",
+            "Content-Disposition" => "attachment; filename=$fileName",
+            "Pragma"              => "no-cache",
+            "Cache-Control"       => "must-revalidate, post-check=0, pre-check=0",
+            "Expires"             => "0"
+        ];
+
+        $callback = function() {
+            $handle = fopen('php://output', 'w');
+
+            // Add header row
+            fputcsv($handle, ['Name', 'Email']);
+
+            // Fetch users in chunks for memory efficiency
+            User::whereRole('user')
+            ->where('blocked_by_admin', false)
+            ->where('is_blacklisted', false)
+            ->where('post_no_debit', false)
+            ->chunk(500, function($users) use ($handle) {
+                foreach ($users as $user) {
+                    fputcsv($handle, [$user->name, $user->email]);
+                }
+            });
+
+
+            fclose($handle);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
 }
