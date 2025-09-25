@@ -96,7 +96,7 @@ class PosTraNetService
 
 
 
-    public static function airtime($networkId, $amount, $mobileNumber, $isScheduled = false, $scheduledPayload, $initialRun = false, $hasTransaction)
+    public static function airtime($networkId, $amount, $mobileNumber, $isScheduled = false, $scheduledPayload, $initialRun = false, $hasTransaction, $wallet='base_wallet')
     {
         try {
 
@@ -113,8 +113,13 @@ class PosTraNetService
 
                 GeneralHelpers::randomDelay();
 
-                if (Auth::check()) {
+                if (Auth::check() && $wallet=='base_wallet') {
                     if (Auth::user()->account_balance < $amount) {
+                        return ApiHelper::sendError('Insufficient balance', "You dont have enough money for this transaction.");
+                    }
+                }elseif(Auth::check() && $wallet == 'crypto_wallet'){
+                    $cryptoWallet = CryptoWallet::where('user_id', auth()->user()->id)->first();
+                    if($cryptoWallet->balance < $amount){
                         return ApiHelper::sendError('Insufficient balance', "You dont have enough money for this transaction.");
                     }
                 }
@@ -150,7 +155,8 @@ class PosTraNetService
                         'mobile_number' => $mobileNumber,
                         'balance_before' => $user->account_balance,
                         'balance_after' => $user->account_balance,
-                        'discount' => $discount
+                        'discount' => $discount,
+                        'wallet'=>$wallet
                     ]);
                 }
 
@@ -165,10 +171,21 @@ class PosTraNetService
                 // Apply any other discounts (if applicable)
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
                 // Deduct the amount from the user's balance if they have enough funds
+                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
+
+                // Deduct the amount from the correct wallet if they have enough funds
                 if (!$initialRun) {
-                    $user->account_balance -= $discountedAmount;  // Deduct the amount
-                    $user->save();  // Save the updated balance
+                    if ($wallet === 'base_wallet') {
+                        $user->account_balance -= $discountedAmount;  
+                        $user->save();
+                    } elseif ($wallet === 'crypto_wallet') {
+                        $cryptoWallet = CryptoWallet::where('user_id', $user->id)->first();
+                        $cryptoWallet->balance -= $discountedAmount;
+                        $cryptoWallet->save();
+                    } 
+                    // 🔹 If you plan more wallet types, extend this with more elseif blocks
                 }
+
 
                 if ($isScheduled) {
                     $transaction->pending();
