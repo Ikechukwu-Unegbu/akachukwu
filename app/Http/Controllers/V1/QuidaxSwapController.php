@@ -56,4 +56,38 @@ class QuidaxSwapController extends Controller
     }
 
 
+    public function generateAllTemporarySwapQuotations(Request $request)
+    {
+        $allowedCryptos = config('services.allowed_crypto', []); // Note: 'allowed_crypto' key
+        $user = auth()->user();
+
+        if (empty($user->quidax_id)) {
+            (new WalletService())->createUser();
+            $user->refresh();
+        }
+
+        $quidaxService = new QuidaxxService();
+        $results = [];
+
+        foreach ($allowedCryptos as $crypto) {
+            $crypto = strtolower($crypto); // Quidax expects lowercase
+            $response = $quidaxService->makeRequest(
+                'POST',
+                "/users/{$user->quidax_id}/temporary_swap_quotation",
+                [
+                    'from_currency' => $crypto,
+                    'from_amount' => 1,
+                    'to_currency'=>'ngn'
+                ]
+            );
+      
+            $results[$crypto] = $response->response ?? null;
+        }
+       
+        return response()->json([
+            'status' => 'success',
+            'data' => $results,
+        ]);
+    }
+
 }

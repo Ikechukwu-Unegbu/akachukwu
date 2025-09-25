@@ -157,6 +157,8 @@ Route::get('/withdraw-bonus', [ReferralController::class, 'move_earning_to_walle
 
         // Swap quotation (testing only)
         Route::post('/swap/quote', [QuidaxSwapController::class, 'generateSwapQuotation']);
+
+        Route::get('/temporary-swap', [QuidaxSwapController::class, 'generateAllTemporarySwapQuotations']);
         
     });
 });
