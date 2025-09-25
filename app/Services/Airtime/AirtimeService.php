@@ -17,7 +17,7 @@ class AirtimeService
 {
     use ResolvesVendorService, ResolvesAirtimeVendorService, HandlesPostNoDebit;
 
-    public static function create($vendorId, $networkId, $amount, $mobileNumber, $isScheduled = false, $scheduledPayload = [], $isInitialRun = false, $hasTransaction = null)
+    public static function create($vendorId, $networkId, $amount, $mobileNumber, $isScheduled = false, $scheduledPayload = [], $isInitialRun = false, $hasTransaction = null, $wallet='base_wallet')
     {
         // $vendorService = (new self)->resolveServiceClass('airtime');
         if ( self::ensurePostNoDebitIsAllowed()) {
@@ -31,7 +31,7 @@ class AirtimeService
 
         $resolveVendorServiceClass = (new self)->resolveVendorServiceClass($vendorId, $networkId);
         $vendorService = VendorServiceFactory::make($resolveVendorServiceClass->vendor);
-        return $vendorService::airtime($resolveVendorServiceClass->networkId, $amount, $mobileNumber, $isScheduled, $scheduledPayload, $isInitialRun, $hasTransaction);
+        return $vendorService::airtime($resolveVendorServiceClass->networkId, $amount, $mobileNumber, $isScheduled, $scheduledPayload, $isInitialRun, $hasTransaction, $wallet);
     }
 
     public static function checkAirtimeLimit($amount)

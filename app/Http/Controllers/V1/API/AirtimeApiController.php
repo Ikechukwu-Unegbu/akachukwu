@@ -32,13 +32,18 @@ class AirtimeApiController extends Controller
                 ]);
             }
 
-            $airtimeService = AirtimeService::create(
+           $airtimeService = AirtimeService::create(
                 $this->vendor->id,
                 $request->network_id,
                 $request->amount,
-                $request->phone_number
+                $request->phone_number,
+                false, 
+                [], 
+                false, 
+                null, 
+                $request->wallet ?? 'base_wallet', // 👈 fallback
             );
-            
+
             GeneralHelpers::sendOneSignalTransactionNotification(
                 $airtimeService, 
                 $airtimeService->message, 

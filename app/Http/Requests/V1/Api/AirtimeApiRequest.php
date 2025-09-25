@@ -40,6 +40,8 @@ class AirtimeApiRequest extends FormRequest
                 }
             ],
             'phone_number'  => ['required', 'regex:/^0(70|80|81|90|91|80|81|70)\d{8}$/'],
+           'wallet' => 'nullable|in:base_wallet,crypto_wallet',
+
         ];
     }
 
