@@ -27,6 +27,7 @@ class DataApiRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'wallet' => 'nullable|in:base_wallet,crypto_wallet',
             'network_id'        =>  'required|integer',
             'data_type_id'      =>  'required|integer',
             'plan_id'           =>  'required|integer',

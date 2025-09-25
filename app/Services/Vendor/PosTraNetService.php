@@ -7,6 +7,7 @@ use App\Models\Vendor;
 use App\Helpers\ApiHelper;
 use Illuminate\Support\Str;
 use App\Models\Data\DataPlan;
+use App\Models\Payment\CryptoWallet;
 use App\Models\Data\DataType;
 use App\Models\Utility\Cable;
 use App\Helpers\GeneralHelpers;
@@ -170,8 +171,6 @@ class PosTraNetService
                 }
                 // Apply any other discounts (if applicable)
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
-                // Deduct the amount from the user's balance if they have enough funds
-                $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
 
                 // Deduct the amount from the correct wallet if they have enough funds
                 if (!$initialRun) {
@@ -219,13 +218,10 @@ class PosTraNetService
                 // Store the API response in the transaction
                 self::storeApiResponse($transaction, $response);
 
-
-                // self::$authUser->transaction($amount);
-
                 // Handle the response from the API
                 if (isset($response->error)) {
                     // Handle API wallet balance issues
-                    self::$authUser->initiateRefund($user, $amount, $transaction);
+                    self::$authUser->initiateRefund($user, $amount, $transaction, $wallet);
                     $errorResponse = [
                         'error' => 'Insufficient Balance From API.',
                         'message' => "An error occurred during the Airtime request. Please try again later."
@@ -522,11 +518,11 @@ class PosTraNetService
         }
     }
 
-    public static function data($networkId, $typeId, $dataId, $mobileNumber, $isScheduled = false, $scheduledPayload, $initialRun = false, $hasTransaction)
+    public static function data($networkId, $typeId, $dataId, $mobileNumber, $isScheduled = false, $scheduledPayload, $initialRun = false, $hasTransaction, $wallet='base_wallet')
     {
         try {
             // Start a database transaction to ensure atomicity
-            return DB::transaction(function () use ($networkId, $typeId, $dataId, $mobileNumber, $isScheduled, $scheduledPayload, $initialRun, $hasTransaction) {
+            return DB::transaction(function () use ($networkId, $typeId, $dataId, $mobileNumber, $isScheduled, $scheduledPayload, $initialRun, $hasTransaction, $wallet) {
 
                 // Retrieve vendor, network, plan, and type (same logic as before)
                 $vendor = self::$vendor;
@@ -572,6 +568,7 @@ class PosTraNetService
                         'plan_name' => $plan->size,
                         'plan_amount' => $plan->amount,
                         'discount' => $network->data_discount,
+                        'wallet'=>$wallet
                     ]);
                 }
 
@@ -593,7 +590,7 @@ class PosTraNetService
                 $discountedAmount = CalculateDiscount::calculate($discountedAmount, $discount);
 
                 // Handle insufficient balance
-                if (!self::$authUser->verifyAccountBalance($amount)) {
+                if (!self::$authUser->verifyAccountBalance($amount, $wallet)) {
                     $errorResponse = [
                         'error' => 'Insufficient Account Balance.',
                         'message' => "You need at least ₦{$amount} to purchase this plan. Please fund your wallet to continue."
@@ -602,10 +599,19 @@ class PosTraNetService
                 }
 
                 if (!$initialRun) {
-                    // Deduct the amount from the user's account balance
-                    $user->account_balance -= $discountedAmount;
-                    $user->save();
+                    if ($wallet === 'base_wallet') {
+                        $user->account_balance -= $discountedAmount;
+                        $user->save();
+                    } elseif ($wallet === 'crypto_wallet') {
+                        $cryptoWallet = CryptoWallet::where('user_id', $user->id)->first();
+                        if ($cryptoWallet) {
+                            $cryptoWallet->balance -= $discountedAmount;
+                            $cryptoWallet->save();
+                        }
+                    }
+                    // 🔹 You can extend with more wallet types here if needed
                 }
+
 
                 if ($isScheduled) {
                     $transaction->pending();
@@ -638,7 +644,7 @@ class PosTraNetService
 
                 if (isset($response->error)) {
                     // Insufficient API Wallet Balance Error
-                    self::$authUser->initiateRefund($user, $discountedAmount, $transaction);
+                    self::$authUser->initiateRefund($user, $discountedAmount, $transaction, $wallet);
                     $errorResponse = [
                         'error' => 'Insufficient Balance From API.',
                         'message' => "An error occurred during Data request. Please try again later."

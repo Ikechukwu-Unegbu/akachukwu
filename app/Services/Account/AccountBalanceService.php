@@ -4,6 +4,7 @@ namespace App\Services\Account;
 
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use App\Models\Payment\CryptoWallet;
 
 // use Illuminate\Foundation\Auth\User;
 class AccountBalanceService 
@@ -55,22 +56,41 @@ class AccountBalanceService
     }
 
 
-    public function verifyAccountBalance($amount) : bool
+    public function verifyAccountBalance($amount, $wallet = 'base_wallet') : bool
     {
-        if ($this->getAccountBalance() >= $amount) return true;
+        if ($wallet === 'base_wallet') {
+            return $this->getAccountBalance() >= $amount;
+        }
 
-        return false;
+        if ($wallet === 'crypto_wallet') {
+            $cryptoWallet = CryptoWallet::where('user_id', $this->id)->first();
+            return $cryptoWallet && $cryptoWallet->balance >= $amount;
+        }
+
+        // fallback: treat unknown wallet types as base_wallet
+        return $this->getAccountBalance() >= $amount;
     }
 
-    public function initiateRefund($user, $amount, $transaction) : bool
+
+    public function initiateRefund($user, $amount, $transaction, $wallet = 'base_wallet') : bool
     {
-        // $this->user->setAccountBalance($amount);
-        $user->account_balance += $amount;
-        $user->save();
+        if ($wallet === 'base_wallet') {
+            $user->account_balance += $amount;
+            $user->save();
+        } elseif ($wallet === 'crypto_wallet') {
+            $cryptoWallet = CryptoWallet::where('user_id', $user->id)->first();
+            if ($cryptoWallet) {
+                $cryptoWallet->balance += $amount;
+                $cryptoWallet->save();
+            }
+        }
+
         $transaction->balanceAfterRefund($amount);
         $transaction->refund();
+
         return true;
     }
+
 
     public function initiateDebit($user, $amount, $transaction) : bool
     {

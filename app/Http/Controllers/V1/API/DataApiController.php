@@ -34,6 +34,7 @@ class DataApiController extends Controller
         try {
             $request->validate([
                 'network_id' => 'required|integer',
+               
             ]);
 
             $dataType = DataType::whereVendorId($this->vendor->id)->whereNetworkId($request->network_id)->whereStatus(true);
@@ -119,7 +120,12 @@ class DataApiController extends Controller
                 $request->network_id, 
                 $request->data_type_id, 
                 $plan->first()->data_id, 
-                $request->phone_number
+                $request->phone_number,
+                false, 
+                [], 
+                false,
+                null, 
+                $request->wallet ?? 'base_wallet', // 👈 fallback
             );
 
             GeneralHelpers::sendOneSignalTransactionNotification(
